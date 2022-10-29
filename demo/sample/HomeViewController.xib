@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="HomeViewController">
+            <connections>
+                <outlet property="roomId" destination="1sF-5B-ZQ2" id="FHf-33-nuC"/>
+                <outlet property="roomIdCopyBtn" destination="el5-a7-C0R" id="gsH-qh-Kbb"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="homeIcon" translatesAutoresizingMaskIntoConstraints="NO" id="oMF-x1-hBr">
+                    <rect key="frame" x="87" y="102" width="240" height="245"/>
+                </imageView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="p1X-Dj-fT0">
+                    <rect key="frame" x="0.0" y="384" width="414" height="128"/>
+                    <subviews>
+                        <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IWm-8S-Inm">
+                            <rect key="frame" x="0.0" y="0.0" width="138" height="128"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <state key="normal" title="加入会议">
+                                <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </state>
+                            <connections>
+                                <action selector="joinRoom:" destination="-1" eventType="touchUpInside" id="RIe-AS-zWj"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KVI-Nd-Pul">
+                            <rect key="frame" x="138" y="0.0" width="138" height="128"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <state key="normal" title="快速会议">
+                                <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </state>
+                            <connections>
+                                <action selector="startRoom:" destination="-1" eventType="touchUpInside" id="BQC-Hu-TC0"/>
+                            </connections>
+                        </button>
+                        <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="U3W-Lp-P0f">
+                            <rect key="frame" x="276" y="0.0" width="138" height="128"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <state key="normal" title="预定会议">
+                                <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </state>
+                            <connections>
+                                <action selector="creatRoom:" destination="-1" eventType="touchUpInside" id="G6P-FY-anc"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="IWm-8S-Inm" firstAttribute="width" secondItem="p1X-Dj-fT0" secondAttribute="width" multiplier="1/3" id="1TF-mj-ifI"/>
+                        <constraint firstAttribute="bottom" secondItem="KVI-Nd-Pul" secondAttribute="bottom" id="5Jf-CT-iv2"/>
+                        <constraint firstItem="U3W-Lp-P0f" firstAttribute="top" secondItem="p1X-Dj-fT0" secondAttribute="top" id="6Pw-Qb-UEN"/>
+                        <constraint firstAttribute="bottom" secondItem="IWm-8S-Inm" secondAttribute="bottom" id="DzR-eF-InH"/>
+                        <constraint firstAttribute="trailing" secondItem="U3W-Lp-P0f" secondAttribute="trailing" id="Ld3-WG-Xrw"/>
+                        <constraint firstItem="IWm-8S-Inm" firstAttribute="leading" secondItem="p1X-Dj-fT0" secondAttribute="leading" id="PFO-7A-29L"/>
+                        <constraint firstAttribute="height" constant="128" id="TGH-7C-knA"/>
+                        <constraint firstAttribute="bottom" secondItem="U3W-Lp-P0f" secondAttribute="bottom" id="Zzq-el-hBR"/>
+                        <constraint firstItem="KVI-Nd-Pul" firstAttribute="leading" secondItem="IWm-8S-Inm" secondAttribute="trailing" id="cgL-3P-z5a"/>
+                        <constraint firstItem="U3W-Lp-P0f" firstAttribute="leading" secondItem="KVI-Nd-Pul" secondAttribute="trailing" id="fPN-Fs-5kr"/>
+                        <constraint firstItem="IWm-8S-Inm" firstAttribute="top" secondItem="p1X-Dj-fT0" secondAttribute="top" id="ibn-EY-Q5s"/>
+                        <constraint firstItem="KVI-Nd-Pul" firstAttribute="top" secondItem="p1X-Dj-fT0" secondAttribute="top" id="jmq-ji-6ze"/>
+                        <constraint firstItem="KVI-Nd-Pul" firstAttribute="width" secondItem="p1X-Dj-fT0" secondAttribute="width" multiplier="1/3" id="ksm-Vd-6nc"/>
+                    </constraints>
+                </view>
+                <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="当前预约的房间号" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bJ0-1P-oPv">
+                    <rect key="frame" x="32" y="562" width="163" height="21"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="163" id="Lhi-qq-CcO"/>
+                        <constraint firstAttribute="height" constant="21" id="UMi-qs-ScS"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="暂无" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1sF-5B-ZQ2">
+                    <rect key="frame" x="215" y="562" width="179" height="21"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="21" id="g21-D3-Of6"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="el5-a7-C0R">
+                    <rect key="frame" x="215" y="615" width="179" height="30"/>
+                    <color key="backgroundColor" red="0.42078793050000002" green="0.5722019076" blue="0.89356887340000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="179" id="UnL-aS-29X"/>
+                        <constraint firstAttribute="height" constant="30" id="vWp-vg-PnI"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                    <state key="normal" title="复制房间号">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </state>
+                    <connections>
+                        <action selector="copyRoomId:" destination="-1" eventType="touchUpInside" id="o1d-Rd-1bL"/>
+                    </connections>
+                </button>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <constraints>
+                <constraint firstItem="bJ0-1P-oPv" firstAttribute="top" secondItem="p1X-Dj-fT0" secondAttribute="bottom" constant="50" id="77n-fX-ISb"/>
+                <constraint firstItem="1sF-5B-ZQ2" firstAttribute="leading" secondItem="bJ0-1P-oPv" secondAttribute="trailing" constant="20" id="CaB-9d-zq2"/>
+                <constraint firstItem="oMF-x1-hBr" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="87" id="GZ7-pf-ivc"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="oMF-x1-hBr" secondAttribute="trailing" constant="87" id="Mxl-pX-cDx"/>
+                <constraint firstItem="p1X-Dj-fT0" firstAttribute="top" secondItem="oMF-x1-hBr" secondAttribute="bottom" constant="37" id="Ojt-Dn-msf"/>
+                <constraint firstItem="bJ0-1P-oPv" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="32" id="Ssw-Gx-PPt"/>
+                <constraint firstItem="1sF-5B-ZQ2" firstAttribute="centerY" secondItem="bJ0-1P-oPv" secondAttribute="centerY" id="VdC-Jo-rUJ"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="1sF-5B-ZQ2" secondAttribute="trailing" constant="20" id="WfK-gB-dff"/>
+                <constraint firstItem="p1X-Dj-fT0" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="dAF-Dw-uUW"/>
+                <constraint firstItem="p1X-Dj-fT0" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="dSU-o2-dFn"/>
+                <constraint firstItem="el5-a7-C0R" firstAttribute="top" secondItem="1sF-5B-ZQ2" secondAttribute="bottom" constant="32" id="g2t-IM-8su"/>
+                <constraint firstItem="oMF-x1-hBr" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" constant="58" id="gZR-8w-qB8"/>
+                <constraint firstItem="p1X-Dj-fT0" firstAttribute="trailing" secondItem="Q5M-cg-NOt" secondAttribute="trailing" id="h6b-pp-Ib7"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="el5-a7-C0R" secondAttribute="trailing" constant="20" id="m8I-9o-54G"/>
+            </constraints>
+            <point key="canvasLocation" x="131.8840579710145" y="127.90178571428571"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="homeIcon" width="78" height="88"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

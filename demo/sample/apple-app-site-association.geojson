@@ -1,0 +1,15 @@
+{
+    "applinks": {
+        "apps": [],
+        "details": [
+            {
+                "appID": "S4HJG5CE5R.com.txt.zytp",
+                "paths": ["/zytp/","/zytp/workspace/*"]
+            },
+            {
+                "appID": "S4HJG5CE5R.com.txt.sl",
+                "paths": ["/sl/", "/sl/*" ]
+            }
+        ]
+    }
+}

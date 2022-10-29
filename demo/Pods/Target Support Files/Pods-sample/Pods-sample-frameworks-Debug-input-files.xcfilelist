@@ -1,0 +1,11 @@
+${PODS_ROOT}/Target Support Files/Pods-sample/Pods-sample-frameworks.sh
+${BUILT_PRODUCTS_DIR}/CocoaLumberjack/CocoaLumberjack.framework
+${BUILT_PRODUCTS_DIR}/DoraemonKit/DoraemonKit.framework
+${PODS_ROOT}/DoraemonKit/iOS/DoraemonKit/Framework/DoraemonLoadAnalyze.framework
+${BUILT_PRODUCTS_DIR}/FBRetainCycleDetector/FBRetainCycleDetector.framework
+${BUILT_PRODUCTS_DIR}/FMDB/FMDB.framework
+${BUILT_PRODUCTS_DIR}/GCDWebServer/GCDWebServer.framework
+${BUILT_PRODUCTS_DIR}/SocketRocket/SocketRocket.framework
+${BUILT_PRODUCTS_DIR}/WXDevtool/WXDevtool.framework
+${BUILT_PRODUCTS_DIR}/WeexSDK/WeexSDK.framework
+${BUILT_PRODUCTS_DIR}/YYDebugDatabase/YYDebugDatabase.framework

@@ -1,0 +1,6 @@
+framework module TXTWhiteBoard {
+  umbrella header "TXTWhiteBoard.h"
+
+  export *
+  module * { export * }
+}
