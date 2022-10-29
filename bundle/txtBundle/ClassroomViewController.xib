@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ClassroomViewController">
+            <connections>
+                <outlet property="backview_firstview" destination="MAd-bP-BdU" id="eH2-tc-MBW"/>
+                <outlet property="boardViewContainer" destination="Xfw-B2-gQc" id="MhO-ex-bKG"/>
+                <outlet property="drawBackView" destination="7oz-ND-PQ3" id="Aeq-2X-JS7"/>
+                <outlet property="muteButton" destination="8mI-zV-heF" id="AbS-Gd-UCc"/>
+                <outlet property="pptView" destination="vzC-DI-BRH" id="POq-Oh-VMZ"/>
+                <outlet property="renderViewContainer" destination="Uk8-xQ-wSX" id="6Ur-ii-QLo"/>
+                <outlet property="shareFileButton" destination="bXe-wj-nPy" id="lul-xy-Tle"/>
+                <outlet property="shareSceneButton" destination="GfI-dD-yH5" id="xIe-QZ-mJD"/>
+                <outlet property="switchCaremaButton" destination="rZf-tD-7Sa" id="dQg-6Q-EXW"/>
+                <outlet property="videoButton" destination="jMe-K1-qv4" id="GYm-aK-YXL"/>
+                <outlet property="view" destination="zIe-GK-Lxm" id="x73-dd-pTx"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="zIe-GK-Lxm">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MAd-bP-BdU">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Uk8-xQ-wSX">
+                    <rect key="frame" x="0.0" y="8" width="375" height="125"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="width" secondItem="Uk8-xQ-wSX" secondAttribute="height" multiplier="3" id="bne-Ty-jX6"/>
+                    </constraints>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vzC-DI-BRH">
+                    <rect key="frame" x="0.0" y="425" width="375" height="76"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="76" id="xaA-hR-Zlg"/>
+                    </constraints>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7oz-ND-PQ3">
+                    <rect key="frame" x="0.0" y="362" width="375" height="63"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="63" id="uJb-JT-Nd3"/>
+                    </constraints>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ETc-83-Gvh">
+                    <rect key="frame" x="0.0" y="577" width="375" height="90"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jMe-K1-qv4">
+                            <rect key="frame" x="0.0" y="0.0" width="75" height="90"/>
+                            <state key="normal" image="video_unselect.png"/>
+                            <connections>
+                                <action selector="closeVideo:" destination="-1" eventType="touchUpInside" id="31P-yg-Gj8"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8mI-zV-heF">
+                            <rect key="frame" x="75" y="0.0" width="75" height="90"/>
+                            <state key="normal" image="mute_unselect.png"/>
+                            <connections>
+                                <action selector="muteAudio:" destination="-1" eventType="touchUpInside" id="sFv-Xi-PbR"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rZf-tD-7Sa">
+                            <rect key="frame" x="150" y="0.0" width="75" height="90"/>
+                            <state key="normal" image="switchCamera_select.png"/>
+                            <connections>
+                                <action selector="changeCamera:" destination="-1" eventType="touchUpInside" id="xVF-GM-y2V"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bXe-wj-nPy">
+                            <rect key="frame" x="225" y="0.0" width="75" height="90"/>
+                            <state key="normal" image="fileShare_unselect.png"/>
+                            <connections>
+                                <action selector="endShare:" destination="-1" eventType="touchUpInside" id="1hr-OT-kJv"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GfI-dD-yH5">
+                            <rect key="frame" x="300" y="0.0" width="75" height="90"/>
+                            <state key="normal" image="projectionScreen_unselect.png"/>
+                            <connections>
+                                <action selector="shareScene:" destination="-1" eventType="touchUpInside" id="mrQ-6O-DcT"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="bottom" secondItem="jMe-K1-qv4" secondAttribute="bottom" id="2Rg-Wc-u6O"/>
+                        <constraint firstAttribute="bottom" secondItem="8mI-zV-heF" secondAttribute="bottom" id="2Sp-AP-hm3"/>
+                        <constraint firstItem="bXe-wj-nPy" firstAttribute="width" secondItem="rZf-tD-7Sa" secondAttribute="width" id="3wP-H7-yq1"/>
+                        <constraint firstItem="8mI-zV-heF" firstAttribute="top" secondItem="ETc-83-Gvh" secondAttribute="top" id="5IJ-xa-itu"/>
+                        <constraint firstItem="GfI-dD-yH5" firstAttribute="top" secondItem="ETc-83-Gvh" secondAttribute="top" id="7aK-Gp-tg1"/>
+                        <constraint firstItem="bXe-wj-nPy" firstAttribute="leading" secondItem="rZf-tD-7Sa" secondAttribute="trailing" id="7hL-gW-Fgx"/>
+                        <constraint firstItem="jMe-K1-qv4" firstAttribute="leading" secondItem="ETc-83-Gvh" secondAttribute="leading" id="AuM-Mn-6Va"/>
+                        <constraint firstAttribute="bottom" secondItem="bXe-wj-nPy" secondAttribute="bottom" id="B3h-CX-Bz4"/>
+                        <constraint firstItem="GfI-dD-yH5" firstAttribute="leading" secondItem="bXe-wj-nPy" secondAttribute="trailing" id="BuA-Ux-Hwm"/>
+                        <constraint firstItem="rZf-tD-7Sa" firstAttribute="top" secondItem="ETc-83-Gvh" secondAttribute="top" id="Eqz-Ur-JWT"/>
+                        <constraint firstItem="jMe-K1-qv4" firstAttribute="width" secondItem="ETc-83-Gvh" secondAttribute="width" multiplier="0.2" id="UH5-O5-JR9"/>
+                        <constraint firstAttribute="bottom" secondItem="rZf-tD-7Sa" secondAttribute="bottom" id="ayC-dV-RHu"/>
+                        <constraint firstItem="rZf-tD-7Sa" firstAttribute="width" secondItem="8mI-zV-heF" secondAttribute="width" id="bXa-fj-zcM"/>
+                        <constraint firstAttribute="bottom" secondItem="GfI-dD-yH5" secondAttribute="bottom" id="cvn-Fm-oKi"/>
+                        <constraint firstItem="8mI-zV-heF" firstAttribute="leading" secondItem="jMe-K1-qv4" secondAttribute="trailing" id="fow-lf-uD9"/>
+                        <constraint firstItem="bXe-wj-nPy" firstAttribute="top" secondItem="ETc-83-Gvh" secondAttribute="top" id="if8-ir-ByL"/>
+                        <constraint firstItem="8mI-zV-heF" firstAttribute="width" secondItem="jMe-K1-qv4" secondAttribute="width" id="oG0-mf-Yep"/>
+                        <constraint firstItem="jMe-K1-qv4" firstAttribute="top" secondItem="ETc-83-Gvh" secondAttribute="top" id="oe7-PU-d1U"/>
+                        <constraint firstAttribute="trailing" secondItem="GfI-dD-yH5" secondAttribute="trailing" id="pZL-9y-jyb"/>
+                        <constraint firstAttribute="height" constant="90" id="qee-fz-fgN"/>
+                        <constraint firstItem="rZf-tD-7Sa" firstAttribute="leading" secondItem="8mI-zV-heF" secondAttribute="trailing" id="tzU-mM-HC9"/>
+                    </constraints>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xfw-B2-gQc">
+                    <rect key="frame" x="0.0" y="141" width="375" height="211"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="width" secondItem="Xfw-B2-gQc" secondAttribute="height" multiplier="16:9" id="i1W-cD-v5l"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="ETc-83-Gvh" firstAttribute="leading" secondItem="4H9-wT-eeS" secondAttribute="leading" id="0ES-I2-Cxq"/>
+                <constraint firstItem="7oz-ND-PQ3" firstAttribute="top" secondItem="Xfw-B2-gQc" secondAttribute="bottom" constant="10" id="2AP-v3-Vxs"/>
+                <constraint firstItem="Xfw-B2-gQc" firstAttribute="leading" secondItem="4H9-wT-eeS" secondAttribute="leading" id="Bmw-8g-R1T"/>
+                <constraint firstItem="4H9-wT-eeS" firstAttribute="bottom" secondItem="ETc-83-Gvh" secondAttribute="bottom" id="EIY-bC-KKI"/>
+                <constraint firstItem="MAd-bP-BdU" firstAttribute="leading" secondItem="4H9-wT-eeS" secondAttribute="leading" id="HWn-4T-Wsg"/>
+                <constraint firstItem="7oz-ND-PQ3" firstAttribute="leading" secondItem="4H9-wT-eeS" secondAttribute="leading" id="O2B-rX-xvP"/>
+                <constraint firstItem="MAd-bP-BdU" firstAttribute="trailing" secondItem="4H9-wT-eeS" secondAttribute="trailing" id="QpE-FO-ZtI"/>
+                <constraint firstItem="vzC-DI-BRH" firstAttribute="top" secondItem="7oz-ND-PQ3" secondAttribute="bottom" id="X6f-O2-BuH"/>
+                <constraint firstItem="4H9-wT-eeS" firstAttribute="trailing" secondItem="ETc-83-Gvh" secondAttribute="trailing" id="YHA-je-QSV"/>
+                <constraint firstItem="MAd-bP-BdU" firstAttribute="bottom" secondItem="4H9-wT-eeS" secondAttribute="bottom" id="Zeb-ZZ-Gil"/>
+                <constraint firstItem="vzC-DI-BRH" firstAttribute="leading" secondItem="4H9-wT-eeS" secondAttribute="leading" id="buo-xL-edj"/>
+                <constraint firstItem="4H9-wT-eeS" firstAttribute="trailing" secondItem="Uk8-xQ-wSX" secondAttribute="trailing" id="cYa-zm-Gn7"/>
+                <constraint firstItem="Xfw-B2-gQc" firstAttribute="trailing" secondItem="4H9-wT-eeS" secondAttribute="trailing" id="cz2-wG-AeV"/>
+                <constraint firstItem="Uk8-xQ-wSX" firstAttribute="leading" secondItem="4H9-wT-eeS" secondAttribute="leading" id="ffs-cc-Gro"/>
+                <constraint firstItem="Uk8-xQ-wSX" firstAttribute="top" secondItem="zIe-GK-Lxm" secondAttribute="topMargin" constant="8" id="h5W-th-edK"/>
+                <constraint firstItem="Xfw-B2-gQc" firstAttribute="top" secondItem="Uk8-xQ-wSX" secondAttribute="bottom" constant="8" id="nkt-AC-586"/>
+                <constraint firstAttribute="trailing" secondItem="7oz-ND-PQ3" secondAttribute="trailing" id="uMY-ga-59D"/>
+                <constraint firstItem="vzC-DI-BRH" firstAttribute="trailing" secondItem="4H9-wT-eeS" secondAttribute="trailing" id="v6Y-Sl-7IO"/>
+                <constraint firstItem="MAd-bP-BdU" firstAttribute="top" secondItem="4H9-wT-eeS" secondAttribute="top" id="yHG-Qv-0Q4"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="4H9-wT-eeS"/>
+            <point key="canvasLocation" x="1700" y="300"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="fileShare_unselect.png" width="57.5" height="77"/>
+        <image name="mute_unselect.png" width="57" height="77"/>
+        <image name="projectionScreen_unselect.png" width="57.5" height="77"/>
+        <image name="switchCamera_select.png" width="57" height="77"/>
+        <image name="video_unselect.png" width="57.5" height="77"/>
+    </resources>
+</document>

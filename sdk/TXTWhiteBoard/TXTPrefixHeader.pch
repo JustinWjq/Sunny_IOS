@@ -1,0 +1,24 @@
+//
+//  TXTPrefixHeader.pch
+//  TXTWhiteBoard
+//
+//  Created by 洪青文 on 2020/9/4.
+//  Copyright © 2020 洪青文. All rights reserved.
+//
+
+#ifndef TXTPrefixHeader_pch
+#define TXTPrefixHeader_pch
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+#import "TXTDefine.h"
+#import "AFNHTTPSessionManager.h"
+#import "UIAlertUtil.h"
+#import "JMLoadingHUD.h"
+#import "JMToast.h"
+#import "TICManager.h"
+#import "TICConfig.h"
+#import "Masonry.h"
+#import "UIImageView+WebCache.h"
+
+#endif /* TXTPrefixHeader_pch */

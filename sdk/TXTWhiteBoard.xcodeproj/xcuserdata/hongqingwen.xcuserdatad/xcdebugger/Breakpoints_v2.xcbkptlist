@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   uuid = "57A29202-3E3E-469D-84A7-593CED06994D"
+   type = "1"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "9200CE6E-D756-472D-AA65-6821A7B95E8B"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "TXTWhiteBoard/TXTController/ClassroomViewController.m"
+            startingColumnNumber = "30"
+            endingColumnNumber = "69"
+            startingLineNumber = "236"
+            endingLineNumber = "236"
+            landmarkName = "-viewDidLoad"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "D6BABCB3-BB9E-4460-A2B6-B7464FC4B1A7"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "TXTWhiteBoard/TXTChatController/ChatClassRoomViewController.m"
+            startingColumnNumber = "5"
+            endingColumnNumber = "5"
+            startingLineNumber = "265"
+            endingLineNumber = "265"
+            landmarkName = "-initParams"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>

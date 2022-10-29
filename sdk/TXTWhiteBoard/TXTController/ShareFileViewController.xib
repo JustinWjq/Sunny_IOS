@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ShareFileViewController">
+            <connections>
+                <outlet property="fileListTableView" destination="Cor-Kj-dEc" id="mOx-hC-NOt"/>
+                <outlet property="view" destination="XoC-SL-xY7" id="iYW-bx-9dv"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="XoC-SL-xY7">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jz7-wY-72t">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="请选择共享文件" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FZu-X4-stK">
+                            <rect key="frame" x="76.5" y="0.0" width="222" height="50"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="222" id="egR-hG-bf5"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Awo-a9-PJG">
+                            <rect key="frame" x="313.5" y="0.0" width="46.5" height="50"/>
+                            <constraints>
+                                <constraint firstAttribute="width" secondItem="Awo-a9-PJG" secondAttribute="height" multiplier="13:14" id="qT0-jS-alL"/>
+                            </constraints>
+                            <state key="normal" image="close"/>
+                            <connections>
+                                <action selector="closeFileView:" destination="-1" eventType="touchUpInside" id="Q0g-8q-YXW"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="bottom" secondItem="Awo-a9-PJG" secondAttribute="bottom" id="1Jv-xn-0Ae"/>
+                        <constraint firstAttribute="bottom" secondItem="FZu-X4-stK" secondAttribute="bottom" id="5u2-dp-UaM"/>
+                        <constraint firstAttribute="height" constant="50" id="BLb-XY-FC1"/>
+                        <constraint firstItem="FZu-X4-stK" firstAttribute="top" secondItem="jz7-wY-72t" secondAttribute="top" id="BnN-hE-fCX"/>
+                        <constraint firstItem="FZu-X4-stK" firstAttribute="centerX" secondItem="jz7-wY-72t" secondAttribute="centerX" id="Uh0-uI-CS6"/>
+                        <constraint firstAttribute="trailing" secondItem="Awo-a9-PJG" secondAttribute="trailing" constant="15" id="W98-uB-Fdk"/>
+                        <constraint firstItem="Awo-a9-PJG" firstAttribute="top" secondItem="jz7-wY-72t" secondAttribute="top" id="ZDn-Rg-msc"/>
+                    </constraints>
+                </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GUT-jA-Wbk">
+                    <rect key="frame" x="0.0" y="617" width="375" height="50"/>
+                    <color key="backgroundColor" red="0.96862745100000003" green="0.96862745100000003" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="50" id="FFK-Bd-AWB"/>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="fyh-1M-0qH"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <state key="normal" title="上传文件">
+                        <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <color key="titleShadowColor" red="0.96862745100000003" green="0.96862745100000003" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="upLoadPhoto:" destination="-1" eventType="touchUpInside" id="Kbc-SP-S1s"/>
+                    </connections>
+                </button>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Cor-Kj-dEc">
+                    <rect key="frame" x="0.0" y="50" width="375" height="567"/>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                </tableView>
+            </subviews>
+            <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+            <constraints>
+                <constraint firstItem="YGS-Y7-1X8" firstAttribute="bottom" secondItem="GUT-jA-Wbk" secondAttribute="bottom" id="C9l-cZ-vVd"/>
+                <constraint firstItem="GUT-jA-Wbk" firstAttribute="leading" secondItem="YGS-Y7-1X8" secondAttribute="leading" id="F4r-8u-bVW"/>
+                <constraint firstItem="Cor-Kj-dEc" firstAttribute="leading" secondItem="YGS-Y7-1X8" secondAttribute="leading" id="FeL-3V-vi9"/>
+                <constraint firstItem="Cor-Kj-dEc" firstAttribute="top" secondItem="jz7-wY-72t" secondAttribute="bottom" id="GRZ-CF-WmD"/>
+                <constraint firstAttribute="trailing" secondItem="jz7-wY-72t" secondAttribute="trailing" id="OGb-yV-ssj"/>
+                <constraint firstItem="jz7-wY-72t" firstAttribute="top" secondItem="XoC-SL-xY7" secondAttribute="top" id="OV1-Af-Aio"/>
+                <constraint firstAttribute="trailing" secondItem="GUT-jA-Wbk" secondAttribute="trailing" id="Yud-zP-Iw8"/>
+                <constraint firstItem="YGS-Y7-1X8" firstAttribute="trailing" secondItem="Cor-Kj-dEc" secondAttribute="trailing" id="eFE-8u-HDx"/>
+                <constraint firstItem="GUT-jA-Wbk" firstAttribute="top" secondItem="Cor-Kj-dEc" secondAttribute="bottom" id="fMn-4X-Tza"/>
+                <constraint firstItem="jz7-wY-72t" firstAttribute="leading" secondItem="XoC-SL-xY7" secondAttribute="leading" id="kJR-hL-hip"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="YGS-Y7-1X8"/>
+            <point key="canvasLocation" x="2561" y="142"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="close" width="14" height="14"/>
+    </resources>
+</document>
