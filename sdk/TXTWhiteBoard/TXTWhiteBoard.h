@@ -21,5 +21,5 @@ FOUNDATION_EXPORT const unsigned char TXTWhiteBoardVersionString[];
 #import <TXTWhiteBoard/TXTManage.h>
 #import <TXTWhiteBoard/TXTCustomConfig.h>
 
-#import <TXTWhiteBoard/ClassroomViewController.h>
+//#import <TXTWhiteBoard/ClassroomViewController.h>
 

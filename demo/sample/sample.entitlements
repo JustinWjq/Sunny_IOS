@@ -7,8 +7,6 @@
 		<string>applinks:video-sells-test.ikandy.cn</string>
 	</array>
 	<key>com.apple.security.application-groups</key>
-	<array>
-		<string>group.com.tx.txWhiteBoard.ReplaykitUpload</string>
-	</array>
+	<array/>
 </dict>
 </plist>

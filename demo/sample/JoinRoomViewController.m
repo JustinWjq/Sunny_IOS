@@ -13,10 +13,10 @@
 #import "NSString+TXTAES.h"
 #import "BRPickerView.h"
 #import "settingViewController.h"
-#import <TXTWhiteBoard/ClassroomViewController.h>
+//#import <TXTWhiteBoard/ClassroomViewController.h>
 
 #define QFSharedddAppDelegate ((AppDelegate *)[UIApplication sharedApplication].delegate)
-@interface JoinRoomViewController ()<TXTManageDelegate,ClassroomViewControllerDelegate>
+@interface JoinRoomViewController ()<TXTManageDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *roomId;
 @property (weak, nonatomic) IBOutlet UITextField *userName;
 @property (weak, nonatomic) IBOutlet UIButton *smallbtn;
@@ -119,24 +119,24 @@
     
     [[TXTManage sharedInstance] joinRoom:roomId UserId:userName UserName:userName OrgName:orgName SignOrgName:sign EnableVideo:self.config.enableVideo UserHead:@"" BusinessData:nil CallBack:^(int code, NSString * _Nonnull desc) {
         
-        ClassroomViewController *vc = [[ClassroomViewController alloc]init];
-        vc.delegate = self;
-        if (code == 0) {
-            
-        }else if(code == 111111111){
-            
-        }else{
-            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"" message:desc preferredStyle:UIAlertControllerStyleAlert];
-            
-            
-            UIAlertAction *action2 = [UIAlertAction actionWithTitle:@"确认" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                //确认处理
-            }];
-            
-            
-            [alert addAction:action2];
-            [self.navigationController presentViewController:alert animated:YES completion:nil];
-        }
+//        ClassroomViewController *vc = [[ClassroomViewController alloc]init];
+//        vc.delegate = self;
+//        if (code == 0) {
+//
+//        }else if(code == 111111111){
+//
+//        }else{
+//            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"" message:desc preferredStyle:UIAlertControllerStyleAlert];
+//
+//
+//            UIAlertAction *action2 = [UIAlertAction actionWithTitle:@"确认" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+//                //确认处理
+//            }];
+//
+//
+//            [alert addAction:action2];
+//            [self.navigationController presentViewController:alert animated:YES completion:nil];
+//        }
     }];
     
 }
