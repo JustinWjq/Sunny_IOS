@@ -130,7 +130,7 @@ typedef NS_ENUM(NSInteger, TX_Enum_Type_RenderMode) {
 typedef NS_ENUM(NSInteger, TX_Enum_Type_BeautyStyle) {
     BEAUTY_STYLE_SMOOTH        = 0,    ///< 光滑，磨皮程度较高，更适合秀场直播类场景下使用。
     BEAUTY_STYLE_NATURE        = 1,    ///< 自然，磨皮算法会最大限度保留皮肤细节。
-    BEAUTY_STYLE_PITU          = 2,    ///< 由上海优图实验室提供的美颜算法，磨皮效果介于光滑和自然之间，比光滑保留更多皮肤细节，比自然磨皮程度更高。
+    BEAUTY_STYLE_PITU          = 2,    ///< 天天P图版美颜, 需要企业版 SDK 才能支持，普通版本设置此选项无效。
 };
 
 /**
@@ -339,8 +339,6 @@ typedef NS_ENUM(NSInteger, TXCaptureVideoInputSource) {
  */
 #define EVT_MSG                          @"EVT_MSG"                 ///> 事件ID
 #define EVT_TIME                         @"EVT_TIME"                ///> 事件发生的UTC毫秒时间戳
-#define EVT_UTC_TIME                     @"EVT_UTC_TIME"            ///> 事件发生的UTC毫秒时间戳(兼容性)
-#define EVT_BLOCK_DURATION               @"EVT_BLOCK_DURATION"      ///> 卡顿时间（毫秒）
 #define EVT_PARAM1                       @"EVT_PARAM1"              ///> 事件参数1
 #define EVT_PARAM2                       @"EVT_PARAM2"              ///> 事件参数2
 #define EVT_GET_MSG                      @"EVT_GET_MSG"             ///> 消息内容，收到PLAY_EVT_GET_MESSAGE事件时，通过该字段获取消息内容

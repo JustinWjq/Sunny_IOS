@@ -1,6 +1,6 @@
 /*
  * Module:   TRTCCloudDelegate @ TXLiteAVSDK
- *
+ * 
  * Function: 腾讯云视频通话功能的事件回调接口
  *
  */
@@ -59,7 +59,7 @@ NS_ASSUME_NONNULL_BEGIN
  * 2.1 已加入房间的回调
  *
  * 调用 TRTCCloud 中的 enterRoom() 接口执行进房操作后，会收到来自 SDK 的 onEnterRoom(result) 回调：
- *
+ * 
  * - 如果加入成功，result 会是一个正数（result > 0），代表加入房间的时间消耗，单位是毫秒（ms）。
  * - 如果加入失败，result 会是一个负数（result < 0），代表进房失败的错误码。
  * 进房失败的错误码含义请参见[错误码](https://cloud.tencent.com/document/product/647/32257)。
@@ -112,11 +112,6 @@ NS_ASSUME_NONNULL_BEGIN
  * 2.5 结束跨房通话（主播 PK）的结果回调
  */
 - (void)onDisconnectOtherRoom:(TXLiteAVError)errCode errMsg:(nullable NSString *)errMsg;
-
-/**
- * 2.6 切换房间 (switchRoom) 的结果回调
- */
-- (void)onSwitchRoom:(TXLiteAVError)errCode errMsg:(nullable NSString *)errMsg;
 
 /// @}
 
@@ -171,7 +166,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  * 3.4 远端用户是否存在可播放的辅路画面（一般用于屏幕分享）
- *
+ * 
  * @note 显示辅路画面使用的函数是 startRemoteSubStreamView() 而非 startRemoteView()。
  * @param userId 用户标识
  * @param available 屏幕分享是否开启
@@ -188,17 +183,17 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  * 3.6 开始渲染本地或远程用户的首帧画面
- *
+ * 
  * 如果 userId == nil，代表开始渲染本地采集的摄像头画面，需要您先调用 startLocalPreview 触发。
  * 如果 userId != nil，代表开始渲染远程用户的首帧画面，需要您先调用 startRemoteView 触发。
- *
+ * 
  * @note 只有当您调用 startLocalPreivew()、startRemoteView() 或 startRemoteSubStreamView() 之后，才会触发该回调。
- *
+ * 
  * @param userId 本地或远程用户 ID，如果 userId == nil 代表本地，userId != nil 代表远程。
  * @param streamType 视频流类型：摄像头或屏幕分享。
  * @param width  画面宽度
  * @param height 画面高度
- */
+ */ 
 - (void)onFirstVideoFrame:(NSString*)userId streamType:(TRTCVideoStreamType)streamType width:(int)width height:(int)height;
 
 /**
@@ -215,7 +210,7 @@ NS_ASSUME_NONNULL_BEGIN
  * 当 SDK 成功向云端送出第一帧视频数据后，会抛出这个回调事件。
  *
  * @param streamType 视频流类型，主画面、小画面或辅流画面（屏幕分享）
- */
+ */ 
 - (void)onSendFirstLocalVideoFrame: (TRTCVideoStreamType)streamType;
 
 /**
@@ -240,7 +235,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  * 3.11 废弃接口：有主播离开当前房间
  *
- * 该回调接口可以被看作是 onRemoteUserLeaveRoom 的废弃版本，不推荐使用。请使用 onUserVideoAvailable 或 onRemoteUserLeaveRoom 进行替代。
+ * 该回调接口可以被看作是 onRemoteUserLeaveRoom 的废弃版本，不推荐使用。请使用 onUserVideoAvailable 或 onRemoteUserEnterRoom 进行替代。
  *
  * @note 该接口已被废弃，不推荐使用
  *
@@ -362,27 +357,6 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)onDevice:(NSString *)deviceId type:(TRTCMediaDeviceType)deviceType stateChanged:(NSInteger)state;
 
-
-/**
- * 6.6 当前音频采集设备音量变化回调
- *
- * @note 使用 enableAudioVolumeEvaluation（interval>0）开启，（interval==0）关闭
- *
- * @param volume 音量 取值范围0-100
- * @param muted 当前采集音频设备是否被静音：YES 被静音了，NO 未被静音
- */
-- (void)onAudioDeviceCaptureVolumeChanged:(NSInteger)volume muted:(BOOL)muted;
-
-/**
- * 6.7 当前音频播放设备音量变化回调
- *
- * @note 使用 enableAudioVolumeEvaluation（interval>0）开启，（interval==0）关闭
- *
- * @param volume 音量 取值范围0-100
- * @param muted 当前音频播放设备是否被静音：YES 被静音了，NO 未被静音
- */
-- (void)onAudioDevicePlayoutVolumeChanged:(NSInteger)volume muted:(BOOL)muted;
-
 #endif
 
 /// @}
@@ -391,7 +365,7 @@ NS_ASSUME_NONNULL_BEGIN
 /////////////////////////////////////////////////////////////////////////////////
 //
 //                      （七）自定义消息的接收回调
-//
+// 
 /////////////////////////////////////////////////////////////////////////////////
 
 /// @name 自定义消息的接收回调
@@ -414,7 +388,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  * 实时音视频使用 UDP 通道，即使设置了可靠传输（reliable），也无法确保100@%不丢失，只是丢消息概率极低，能满足常规可靠性要求。
  * 在发送端设置了可靠运输（reliable）后，SDK 都会通过此回调通知过去时间段内（通常为5s）传输途中丢失的自定义消息数量统计信息。
- *
+ *   
  * @note  只有在发送端设置了可靠传输（reliable），接收方才能收到消息的丢失回调
  * @param userId 用户标识
  * @param cmdID 命令 ID
@@ -442,7 +416,7 @@ NS_ASSUME_NONNULL_BEGIN
 /////////////////////////////////////////////////////////////////////////////////
 /// @name CDN 旁路转推回调
 /// @{
-    
+	
 /**
  * 8.1 开始向腾讯云的直播 CDN 推流的回调，对应于 TRTCCloud 中的 startPublishing() 接口
  *
@@ -465,7 +439,7 @@ NS_ASSUME_NONNULL_BEGIN
  * 对应于 TRTCCloud 中的 startPublishCDNStream() 接口
  *
  * @note Start 回调如果成功，只能说明转推请求已经成功告知给腾讯云，如果目标 CDN 有异常，还是有可能会转推失败。
- */
+ */	
 - (void)onStartPublishCDNStream:(int)err errMsg:(NSString *)errMsg;
 
 /**
@@ -498,9 +472,8 @@ NS_ASSUME_NONNULL_BEGIN
  *
  * @param effectId 音效 ID
  * @param code 0表示播放正常结束；其他表示异常结束
- * @note 该接口已不再维护，推荐使用  TXAudioEffectManager.startPlayMusic 及相关回调
  */
-- (void)onAudioEffectFinished:(int) effectId code:(int) code DEPRECATED_ATTRIBUTE;
+- (void)onAudioEffectFinished:(int) effectId code:(int) code;
 /// @}
 /////////////////////////////////////////////////////////////////////////////////
 //
@@ -565,55 +538,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /////////////////////////////////////////////////////////////////////////////////
 //
-//                      （十二）第三方美颜回调
-//
-/////////////////////////////////////////////////////////////////////////////////
-
-@protocol TRTCVideoFrameDelegate <NSObject>
-
-@optional
-
-/**
-* 第三方美颜的视频数据回调，需要使用 TRTCCloud 中的 setLocalVideoProcessDelegete 接口进行设置
-*
-* @param srcFrame 用于承载 TRTC 采集到的摄像头画面
-* @param dstFrame 用于接收第三方美颜处理过的视频画面
-* @note 目前仅支持 OpenGL 纹理方案
-*
-* 【使用相芯】
-* 由于相芯的美颜模块会在处理图像的过程中产生一个全新的纹理，因此需要您在回调函数中将 dstFrame.textureId 设置为相芯处理后的新纹理。
-* <pre>
-* uint32_t onProcessVideoFrame(TRTCVideoFrame * _Nonnull)srcFrame dstFrame:(TRTCVideoFrame * _Nonnull)dstFrame
-* {
-*     uint32_t dstTextureId = renderItemWithTexture(srcFrame.textureId, srcFrame.width, srcFrame.height);
-*     dstFrame.textureId = dstTextureId;
-*     return 0;
-* }
-* </pre>
-*
-* 【其他方案】
-* 如果您使用的第三方美颜模块并不生成新的纹理，而是需要您设置给该模块一个输入纹理和一个输出纹理，则可以考虑如下方案：
-* <pre>
-* uint32_t onProcessVideoFrame(TRTCVideoFrame * _Nonnull)srcFrame dstFrame:(TRTCVideoFrame * _Nonnull)dstFrame
-* {
-*     thirdparty_process(srcFrame.textureId, srcFrame.width, srcFrame.height, dstFrame.textureId);
-*     return 0;
-* }
-* </pre>
-*
-**/
-- (uint32_t)onProcessVideoFrame:(TRTCVideoFrame * _Nonnull)srcFrame dstFrame:(TRTCVideoFrame * _Nonnull)dstFrame;
-
-/**
- * SDK 内部的 OpenGL 环境的销毁通知
- */
-- (void)onGLContextDestory;
-
-@end
-
-/////////////////////////////////////////////////////////////////////////////////
-//
-//                      （十三）音频数据回调
+//                      （十二）音频数据回调
 //
 /////////////////////////////////////////////////////////////////////////////////
 /**
@@ -671,7 +596,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /////////////////////////////////////////////////////////////////////////////////
 //
-//                      （十四）Log 信息回调
+//                      （十三）Log 信息回调
 //
 /////////////////////////////////////////////////////////////////////////////////
 /**

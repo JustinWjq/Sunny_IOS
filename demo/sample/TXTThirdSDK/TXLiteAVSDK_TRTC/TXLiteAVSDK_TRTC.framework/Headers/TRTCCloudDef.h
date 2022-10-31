@@ -17,7 +17,6 @@ typedef NSView TXView;
 typedef NSImage TXImage;
 typedef NSEdgeInsets TXEdgeInsets;
 #endif
-#import "TXDeviceManager.h"
 
 ///@defgroup TRTCCloudDef_ios 关键类型定义
 ///腾讯云视频通话功能的关键类型定义
@@ -140,7 +139,6 @@ typedef NS_ENUM(NSInteger, TRTCVideoRotation) {
 typedef NS_ENUM(NSInteger, TRTCBeautyStyle) {
     TRTCBeautyStyleSmooth    = 0,  ///< 光滑，适用于美女秀场，效果比较明显。
     TRTCBeautyStyleNature    = 1,  ///< 自然，磨皮算法更多地保留了面部细节，主观感受上会更加自然。
-    TRTCBeautyStylePitu      = 2,  ///< 由上海优图实验室提供的美颜算法，磨皮效果介于光滑和自然之间，比光滑保留更多皮肤细节，比自然磨皮程度更高。
 };
 
 /**
@@ -154,7 +152,6 @@ typedef NS_ENUM(NSInteger, TRTCVideoPixelFormat) {
     TRTCVideoPixelFormat_I420       = 1,    ///< YUV420P I420
     TRTCVideoPixelFormat_NV12       = 5,    ///< YUV420SP NV12
     TRTCVideoPixelFormat_32BGRA     = 6,    ///< BGRA8888
-    TRTCVideoPixelFormat_Texture_2D = 7,    ///< Texture
 };
 
 
@@ -169,7 +166,6 @@ typedef NS_ENUM(NSInteger, TRTCVideoBufferType) {
     TRTCVideoBufferType_Unknown         = 0,    ///< 未知
     TRTCVideoBufferType_PixelBuffer     = 1,    ///< 直接使用效率最高，iOS 系统提供了众多 API 获取或处理 PixelBuffer。
     TRTCVideoBufferType_NSData          = 2,    ///< 仅用于自定义渲染，SDK 帮您做了一次 PixelBuffer 到 NSData 的内存拷贝工作，会有一定的性能消耗。
-    TRTCVideoBufferType_Texture         = 3,    ///< 用于自定义渲染的 texture
 };
 
 /**
@@ -177,30 +173,12 @@ typedef NS_ENUM(NSInteger, TRTCVideoBufferType) {
  *
  * iOS 的本地画面提供下列设置模式
  */
-typedef NS_ENUM(NSUInteger, TRTCVideoMirrorType) {
-    TRTCVideoMirrorTypeAuto    = 0,       ///< 前置摄像头镜像，后置摄像头不镜像
-    TRTCVideoMirrorTypeEnable  = 1,       ///< 前后置摄像头画面均镜像
-    TRTCVideoMirrorTypeDisable = 2,       ///< 前后置摄像头画面均不镜像
+typedef NS_ENUM(NSUInteger, TRTCLocalVideoMirrorType) {
+    TRTCLocalVideoMirrorType_Auto       = 0,       ///< 前置摄像头镜像，后置摄像头不镜像
+    TRTCLocalVideoMirrorType_Enable     = 1,       ///< 前后置摄像头画面均镜像
+    TRTCLocalVideoMirrorType_Disable    = 2,       ///< 前后置摄像头画面均不镜像
 };
 
-/**
- * 1.11 视频渲染设置
- */
-@interface TRTCRenderParams : NSObject
-
-/// 【字段含义】画面朝向
-/// 【推荐取值】支持90、180以及270旋转角度，默认值：TRTCVideoRotation_0
-@property (nonatomic) TRTCVideoRotation rotation;
-
-/// 【字段含义】画面填充模式
-/// 【推荐取值】填充（画面可能会被拉伸裁剪）或适应（画面可能会有黑边），默认值：TRTCVideoFillMode_Fill
-@property (nonatomic) TRTCVideoFillMode fillMode;
-
-/// 【字段含义】画面镜像模式
-/// 【推荐取值】默认值：TRTCVideoMirrorType_Auto
-@property (nonatomic) TRTCVideoMirrorType mirrorType;
-
-@end
 /////////////////////////////////////////////////////////////////////////////////
 //
 //                    【（二）网络相关枚举值定义】
@@ -433,6 +411,25 @@ typedef NS_ENUM(NSInteger, TRTCGSensorMode) {
 
 #if TARGET_OS_MAC && !TARGET_OS_IPHONE
 #pragma mark -
+/**
+ * 4.3 设备类型（仅 Mac）
+ *
+ * 在 Mac 上，每一种类型的设备都可能有多个，TRTC SDK 的 Mac 版本提供了一系列函数用来操作这些设备。
+ */
+typedef NS_ENUM(NSInteger, TRTCMediaDeviceType) {
+    TRTCMediaDeviceTypeUnknown      =   -1,  ///< 未定义
+	
+    TRTCMediaDeviceTypeAudioInput   =    0,  ///< 麦克风
+    TRTCMediaDeviceTypeAudioOutput  =    1,  ///< 扬声器或听筒
+    TRTCMediaDeviceTypeVideoCamera  =    2,  ///< 摄像头
+
+    TRTCMediaDeviceTypeVideoWindow  =    3,  ///< 某个窗口（用于屏幕分享）
+    TRTCMediaDeviceTypeVideoScreen  =    4,  ///< 整个屏幕（用于屏幕分享）
+};
+#endif
+
+#if TARGET_OS_MAC && !TARGET_OS_IPHONE
+#pragma mark -
 
 /**
  * 4.4 屏幕分享目标类型（仅 Mac）
@@ -502,7 +499,7 @@ typedef NS_ENUM(NSInteger, TRTCTranscodingConfigMode) {
 /** 
  * 5.1 进房相关参数
  *
- * 只有该参数填写正确，才能顺利调用 enterRoom 进入 roomId 或者 strRoomId 所指定的音视频房间。
+ * 只有该参数填写正确，才能顺利调用 enterRoom 进入 roomId 所指定的音视频房间。
  */
 @interface TRTCParams : NSObject
 
@@ -518,20 +515,9 @@ typedef NS_ENUM(NSInteger, TRTCTranscodingConfigMode) {
 ///【推荐取值】具体计算方法请参见 [如何计算UserSig](https://cloud.tencent.com/document/product/647/17275)。
 @property (nonatomic, copy, nonnull) NSString* userSig;
 
-///【字段含义】数字房间号码，在同一个房间里的用户（userId）可以彼此看到对方并进行视频通话
+///【字段含义】房间号码 [必填]，在同一个房间内的用户可以看到彼此并进行视频通话。
 ///【推荐取值】取值范围：1 - 4294967294。
-///【特别说明】roomId 与 strRoomId 必填一个，若您选用 strRoomId，则 roomId 需要填写为0。若两者都填，将优先选用 roomId。
-///          请注意，同一个 sdkAppId 互通时，请务必选用同一种房间号码类型，避免影响互通。
 @property (nonatomic, assign) UInt32 roomId;
-
-///【字段含义】字符串房间号码，在同一个房间里的用户（userId）可以彼此看到对方并进行视频通话。
-///【推荐取值】限制长度为64字节。以下为支持的字符集范围（共 89 个字符）:
-///   -大小写英文字母（a-zA-Z）；
-///   -数字（0-9）；
-///   -空格、"!"、"#"、"$"、"%"、"&"、"("、")"、"+"、"-"、":"、";"、"<"、"="、"."、">"、"?"、"@"、"["、"]"、"^"、"_"、" {"、"}"、"|"、"~"、","。
-///【特别说明】roomId 与 strRoomId 必填一个，若您选用 strRoomId，则 roomId 需要填写为0。若两者都填，将优先选用 roomId。
-///          请注意，同一个 sdkAppId 互通时，请务必选用同一种房间号码类型，避免影响互通。
-@property (nonatomic, copy, nonnull) NSString* strRoomId;
 
 ///【字段含义】直播场景下的角色，仅适用于直播场景（TRTCAppSceneLIVE 和 TRTCAppSceneVoiceChatRoom），通话场景下指定无效。
 ///【推荐取值】默认值：主播（TRTCRoleAnchor）
@@ -539,7 +525,7 @@ typedef NS_ENUM(NSInteger, TRTCTranscodingConfigMode) {
 
 ///【字段含义】绑定腾讯云直播 CDN 流 ID[非必填]，设置之后，您就可以在腾讯云直播 CDN 上通过标准直播方案（FLV或HLS）播放该用户的音视频流。
 ///【推荐取值】限制长度为64字节，可以不填写，一种推荐的方案是使用 “sdkappid_roomid_userid_main” 作为 streamid，这样比较好辨认且不会在您的多个应用中发生冲突。
-///【特殊说明】要使用腾讯云直播 CDN，您需要先在[控制台](https://console.cloud.tencent.com/trtc/) 中的功能配置页开启“启用旁路推流”开关。
+///【特殊说明】要使用腾讯云直播 CDN，您需要先在[控制台](https://console.cloud.tencent.com/trtc/) 中的功能配置页开启“启动自动旁路直播”开关。
 ///【参考文档】[CDN 旁路直播](https://cloud.tencent.com/document/product/647/16826)。
 @property (nonatomic, copy, nullable) NSString* streamId;
 
@@ -681,6 +667,24 @@ typedef NS_ENUM(NSInteger, TRTCTranscodingConfigMode) {
 #pragma mark -
 
 /**
+ * 5.6 媒体设备描述
+ *
+ * 在 Mac 上，每一种类型的设备都可能有多个，TRTC SDK 的 Mac 版本提供了一系列函数用来操作这些设备。
+ */
+@interface TRTCMediaDeviceInfo : NSObject
+/// 设备类型
+@property (assign, nonatomic) TRTCMediaDeviceType type;
+/// 设备ID
+@property (copy, nonatomic, nullable) NSString * deviceId;
+/// 设备名称
+@property (copy, nonatomic, nullable) NSString * deviceName;
+@end
+#endif
+
+#if TARGET_OS_MAC && !TARGET_OS_IPHONE
+#pragma mark -
+
+/**
  * 5.7 屏幕分享目标信息（仅 Mac）
  *
  * 如果您要给您的 App 增加屏幕分享功能，一般需要先显示一个窗口选择界面，用户才可以选择希望分享的窗口。
@@ -770,10 +774,6 @@ typedef NS_ENUM(NSInteger, TRTCTranscodingConfigMode) {
 
 ///【字段含义】视频像素的顺时针旋转角度
 @property (nonatomic, assign) TRTCVideoRotation rotation;
-
-///【字段含义】视频纹理ID
-@property (nonatomic, assign) GLuint textureId;
-
 @end
 
 
@@ -948,67 +948,4 @@ typedef NS_ENUM(NSInteger, TRTCTranscodingConfigMode) {
 
 - (_Nonnull instancetype)initWith:(int)effectId path:(NSString * _Nonnull)path;
 @end
-
-#pragma mark -
-/**
- * 5.16 切换房间
- */
-@interface TRTCSwitchRoomConfig : NSObject
-
-///【字段含义】数字房间号码 [选填]，在同一个房间内的用户可以看到彼此并进行视频通话。
-///【推荐取值】取值范围：1 - 4294967294。
-///【特别说明】roomId 和 strRoomId 必须并且只能填一个。若两者都填，则优先选择 roomId。
-@property (nonatomic, assign) UInt32 roomId;
-
-///【字段含义】字符串房间号码 [选填]，在同一个房间内的用户可以看到彼此并进行视频通话。
-///【特别说明】roomId 和 strRoomId 必须并且只能填一个。若两者都填，则优先选择 roomId。
-@property (nonatomic, copy, nullable) NSString *strRoomId;
-
-///【字段含义】用户签名 [选填]，当前 userId 对应的验证签名，相当于登录密码。不填时，SDK 会继续使用旧的 userSig，
-///          但用户必须保证旧的 userSig 仍在有效期内，否则会造成进房失败等后果。
-///【推荐取值】具体计算方法请参见 [如何计算UserSig](https://cloud.tencent.com/document/product/647/17275)。
-@property (nonatomic, copy, nullable) NSString *userSig;
-
-///【字段含义】房间签名 [选填]，当您希望某个房间只能让特定的 userId 进入时，需要使用 privateMapKey 进行权限保护。
-///【推荐取值】仅建议有高级别安全需求的客户使用，更多详情请参见 [进房权限保护](https://cloud.tencent.com/document/product/647/32240)。
-@property (nonatomic, copy, nullable) NSString *privateMapKey;
-
-@end
-
-
-typedef NS_ENUM(NSUInteger, TRTCLocalVideoMirrorType) {
-    TRTCLocalVideoMirrorType_Auto = TRTCVideoMirrorTypeAuto,
-    TRTCLocalVideoMirrorType_Enable = TRTCVideoMirrorTypeEnable,
-    TRTCLocalVideoMirrorType_Disable = TRTCVideoMirrorTypeDisable,
-} __attribute__((deprecated("use TRTCVideoMirrorType instead")));
-
-#if TARGET_OS_MAC && !TARGET_OS_IPHONE
-#pragma mark -
-/**
- * 设备类型（仅 Mac）
- *
- * @deprecated
- * 在 Mac 上，每一种类型的设备都可能有多个，TRTC SDK 的 Mac 版本提供了一系列函数用来操作这些设备。
- */
-typedef NS_ENUM(NSInteger, TRTCMediaDeviceType) {
-    TRTCMediaDeviceTypeUnknown      =   -1,  ///< 未定义
-    
-    TRTCMediaDeviceTypeAudioInput   =    0,  ///< 麦克风
-    TRTCMediaDeviceTypeAudioOutput  =    1,  ///< 扬声器或听筒
-    TRTCMediaDeviceTypeVideoCamera  =    2,  ///< 摄像头
-
-    TRTCMediaDeviceTypeVideoWindow  =    3,  ///< 某个窗口（用于屏幕分享）
-    TRTCMediaDeviceTypeVideoScreen  =    4,  ///< 整个屏幕（用于屏幕分享）
-} __attribute__((deprecated("use TXMediaDeviceType instead")));
-
-/**
- * 媒体设备描述
- *
- * @deprecated
- * 在 Mac 上，每一种类型的设备都可能有多个，TRTC SDK 的 Mac 版本提供了一系列函数用来操作这些设备。
- */
-typedef TXMediaDeviceInfo TRTCMediaDeviceInfo __attribute__((deprecated("use TXMediaDeviceInfo instead")));
-
-#endif
-
 /// @}

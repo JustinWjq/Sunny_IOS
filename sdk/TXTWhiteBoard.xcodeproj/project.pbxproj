@@ -143,6 +143,7 @@
 		311426F125A300AE00AC639A /* UIView+cornerSide.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+cornerSide.h"; sourceTree = "<group>"; };
 		311B596125F9B8630016CD59 /* UIColor+ColorHex.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIColor+ColorHex.h"; sourceTree = "<group>"; };
 		311B596225F9B8630016CD59 /* UIColor+ColorHex.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIColor+ColorHex.m"; sourceTree = "<group>"; };
+		3177FC3A290F79D900F1250C /* TXLiteAVSDK_TRTC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TXLiteAVSDK_TRTC.framework; sourceTree = "<group>"; };
 		318E3F2B251488E90040AB32 /* InviteButtonsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InviteButtonsView.h; sourceTree = "<group>"; };
 		318E3F2C251488E90040AB32 /* InviteButtonsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InviteButtonsView.m; sourceTree = "<group>"; };
 		318E3F2D251488E90040AB32 /* TXTUserModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TXTUserModel.h; sourceTree = "<group>"; };
@@ -287,8 +288,6 @@
 		31CE8CFF29027EFE00FDA57F /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		31F4A4C6260895AF0015B75A /* UINavigationController+Revolve.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+Revolve.h"; sourceTree = "<group>"; };
 		31F4A4C7260895AF0015B75A /* UINavigationController+Revolve.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+Revolve.m"; sourceTree = "<group>"; };
-		31F7A6282590B0BB007DCAF5 /* TXLiteAVSDK_ReplayKitExt.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TXLiteAVSDK_ReplayKitExt.framework; sourceTree = "<group>"; };
-		31F7A6292590B0BB007DCAF5 /* TXLiteAVSDK_TRTC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TXLiteAVSDK_TRTC.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -384,8 +383,7 @@
 		310825A62503588600DF1996 /* TXLiteAVSDK_TRTC */ = {
 			isa = PBXGroup;
 			children = (
-				31F7A6282590B0BB007DCAF5 /* TXLiteAVSDK_ReplayKitExt.framework */,
-				31F7A6292590B0BB007DCAF5 /* TXLiteAVSDK_TRTC.framework */,
+				3177FC3A290F79D900F1250C /* TXLiteAVSDK_TRTC.framework */,
 			);
 			path = TXLiteAVSDK_TRTC;
 			sourceTree = "<group>";
@@ -1043,7 +1041,7 @@
 				MARKETING_VERSION = 1.0.0;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_BUNDLE_IDENTIFIER = com.tx.txWhiteBoardSample11;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tx.txWhiteBoardSample;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
@@ -1099,7 +1097,7 @@
 				MARKETING_VERSION = 1.0.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_BUNDLE_IDENTIFIER = com.tx.txWhiteBoardSample11;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tx.txWhiteBoardSample;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";

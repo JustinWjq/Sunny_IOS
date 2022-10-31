@@ -198,12 +198,14 @@ typedef NS_ENUM(NSInteger, TX_Enum_PlayType) {
  */
 - (void)setRenderMode:(TX_Enum_Type_RenderMode)renderMode;
 
+#if TARGET_OS_IPHONE
 /**
  * 3.3 截屏
  *
  * @param snapshotCompletionBlock 通过回调返回当前图像
  */
 - (void)snapshot:(void (^)(TXImage *))snapshotCompletionBlock;
+#endif
 
 /// @}
 

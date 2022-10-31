@@ -45,9 +45,7 @@ typedef NS_ENUM(NSInteger, TXVoiceReverbType);
 /**
  * 1.2 设置耳返音量
  *
- * @param volume 音量大小，100为原始音量，范围是：[0 ~ 150]，默认值为100
- *
- * @note  如果要将 volume 设置为大于100的数值，需要进行特殊配置，请联系技术支持。
+ * @param volume 音量大小，取值0 - 100，默认值为100
  */
 - (void)setVoiceEarMonitorVolume:(NSInteger)volume;
 
@@ -64,9 +62,7 @@ typedef NS_ENUM(NSInteger, TXVoiceReverbType);
 /**
  * 1.5 设置麦克风采集人声的音量
  *
- * @param volume 音量大小，100为原始音量，范围是：[0 ~ 150]，默认值为100
- *
- * @note  如果要将 volume 设置为大于100的数值，需要进行特殊配置，请联系技术支持。
+ * @param volume 音量大小，100为正常音量，范围是：[0 ~ 100] 之间的整数
  */
 - (void)setVoiceVolume:(NSInteger)volume;
 
@@ -122,9 +118,7 @@ typedef NS_ENUM(NSInteger, TXVoiceReverbType);
  * 2.5 设置背景音乐的远端音量大小，即主播可以通过此接口设置远端观众能听到的背景音乐的音量大小。
  *
  * @param id     音乐 ID
- * @param volume 音量大小，100为原始音量，范围是：[0 ~ 150]，默认值为100
- *
- * @note  如果要将 volume 设置为大于100的数值，需要进行特殊配置，请联系技术支持。
+ * @param volume 音量大小，100为正常音量，取值范围为0 - 100；默认值：100
  */
 - (void)setMusicPublishVolume:(int32_t)id volume:(NSInteger)volume;
 
@@ -132,18 +126,14 @@ typedef NS_ENUM(NSInteger, TXVoiceReverbType);
  * 2.6 设置背景音乐的本地音量大小，即主播可以通过此接口设置主播自己本地的背景音乐的音量大小。
  *
  * @param id     音乐 ID
- * @param volume 音量大小，100为原始音量，范围是：[0 ~ 150]，默认值为100
- *
- * @note  如果要将 volume 设置为大于100的数值，需要进行特殊配置，请联系技术支持。
+ * @param volume 音量大小，100为正常音量，取值范围为0 - 100；默认值：100
  */
 - (void)setMusicPlayoutVolume:(int32_t)id volume:(NSInteger)volume;
 
 /**
  * 2.7 设置全局背景音乐的本地和远端音量的大小
  *
- * @param volume 音量大小，100为原始音量，范围是：[0 ~ 150]，默认值为100
- *
- * @note  如果要将 volume 设置为大于100的数值，需要进行特殊配置，请联系技术支持。
+ * @param volume 音量大小，100为正常音量，取值范围为0 - 100；默认值：100
  */
 - (void)setAllMusicVolume:(NSInteger)volume;
 

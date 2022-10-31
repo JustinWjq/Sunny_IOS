@@ -69,21 +69,8 @@
 ///播放时延（ms）
 @property (nonatomic, assign) uint32_t  jitterBufferDelay;
 
-/// 音频播放卡顿累计时长（ms）
-@property (nonatomic, assign) uint32_t  audioTotalBlockTime;
-
-/// 音频播放卡顿率，音频卡顿的累计时长占音频总播放时长的百分比 (%)
-@property (nonatomic, assign) uint32_t  audioBlockRate;
-
-/// 视频播放卡顿累计时长（ms）
-@property (nonatomic, assign) uint32_t  videoTotalBlockTime;
-
-/// 音频播放卡顿率，视频卡顿累计时长占视频总播放时长的百分比（%）
-@property (nonatomic, assign) uint32_t  videoBlockRate;
-
 ///流类型（大画面 | 小画面 | 辅路画面）
 @property (nonatomic, assign) TRTCVideoStreamType  streamType;
-
 @end
 
 

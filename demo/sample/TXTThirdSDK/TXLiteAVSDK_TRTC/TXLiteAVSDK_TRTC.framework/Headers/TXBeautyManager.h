@@ -28,7 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
 typedef NS_ENUM(NSInteger, TXBeautyStyle) {
     TXBeautyStyleSmooth    = 0,  ///< 光滑，适用于美女秀场，效果比较明显。
     TXBeautyStyleNature    = 1,  ///< 自然，磨皮算法更多地保留了面部细节，主观感受上会更加自然。
-    TXBeautyStylePitu      = 2   ///< 由上海优图实验室提供的美颜算法，磨皮效果介于光滑和自然之间，比光滑保留更多皮肤细节，比自然磨皮程度更高。
+    TXBeautyStylePitu      = 2   ///< 企业版美颜算法，仅在 [企业版 SDK](https://cloud.tencent.com/document/product/647/32689#Enterprise) 中生效
 };
 
 /// 美颜及动效参数管理

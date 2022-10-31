@@ -16,7 +16,6 @@
 #import <TXLiteAVSDK_TRTC/TXAudioEffectManager.h>
 #import <TXLiteAVSDK_TRTC/TXAudioRawDataDelegate.h>
 #import <TXLiteAVSDK_TRTC/TXBeautyManager.h>
-#import <TXLiteAVSDK_TRTC/TXDeviceManager.h>
 #import <TXLiteAVSDK_TRTC/TXLiteAVCode.h>
 #import <TXLiteAVSDK_TRTC/TXLiveAudioSessionDelegate.h>
 #import <TXLiteAVSDK_TRTC/TXLiveBase.h>

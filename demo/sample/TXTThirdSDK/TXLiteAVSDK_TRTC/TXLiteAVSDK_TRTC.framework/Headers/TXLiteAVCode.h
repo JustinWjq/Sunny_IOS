@@ -299,12 +299,11 @@ typedef enum TXLiteAVWarning
     WARNING_SW_ENCODER_START_FAIL                   = 1109,     ///<  软编码启动失败
     WARNING_REDUCE_CAPTURE_RESOLUTION               = 1110,     ///<  摄像头采集分辨率被降低，以满足当前帧率和性能最优解。
     WARNING_CAMERA_DEVICE_EMPTY                     = 1111,     ///<  没有检测到可用的摄像头设备
-    WARNING_CAMERA_NOT_AUTHORIZED                   = 1112,     ///<  用户未授权当前应用使用摄像头
     WARNING_MICROPHONE_DEVICE_EMPTY                 = 1201,     ///<  没有检测到可用的麦克风设备
     WARNING_SPEAKER_DEVICE_EMPTY                    = 1202,     ///<  没有检测到可用的扬声器设备
     WARNING_MICROPHONE_NOT_AUTHORIZED               = 1203,     ///<  用户未授权当前应用使用麦克风
-    WARNING_MICROPHONE_DEVICE_ABNORMAL              = 1204,     ///<  音频采集设备不可用（例如被占用或者PC判定无效设备）
-    WARNING_SPEAKER_DEVICE_ABNORMAL                 = 1205,     ///<  音频播放设备不可用（例如被占用或者PC判定无效设备）
+    WARNING_MICROPHONE_DEVICE_ABNORMAL              = 1204,     ///<  音频采集设备不可用（例如被占用）
+    WARNING_SPEAKER_DEVICE_ABNORMAL                 = 1205,     ///<  音频播放设备不可用（例如被占用）
     WARNING_VIDEO_FRAME_DECODE_FAIL                 = 2101,     ///<  当前视频帧解码失败
     WARNING_AUDIO_FRAME_DECODE_FAIL                 = 2102,     ///<  当前音频帧解码失败
     WARNING_VIDEO_PLAY_LAG                          = 2105,     ///<  当前视频播放出现卡顿
