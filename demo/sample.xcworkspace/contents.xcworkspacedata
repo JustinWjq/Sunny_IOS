@@ -4,6 +4,843 @@
    <FileRef
       location = "group:sample.xcodeproj">
    </FileRef>
+   <Group
+      location = "group:sdk"
+      name = "sdk">
+      <FileRef
+         location = "group:TXTWhiteBoard.xcodeproj">
+      </FileRef>
+      <Group
+         location = "group:TXTWhiteBoard"
+         name = "TXTWhiteBoard">
+         <FileRef
+            location = "group:txtBundle.bundle">
+         </FileRef>
+         <FileRef
+            location = "group:AppDelegate.h">
+         </FileRef>
+         <FileRef
+            location = "group:TXTWhiteBoard.h">
+         </FileRef>
+         <Group
+            location = "group:TXTController"
+            name = "TXTController">
+            <FileRef
+               location = "group:ImagesPPTCollectionViewCell.xib">
+            </FileRef>
+            <FileRef
+               location = "group:FileListTableViewCell.xib">
+            </FileRef>
+            <FileRef
+               location = "group:ShareFileViewController.xib">
+            </FileRef>
+            <FileRef
+               location = "group:TXJoinRoomViewController.xib">
+            </FileRef>
+            <FileRef
+               location = "group:ClassroomJoinViewController.xib">
+            </FileRef>
+            <FileRef
+               location = "group:ClassroomViewController.xib">
+            </FileRef>
+         </Group>
+         <Group
+            location = "group:TXTCommon"
+            name = "TXTCommon">
+            <FileRef
+               location = "group:UINavigationController+Revolve.m">
+            </FileRef>
+            <FileRef
+               location = "group:UIAlertUtil.h">
+            </FileRef>
+            <FileRef
+               location = "group:UIColor+ColorHex.m">
+            </FileRef>
+            <FileRef
+               location = "group:JMToast.m">
+            </FileRef>
+            <FileRef
+               location = "group:JMLoadingHUD.h">
+            </FileRef>
+            <FileRef
+               location = "group:ZYSuspensionManager.m">
+            </FileRef>
+            <FileRef
+               location = "group:AFNHTTPSessionManager.m">
+            </FileRef>
+            <FileRef
+               location = "group:TXTManage.m">
+            </FileRef>
+            <FileRef
+               location = "group:UIColor+ColorHex.h">
+            </FileRef>
+            <FileRef
+               location = "group:UIAlertUtil.m">
+            </FileRef>
+            <FileRef
+               location = "group:UINavigationController+Revolve.h">
+            </FileRef>
+            <Group
+               location = "group:PresentView"
+               name = "PresentView">
+               <FileRef
+                  location = "group:QFAlertView.h">
+               </FileRef>
+               <FileRef
+                  location = "group:UIView+QFExtension.m">
+               </FileRef>
+               <FileRef
+                  location = "group:UIView+JKBlockGesture.h">
+               </FileRef>
+               <FileRef
+                  location = "group:UIView+cornerSide.m">
+               </FileRef>
+               <FileRef
+                  location = "group:UIImage+Triangle.m">
+               </FileRef>
+               <FileRef
+                  location = "group:UIButton+Extension.h">
+               </FileRef>
+               <FileRef
+                  location = "group:UIView+JKBlockGesture.m">
+               </FileRef>
+               <FileRef
+                  location = "group:UIView+QFExtension.h">
+               </FileRef>
+               <FileRef
+                  location = "group:QFAlertView.m">
+               </FileRef>
+               <FileRef
+                  location = "group:UIButton+Extension.m">
+               </FileRef>
+               <FileRef
+                  location = "group:UIImage+Triangle.h">
+               </FileRef>
+               <FileRef
+                  location = "group:UIView+cornerSide.h">
+               </FileRef>
+            </Group>
+            <FileRef
+               location = "group:JMLoadingHUD.m">
+            </FileRef>
+            <FileRef
+               location = "group:JMToast.h">
+            </FileRef>
+            <Group
+               location = "group:MBProgressHUD"
+               name = "MBProgressHUD">
+               <FileRef
+                  location = "group:TXTMBProgressHUD.h">
+               </FileRef>
+               <FileRef
+                  location = "group:TXTMBProgressHUD.m">
+               </FileRef>
+            </Group>
+            <FileRef
+               location = "group:TXTManage.h">
+            </FileRef>
+            <FileRef
+               location = "group:AFNHTTPSessionManager.h">
+            </FileRef>
+            <FileRef
+               location = "group:ZYSuspensionManager.h">
+            </FileRef>
+         </Group>
+         <FileRef
+            location = "group:TXTPrefixHeader.pch">
+         </FileRef>
+         <FileRef
+            location = "group:AppDelegate.m">
+         </FileRef>
+         <Group
+            location = "group:TXTThirdSDK"
+            name = "TXTThirdSDK">
+            <Group
+               location = "group:TEduBoard_iOS"
+               name = "TEduBoard_iOS">
+               <Group
+                  location = "group:TEduBoard.framework"
+                  name = "TEduBoard.framework">
+                  <FileRef
+                     location = "group:TEduBoard">
+                  </FileRef>
+                  <Group
+                     location = "group:Headers"
+                     name = "Headers">
+                     <FileRef
+                        location = "group:TEduBoardController.h">
+                     </FileRef>
+                     <FileRef
+                        location = "group:TEduBoard.h">
+                     </FileRef>
+                     <FileRef
+                        location = "group:TEduBoardDef.h">
+                     </FileRef>
+                  </Group>
+                  <Group
+                     location = "group:Modules"
+                     name = "Modules">
+                     <FileRef
+                        location = "group:module.modulemap">
+                     </FileRef>
+                  </Group>
+                  <FileRef
+                     location = "group:Info.plist">
+                  </FileRef>
+               </Group>
+            </Group>
+            <Group
+               location = "group:TXLiteAVSDK_TRTC"
+               name = "TXLiteAVSDK_TRTC">
+               <Group
+                  location = "group:TXLiteAVSDK_TRTC.framework"
+                  name = "TXLiteAVSDK_TRTC.framework">
+                  <FileRef
+                     location = "group:TXLiteAVSDK_TRTC">
+                  </FileRef>
+                  <Group
+                     location = "group:Headers"
+                     name = "Headers">
+                     <FileRef
+                        location = "group:TXAudioEffectManager.h">
+                     </FileRef>
+                     <FileRef
+                        location = "group:TXLiveBase.h">
+                     </FileRef>
+                     <FileRef
+                        location = "group:TXLiveSDKEventDef.h">
+                     </FileRef>
+                     <FileRef
+                        location = "group:TXLiveRecordListener.h">
+                     </FileRef>
+                     <FileRef
+                        location = "group:TRTCCloud.h">
+                     </FileRef>
+                     <FileRef
+                        location = "group:TRTCCloudDef.h">
+                     </FileRef>
+                     <FileRef
+                        location = "group:TXLivePlayConfig.h">
+                     </FileRef>
+                     <FileRef
+                        location = "group:TXLiveSDKTypeDef.h">
+                     </FileRef>
+                     <FileRef
+                        location = "group:TRTCCloudDelegate.h">
+                     </FileRef>
+                     <FileRef
+                        location = "group:TXLiteAVSDK.h">
+                     </FileRef>
+                     <FileRef
+                        location = "group:TXAudioCustomProcessDelegate.h">
+                     </FileRef>
+                     <FileRef
+                        location = "group:TXLivePlayListener.h">
+                     </FileRef>
+                     <FileRef
+                        location = "group:TXLiteAVCode.h">
+                     </FileRef>
+                     <FileRef
+                        location = "group:TXBeautyManager.h">
+                     </FileRef>
+                     <FileRef
+                        location = "group:TRTCStatistics.h">
+                     </FileRef>
+                     <FileRef
+                        location = "group:TXAudioRawDataDelegate.h">
+                     </FileRef>
+                     <FileRef
+                        location = "group:TXLivePlayer.h">
+                     </FileRef>
+                     <FileRef
+                        location = "group:TXVideoCustomProcessDelegate.h">
+                     </FileRef>
+                     <FileRef
+                        location = "group:TXLiveRecordTypeDef.h">
+                     </FileRef>
+                     <FileRef
+                        location = "group:TXLiveAudioSessionDelegate.h">
+                     </FileRef>
+                  </Group>
+                  <Group
+                     location = "group:Modules"
+                     name = "Modules">
+                     <FileRef
+                        location = "group:module.modulemap">
+                     </FileRef>
+                  </Group>
+                  <FileRef
+                     location = "group:Info.plist">
+                  </FileRef>
+               </Group>
+            </Group>
+            <Group
+               location = "group:Masonry"
+               name = "Masonry">
+               <FileRef
+                  location = "group:LICENSE">
+               </FileRef>
+               <Group
+                  location = "group:Masonry"
+                  name = "Masonry">
+                  <FileRef
+                     location = "group:MASCompositeConstraint.h">
+                  </FileRef>
+                  <FileRef
+                     location = "group:NSLayoutConstraint+MASDebugAdditions.m">
+                  </FileRef>
+                  <FileRef
+                     location = "group:MASConstraint+Private.h">
+                  </FileRef>
+                  <FileRef
+                     location = "group:MASLayoutConstraint.h">
+                  </FileRef>
+                  <FileRef
+                     location = "group:NSArray+MASShorthandAdditions.h">
+                  </FileRef>
+                  <FileRef
+                     location = "group:MASConstraintMaker.h">
+                  </FileRef>
+                  <FileRef
+                     location = "group:View+MASAdditions.h">
+                  </FileRef>
+                  <FileRef
+                     location = "group:NSArray+MASAdditions.h">
+                  </FileRef>
+                  <FileRef
+                     location = "group:MASUtilities.h">
+                  </FileRef>
+                  <FileRef
+                     location = "group:MASViewAttribute.h">
+                  </FileRef>
+                  <FileRef
+                     location = "group:ViewController+MASAdditions.m">
+                  </FileRef>
+                  <FileRef
+                     location = "group:MASViewConstraint.h">
+                  </FileRef>
+                  <FileRef
+                     location = "group:MASConstraint.h">
+                  </FileRef>
+                  <FileRef
+                     location = "group:NSLayoutConstraint+MASDebugAdditions.h">
+                  </FileRef>
+                  <FileRef
+                     location = "group:MASCompositeConstraint.m">
+                  </FileRef>
+                  <FileRef
+                     location = "group:MASConstraintMaker.m">
+                  </FileRef>
+                  <FileRef
+                     location = "group:MASLayoutConstraint.m">
+                  </FileRef>
+                  <FileRef
+                     location = "group:NSArray+MASAdditions.m">
+                  </FileRef>
+                  <FileRef
+                     location = "group:View+MASAdditions.m">
+                  </FileRef>
+                  <FileRef
+                     location = "group:View+MASShorthandAdditions.h">
+                  </FileRef>
+                  <FileRef
+                     location = "group:Masonry.h">
+                  </FileRef>
+                  <FileRef
+                     location = "group:MASConstraint.m">
+                  </FileRef>
+                  <FileRef
+                     location = "group:ViewController+MASAdditions.h">
+                  </FileRef>
+                  <FileRef
+                     location = "group:MASViewConstraint.m">
+                  </FileRef>
+                  <FileRef
+                     location = "group:MASViewAttribute.m">
+                  </FileRef>
+               </Group>
+               <FileRef
+                  location = "group:README.md">
+               </FileRef>
+            </Group>
+            <Group
+               location = "group:TXIMSDK_iOS"
+               name = "TXIMSDK_iOS">
+               <Group
+                  location = "group:ImSDK.framework"
+                  name = "ImSDK.framework">
+                  <FileRef
+                     location = "group:ImSDK">
+                  </FileRef>
+                  <Group
+                     location = "group:Headers"
+                     name = "Headers">
+                     <FileRef
+                        location = "group:V2TIMManager+Group.h">
+                     </FileRef>
+                     <FileRef
+                        location = "group:TIMGroupManager.h">
+                     </FileRef>
+                     <FileRef
+                        location = "group:TIMManager.h">
+                     </FileRef>
+                     <FileRef
+                        location = "group:V2TIMManager+Conversation.h">
+                     </FileRef>
+                     <FileRef
+                        location = "group:TIMManager+MsgExt.h">
+                     </FileRef>
+                     <FileRef
+                        location = "group:TIMCallback.h">
+                     </FileRef>
+                     <FileRef
+                        location = "group:ImSDK.h">
+                     </FileRef>
+                     <FileRef
+                        location = "group:V2TIMManager+Message.h">
+                     </FileRef>
+                     <FileRef
+                        location = "group:TIMMessage.h">
+                     </FileRef>
+                     <FileRef
+                        location = "group:V2TIMManager+Friendship.h">
+                     </FileRef>
+                     <FileRef
+                        location = "group:TIMFriendshipDefine.h">
+                     </FileRef>
+                     <FileRef
+                        location = "group:TIMFriendshipManager.h">
+                     </FileRef>
+                     <FileRef
+                        location = "group:TIMComm.h">
+                     </FileRef>
+                     <FileRef
+                        location = "group:TIMConversation.h">
+                     </FileRef>
+                     <FileRef
+                        location = "group:TIMErrorCode.h">
+                     </FileRef>
+                     <FileRef
+                        location = "group:V2TIMManager+Signaling.h">
+                     </FileRef>
+                     <FileRef
+                        location = "group:V2TIMManager+APNS.h">
+                     </FileRef>
+                     <FileRef
+                        location = "group:TIMConversation+MsgExt.h">
+                     </FileRef>
+                     <FileRef
+                        location = "group:V2TIMManager.h">
+                     </FileRef>
+                  </Group>
+                  <Group
+                     location = "group:Modules"
+                     name = "Modules">
+                     <FileRef
+                        location = "group:module.modulemap">
+                     </FileRef>
+                  </Group>
+                  <FileRef
+                     location = "group:Info.plist">
+                  </FileRef>
+               </Group>
+            </Group>
+            <Group
+               location = "group:UIKit+AFNetworking"
+               name = "UIKit+AFNetworking">
+               <FileRef
+                  location = "group:UIProgressView+AFNetworking.m">
+               </FileRef>
+               <FileRef
+                  location = "group:UIButton+AFNetworking.h">
+               </FileRef>
+               <FileRef
+                  location = "group:UIRefreshControl+AFNetworking.m">
+               </FileRef>
+               <FileRef
+                  location = "group:UIImageView+AFNetworking.h">
+               </FileRef>
+               <FileRef
+                  location = "group:AFImageDownloader.h">
+               </FileRef>
+               <FileRef
+                  location = "group:AFNetworkActivityIndicatorManager.m">
+               </FileRef>
+               <FileRef
+                  location = "group:AFAutoPurgingImageCache.h">
+               </FileRef>
+               <FileRef
+                  location = "group:UIWebView+AFNetworking.h">
+               </FileRef>
+               <FileRef
+                  location = "group:UIActivityIndicatorView+AFNetworking.h">
+               </FileRef>
+               <FileRef
+                  location = "group:UIImage+AFNetworking.h">
+               </FileRef>
+               <FileRef
+                  location = "group:UIProgressView+AFNetworking.h">
+               </FileRef>
+               <FileRef
+                  location = "group:UIImageView+AFNetworking.m">
+               </FileRef>
+               <FileRef
+                  location = "group:UIKit+AFNetworking.h">
+               </FileRef>
+               <FileRef
+                  location = "group:UIRefreshControl+AFNetworking.h">
+               </FileRef>
+               <FileRef
+                  location = "group:UIButton+AFNetworking.m">
+               </FileRef>
+               <FileRef
+                  location = "group:UIActivityIndicatorView+AFNetworking.m">
+               </FileRef>
+               <FileRef
+                  location = "group:UIWebView+AFNetworking.m">
+               </FileRef>
+               <FileRef
+                  location = "group:AFAutoPurgingImageCache.m">
+               </FileRef>
+               <FileRef
+                  location = "group:AFNetworkActivityIndicatorManager.h">
+               </FileRef>
+               <FileRef
+                  location = "group:AFImageDownloader.m">
+               </FileRef>
+            </Group>
+            <Group
+               location = "group:AFNetworking"
+               name = "AFNetworking">
+               <FileRef
+                  location = "group:AFSecurityPolicy.h">
+               </FileRef>
+               <FileRef
+                  location = "group:AFNetworkReachabilityManager.h">
+               </FileRef>
+               <FileRef
+                  location = "group:AFURLSessionManager.h">
+               </FileRef>
+               <FileRef
+                  location = "group:AFURLRequestSerialization.h">
+               </FileRef>
+               <FileRef
+                  location = "group:AFURLResponseSerialization.m">
+               </FileRef>
+               <FileRef
+                  location = "group:&#x692d;&#x5706;-8-&#x62f7;&#x8d1d;-4.png">
+               </FileRef>
+               <FileRef
+                  location = "group:AFHTTPSessionManager.m">
+               </FileRef>
+               <FileRef
+                  location = "group:AFURLResponseSerialization.h">
+               </FileRef>
+               <FileRef
+                  location = "group:AFURLSessionManager.m">
+               </FileRef>
+               <FileRef
+                  location = "group:AFURLRequestSerialization.m">
+               </FileRef>
+               <FileRef
+                  location = "group:AFNetworking.h">
+               </FileRef>
+               <FileRef
+                  location = "group:AFNetworkReachabilityManager.m">
+               </FileRef>
+               <FileRef
+                  location = "group:AFSecurityPolicy.m">
+               </FileRef>
+               <FileRef
+                  location = "group:AFHTTPSessionManager.h">
+               </FileRef>
+            </Group>
+            <Group
+               location = "group:OpenSDK1.8.7.1_NoPay"
+               name = "OpenSDK1.8.7.1_NoPay">
+               <FileRef
+                  location = "group:WXApi.h">
+               </FileRef>
+               <FileRef
+                  location = "group:WXApiObject.h">
+               </FileRef>
+               <FileRef
+                  location = "group:README.txt">
+               </FileRef>
+               <FileRef
+                  location = "group:WechatAuthSDK.h">
+               </FileRef>
+               <FileRef
+                  location = "group:libWeChatSDK.a">
+               </FileRef>
+            </Group>
+            <Group
+               location = "group:SDWebImage"
+               name = "SDWebImage">
+               <FileRef
+                  location = "group:UIImageView+WebCache.h">
+               </FileRef>
+               <FileRef
+                  location = "group:NSData+ImageContentType.h">
+               </FileRef>
+               <FileRef
+                  location = "group:SDWebImageManager.m">
+               </FileRef>
+               <FileRef
+                  location = "group:SDWebImageDecoder.m">
+               </FileRef>
+               <FileRef
+                  location = "group:SDWebImageDownloaderOperation.h">
+               </FileRef>
+               <FileRef
+                  location = "group:UIImageView+HighlightedWebCache.m">
+               </FileRef>
+               <FileRef
+                  location = "group:SDImageCache.h">
+               </FileRef>
+               <FileRef
+                  location = "group:SDWebImageDownloader.m">
+               </FileRef>
+               <FileRef
+                  location = "group:UIImage+GIF.m">
+               </FileRef>
+               <FileRef
+                  location = "group:UIButton+WebCache.h">
+               </FileRef>
+               <FileRef
+                  location = "group:UIImage+MultiFormat.m">
+               </FileRef>
+               <FileRef
+                  location = "group:SDWebImageCompat.m">
+               </FileRef>
+               <FileRef
+                  location = "group:SDWebImagePrefetcher.m">
+               </FileRef>
+               <FileRef
+                  location = "group:UIView+WebCacheOperation.h">
+               </FileRef>
+               <FileRef
+                  location = "group:SDImageCache.m">
+               </FileRef>
+               <FileRef
+                  location = "group:UIImageView+HighlightedWebCache.h">
+               </FileRef>
+               <FileRef
+                  location = "group:SDWebImageDownloaderOperation.m">
+               </FileRef>
+               <FileRef
+                  location = "group:SDWebImageDecoder.h">
+               </FileRef>
+               <FileRef
+                  location = "group:SDWebImageManager.h">
+               </FileRef>
+               <FileRef
+                  location = "group:NSData+ImageContentType.m">
+               </FileRef>
+               <FileRef
+                  location = "group:UIImageView+WebCache.m">
+               </FileRef>
+               <FileRef
+                  location = "group:SDWebImageOperation.h">
+               </FileRef>
+               <FileRef
+                  location = "group:SDWebImageDownloader.h">
+               </FileRef>
+               <FileRef
+                  location = "group:UIView+WebCacheOperation.m">
+               </FileRef>
+               <FileRef
+                  location = "group:SDWebImagePrefetcher.h">
+               </FileRef>
+               <FileRef
+                  location = "group:SDWebImageCompat.h">
+               </FileRef>
+               <FileRef
+                  location = "group:UIImage+MultiFormat.h">
+               </FileRef>
+               <FileRef
+                  location = "group:UIButton+WebCache.m">
+               </FileRef>
+               <FileRef
+                  location = "group:UIImage+GIF.h">
+               </FileRef>
+            </Group>
+         </Group>
+         <Group
+            location = "group:TXTTool"
+            name = "TXTTool">
+            <FileRef
+               location = "group:TXTCommon.h">
+            </FileRef>
+            <FileRef
+               location = "group:TXTCustomConfig.h">
+            </FileRef>
+            <FileRef
+               location = "group:TICConfig.h">
+            </FileRef>
+            <Group
+               location = "group:TIC"
+               name = "TIC">
+               <FileRef
+                  location = "group:TICKeychainWrapper.h">
+               </FileRef>
+               <FileRef
+                  location = "group:TICManager.m">
+               </FileRef>
+               <FileRef
+                  location = "group:TICRenderView.h">
+               </FileRef>
+               <FileRef
+                  location = "group:TICWeakProxy.m">
+               </FileRef>
+               <FileRef
+                  location = "group:TICReachability.h">
+               </FileRef>
+               <FileRef
+                  location = "group:TICDef.m">
+               </FileRef>
+               <FileRef
+                  location = "group:TICReport.m">
+               </FileRef>
+               <FileRef
+                  location = "group:TICDevice.h">
+               </FileRef>
+               <FileRef
+                  location = "group:TICRecorder.h">
+               </FileRef>
+               <Group
+                  location = "group:ios-ntp"
+                  name = "ios-ntp">
+                  <FileRef
+                     location = "group:NetworkClock.h">
+                  </FileRef>
+                  <FileRef
+                     location = "group:NetAssociation.h">
+                  </FileRef>
+                  <FileRef
+                     location = "group:NSDate+NetworkClock.m">
+                  </FileRef>
+                  <FileRef
+                     location = "group:Notes">
+                  </FileRef>
+                  <FileRef
+                     location = "group:ios-ntp.h">
+                  </FileRef>
+                  <FileRef
+                     location = "group:ntp-log.h">
+                  </FileRef>
+                  <FileRef
+                     location = "group:NSDate+NetworkClock.h">
+                  </FileRef>
+                  <FileRef
+                     location = "group:NetAssociation.m">
+                  </FileRef>
+                  <FileRef
+                     location = "group:NetworkClock.m">
+                  </FileRef>
+               </Group>
+               <FileRef
+                  location = "group:TICRecorder.mm">
+               </FileRef>
+               <FileRef
+                  location = "group:TICKeychainWrapper.m">
+               </FileRef>
+               <FileRef
+                  location = "group:TICDef.h">
+               </FileRef>
+               <FileRef
+                  location = "group:TICReachability.m">
+               </FileRef>
+               <FileRef
+                  location = "group:TICManager.h">
+               </FileRef>
+               <FileRef
+                  location = "group:TICWeakProxy.h">
+               </FileRef>
+               <FileRef
+                  location = "group:TICRenderView.m">
+               </FileRef>
+               <FileRef
+                  location = "group:TICDevice.m">
+               </FileRef>
+               <Group
+                  location = "group:CocoaAsyncSocket"
+                  name = "CocoaAsyncSocket">
+                  <FileRef
+                     location = "group:GCDAsyncUdpSocket.m">
+                  </FileRef>
+                  <FileRef
+                     location = "group:GCDAsyncUdpSocket.h">
+                  </FileRef>
+               </Group>
+               <FileRef
+                  location = "group:TICReport.h">
+               </FileRef>
+            </Group>
+            <FileRef
+               location = "group:TXTCustomConfig.m">
+            </FileRef>
+            <FileRef
+               location = "group:TXTCommon.m">
+            </FileRef>
+            <FileRef
+               location = "group:TICConfig.m">
+            </FileRef>
+         </Group>
+         <FileRef
+            location = "group:Info.plist">
+         </FileRef>
+         <Group
+            location = "group:TXTSunnyChatController"
+            name = "TXTSunnyChatController">
+            <Group
+               location = "group:controller"
+               name = "controller">
+               <FileRef
+                  location = "group:SunnyChatViewController.h">
+               </FileRef>
+               <FileRef
+                  location = "group:SunnyChatViewController.m">
+               </FileRef>
+            </Group>
+            <Group
+               location = "group:model"
+               name = "model">
+               <FileRef
+                  location = "group:TXTUserModel.m">
+               </FileRef>
+               <FileRef
+                  location = "group:TXTUserModel.h">
+               </FileRef>
+            </Group>
+            <Group
+               location = "group:view"
+               name = "view">
+               <FileRef
+                  location = "group:bottomButtons.m">
+               </FileRef>
+               <FileRef
+                  location = "group:videoView.m">
+               </FileRef>
+               <FileRef
+                  location = "group:InviteButtonsView.h">
+               </FileRef>
+               <FileRef
+                  location = "group:bottomButtons.h">
+               </FileRef>
+               <FileRef
+                  location = "group:videoView.h">
+               </FileRef>
+               <FileRef
+                  location = "group:InviteButtonsView.m">
+               </FileRef>
+            </Group>
+         </Group>
+         <FileRef
+            location = "group:TXTDefine.h">
+         </FileRef>
+      </Group>
+   </Group>
    <FileRef
       location = "group:Pods/Pods.xcodeproj">
    </FileRef>

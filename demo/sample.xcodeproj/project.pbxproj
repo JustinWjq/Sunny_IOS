@@ -13,7 +13,6 @@
 		313F61FE25C943AE00F61A0D /* JoinRoomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 313F61FC25C943AE00F61A0D /* JoinRoomViewController.m */; };
 		313F61FF25C943AE00F61A0D /* JoinRoomViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 313F61FD25C943AE00F61A0D /* JoinRoomViewController.xib */; };
 		3177FC37290F779900F1250C /* TXLiteAVSDK_TRTC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3177FC36290F779900F1250C /* TXLiteAVSDK_TRTC.framework */; };
-		3177FC39290F77DA00F1250C /* TXTWhiteBoard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3177FC38290F77DA00F1250C /* TXTWhiteBoard.framework */; };
 		319CF56F27158CAF009E5C6D /* ImSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 319CF56D27158C8B009E5C6D /* ImSDK.framework */; };
 		319CF57027158CAF009E5C6D /* ImSDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 319CF56D27158C8B009E5C6D /* ImSDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		31B38B1E250871D700C07740 /* Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 31B38B19250871D700C07740 /* Base64.m */; };
@@ -129,7 +128,6 @@
 		313F61FC25C943AE00F61A0D /* JoinRoomViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JoinRoomViewController.m; sourceTree = "<group>"; };
 		313F61FD25C943AE00F61A0D /* JoinRoomViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = JoinRoomViewController.xib; sourceTree = "<group>"; };
 		3177FC36290F779900F1250C /* TXLiteAVSDK_TRTC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TXLiteAVSDK_TRTC.framework; sourceTree = "<group>"; };
-		3177FC38290F77DA00F1250C /* TXTWhiteBoard.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TXTWhiteBoard.framework; sourceTree = "<group>"; };
 		319CF56D27158C8B009E5C6D /* ImSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ImSDK.framework; sourceTree = "<group>"; };
 		31B38B17250871D700C07740 /* Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Base64.h; sourceTree = "<group>"; };
 		31B38B18250871D700C07740 /* GTMBase64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMBase64.h; sourceTree = "<group>"; };
@@ -298,7 +296,6 @@
 				31C4E38D2531A176003BF24F /* libWeChatSDK.a in Frameworks */,
 				31EA64112711A20B00581C3C /* TEduBoard.framework in Frameworks */,
 				31B5FFDD25021D0A006587C0 /* libc++.tbd in Frameworks */,
-				3177FC39290F77DA00F1250C /* TXTWhiteBoard.framework in Frameworks */,
 				3177FC37290F779900F1250C /* TXLiteAVSDK_TRTC.framework in Frameworks */,
 				97A6B6B3CFDBBA18B2A87996 /* Pods_sample.framework in Frameworks */,
 				319CF56F27158CAF009E5C6D /* ImSDK.framework in Frameworks */,
@@ -413,7 +410,6 @@
 		31B5FC942501D911006587C0 /* sample */ = {
 			isa = PBXGroup;
 			children = (
-				3177FC38290F77DA00F1250C /* TXTWhiteBoard.framework */,
 				F0E16D82290E5EC5003E7EC4 /* txtBundle.bundle */,
 				310826292503ACC800DF1996 /* sample.entitlements */,
 				31C4E3452531A176003BF24F /* TXTThirdSDK */,
@@ -972,10 +968,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = sample/sample.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 5;
-				DEVELOPMENT_TEAM = S4HJG5CE5R;
+				DEVELOPMENT_TEAM = Y2QVHTCL72;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1000,9 +996,9 @@
 				);
 				MARKETING_VERSION = 1.0.0;
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_BUNDLE_IDENTIFIER = com.tx.txWhiteBoard;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tx.txWhiteBoard12;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = trtcDev;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = 1;
 				VALIDATE_WORKSPACE = YES;
 			};
@@ -1014,10 +1010,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = sample/sample.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 5;
-				DEVELOPMENT_TEAM = S4HJG5CE5R;
+				DEVELOPMENT_TEAM = Y2QVHTCL72;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1042,9 +1038,9 @@
 				);
 				MARKETING_VERSION = 1.0.0;
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_BUNDLE_IDENTIFIER = com.tx.txWhiteBoard;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tx.txWhiteBoard12;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = trtcDev;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = 1;
 				VALIDATE_WORKSPACE = YES;
 			};
