@@ -91,6 +91,19 @@
     allNameLabel.textColor = [UIColor whiteColor];
 }
 
+- (void)showVideoView{
+    [self addSubview:self.userModel.render];
+    [self.userModel.render mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(self.mas_top).offset(0);
+        make.left.mas_equalTo(self.mas_left).offset(0);
+        make.right.mas_equalTo(self.mas_right).offset(0);
+        make.bottom.mas_equalTo(self.mas_bottom).offset(0);
+    }];
+    [[[TICManager sharedInstance] getTRTCCloud] setRemoteViewFillMode:self.userModel.render.userId mode:TRTCVideoFillMode_Fill];
+    [[[TICManager sharedInstance] getTRTCCloud] startRemoteView:self.userModel.render.userId view:self.userModel.render];
+//    [self userNameView];
+}
+
 
 
 @end

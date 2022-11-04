@@ -15,6 +15,7 @@
 - (void)bottomShareFileButtonClick;
 - (void)bottomMembersButtonClick;
 - (void)bottomShareSceneButtonClick;
+- (void)bottomMoreActionButtonClick;
 
 @end
 
@@ -25,6 +26,10 @@
 @property (strong, nonatomic) UIButton *txShareFileButton;//共享
 @property (strong, nonatomic) UIButton *txMembersButton;//成员
 @property (strong, nonatomic) UIButton *txShareSceneButton;//录制
+@property (strong, nonatomic) UIButton *txMoreActionButton;//更多
+
+- (void)changeVideoButtonStatus:(BOOL)open;
+- (void)changeAudioButtonStatus:(BOOL)open;
 @end
 
 
