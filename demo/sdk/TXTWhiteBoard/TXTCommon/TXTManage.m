@@ -233,89 +233,89 @@
     }
     
     NSLog(@"startVideo");
-    self.nnwindow =[[UIWindow alloc]initWithFrame:CGRectMake(0, 0, Screen_Width, Screen_Height)];
-    self.nnwindow.windowLevel=UIWindowLevelAlert;
-    SunnyChatViewController *classRoom = [[SunnyChatViewController alloc] init];
-    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:classRoom];
-    [nav.navigationBar setShadowImage:[[UIImage alloc] init]];
-    self.nnwindow.rootViewController = nav;
-    [ZYSuspensionManager saveWindow:self.nnwindow forKey:@"videowindow"];
-    [self.nnwindow makeKeyAndVisible];
+//    self.nnwindow =[[UIWindow alloc]initWithFrame:CGRectMake(0, 0, Screen_Width, Screen_Height)];
+//    self.nnwindow.windowLevel=UIWindowLevelAlert;
+//    SunnyChatViewController *classRoom = [[SunnyChatViewController alloc] init];
+//    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:classRoom];
+//    [nav.navigationBar setShadowImage:[[UIImage alloc] init]];
+//    self.nnwindow.rootViewController = nav;
+//    [ZYSuspensionManager saveWindow:self.nnwindow forKey:@"videowindow"];
+//    [self.nnwindow makeKeyAndVisible];
     
     
-//    if ([agentName isEqualToString:@""] || agentName == nil) {
-//        [[JMToast sharedToast] showDialogWithMsg:@"请输入坐席名"];
-//        return;
-//    }else{
-//        TXUserDefaultsSetObjectforKey(agentName, Agent);
-//    }
-//    [JMLoadingHUD show];
-//    NSMutableDictionary *bodyDic;
-//    if (businessData == nil) {
-//        bodyDic = [NSMutableDictionary dictionary];
-//    }else{
-//        bodyDic = [NSMutableDictionary dictionaryWithDictionary:businessData];
-//    }
-//    [bodyDic setValue:agentName forKey:@"agent"];
-//    [bodyDic setValue:orgName forKey:@"orgAccount"];
-//    [bodyDic setValue:signOrgName forKey:@"sign"];
-//    [bodyDic setValue:userHead forKey:@"userHead"];
-//    NSLog(@"bodyDic == %@", [bodyDic description]);
-////    NSDictionary *bodyDic = @{@"agent":agentName,@"orgAccount":orgName,@"sign":signOrgName};
-//       [[AFNHTTPSessionManager shareInstance] requestURL:ServiceRoom_StartAgent RequestWay:@"POST" Header:nil Body:bodyDic params:nil isFormData:NO success:^(NSError *error, id response) {
-//           NSLog(@"StartAgent = %@",[response description]);
-//           NSString *errCode = [response valueForKey:@"errCode"];
-//           if ([errCode intValue] == 0) {
-//               NSDictionary *result = [response valueForKey:@"result"];
-//               TXUserDefaultsSetObjectforKey([result valueForKey:@"serviceId"],ServiceId);
-//               TXUserDefaultsSetObjectforKey([result valueForKey:@"sdkAppId"],SdkAppId);
-//               TXUserDefaultsSetObjectforKey([result valueForKey:@"roomId"],RoomId);
-//               TXUserDefaultsSetObjectforKey([result valueForKey:@"agentId"],AgentId);
-//               TXUserDefaultsSetObjectforKey([result valueForKey:@"agentSig"],AgentSig);
-//               TXUserDefaultsSetObjectforKey([result valueForKey:@"groupId"],GroupId);
-//               TXUserDefaultsSetObjectforKey([result valueForKey:@"agentName"],AgentName);
-//               TXUserDefaultsSetObjectforKey([result valueForKey:@"inviteNumber"],InviteNumber);
-////               TXUserDefaultsSetObjectforKey([result valueForKey:@"maxRoomUser"],MaxRoomUser);
-//               float maxRoomTime = [[result valueForKey:@"maxRoomTime"] floatValue];
-//               NSInteger hourTime = maxRoomTime / 60 ;
-//               NSString *hourTimeStr = [NSString stringWithFormat:@"%d",hourTime];
-//               TXUserDefaultsSetObjectforKey(hourTimeStr,MaxRoomTime);
-//               NSInteger maxRoomUser = [[result valueForKey:@"maxRoomUser"] intValue];
-//               maxRoomUser = maxRoomUser - 1;
-//               NSString *maxRoomUserstr = [NSString stringWithFormat:@"%d",maxRoomUser];
-//               TXUserDefaultsSetObjectforKey(maxRoomUserstr,MaxRoomUser);
-//
-//               [TICConfig shareInstance].sdkAppId = [result valueForKey:@"sdkAppId"];
-//               [TICConfig shareInstance].userId = [result valueForKey:@"agentId"];
-//               [TICConfig shareInstance].userSig = [result valueForKey:@"agentSig"];
-//               [TICConfig shareInstance].role = @"owner";
-//
-//               [TICConfig shareInstance].enableVideo = enableVideo;
-//
-//               int sdkAppid = [[TICConfig shareInstance].sdkAppId intValue];
-//               [[TICManager sharedInstance] init:sdkAppid callback:^(TICModule module, int code, NSString *desc) {
-//                   if(code == 0){
-//                       if ([TXTCustomConfig sharedInstance].isChat) {
-//                           [self loginSDK:@"1" CallBack:callback];
-//                       }else{
-//                           [self loginSDK:@"0" CallBack:callback];
-//                       }
-//
-//                   }else{
-//                       TICBLOCK_SAFE_RUN(callback,code,desc);
-//                   }
-//               }];
-//
-//           }else{
-//                [JMLoadingHUD hide];
-////               [[JMToast sharedToast] showDialogWithMsg:[response valueForKey:@"errInfo"]];
-//               TICBLOCK_SAFE_RUN(callback,[errCode intValue],[response valueForKey:@"errInfo"]);
-//           }
-//
-//       } failure:^(NSError *error, id response) {
-//            [JMLoadingHUD hide];
-//           [[JMToast sharedToast] showDialogWithMsg:@"网络请求超时"];
-//       }];
+    if ([agentName isEqualToString:@""] || agentName == nil) {
+        [[JMToast sharedToast] showDialogWithMsg:@"请输入坐席名"];
+        return;
+    }else{
+        TXUserDefaultsSetObjectforKey(agentName, Agent);
+    }
+    [JMLoadingHUD show];
+    NSMutableDictionary *bodyDic;
+    if (businessData == nil) {
+        bodyDic = [NSMutableDictionary dictionary];
+    }else{
+        bodyDic = [NSMutableDictionary dictionaryWithDictionary:businessData];
+    }
+    [bodyDic setValue:agentName forKey:@"agent"];
+    [bodyDic setValue:orgName forKey:@"orgAccount"];
+    [bodyDic setValue:signOrgName forKey:@"sign"];
+    [bodyDic setValue:userHead forKey:@"userHead"];
+    NSLog(@"bodyDic == %@", [bodyDic description]);
+//    NSDictionary *bodyDic = @{@"agent":agentName,@"orgAccount":orgName,@"sign":signOrgName};
+       [[AFNHTTPSessionManager shareInstance] requestURL:ServiceRoom_StartAgent RequestWay:@"POST" Header:nil Body:bodyDic params:nil isFormData:NO success:^(NSError *error, id response) {
+           NSLog(@"StartAgent = %@",[response description]);
+           NSString *errCode = [response valueForKey:@"errCode"];
+           if ([errCode intValue] == 0) {
+               NSDictionary *result = [response valueForKey:@"result"];
+               TXUserDefaultsSetObjectforKey([result valueForKey:@"serviceId"],ServiceId);
+               TXUserDefaultsSetObjectforKey([result valueForKey:@"sdkAppId"],SdkAppId);
+               TXUserDefaultsSetObjectforKey([result valueForKey:@"roomId"],RoomId);
+               TXUserDefaultsSetObjectforKey([result valueForKey:@"agentId"],AgentId);
+               TXUserDefaultsSetObjectforKey([result valueForKey:@"agentSig"],AgentSig);
+               TXUserDefaultsSetObjectforKey([result valueForKey:@"groupId"],GroupId);
+               TXUserDefaultsSetObjectforKey([result valueForKey:@"agentName"],AgentName);
+               TXUserDefaultsSetObjectforKey([result valueForKey:@"inviteNumber"],InviteNumber);
+//               TXUserDefaultsSetObjectforKey([result valueForKey:@"maxRoomUser"],MaxRoomUser);
+               float maxRoomTime = [[result valueForKey:@"maxRoomTime"] floatValue];
+               NSInteger hourTime = maxRoomTime / 60 ;
+               NSString *hourTimeStr = [NSString stringWithFormat:@"%d",hourTime];
+               TXUserDefaultsSetObjectforKey(hourTimeStr,MaxRoomTime);
+               NSInteger maxRoomUser = [[result valueForKey:@"maxRoomUser"] intValue];
+               maxRoomUser = maxRoomUser - 1;
+               NSString *maxRoomUserstr = [NSString stringWithFormat:@"%d",maxRoomUser];
+               TXUserDefaultsSetObjectforKey(maxRoomUserstr,MaxRoomUser);
+
+               [TICConfig shareInstance].sdkAppId = [result valueForKey:@"sdkAppId"];
+               [TICConfig shareInstance].userId = [result valueForKey:@"agentId"];
+               [TICConfig shareInstance].userSig = [result valueForKey:@"agentSig"];
+               [TICConfig shareInstance].role = @"owner";
+
+               [TICConfig shareInstance].enableVideo = enableVideo;
+
+               int sdkAppid = [[TICConfig shareInstance].sdkAppId intValue];
+               [[TICManager sharedInstance] init:sdkAppid callback:^(TICModule module, int code, NSString *desc) {
+                   if(code == 0){
+                       if ([TXTCustomConfig sharedInstance].isChat) {
+                           [self loginSDK:@"1" CallBack:callback];
+                       }else{
+                           [self loginSDK:@"0" CallBack:callback];
+                       }
+
+                   }else{
+                       TICBLOCK_SAFE_RUN(callback,code,desc);
+                   }
+               }];
+
+           }else{
+                [JMLoadingHUD hide];
+//               [[JMToast sharedToast] showDialogWithMsg:[response valueForKey:@"errInfo"]];
+               TICBLOCK_SAFE_RUN(callback,[errCode intValue],[response valueForKey:@"errInfo"]);
+           }
+
+       } failure:^(NSError *error, id response) {
+            [JMLoadingHUD hide];
+           [[JMToast sharedToast] showDialogWithMsg:@"网络请求超时"];
+       }];
    
 }
 
@@ -346,7 +346,6 @@
                 NSLog(@"joinClassroom == %d",code);
                 if(code == 0){
                     [JMLoadingHUD hide];
-                    [self startTransCribe];
                     //添加旋转通知
 //                    [[NSNotificationCenter defaultCenter] addObserver:self
 //                                                             selector:@selector(onDeviceOrientationDidChange) name:UIDeviceOrientationDidChangeNotification
@@ -417,22 +416,6 @@
     }
     return YES;
 }
-
-
-- (void)startTransCribe{
-    NSDictionary *dic = @{@"serviceId":TXUserDefaultsGetObjectforKey(ServiceId)};
-    [[AFNHTTPSessionManager shareInstance] requestURL:ServiceRoom_StartRecord RequestWay:@"POST" Header:nil Body:dic params:nil isFormData:NO success:^(NSError *error, id response) {
-        NSString *errCode = [response valueForKey:@"errCode"];
-        if ([errCode intValue] == 0) {
-            NSLog(@"开始录制");
-        }else{
-            NSLog(@"录制错误：%@",[response valueForKey:@"errInfo"]);
-        }
-    } failure:^(NSError *error, id response) {
-        NSLog(@"网络请求超时");
-    }];
-}
-
 
 - (void)setAgentInRoomStatus:(NSString *)agentId UserName:(NSString *)userName AndServiceId:(NSString *)serviceId InviteAccount:(NSString *)inviteAccount AndAction:(NSString *)action OrgName:(NSString *)orgName SignOrgName:(NSString *)signOrgName CallBack:(TXTCallback)callback{
     NSDictionary *dic = @{@"account":agentId,@"userName":userName,@"serviceId":serviceId,@"inviteAccount":inviteAccount,@"action":action,@"orgAccount":orgName,@"sign":signOrgName};
