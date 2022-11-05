@@ -78,6 +78,7 @@
 		31C71B1725C01EA400B91911 /* settingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 31C71B1525C01EA400B91911 /* settingViewController.xib */; };
 		31EA64112711A20B00581C3C /* TEduBoard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 31EA64102711A20B00581C3C /* TEduBoard.framework */; };
 		97A6B6B3CFDBBA18B2A87996 /* Pods_sample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ADD4246CE8C181759F4172DE /* Pods_sample.framework */; };
+		F06CC7C42910AC9B00CA4D6A /* TXTWhiteBoard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F06CC7C32910AC9B00CA4D6A /* TXTWhiteBoard.framework */; };
 		F0E16D83290E5EC5003E7EC4 /* txtBundle.bundle in Resources */ = {isa = PBXBuildFile; fileRef = F0E16D82290E5EC5003E7EC4 /* txtBundle.bundle */; };
 		F0E16DA5290E60B4003E7EC4 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = F0E16D89290E60B4003E7EC4 /* LICENSE */; };
 		F0E16DA6290E60B4003E7EC4 /* NSLayoutConstraint+MASDebugAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = F0E16D8C290E60B4003E7EC4 /* NSLayoutConstraint+MASDebugAdditions.m */; };
@@ -252,6 +253,7 @@
 		31F5120E2631617E00351A25 /* apple-app-site-association.geojson */ = {isa = PBXFileReference; lastKnownFileType = text; path = "apple-app-site-association.geojson"; sourceTree = "<group>"; };
 		79C33F1F238C4074CDECBBCC /* Pods-sample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-sample.debug.xcconfig"; path = "Target Support Files/Pods-sample/Pods-sample.debug.xcconfig"; sourceTree = "<group>"; };
 		ADD4246CE8C181759F4172DE /* Pods_sample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_sample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F06CC7C32910AC9B00CA4D6A /* TXTWhiteBoard.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = TXTWhiteBoard.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F0E16D82290E5EC5003E7EC4 /* txtBundle.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = txtBundle.bundle; sourceTree = "<group>"; };
 		F0E16D89290E60B4003E7EC4 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		F0E16D8B290E60B4003E7EC4 /* MASCompositeConstraint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MASCompositeConstraint.h; sourceTree = "<group>"; };
@@ -288,6 +290,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F06CC7C42910AC9B00CA4D6A /* TXTWhiteBoard.framework in Frameworks */,
 				31C24A9F253556EB00C4D5A8 /* Accelerate.framework in Frameworks */,
 				31C24A9E253556DD00C4D5A8 /* OpenAL.framework in Frameworks */,
 				31C24A9C253556CE00C4D5A8 /* libsqlite3.tbd in Frameworks */,
@@ -444,6 +447,7 @@
 		31B5FE9E2501FC59006587C0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F06CC7C32910AC9B00CA4D6A /* TXTWhiteBoard.framework */,
 				31C24A9D253556DD00C4D5A8 /* OpenAL.framework */,
 				31C24A9B253556CD00C4D5A8 /* libsqlite3.tbd */,
 				31C24A99253556B700C4D5A8 /* libz.tbd */,

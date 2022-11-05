@@ -8,6 +8,7 @@
 
 #import "SunnyChatViewController.h"
 #import "bottomButtons.h"
+#import "TXTChatViewController.h"
 
 @interface SunnyChatViewController ()<bottomButtonsDelegate>
 @property (nonatomic, strong) bottomButtons *bottomToos;
@@ -58,6 +59,11 @@
         make.height.mas_equalTo(80);
     }];
     _bottomToos.delegate = self;
+}
+
+- (void)bottomButtonClick {
+    TXTChatViewController *vc = [[TXTChatViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (bottomButtons *)bottomToos{

@@ -20,5 +20,6 @@
 #import "TICConfig.h"
 #import "Masonry.h"
 #import "UIImageView+WebCache.h"
-
+#import "Extensions.h"
+#import "TXTCommon.h"
 #endif /* TXTPrefixHeader_pch */

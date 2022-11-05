@@ -15,6 +15,14 @@
 //#define NSLog(...)
 //#endif
 
+
+#ifdef DEBUG
+#define QSLog(...) NSLog(@"%s %d \n %@\n\n",__func__,__LINE__,[NSString stringWithFormat:__VA_ARGS__])
+#else
+# define QSLog(s,...);
+#endif
+
+
 // 存储UserDefaults
 #define TXUserDefaultsSetObjectforKey(object, key) { NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults]; [userDefaults setObject:(object) forKey:(key)]; [userDefaults synchronize];}
 
