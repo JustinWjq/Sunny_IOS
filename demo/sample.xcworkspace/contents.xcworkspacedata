@@ -14,72 +14,48 @@
          location = "group:TXTWhiteBoard"
          name = "TXTWhiteBoard">
          <FileRef
-            location = "group:txtBundle.bundle">
-         </FileRef>
-         <FileRef
             location = "group:AppDelegate.h">
          </FileRef>
          <FileRef
-            location = "group:TXTWhiteBoard.h">
+            location = "group:AppDelegate.m">
          </FileRef>
-         <Group
-            location = "group:TXTController"
-            name = "TXTController">
-            <FileRef
-               location = "group:ImagesPPTCollectionViewCell.xib">
-            </FileRef>
-            <FileRef
-               location = "group:FileListTableViewCell.xib">
-            </FileRef>
-            <FileRef
-               location = "group:ShareFileViewController.xib">
-            </FileRef>
-            <FileRef
-               location = "group:TXJoinRoomViewController.xib">
-            </FileRef>
-            <FileRef
-               location = "group:ClassroomJoinViewController.xib">
-            </FileRef>
-            <FileRef
-               location = "group:ClassroomViewController.xib">
-            </FileRef>
-         </Group>
+         <FileRef
+            location = "group:Info.plist">
+         </FileRef>
+         <FileRef
+            location = "group:txtBundle.bundle">
+         </FileRef>
          <Group
             location = "group:TXTCommon"
             name = "TXTCommon">
             <FileRef
-               location = "group:UINavigationController+Revolve.m">
-            </FileRef>
-            <FileRef
-               location = "group:UIAlertUtil.h">
-            </FileRef>
-            <FileRef
-               location = "group:UIColor+ColorHex.m">
-            </FileRef>
-            <FileRef
-               location = "group:JMToast.m">
-            </FileRef>
-            <FileRef
-               location = "group:JMLoadingHUD.h">
-            </FileRef>
-            <FileRef
-               location = "group:ZYSuspensionManager.m">
+               location = "group:AFNHTTPSessionManager.h">
             </FileRef>
             <FileRef
                location = "group:AFNHTTPSessionManager.m">
             </FileRef>
             <FileRef
-               location = "group:TXTManage.m">
+               location = "group:JMLoadingHUD.h">
             </FileRef>
             <FileRef
-               location = "group:UIColor+ColorHex.h">
+               location = "group:JMLoadingHUD.m">
             </FileRef>
             <FileRef
-               location = "group:UIAlertUtil.m">
+               location = "group:JMToast.h">
             </FileRef>
             <FileRef
-               location = "group:UINavigationController+Revolve.h">
+               location = "group:JMToast.m">
             </FileRef>
+            <Group
+               location = "group:MBProgressHUD"
+               name = "MBProgressHUD">
+               <FileRef
+                  location = "group:TXTMBProgressHUD.h">
+               </FileRef>
+               <FileRef
+                  location = "group:TXTMBProgressHUD.m">
+               </FileRef>
+            </Group>
             <Group
                location = "group:PresentView"
                name = "PresentView">
@@ -121,37 +97,124 @@
                </FileRef>
             </Group>
             <FileRef
-               location = "group:JMLoadingHUD.m">
-            </FileRef>
-            <FileRef
-               location = "group:JMToast.h">
-            </FileRef>
-            <Group
-               location = "group:MBProgressHUD"
-               name = "MBProgressHUD">
-               <FileRef
-                  location = "group:TXTMBProgressHUD.h">
-               </FileRef>
-               <FileRef
-                  location = "group:TXTMBProgressHUD.m">
-               </FileRef>
-            </Group>
-            <FileRef
                location = "group:TXTManage.h">
             </FileRef>
             <FileRef
-               location = "group:AFNHTTPSessionManager.h">
+               location = "group:TXTManage.m">
+            </FileRef>
+            <FileRef
+               location = "group:UIAlertUtil.h">
+            </FileRef>
+            <FileRef
+               location = "group:UIAlertUtil.m">
+            </FileRef>
+            <FileRef
+               location = "group:UIColor+ColorHex.h">
+            </FileRef>
+            <FileRef
+               location = "group:UIColor+ColorHex.m">
+            </FileRef>
+            <FileRef
+               location = "group:UINavigationController+Revolve.h">
+            </FileRef>
+            <FileRef
+               location = "group:UINavigationController+Revolve.m">
             </FileRef>
             <FileRef
                location = "group:ZYSuspensionManager.h">
             </FileRef>
+            <FileRef
+               location = "group:ZYSuspensionManager.m">
+            </FileRef>
+            <FileRef
+               location = "group:UIBarButtonItem+SXCreate.h">
+            </FileRef>
+            <FileRef
+               location = "group:UIBarButtonItem+SXCreate.m">
+            </FileRef>
+            <FileRef
+               location = "group:UINavigationSXFixSpace.h">
+            </FileRef>
+            <FileRef
+               location = "group:UINavigationSXFixSpace.m">
+            </FileRef>
          </Group>
+         <FileRef
+            location = "group:TXTDefine.h">
+         </FileRef>
          <FileRef
             location = "group:TXTPrefixHeader.pch">
          </FileRef>
-         <FileRef
-            location = "group:AppDelegate.m">
-         </FileRef>
+         <Group
+            location = "group:TXTSunnyChatController"
+            name = "TXTSunnyChatController">
+            <Group
+               location = "group:controller"
+               name = "controller">
+               <FileRef
+                  location = "group:SunnyChatViewController.h">
+               </FileRef>
+               <FileRef
+                  location = "group:SunnyChatViewController.m">
+               </FileRef>
+            </Group>
+            <Group
+               location = "group:model"
+               name = "model">
+               <FileRef
+                  location = "group:TXTUserModel.m">
+               </FileRef>
+               <FileRef
+                  location = "group:TXTUserModel.h">
+               </FileRef>
+            </Group>
+            <Group
+               location = "group:view"
+               name = "view">
+               <FileRef
+                  location = "group:bottomButtons.h">
+               </FileRef>
+               <FileRef
+                  location = "group:bottomButtons.m">
+               </FileRef>
+               <FileRef
+                  location = "group:InviteButtonsView.h">
+               </FileRef>
+               <FileRef
+                  location = "group:InviteButtonsView.m">
+               </FileRef>
+               <FileRef
+                  location = "group:renderVideoView.h">
+               </FileRef>
+               <FileRef
+                  location = "group:renderVideoView.m">
+               </FileRef>
+               <FileRef
+                  location = "group:topButtons.h">
+               </FileRef>
+               <FileRef
+                  location = "group:topButtons.m">
+               </FileRef>
+               <FileRef
+                  location = "group:TXTVideoCollectionView.h">
+               </FileRef>
+               <FileRef
+                  location = "group:TXTVideoCollectionView.m">
+               </FileRef>
+               <FileRef
+                  location = "group:TXTVideoCollectionViewCell.h">
+               </FileRef>
+               <FileRef
+                  location = "group:TXTVideoCollectionViewCell.m">
+               </FileRef>
+               <FileRef
+                  location = "group:videoView.h">
+               </FileRef>
+               <FileRef
+                  location = "group:videoView.m">
+               </FileRef>
+            </Group>
+         </Group>
          <Group
             location = "group:TXTThirdSDK"
             name = "TXTThirdSDK">
@@ -788,56 +851,7 @@
             </FileRef>
          </Group>
          <FileRef
-            location = "group:Info.plist">
-         </FileRef>
-         <Group
-            location = "group:TXTSunnyChatController"
-            name = "TXTSunnyChatController">
-            <Group
-               location = "group:controller"
-               name = "controller">
-               <FileRef
-                  location = "group:SunnyChatViewController.h">
-               </FileRef>
-               <FileRef
-                  location = "group:SunnyChatViewController.m">
-               </FileRef>
-            </Group>
-            <Group
-               location = "group:model"
-               name = "model">
-               <FileRef
-                  location = "group:TXTUserModel.m">
-               </FileRef>
-               <FileRef
-                  location = "group:TXTUserModel.h">
-               </FileRef>
-            </Group>
-            <Group
-               location = "group:view"
-               name = "view">
-               <FileRef
-                  location = "group:bottomButtons.m">
-               </FileRef>
-               <FileRef
-                  location = "group:videoView.m">
-               </FileRef>
-               <FileRef
-                  location = "group:InviteButtonsView.h">
-               </FileRef>
-               <FileRef
-                  location = "group:bottomButtons.h">
-               </FileRef>
-               <FileRef
-                  location = "group:videoView.h">
-               </FileRef>
-               <FileRef
-                  location = "group:InviteButtonsView.m">
-               </FileRef>
-            </Group>
-         </Group>
-         <FileRef
-            location = "group:TXTDefine.h">
+            location = "group:TXTWhiteBoard.h">
          </FileRef>
       </Group>
    </Group>

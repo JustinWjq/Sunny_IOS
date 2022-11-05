@@ -23,10 +23,6 @@
 		311426FF25A300AF00AC639A /* UIView+cornerSide.h in Headers */ = {isa = PBXBuildFile; fileRef = 311426F125A300AE00AC639A /* UIView+cornerSide.h */; };
 		311B596325F9B8630016CD59 /* UIColor+ColorHex.h in Headers */ = {isa = PBXBuildFile; fileRef = 311B596125F9B8630016CD59 /* UIColor+ColorHex.h */; };
 		311B596425F9B8630016CD59 /* UIColor+ColorHex.m in Sources */ = {isa = PBXBuildFile; fileRef = 311B596225F9B8630016CD59 /* UIColor+ColorHex.m */; };
-		318E3F2F251488E90040AB32 /* InviteButtonsView.h in Headers */ = {isa = PBXBuildFile; fileRef = 318E3F2B251488E90040AB32 /* InviteButtonsView.h */; };
-		318E3F30251488E90040AB32 /* InviteButtonsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 318E3F2C251488E90040AB32 /* InviteButtonsView.m */; };
-		318E3F31251488E90040AB32 /* TXTUserModel.h in Headers */ = {isa = PBXBuildFile; fileRef = 318E3F2D251488E90040AB32 /* TXTUserModel.h */; };
-		318E3F32251488E90040AB32 /* TXTUserModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 318E3F2E251488E90040AB32 /* TXTUserModel.m */; };
 		31B5FC7F2501D71B006587C0 /* TXTWhiteBoard.h in Headers */ = {isa = PBXBuildFile; fileRef = 31B5FC7D2501D71B006587C0 /* TXTWhiteBoard.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		31B5FD162501DC58006587C0 /* TICConfig.h in Headers */ = {isa = PBXBuildFile; fileRef = 31B5FCB42501DC58006587C0 /* TICConfig.h */; };
 		31B5FD172501DC58006587C0 /* TICKeychainWrapper.h in Headers */ = {isa = PBXBuildFile; fileRef = 31B5FCB62501DC58006587C0 /* TICKeychainWrapper.h */; };
@@ -75,14 +71,30 @@
 		31BE4841257A06E600AD1CEF /* ZYSuspensionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 31BE483F257A06E600AD1CEF /* ZYSuspensionManager.m */; };
 		31BE4842257A06E600AD1CEF /* ZYSuspensionManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 31BE4840257A06E600AD1CEF /* ZYSuspensionManager.h */; };
 		31C1F0BA27228724001AA383 /* TICManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 31C1F0B927228724001AA383 /* TICManager.m */; };
-		31C46AFB2906649F001408B9 /* bottomButtons.h in Headers */ = {isa = PBXBuildFile; fileRef = 31C46AF92906649F001408B9 /* bottomButtons.h */; };
-		31C46AFC2906649F001408B9 /* bottomButtons.m in Sources */ = {isa = PBXBuildFile; fileRef = 31C46AFA2906649F001408B9 /* bottomButtons.m */; };
 		31C8511925B832C800D9EEA5 /* TXTCommon.h in Headers */ = {isa = PBXBuildFile; fileRef = 31C8511725B832C800D9EEA5 /* TXTCommon.h */; };
 		31C8511A25B832C800D9EEA5 /* TXTCommon.m in Sources */ = {isa = PBXBuildFile; fileRef = 31C8511825B832C800D9EEA5 /* TXTCommon.m */; };
-		31CE8CDD29024AE400FDA57F /* SunnyChatViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 31CE8CDB29024AE400FDA57F /* SunnyChatViewController.h */; };
-		31CE8CDE29024AE400FDA57F /* SunnyChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31CE8CDC29024AE400FDA57F /* SunnyChatViewController.m */; };
-		31CE8CE12902794100FDA57F /* videoView.h in Headers */ = {isa = PBXBuildFile; fileRef = 31CE8CDF2902794100FDA57F /* videoView.h */; };
-		31CE8CE22902794100FDA57F /* videoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 31CE8CE02902794100FDA57F /* videoView.m */; };
+		31D45ECA2915270200765B6B /* SunnyChatViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 31D45EB62915270100765B6B /* SunnyChatViewController.h */; };
+		31D45ECB2915270200765B6B /* SunnyChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31D45EB72915270100765B6B /* SunnyChatViewController.m */; };
+		31D45ECC2915270200765B6B /* TXTUserModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 31D45EB92915270100765B6B /* TXTUserModel.m */; };
+		31D45ECD2915270200765B6B /* TXTUserModel.h in Headers */ = {isa = PBXBuildFile; fileRef = 31D45EBA2915270100765B6B /* TXTUserModel.h */; };
+		31D45ECE2915270200765B6B /* bottomButtons.m in Sources */ = {isa = PBXBuildFile; fileRef = 31D45EBC2915270100765B6B /* bottomButtons.m */; };
+		31D45ECF2915270200765B6B /* topButtons.h in Headers */ = {isa = PBXBuildFile; fileRef = 31D45EBD2915270100765B6B /* topButtons.h */; };
+		31D45ED02915270200765B6B /* TXTVideoCollectionViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 31D45EBE2915270100765B6B /* TXTVideoCollectionViewCell.h */; };
+		31D45ED12915270200765B6B /* videoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 31D45EBF2915270100765B6B /* videoView.m */; };
+		31D45ED22915270200765B6B /* InviteButtonsView.h in Headers */ = {isa = PBXBuildFile; fileRef = 31D45EC02915270100765B6B /* InviteButtonsView.h */; };
+		31D45ED32915270200765B6B /* renderVideoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 31D45EC12915270100765B6B /* renderVideoView.m */; };
+		31D45ED42915270200765B6B /* TXTVideoCollectionView.h in Headers */ = {isa = PBXBuildFile; fileRef = 31D45EC22915270100765B6B /* TXTVideoCollectionView.h */; };
+		31D45ED52915270200765B6B /* bottomButtons.h in Headers */ = {isa = PBXBuildFile; fileRef = 31D45EC32915270100765B6B /* bottomButtons.h */; };
+		31D45ED62915270200765B6B /* topButtons.m in Sources */ = {isa = PBXBuildFile; fileRef = 31D45EC42915270100765B6B /* topButtons.m */; };
+		31D45ED72915270200765B6B /* TXTVideoCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 31D45EC52915270100765B6B /* TXTVideoCollectionViewCell.m */; };
+		31D45ED82915270200765B6B /* videoView.h in Headers */ = {isa = PBXBuildFile; fileRef = 31D45EC62915270100765B6B /* videoView.h */; };
+		31D45ED92915270200765B6B /* TXTVideoCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 31D45EC72915270100765B6B /* TXTVideoCollectionView.m */; };
+		31D45EDA2915270200765B6B /* renderVideoView.h in Headers */ = {isa = PBXBuildFile; fileRef = 31D45EC82915270100765B6B /* renderVideoView.h */; };
+		31D45EDB2915270200765B6B /* InviteButtonsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 31D45EC92915270100765B6B /* InviteButtonsView.m */; };
+		31D45EE02915271700765B6B /* UINavigationSXFixSpace.m in Sources */ = {isa = PBXBuildFile; fileRef = 31D45EDC2915271600765B6B /* UINavigationSXFixSpace.m */; };
+		31D45EE12915271700765B6B /* UIBarButtonItem+SXCreate.m in Sources */ = {isa = PBXBuildFile; fileRef = 31D45EDD2915271600765B6B /* UIBarButtonItem+SXCreate.m */; };
+		31D45EE22915271700765B6B /* UINavigationSXFixSpace.h in Headers */ = {isa = PBXBuildFile; fileRef = 31D45EDE2915271600765B6B /* UINavigationSXFixSpace.h */; };
+		31D45EE32915271700765B6B /* UIBarButtonItem+SXCreate.h in Headers */ = {isa = PBXBuildFile; fileRef = 31D45EDF2915271700765B6B /* UIBarButtonItem+SXCreate.h */; };
 		31F4A4C8260895B00015B75A /* UINavigationController+Revolve.h in Headers */ = {isa = PBXBuildFile; fileRef = 31F4A4C6260895AF0015B75A /* UINavigationController+Revolve.h */; };
 		31F4A4C9260895B00015B75A /* UINavigationController+Revolve.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F4A4C7260895AF0015B75A /* UINavigationController+Revolve.m */; };
 		F06CC9B62910E4A300CA4D6A /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = F06CC9832910E4A200CA4D6A /* LICENSE */; };
@@ -298,10 +310,6 @@
 		311B596125F9B8630016CD59 /* UIColor+ColorHex.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIColor+ColorHex.h"; sourceTree = "<group>"; };
 		311B596225F9B8630016CD59 /* UIColor+ColorHex.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIColor+ColorHex.m"; sourceTree = "<group>"; };
 		3177FC3A290F79D900F1250C /* TXLiteAVSDK_TRTC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TXLiteAVSDK_TRTC.framework; sourceTree = "<group>"; };
-		318E3F2B251488E90040AB32 /* InviteButtonsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InviteButtonsView.h; sourceTree = "<group>"; };
-		318E3F2C251488E90040AB32 /* InviteButtonsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InviteButtonsView.m; sourceTree = "<group>"; };
-		318E3F2D251488E90040AB32 /* TXTUserModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TXTUserModel.h; sourceTree = "<group>"; };
-		318E3F2E251488E90040AB32 /* TXTUserModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TXTUserModel.m; sourceTree = "<group>"; };
 		31B043C82907E7420088C1C4 /* txtBundle.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = txtBundle.bundle; sourceTree = "<group>"; };
 		31B5FC7A2501D71B006587C0 /* TXTWhiteBoard.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TXTWhiteBoard.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		31B5FC7D2501D71B006587C0 /* TXTWhiteBoard.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXTWhiteBoard.h; sourceTree = "<group>"; };
@@ -403,16 +411,10 @@
 		31C40B0F25B01F67005CF623 /* UIImage+MultiFormat.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImage+MultiFormat.h"; sourceTree = "<group>"; };
 		31C40B1025B01F67005CF623 /* UIButton+WebCache.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIButton+WebCache.m"; sourceTree = "<group>"; };
 		31C40B1125B01F67005CF623 /* UIImage+GIF.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImage+GIF.h"; sourceTree = "<group>"; };
-		31C46AF92906649F001408B9 /* bottomButtons.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = bottomButtons.h; sourceTree = "<group>"; };
-		31C46AFA2906649F001408B9 /* bottomButtons.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = bottomButtons.m; sourceTree = "<group>"; };
 		31C8511725B832C800D9EEA5 /* TXTCommon.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXTCommon.h; sourceTree = "<group>"; };
 		31C8511825B832C800D9EEA5 /* TXTCommon.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TXTCommon.m; sourceTree = "<group>"; };
 		31C8EE87260DEA3700431E04 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		31C8EE88260DEA3800431E04 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		31CE8CDB29024AE400FDA57F /* SunnyChatViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SunnyChatViewController.h; sourceTree = "<group>"; };
-		31CE8CDC29024AE400FDA57F /* SunnyChatViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SunnyChatViewController.m; sourceTree = "<group>"; };
-		31CE8CDF2902794100FDA57F /* videoView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = videoView.h; sourceTree = "<group>"; };
-		31CE8CE02902794100FDA57F /* videoView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = videoView.m; sourceTree = "<group>"; };
 		31CE8CE429027EFE00FDA57F /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		31CE8CE629027EFE00FDA57F /* MASCompositeConstraint.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MASCompositeConstraint.h; sourceTree = "<group>"; };
 		31CE8CE729027EFE00FDA57F /* NSLayoutConstraint+MASDebugAdditions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSLayoutConstraint+MASDebugAdditions.m"; sourceTree = "<group>"; };
@@ -440,6 +442,28 @@
 		31CE8CFD29027EFE00FDA57F /* MASViewConstraint.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MASViewConstraint.m; sourceTree = "<group>"; };
 		31CE8CFE29027EFE00FDA57F /* MASViewAttribute.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MASViewAttribute.m; sourceTree = "<group>"; };
 		31CE8CFF29027EFE00FDA57F /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		31D45EB62915270100765B6B /* SunnyChatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SunnyChatViewController.h; sourceTree = "<group>"; };
+		31D45EB72915270100765B6B /* SunnyChatViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SunnyChatViewController.m; sourceTree = "<group>"; };
+		31D45EB92915270100765B6B /* TXTUserModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TXTUserModel.m; sourceTree = "<group>"; };
+		31D45EBA2915270100765B6B /* TXTUserModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TXTUserModel.h; sourceTree = "<group>"; };
+		31D45EBC2915270100765B6B /* bottomButtons.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = bottomButtons.m; sourceTree = "<group>"; };
+		31D45EBD2915270100765B6B /* topButtons.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = topButtons.h; sourceTree = "<group>"; };
+		31D45EBE2915270100765B6B /* TXTVideoCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TXTVideoCollectionViewCell.h; sourceTree = "<group>"; };
+		31D45EBF2915270100765B6B /* videoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = videoView.m; sourceTree = "<group>"; };
+		31D45EC02915270100765B6B /* InviteButtonsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InviteButtonsView.h; sourceTree = "<group>"; };
+		31D45EC12915270100765B6B /* renderVideoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = renderVideoView.m; sourceTree = "<group>"; };
+		31D45EC22915270100765B6B /* TXTVideoCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TXTVideoCollectionView.h; sourceTree = "<group>"; };
+		31D45EC32915270100765B6B /* bottomButtons.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bottomButtons.h; sourceTree = "<group>"; };
+		31D45EC42915270100765B6B /* topButtons.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = topButtons.m; sourceTree = "<group>"; };
+		31D45EC52915270100765B6B /* TXTVideoCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TXTVideoCollectionViewCell.m; sourceTree = "<group>"; };
+		31D45EC62915270100765B6B /* videoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = videoView.h; sourceTree = "<group>"; };
+		31D45EC72915270100765B6B /* TXTVideoCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TXTVideoCollectionView.m; sourceTree = "<group>"; };
+		31D45EC82915270100765B6B /* renderVideoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = renderVideoView.h; sourceTree = "<group>"; };
+		31D45EC92915270100765B6B /* InviteButtonsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InviteButtonsView.m; sourceTree = "<group>"; };
+		31D45EDC2915271600765B6B /* UINavigationSXFixSpace.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UINavigationSXFixSpace.m; sourceTree = "<group>"; };
+		31D45EDD2915271600765B6B /* UIBarButtonItem+SXCreate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBarButtonItem+SXCreate.m"; sourceTree = "<group>"; };
+		31D45EDE2915271600765B6B /* UINavigationSXFixSpace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UINavigationSXFixSpace.h; sourceTree = "<group>"; };
+		31D45EDF2915271700765B6B /* UIBarButtonItem+SXCreate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIBarButtonItem+SXCreate.h"; sourceTree = "<group>"; };
 		31F4A4C6260895AF0015B75A /* UINavigationController+Revolve.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+Revolve.h"; sourceTree = "<group>"; };
 		31F4A4C7260895AF0015B75A /* UINavigationController+Revolve.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+Revolve.m"; sourceTree = "<group>"; };
 		F06CC9832910E4A200CA4D6A /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
@@ -611,47 +635,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		31054AA12901474E00553836 /* TXTSunnyChatController */ = {
-			isa = PBXGroup;
-			children = (
-				31054AA22901476F00553836 /* controller */,
-				31054AA42901476F00553836 /* model */,
-				31054AA32901476F00553836 /* view */,
-			);
-			path = TXTSunnyChatController;
-			sourceTree = "<group>";
-		};
-		31054AA22901476F00553836 /* controller */ = {
-			isa = PBXGroup;
-			children = (
-				31CE8CDB29024AE400FDA57F /* SunnyChatViewController.h */,
-				31CE8CDC29024AE400FDA57F /* SunnyChatViewController.m */,
-			);
-			path = controller;
-			sourceTree = "<group>";
-		};
-		31054AA32901476F00553836 /* view */ = {
-			isa = PBXGroup;
-			children = (
-				31CE8CDF2902794100FDA57F /* videoView.h */,
-				31CE8CE02902794100FDA57F /* videoView.m */,
-				31C46AF92906649F001408B9 /* bottomButtons.h */,
-				31C46AFA2906649F001408B9 /* bottomButtons.m */,
-				318E3F2B251488E90040AB32 /* InviteButtonsView.h */,
-				318E3F2C251488E90040AB32 /* InviteButtonsView.m */,
-			);
-			path = view;
-			sourceTree = "<group>";
-		};
-		31054AA42901476F00553836 /* model */ = {
-			isa = PBXGroup;
-			children = (
-				318E3F2D251488E90040AB32 /* TXTUserModel.h */,
-				318E3F2E251488E90040AB32 /* TXTUserModel.m */,
-			);
-			path = model;
-			sourceTree = "<group>";
-		};
 		3108258E2503584E00DF1996 /* TXTThirdSDK */ = {
 			isa = PBXGroup;
 			children = (
@@ -801,8 +784,8 @@
 				31B5FD6A2501DC8A006587C0 /* TXTDefine.h */,
 				31C8EE88260DEA3800431E04 /* AppDelegate.h */,
 				31C8EE87260DEA3700431E04 /* AppDelegate.m */,
+				31D45EB42915270100765B6B /* TXTSunnyChatController */,
 				31B5FD092501DC58006587C0 /* TXTCommon */,
-				31054AA12901474E00553836 /* TXTSunnyChatController */,
 				31B5FCB32501DC58006587C0 /* TXTTool */,
 			);
 			path = TXTWhiteBoard;
@@ -895,6 +878,10 @@
 				311B596225F9B8630016CD59 /* UIColor+ColorHex.m */,
 				31F4A4C6260895AF0015B75A /* UINavigationController+Revolve.h */,
 				31F4A4C7260895AF0015B75A /* UINavigationController+Revolve.m */,
+				31D45EDF2915271700765B6B /* UIBarButtonItem+SXCreate.h */,
+				31D45EDD2915271600765B6B /* UIBarButtonItem+SXCreate.m */,
+				31D45EDE2915271600765B6B /* UINavigationSXFixSpace.h */,
+				31D45EDC2915271600765B6B /* UINavigationSXFixSpace.m */,
 			);
 			path = TXTCommon;
 			sourceTree = "<group>";
@@ -1028,6 +1015,55 @@
 				31CE8CFE29027EFE00FDA57F /* MASViewAttribute.m */,
 			);
 			path = Masonry;
+			sourceTree = "<group>";
+		};
+		31D45EB42915270100765B6B /* TXTSunnyChatController */ = {
+			isa = PBXGroup;
+			children = (
+				31D45EB52915270100765B6B /* controller */,
+				31D45EB82915270100765B6B /* model */,
+				31D45EBB2915270100765B6B /* view */,
+			);
+			path = TXTSunnyChatController;
+			sourceTree = "<group>";
+		};
+		31D45EB52915270100765B6B /* controller */ = {
+			isa = PBXGroup;
+			children = (
+				31D45EB62915270100765B6B /* SunnyChatViewController.h */,
+				31D45EB72915270100765B6B /* SunnyChatViewController.m */,
+			);
+			path = controller;
+			sourceTree = "<group>";
+		};
+		31D45EB82915270100765B6B /* model */ = {
+			isa = PBXGroup;
+			children = (
+				31D45EB92915270100765B6B /* TXTUserModel.m */,
+				31D45EBA2915270100765B6B /* TXTUserModel.h */,
+			);
+			path = model;
+			sourceTree = "<group>";
+		};
+		31D45EBB2915270100765B6B /* view */ = {
+			isa = PBXGroup;
+			children = (
+				31D45EC32915270100765B6B /* bottomButtons.h */,
+				31D45EBC2915270100765B6B /* bottomButtons.m */,
+				31D45EC02915270100765B6B /* InviteButtonsView.h */,
+				31D45EC92915270100765B6B /* InviteButtonsView.m */,
+				31D45EC82915270100765B6B /* renderVideoView.h */,
+				31D45EC12915270100765B6B /* renderVideoView.m */,
+				31D45EBD2915270100765B6B /* topButtons.h */,
+				31D45EC42915270100765B6B /* topButtons.m */,
+				31D45EC22915270100765B6B /* TXTVideoCollectionView.h */,
+				31D45EC72915270100765B6B /* TXTVideoCollectionView.m */,
+				31D45EBE2915270100765B6B /* TXTVideoCollectionViewCell.h */,
+				31D45EC52915270100765B6B /* TXTVideoCollectionViewCell.m */,
+				31D45EC62915270100765B6B /* videoView.h */,
+				31D45EBF2915270100765B6B /* videoView.m */,
+			);
+			path = view;
 			sourceTree = "<group>";
 		};
 		F06CC9822910E4A200CA4D6A /* MJRefresh */ = {
@@ -1501,6 +1537,9 @@
 				F081690B290FC9A200C5CA29 /* NSDate+Extension.h in Headers */,
 				31B5FD212501DC58006587C0 /* NetAssociation.h in Headers */,
 				31B5FD1F2501DC58006587C0 /* TICRecorder.h in Headers */,
+				31D45ED42915270200765B6B /* TXTVideoCollectionView.h in Headers */,
+				31D45ED02915270200765B6B /* TXTVideoCollectionViewCell.h in Headers */,
+				31D45ECD2915270200765B6B /* TXTUserModel.h in Headers */,
 				31B5FD262501DC58006587C0 /* NSDate+NetworkClock.h in Headers */,
 				F06CC9DA2910E4A300CA4D6A /* MJRefreshAutoFooter.h in Headers */,
 				F08168CB290FC9A200C5CA29 /* UIImage+Orientation.h in Headers */,
@@ -1511,6 +1550,7 @@
 				F06CC9C72910E4A300CA4D6A /* MJRefreshBackNormalFooter.h in Headers */,
 				F0E22BAB2915011900C1E031 /* YYClassInfo.h in Headers */,
 				F06CC9D82910E4A300CA4D6A /* MJRefreshComponent.h in Headers */,
+				31D45EE32915271700765B6B /* UIBarButtonItem+SXCreate.h in Headers */,
 				311426FB25A300AF00AC639A /* UIView+QFExtension.h in Headers */,
 				F06CC9D22910E4A300CA4D6A /* MJRefreshStateHeader.h in Headers */,
 				F0E22B962914F0C500C1E031 /* TXTSmallMessageView.h in Headers */,
@@ -1537,12 +1577,10 @@
 				F06CC9CC2910E4A300CA4D6A /* MJRefreshAutoNormalFooter.h in Headers */,
 				311426FF25A300AF00AC639A /* UIView+cornerSide.h in Headers */,
 				F0E22B872913F78400C1E031 /* TXTChatInputToolBar.h in Headers */,
-				318E3F2F251488E90040AB32 /* InviteButtonsView.h in Headers */,
 				F08168E8290FC9A200C5CA29 /* Singleton.h in Headers */,
 				F06CC9FB2910EED000CA4D6A /* QSIMMessageModel.h in Headers */,
 				F0E22BAF2915011900C1E031 /* NSObject+YYModel.h in Headers */,
 				31B5FD622501DC58006587C0 /* JMLoadingHUD.h in Headers */,
-				31CE8CDD29024AE400FDA57F /* SunnyChatViewController.h in Headers */,
 				F08168E7290FC9A200C5CA29 /* UIView+IBExtension.h in Headers */,
 				F06CC9C22910E4A300CA4D6A /* UIScrollView+MJRefresh.h in Headers */,
 				311426F925A300AF00AC639A /* UIButton+Extension.h in Headers */,
@@ -1550,9 +1588,9 @@
 				F0E22BBB2915179E00C1E031 /* NSString+Emoji.h in Headers */,
 				F0E22B9A2914F68100C1E031 /* TXTSmallMessageCell.h in Headers */,
 				F08168D4290FC9A200C5CA29 /* UIApplication+Extensions.h in Headers */,
-				31C46AFB2906649F001408B9 /* bottomButtons.h in Headers */,
 				F08168E0290FC9A200C5CA29 /* UIView+Runtime.h in Headers */,
 				F06CC9D42910E4A300CA4D6A /* MJRefreshNormalHeader.h in Headers */,
+				31B5FD622501DC58006587C0 /* JMLoadingHUD.h in Headers */,
 				31B5FD1B2501DC58006587C0 /* TICReachability.h in Headers */,
 				31B5FD322501DC58006587C0 /* GCDAsyncUdpSocket.h in Headers */,
 				31B5FD192501DC58006587C0 /* TICRenderView.h in Headers */,
@@ -1560,6 +1598,10 @@
 				F06CC9C52910E4A300CA4D6A /* MJRefreshBackGifFooter.h in Headers */,
 				F08168E9290FC9A200C5CA29 /* UIFont+QSExtention.h in Headers */,
 				31B5FD332501DC58006587C0 /* TICReport.h in Headers */,
+				31D45ED22915270200765B6B /* InviteButtonsView.h in Headers */,
+				31D45EDA2915270200765B6B /* renderVideoView.h in Headers */,
+				31D45EE22915271700765B6B /* UINavigationSXFixSpace.h in Headers */,
+				31D45ED82915270200765B6B /* videoView.h in Headers */,
 				31B5FD2B2501DC58006587C0 /* TICDef.h in Headers */,
 				311B596325F9B8630016CD59 /* UIColor+ColorHex.h in Headers */,
 				F0816908290FC9A200C5CA29 /* Extensions.h in Headers */,
@@ -1575,9 +1617,11 @@
 				F0E22B9229149E7B00C1E031 /* UITextView+Placeholder.h in Headers */,
 				31B5FD602501DC58006587C0 /* UIAlertUtil.h in Headers */,
 				F06CC9BE2910E4A300CA4D6A /* UIView+MJExtension.h in Headers */,
-				318E3F31251488E90040AB32 /* TXTUserModel.h in Headers */,
 				F06CCA172910F43A00CA4D6A /* JCHATStringUtils.h in Headers */,
-				31CE8CE12902794100FDA57F /* videoView.h in Headers */,
+				31D45ECF2915270200765B6B /* topButtons.h in Headers */,
+				31D45ECA2915270200765B6B /* SunnyChatViewController.h in Headers */,
+				31B5FD602501DC58006587C0 /* UIAlertUtil.h in Headers */,
+				31D45ED52915270200765B6B /* bottomButtons.h in Headers */,
 				31B5FD2E2501DC58006587C0 /* TICWeakProxy.h in Headers */,
 				F0816910290FC9A200C5CA29 /* NSDate+Utilities.h in Headers */,
 				F081583E2916410800EABBAC /* TXTMemberView.h in Headers */,
@@ -1685,15 +1729,15 @@
 				F06CC9F62910E5E600CA4D6A /* TXTChatView.m in Sources */,
 				F06CCA102910F08600CA4D6A /* QSIMBubbleView.m in Sources */,
 				F08168F2290FC9A200C5CA29 /* NSString+Url.m in Sources */,
-				31CE8CDE29024AE400FDA57F /* SunnyChatViewController.m in Sources */,
 				311426F525A300AF00AC639A /* UIView+QFExtension.m in Sources */,
+				31D45ECE2915270200765B6B /* bottomButtons.m in Sources */,
 				311B596425F9B8630016CD59 /* UIColor+ColorHex.m in Sources */,
 				31B5FD2F2501DC58006587C0 /* TICRenderView.m in Sources */,
-				318E3F32251488E90040AB32 /* TXTUserModel.m in Sources */,
 				311426F725A300AF00AC639A /* UIView+cornerSide.m in Sources */,
 				F08168C5290FC9A200C5CA29 /* UIImage+Extension.m in Sources */,
 				31C1F0BA27228724001AA383 /* TICManager.m in Sources */,
 				F08168EB290FC9A200C5CA29 /* Foundation+Log.m in Sources */,
+				31D45ED72915270200765B6B /* TXTVideoCollectionViewCell.m in Sources */,
 				31B5FD342501DC58006587C0 /* TICConfig.m in Sources */,
 				31B5FD222501DC58006587C0 /* NSDate+NetworkClock.m in Sources */,
 				F06CC9D62910E4A300CA4D6A /* MJRefreshGifHeader.m in Sources */,
@@ -1708,7 +1752,6 @@
 				F08168FC290FC9A200C5CA29 /* NSString+Frame.m in Sources */,
 				31B5FD632501DC58006587C0 /* AFNHTTPSessionManager.m in Sources */,
 				F06CC9C82910E4A300CA4D6A /* MJRefreshBackGifFooter.m in Sources */,
-				318E3F30251488E90040AB32 /* InviteButtonsView.m in Sources */,
 				31F4A4C9260895B00015B75A /* UINavigationController+Revolve.m in Sources */,
 				F08168F1290FC9A200C5CA29 /* UIImageView+Indicator.m in Sources */,
 				F0E22B882913F78400C1E031 /* TXTChatInputToolBar.m in Sources */,
@@ -1731,18 +1774,22 @@
 				F08168FE290FC9A200C5CA29 /* UIViewController+Extension.m in Sources */,
 				311426FA25A300AF00AC639A /* UIView+JKBlockGesture.m in Sources */,
 				31B5FD2A2501DC58006587C0 /* TICKeychainWrapper.m in Sources */,
-				31B5FD652501DC58006587C0 /* JMLoadingHUD.m in Sources */,
 				F06CCA092910F03800CA4D6A /* QSRightMessageCell.m in Sources */,
-				31B5FD2C2501DC58006587C0 /* TICReachability.m in Sources */,
-				31C46AFC2906649F001408B9 /* bottomButtons.m in Sources */,
 				F06CC9B72910E4A300CA4D6A /* UIScrollView+MJRefresh.m in Sources */,
+				F0E22B972914F0C500C1E031 /* TXTSmallMessageView.m in Sources */,
+				F06CC9D52910E4A300CA4D6A /* MJRefreshStateHeader.m in Sources */,
+				F08168E3290FC9A200C5CA29 /* UIView+IBExtension.m in Sources */,
+				31D45ED92915270200765B6B /* TXTVideoCollectionView.m in Sources */,
+				311426FA25A300AF00AC639A /* UIView+JKBlockGesture.m in Sources */,
+				31B5FD2A2501DC58006587C0 /* TICKeychainWrapper.m in Sources */,
+				31B5FD652501DC58006587C0 /* JMLoadingHUD.m in Sources */,
+				31D45ED62915270200765B6B /* topButtons.m in Sources */,
+				31D45ECB2915270200765B6B /* SunnyChatViewController.m in Sources */,
+				31B5FD2C2501DC58006587C0 /* TICReachability.m in Sources */,
 				31BE4841257A06E600AD1CEF /* ZYSuspensionManager.m in Sources */,
 				311426FC25A300AF00AC639A /* QFAlertView.m in Sources */,
 				31B5FD1A2501DC58006587C0 /* TICWeakProxy.m in Sources */,
-				F0E22B972914F0C500C1E031 /* TXTSmallMessageView.m in Sources */,
-				31CE8CE22902794100FDA57F /* videoView.m in Sources */,
-				F06CC9D52910E4A300CA4D6A /* MJRefreshStateHeader.m in Sources */,
-				F08168E3290FC9A200C5CA29 /* UIView+IBExtension.m in Sources */,
+				31D45EE12915271700765B6B /* UIBarButtonItem+SXCreate.m in Sources */,
 				31B5FD642501DC58006587C0 /* UIAlertUtil.m in Sources */,
 				F06CC9DC2910E4A300CA4D6A /* MJRefreshAutoFooter.m in Sources */,
 				F08168C8290FC9A200C5CA29 /* UIImage +ResizeMagick.m in Sources */,
@@ -1760,6 +1807,9 @@
 				3100A4FB2614466200ECA26A /* TXTCustomConfig.m in Sources */,
 				31B5FD302501DC58006587C0 /* TICDevice.m in Sources */,
 				F06CC9DE2910E4A300CA4D6A /* MJRefreshComponent.m in Sources */,
+				31D45ED32915270200765B6B /* renderVideoView.m in Sources */,
+				31D45ED12915270200765B6B /* videoView.m in Sources */,
+				31D45ECC2915270200765B6B /* TXTUserModel.m in Sources */,
 				31B5FD272501DC58006587C0 /* NetAssociation.m in Sources */,
 				F08168D2290FC9A200C5CA29 /* UILabel+currency.m in Sources */,
 				F0E22B802913C48600C1E031 /* TXTSmallChatView.m in Sources */,
@@ -1776,7 +1826,9 @@
 				F081690E290FC9A200C5CA29 /* NSDate+Extension.m in Sources */,
 				F06CCA182910F43A00CA4D6A /* JCHATStringUtils.m in Sources */,
 				F0816903290FC9A200C5CA29 /* NSArray+crash.m in Sources */,
+				31D45EE02915271700765B6B /* UINavigationSXFixSpace.m in Sources */,
 				31C8511A25B832C800D9EEA5 /* TXTCommon.m in Sources */,
+				31D45EDB2915270200765B6B /* InviteButtonsView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1908,8 +1960,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = S4HJG5CE5R;
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = Y2QVHTCL72;
+				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -1948,7 +1999,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.tx.txWhiteBoardSample;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				SKIP_INSTALL = YES;
 				SUPPORTS_MACCATALYST = NO;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -1964,8 +2014,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = S4HJG5CE5R;
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = Y2QVHTCL72;
+				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -2004,7 +2053,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.tx.txWhiteBoardSample;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				SKIP_INSTALL = YES;
 				SUPPORTS_MACCATALYST = NO;
 				TARGETED_DEVICE_FAMILY = 1;

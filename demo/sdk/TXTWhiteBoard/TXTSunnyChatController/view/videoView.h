@@ -7,11 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "TXTUserModel.h"
+#import "TICRenderView.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface videoView : UIView
 @property (nonatomic, strong) NSString *userName;
+@property (nonatomic, strong) TXTUserModel *userModel;
+
+- (void)showVideoView;
 @end
 
 NS_ASSUME_NONNULL_END

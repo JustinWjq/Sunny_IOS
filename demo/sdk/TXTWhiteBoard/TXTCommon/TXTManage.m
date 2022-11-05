@@ -232,7 +232,7 @@
         }
     }
     
-//    NSLog(@"startVideo");
+    NSLog(@"startVideo");
 //    self.nnwindow =[[UIWindow alloc]initWithFrame:CGRectMake(0, 0, Screen_Width, Screen_Height)];
 //    self.nnwindow.windowLevel=UIWindowLevelAlert;
 //    SunnyChatViewController *classRoom = [[SunnyChatViewController alloc] init];
@@ -339,8 +339,6 @@
             [JMLoadingHUD show];
             TICClassroomOption *option = [[TICClassroomOption alloc] init];
             option.classId = [classId intValue];
-//            TXUserDefaultsSetObjectforKey(@"90567921",RoomId);
-//            option.classId = 90567921;
             
             __weak typeof(self) ws = self;
             
@@ -348,7 +346,6 @@
                 NSLog(@"joinClassroom == %d",code);
                 if(code == 0){
                     [JMLoadingHUD hide];
-                    [self startTransCribe];
                     //添加旋转通知
 //                    [[NSNotificationCenter defaultCenter] addObserver:self
 //                                                             selector:@selector(onDeviceOrientationDidChange) name:UIDeviceOrientationDidChangeNotification
@@ -419,22 +416,6 @@
     }
     return YES;
 }
-
-
-- (void)startTransCribe{
-    NSDictionary *dic = @{@"serviceId":TXUserDefaultsGetObjectforKey(ServiceId)};
-    [[AFNHTTPSessionManager shareInstance] requestURL:ServiceRoom_StartRecord RequestWay:@"POST" Header:nil Body:dic params:nil isFormData:NO success:^(NSError *error, id response) {
-        NSString *errCode = [response valueForKey:@"errCode"];
-        if ([errCode intValue] == 0) {
-            NSLog(@"开始录制");
-        }else{
-            NSLog(@"录制错误：%@",[response valueForKey:@"errInfo"]);
-        }
-    } failure:^(NSError *error, id response) {
-        NSLog(@"网络请求超时");
-    }];
-}
-
 
 - (void)setAgentInRoomStatus:(NSString *)agentId UserName:(NSString *)userName AndServiceId:(NSString *)serviceId InviteAccount:(NSString *)inviteAccount AndAction:(NSString *)action OrgName:(NSString *)orgName SignOrgName:(NSString *)signOrgName CallBack:(TXTCallback)callback{
     NSDictionary *dic = @{@"account":agentId,@"userName":userName,@"serviceId":serviceId,@"inviteAccount":inviteAccount,@"action":action,@"orgAccount":orgName,@"sign":signOrgName};
