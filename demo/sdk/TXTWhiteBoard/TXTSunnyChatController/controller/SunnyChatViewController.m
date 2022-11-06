@@ -17,6 +17,9 @@
 #import "TICRenderView.h"
 #import "renderVideoView.h"
 
+#import "TXTGroupMemberViewController.h"
+#import "TXTChatViewController.h"
+
 @interface SunnyChatViewController ()<bottomButtonsDelegate>
 @property (nonatomic, strong) bottomButtons *bottomToos;//底部视图
 @property (nonatomic, strong) NSString *userId;//主持人id
@@ -33,6 +36,9 @@
 @property (assign, nonatomic) BOOL shareState;//共享开关
 @property (assign, nonatomic) BOOL shareScene;//投屏开关
 
+// 成员管理
+/** groupMemberViewController */
+@property (nonatomic, strong) TXTGroupMemberViewController *groupMemberViewController;
 @end
 
 @implementation SunnyChatViewController
@@ -225,7 +231,7 @@
 //                }
 //            }
        
-//            [self reloadManageMembersArray];
+            [self reloadManageMembersArray];
             [self updateRenderViewsLayout];
             
 //            if ([userModel.render.userId isEqualToString:self.userId]) {
@@ -238,12 +244,14 @@
         }else{
             userModel.userName = userModel.render.userId;
             [self.renderViews replaceObjectAtIndex:(self.renderViews.count-1) withObject:userModel];
+            [self reloadManageMembersArray];
             [self updateRenderViewsLayout];
         }
         
     } failure:^(NSError *error, id response) {
         userModel.userName = userModel.render.userId;
         [self.renderViews replaceObjectAtIndex:(self.renderViews.count-1) withObject:userModel];
+        [self reloadManageMembersArray];
         [self updateRenderViewsLayout];
     }];
 }
@@ -255,6 +263,11 @@
 }
 
 - (void)bottomButtonClick{
+    TXTGroupMemberViewController *vc = [[TXTGroupMemberViewController alloc] init];
+    [self.navigationController pushViewController:self.groupMemberViewController animated:YES];
+//    TXTChatViewController *vc = [[TXTChatViewController alloc] init];
+//    [self.navigationController pushViewController:vc animated:YES];
+    return;
     [self closeVideoAction];
 }
 
@@ -333,6 +346,24 @@
 
 
 #pragma mark - TIC event listener
+-(void)onTICMemberQuit:(NSArray*)members {
+    NSString *userId = members[0];
+    NSLog(@"onTICMemberQuit === %@",userId);
+    [self.userIdArr removeObject:userId];
+    NSLog(@"移除列表");
+    [self.renderViews enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        TXTUserModel *model = obj;
+        if ([model.render.userId isEqualToString:userId]) {
+            [self.renderViews removeObject:model];
+            [self reloadManageMembersArray];
+            [self updateRenderViewsLayout];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"ManageMembersViewControllerLeave" object:userId];
+            
+        }
+    }];
+}
+
+
 -(void)onTICMemberJoin:(NSString *)userId {
     NSLog(@"onTICMemberJoin === %@",userId);
     [self.renderViews enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -377,6 +408,7 @@
                 break;
             }
         }
+        [self reloadManageMembersArray];
     }else{
         [self.userIdArr addObject:userId];
         TXTUserModel *userModel = [[TXTUserModel alloc] init];
@@ -414,6 +446,7 @@
                 break;
             }
         }
+        [self reloadManageMembersArray];
         [self updateRenderViewsLayout];
     }else{
         [self.userIdArr addObject:userId];
@@ -554,7 +587,11 @@
     
 }
 
-
+- (void)reloadManageMembersArray {
+    self.groupMemberViewController.manageMembersArr = self.renderViews;
+    //数据更新
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"ManageMembersViewController" object:nil];
+}
 #pragma  mark 横屏设置
 
 //- (BOOL)shouldAutorotate{
@@ -569,6 +606,12 @@
 //    return UIInterfaceOrientationLandscapeLeft;
 //}
 
-
+- (TXTGroupMemberViewController *)groupMemberViewController {
+    if (!_groupMemberViewController) {
+        TXTGroupMemberViewController *groupMemberViewController = [[TXTGroupMemberViewController alloc] init];
+        self.groupMemberViewController = groupMemberViewController;
+    }
+    return _groupMemberViewController;
+}
 
 @end

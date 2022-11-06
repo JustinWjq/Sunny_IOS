@@ -7,8 +7,11 @@
 //
 
 #import "TXTGroupMemberViewController.h"
+#import "TXTMemberView.h"
 
 @interface TXTGroupMemberViewController ()
+/** memberView */
+@property (nonatomic, strong) TXTMemberView *memberView;
 
 @end
 
@@ -24,6 +27,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -37,11 +41,46 @@
 #pragma mark - 🔒private
 
 - (void)qs_initData {
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleScreenOrientationChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
 }
 
 - (void)qs_initSubViews {
+    self.view.backgroundColor = [UIColor colorWithHexString:@"000000"];
+    [self.view addSubview:self.memberView];
+    [self.memberView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.view.mas_top).offset([UIApplication sharedApplication].statusBarFrame.size.height);
+        make.left.right.bottom.equalTo(self.view);
+    }];
+}
+
+/// orientationChange
+- (void)handleScreenOrientationChange:(NSNotification *)noti {
+    AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    app.allowRotation = YES;
+    if ([UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationPortrait || [UIApplication sharedApplication].statusBarOrientation == UIDeviceOrientationPortraitUpsideDown) {
+        [self.memberView mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.view.mas_top).offset([UIApplication sharedApplication].statusBarFrame.size.height);
+            make.left.right.bottom.equalTo(self.view);
+        }];
+        [self.memberView updateUI:YES];
+    } else {
+        [self.memberView mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.view.mas_top);
+            make.right.bottom.equalTo(self.view);
+            make.width.mas_equalTo(330);
+        }];
+        [self.memberView updateUI:NO];
+    }
+    [self.view layoutIfNeeded];
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation {
+    return NO;
+}
     
+- (void)setManageMembersArr:(NSMutableArray *)manageMembersArr {
+    _manageMembersArr = [manageMembersArr copy];
+    self.memberView.manageMembersArr = manageMembersArr;
 }
 #pragma mark - 🔄overwrite
 
@@ -54,5 +93,12 @@
 #pragma mark - 🎬event response
 
 #pragma mark - ☸getter and setter
+- (TXTMemberView *)memberView {
+    if (!_memberView) {
+        TXTMemberView *memberView = [[TXTMemberView alloc] init];
+        self.memberView = memberView;
+    }
+    return _memberView;
+}
 
 @end

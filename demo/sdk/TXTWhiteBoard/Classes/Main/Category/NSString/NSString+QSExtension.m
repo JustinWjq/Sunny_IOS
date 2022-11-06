@@ -299,4 +299,14 @@
 }
 
 
+//- (NSString *)pinyinString {
+//    HanyuPinyinOutputFormat *outputFormat = [[HanyuPinyinOutputFormat alloc] init];
+//    [outputFormat setToneType:ToneTypeWithoutTone];
+//    [outputFormat setVCharType:VCharTypeWithV];
+//    [outputFormat setCaseType:CaseTypeLowercase];
+//    NSString *outputPinyin = [PinyinHelper toHanyuPinyinStringWithNSString:self withHanyuPinyinOutputFormat:outputFormat withNSString:@""];
+//
+//    return outputPinyin;
+//}
+
 @end

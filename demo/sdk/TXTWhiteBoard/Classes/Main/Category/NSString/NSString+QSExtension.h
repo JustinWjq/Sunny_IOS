@@ -88,4 +88,6 @@
 /// 是否为空，或者全是空格
 + (BOOL)isEmpty:(NSString *)str;
 
+//// 转成拼音
+//- (NSString *)pinyinString;
 @end

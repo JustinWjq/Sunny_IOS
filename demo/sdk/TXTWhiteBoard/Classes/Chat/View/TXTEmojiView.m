@@ -60,9 +60,9 @@ static NSString  *const kEmojiCollectionViewCell = @"TXTEmojiCollectionViewCell"
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     TXTEmojiCollectionViewCell *cell = (TXTEmojiCollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
     if ([self.delegate respondsToSelector:@selector(emojiViewDidClickEmoji:)]) {
-        NSString *str = [cell.text stringByReplacingOccurrencesOfString:@"U+" withString:@""];
-        NSString *emojiStr = [NSString emojiWithStringCode:str];
-        [self.delegate emojiViewDidClickEmoji:emojiStr];
+//        NSString *str = [cell.text stringByReplacingOccurrencesOfString:@"U+" withString:@""];
+//        NSString *emojiStr = [NSString emojiWithStringCode:str];
+        [self.delegate emojiViewDidClickEmoji:cell.text];
     }
 }
 
@@ -103,7 +103,8 @@ static NSString  *const kEmojiCollectionViewCell = @"TXTEmojiCollectionViewCell"
 
 - (NSMutableArray *)dataArray {
     if (!_dataArray) {
-        self.dataArray = [NSMutableArray arrayWithArray:@[@"U+1F604",@"U+1F923",@"U+1F602",@"U+1F606",@"U+1F914",@"U+1F631",@"U+1F625",@"U+1F62D",@"U+1F44F",@"U+1F44B",@"U+1F44D",@"U+1F91D",@"U+1F44C",@"U+1F4AA",@"U+1F64F",@"U+270A",@"U+1F919"]];
+//        @"U+1F604",@"U+1F923",@"U+1F602",@"U+1F606",@"U+1F914",@"U+1F631",@"U+1F625",@"U+1F62D",@"U+1F44F",@"U+1F44B",@"U+1F44D",@"U+1F91D",@"U+1F44C",@"U+1F4AA",@"U+1F64F",@"U+270A",@"U+1F919"
+        self.dataArray = [NSMutableArray arrayWithArray:@[@"😄",@"🤣",@"😂",@"😆",@"🤔",@"😱",@"😥",@"😭",@"👏",@"👋",@"👍",@"🤝",@"✌️",@"👌",@"💪",@"🙏",@"✊",@"🤙"]];
     }
     return _dataArray;
 }

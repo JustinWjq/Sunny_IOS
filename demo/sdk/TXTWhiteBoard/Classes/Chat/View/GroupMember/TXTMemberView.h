@@ -10,7 +10,23 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@protocol TXTMemberViewDelegate <NSObject>
+
+@optional
+
+/// 点击关闭
+- (void)memberViewDidClickCloseBtn:(UIButton *)closeBtn;
+@end
+
 @interface TXTMemberView : UIView
+
+/** delegate */
+@property (nonatomic, weak) id<TXTMemberViewDelegate> delegate;
+
+/** dataArray */
+@property (nonatomic, strong) NSMutableArray *manageMembersArr;
+
+- (void)updateUI:(BOOL)isPortrait;
 
 @end
 

@@ -36,8 +36,9 @@
 
 - (void)setText:(NSString *)text {
     _text = [text copy];
-    NSString *str = [text stringByReplacingOccurrencesOfString:@"U+" withString:@""];
-    self.titleLabel.text = [NSString emojiWithStringCode:str];
+//    NSString *str = [text stringByReplacingOccurrencesOfString:@"U+" withString:@""];
+//    self.titleLabel.text = [NSString emojiWithStringCode:str];
+    self.titleLabel.text = text;
 }
 
 

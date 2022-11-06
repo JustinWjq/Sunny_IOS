@@ -405,7 +405,7 @@ static NSInteger const kInputToolBarH = 62;
     NSDictionary *messagedict = @{@"serviceId":TXUserDefaultsGetObjectforKey(ServiceId),
                                   @"type":@"wxIM",
                                   @"userId":[TICConfig shareInstance].userId,
-                                  @"userName":@"JYJ",
+                                  @"userName":TXUserDefaultsGetObjectforKey(Agent),
                                   @"content":text};
     NSString *str = [[TXTCommon sharedInstance] convertToJsonData:messagedict];
     
