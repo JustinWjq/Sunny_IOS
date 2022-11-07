@@ -103,6 +103,8 @@
 		F01D22E32917B8E70025F107 /* TXTMemberInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = F01D22E12917B8E70025F107 /* TXTMemberInfoView.m */; };
 		F01D22E62917FB700025F107 /* QSTapGestureRecognizer.h in Headers */ = {isa = PBXBuildFile; fileRef = F01D22E42917FB700025F107 /* QSTapGestureRecognizer.h */; };
 		F01D22E72917FB700025F107 /* QSTapGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = F01D22E52917FB700025F107 /* QSTapGestureRecognizer.m */; };
+		F050C78B2918B186002CA386 /* TXTAlertShareView.h in Headers */ = {isa = PBXBuildFile; fileRef = F050C7892918B186002CA386 /* TXTAlertShareView.h */; };
+		F050C78C2918B186002CA386 /* TXTAlertShareView.m in Sources */ = {isa = PBXBuildFile; fileRef = F050C78A2918B186002CA386 /* TXTAlertShareView.m */; };
 		F06CC9B62910E4A300CA4D6A /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = F06CC9832910E4A200CA4D6A /* LICENSE */; };
 		F06CC9B72910E4A300CA4D6A /* UIScrollView+MJRefresh.m in Sources */ = {isa = PBXBuildFile; fileRef = F06CC9852910E4A200CA4D6A /* UIScrollView+MJRefresh.m */; };
 		F06CC9B82910E4A300CA4D6A /* MJRefreshConst.m in Sources */ = {isa = PBXBuildFile; fileRef = F06CC9862910E4A200CA4D6A /* MJRefreshConst.m */; };
@@ -482,6 +484,8 @@
 		F01D22E12917B8E70025F107 /* TXTMemberInfoView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TXTMemberInfoView.m; sourceTree = "<group>"; };
 		F01D22E42917FB700025F107 /* QSTapGestureRecognizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSTapGestureRecognizer.h; sourceTree = "<group>"; };
 		F01D22E52917FB700025F107 /* QSTapGestureRecognizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSTapGestureRecognizer.m; sourceTree = "<group>"; };
+		F050C7892918B186002CA386 /* TXTAlertShareView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXTAlertShareView.h; sourceTree = "<group>"; };
+		F050C78A2918B186002CA386 /* TXTAlertShareView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TXTAlertShareView.m; sourceTree = "<group>"; };
 		F06CC9832910E4A200CA4D6A /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		F06CC9852910E4A200CA4D6A /* UIScrollView+MJRefresh.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+MJRefresh.m"; sourceTree = "<group>"; };
 		F06CC9862910E4A200CA4D6A /* MJRefreshConst.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJRefreshConst.m; sourceTree = "<group>"; };
@@ -1539,6 +1543,8 @@
 				F08158452916713500EABBAC /* TXTTextField.m */,
 				F01D22E02917B8E70025F107 /* TXTMemberInfoView.h */,
 				F01D22E12917B8E70025F107 /* TXTMemberInfoView.m */,
+				F050C7892918B186002CA386 /* TXTAlertShareView.h */,
+				F050C78A2918B186002CA386 /* TXTAlertShareView.m */,
 			);
 			path = GroupMember;
 			sourceTree = "<group>";
@@ -1627,6 +1633,7 @@
 				F0816900290FC9A200C5CA29 /* UIViewController+Extension.h in Headers */,
 				F0E22BBB2915179E00C1E031 /* NSString+Emoji.h in Headers */,
 				F0E22B9A2914F68100C1E031 /* TXTSmallMessageCell.h in Headers */,
+				F050C78B2918B186002CA386 /* TXTAlertShareView.h in Headers */,
 				F08168D4290FC9A200C5CA29 /* UIApplication+Extensions.h in Headers */,
 				F08168E0290FC9A200C5CA29 /* UIView+Runtime.h in Headers */,
 				F06CC9D42910E4A300CA4D6A /* MJRefreshNormalHeader.h in Headers */,
@@ -1838,6 +1845,7 @@
 				31D45EE12915271700765B6B /* UIBarButtonItem+SXCreate.m in Sources */,
 				31B5FD642501DC58006587C0 /* UIAlertUtil.m in Sources */,
 				F06CC9DC2910E4A300CA4D6A /* MJRefreshAutoFooter.m in Sources */,
+				F050C78C2918B186002CA386 /* TXTAlertShareView.m in Sources */,
 				F08168C8290FC9A200C5CA29 /* UIImage +ResizeMagick.m in Sources */,
 				F06CC9C42910E4A300CA4D6A /* UIView+MJExtension.m in Sources */,
 				F0E22BB32915109D00C1E031 /* TXTEmojiView.m in Sources */,
