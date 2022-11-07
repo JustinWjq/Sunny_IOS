@@ -112,14 +112,14 @@
     [[[TICManager sharedInstance] getTRTCCloud] startRemoteView:[TICConfig shareInstance].userId view:render];
     userModel.render = render;
     userModel.userName = TXUserDefaultsGetObjectforKey(Agent);
-    userModel.showVideo = [TICConfig shareInstance].enableVideo;
+    userModel.showVideo = NO;
     userModel.showAudio = YES;
     userModel.userRole = [TICConfig shareInstance].role;
     
     [[[TICManager sharedInstance] getTRTCCloud] startRemoteView:[TICConfig shareInstance].userId view:render];
     [[[TICManager sharedInstance] getTRTCCloud] startLocalPreview:YES view:render];
     [[[TICManager sharedInstance] getTRTCCloud] startLocalAudio];
-    
+   
     [self.renderViews addObject:userModel];
     [self roomInfo:userModel];
 }
@@ -264,12 +264,16 @@
 }
 
 - (void)bottomButtonClick{
+    
+    [self closeVideoAction];
+}
+
+- (void)bottomMembersButtonClick{
     TXTGroupMemberViewController *vc = [[TXTGroupMemberViewController alloc] init];
     [self.navigationController pushViewController:self.groupMemberViewController animated:YES];
 //    TXTChatViewController *vc = [[TXTChatViewController alloc] init];
 //    [self.navigationController pushViewController:vc animated:YES];
     return;
-    [self closeVideoAction];
 }
 
 - (void)bottomShareSceneButtonClick{
@@ -337,12 +341,12 @@
 //        [self.renderVideoView setVideoRenderNumber:TRTCVideoRenderNumber2 mode:TRTCVideoRenderModePortrait];
 //    }
     [_renderVideoView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(self.view.mas_safeAreaLayoutGuideTop).offset(Screen_Height/4);
+        make.top.mas_equalTo(self.view.mas_top).offset(Screen_Height/4);
         make.left.mas_equalTo(self.view.mas_left).offset(0);
         make.right.mas_equalTo(self.view.mas_right).offset(0);
         make.height.mas_equalTo(Screen_Height/2.4);
     }];
-    [self.renderVideoView setVideoRenderNumber:TRTCVideoRenderNumber2 mode:TRTCVideoRenderModePortrait];
+    [self.renderVideoView setVideoRenderNumber:TRTCVideoRenderNumber1 mode:TRTCVideoRenderModePortrait];
 }
 
 
@@ -475,6 +479,9 @@
     [[TICManager sharedInstance] addStatusListener:self];
 //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
 }
+
+#pragma  mark --懒加载
+
 - (void)setBottomToolsUI{
     //WithFrame:CGRectMake(0, Screen_Height-100, Screen_Width, 100)
     _bottomToos = [[bottomButtons alloc] init];

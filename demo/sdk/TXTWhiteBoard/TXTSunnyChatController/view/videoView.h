@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface videoView : UIView
 @property (nonatomic, strong) NSString *userName;
 @property (nonatomic, strong) TXTUserModel *userModel;
-
+- (void)initHideUIDirectionLeft:(BOOL)directionLeft;
 - (void)showVideoView;
 @end
 

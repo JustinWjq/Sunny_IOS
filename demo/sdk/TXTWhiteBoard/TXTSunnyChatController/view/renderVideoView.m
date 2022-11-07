@@ -18,7 +18,7 @@
 - (instancetype)initWithFrame:(CGRect)frame{
     self = [super initWithFrame:frame];
     if (self) {
-        self.backgroundColor = [UIColor yellowColor];
+        self.backgroundColor = [UIColor colorWithHexString:@"#222222"];
     }
     return self;
 }
@@ -39,9 +39,9 @@
 
 - (void)setTRTCVideoRenderNumber1UI{
     TXTUserModel *model = self.renderArray[0];
+    videoView *videoview = [[videoView alloc] init];
+    [self addSubview:videoview];
     if (model.showVideo) {
-        videoView *videoview = [[videoView alloc] init];
-        [self addSubview:videoview];
         [videoview mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.mas_equalTo(self.mas_top).offset(0);
             make.left.mas_equalTo(self.mas_left).offset(0);
@@ -50,6 +50,15 @@
         }];
         videoview.userModel = model;
         [videoview showVideoView];
+    }else{
+        [videoview mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerX.mas_equalTo(self.mas_centerX).offset(0);
+            make.centerY.mas_equalTo(self.mas_centerY).offset(0);
+            make.width.mas_equalTo(Screen_Width/4);
+            make.height.mas_equalTo(Screen_Width/4);
+        }];
+        videoview.userModel = model;
+        [videoview initHideUIDirectionLeft:NO];
     }
 }
 
@@ -71,8 +80,8 @@
         self.renderViewCollectionView = [[TXTVideoCollectionView alloc] init];
         [self addSubview:self.renderViewCollectionView];
         [self.renderViewCollectionView mas_makeConstraints:^(MASConstraintMaker *make) {
-//            make.top.mas_equalTo(videoview.mas_safeAreaLayoutGuideBottom).offset(5);
-            make.height.mas_equalTo(45);
+            make.top.mas_equalTo(videoview.mas_bottom).offset(0);
+//            make.height.mas_equalTo(45);
             make.left.mas_equalTo(self.mas_left).offset(0);
             make.right.mas_equalTo(self.mas_right).offset(0);
             make.bottom.mas_equalTo(self.mas_bottom).offset(0);
@@ -80,15 +89,8 @@
         self.renderViewCollectionView.delegate = self;
         self.renderViewCollectionView.renderViewsArray = self.renderArray;
     }
-   
 }
 
-//- (TXTVideoCollectionView *)renderViewCollectionView{
-//    if (!_renderViewCollectionView) {
-//
-//        //        _renderViewCollectionView.backgroundColor = [UIColor blueColor];
-//    }
-//    return _renderViewCollectionView;
-//}
+
 
 @end

@@ -14,19 +14,33 @@
 
 @implementation TXTVideoCollectionViewCell
 
-- (void)awakeFromNib {
-    [super awakeFromNib];
-    // Initialization code
+//+ (instancetype)cellWithTableView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
+//    // 创建cell
+//    static NSString *ID = @"TXTVideoCollectionViewCell";
+//    TXTVideoCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:ID forIndexPath:indexPath];
+//
+//    if (cell == nil) {
+//        cell = [[TXTVideoCollectionViewCell alloc] initWithFrame:CGRectMake(0, 0, self., <#CGFloat height#>)];
+//    }
+//    cell.backgroundColor = [UIColor clearColor];
+//    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+//    return cell;
+//}
+
+- (instancetype)initWithFrame:(CGRect)frame {
+    if(self = [super initWithFrame:frame]){
+        [self setUI];
+    }
+    return self;
 }
 
-//- (void)testCellWidth:(CGFloat)width Height:(CGFloat)height{
-//    UIImageView *defaultImage = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, width, height)];
-//    defaultImage.contentMode = UIViewContentModeScaleAspectFit;
-//    //0x464950
-//    self.backgroundColor = COLOR_WITH_HEX(0x464950);
-//    [self addSubview:defaultImage];
-//    defaultImage.image = [UIImage imageNamed:@"noVideo" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
-//}
+- (void)setUI{
+    self.backgroundColor = COLOR_WITH_HEX(0x464950);
+    UIImageView *defaultImage = [[UIImageView alloc] initWithFrame:self.frame];
+    defaultImage.contentMode = UIViewContentModeScaleAspectFit;
+    [self addSubview:defaultImage];
+    defaultImage.image = [UIImage imageNamed:@"noVideo" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
+}
 
 - (void)configVideoCell:(TXTUserModel *)model Width:(CGFloat)width Height:(CGFloat)height VoiceVolume:(NSArray<TRTCVolumeInfo *> *)userVolumes{
     [self setcell:model Width:width Height:height VoiceVolume:userVolumes];
