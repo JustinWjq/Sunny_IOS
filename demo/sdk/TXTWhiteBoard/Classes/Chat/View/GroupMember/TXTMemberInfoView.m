@@ -184,7 +184,6 @@ static TXTMemberInfoView *_alertView = nil; //第一步：静态实例，并初�
 
 /// btnClick
 - (void)btnClick:(UIButton *)btn {
-    [TXTMemberInfoView hide];
     NSInteger tag = btn.tag - kBtnTag;
     if (tag == 0) {
         NSDictionary *dict = @{@"userId":self.model.render.userId,@"muteAudio":@(!self.model.showAudio)};
@@ -194,6 +193,7 @@ static TXTMemberInfoView *_alertView = nil; //第一步：静态实例，并初�
             if(code == 0){
                 [[JMToast sharedToast] showDialogWithMsg:@"操作成功"];
             }
+            [TXTMemberInfoView hide];
         }];
     } else if (tag == 1) {
         NSDictionary *dict = @{@"userId":self.model.render.userId,@"muteVideo":@(!self.model.showVideo)};
@@ -203,6 +203,7 @@ static TXTMemberInfoView *_alertView = nil; //第一步：静态实例，并初�
             if(code == 0){
                 [[JMToast sharedToast] showDialogWithMsg:@"操作成功"];
             }
+            [TXTMemberInfoView hide];
         }];
     }
 }

@@ -9,7 +9,7 @@
 #import "TXTGroupMemberViewController.h"
 #import "TXTMemberView.h"
 
-@interface TXTGroupMemberViewController ()
+@interface TXTGroupMemberViewController () <TXTMemberViewDelegate>
 /** memberView */
 @property (nonatomic, strong) TXTMemberView *memberView;
 
@@ -87,7 +87,10 @@
 #pragma mark - 🚪public
 
 #pragma mark - 🍐delegate
-
+- (void)memberViewDidClickCloseBtn:(UIButton *)closeBtn {
+//    [self.memberView removeFromSuperview];
+    [self.navigationController popViewControllerAnimated:YES];
+}
 #pragma mark - ☎️notification
 
 #pragma mark - 🎬event response
@@ -96,6 +99,7 @@
 - (TXTMemberView *)memberView {
     if (!_memberView) {
         TXTMemberView *memberView = [[TXTMemberView alloc] init];
+        memberView.delegate = self;
         self.memberView = memberView;
     }
     return _memberView;

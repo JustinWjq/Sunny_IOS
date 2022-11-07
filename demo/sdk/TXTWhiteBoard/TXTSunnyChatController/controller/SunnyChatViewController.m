@@ -20,7 +20,7 @@
 #import "TXTGroupMemberViewController.h"
 #import "TXTChatViewController.h"
 
-@interface SunnyChatViewController ()<bottomButtonsDelegate>
+@interface SunnyChatViewController ()<bottomButtonsDelegate, TICEventListener, TICMessageListener, TICStatusListener>
 @property (nonatomic, strong) bottomButtons *bottomToos;//底部视图
 @property (nonatomic, strong) NSString *userId;//主持人id
 @property (strong, nonatomic) NSMutableArray *userIdArr;//房间存在人员id数组
@@ -86,6 +86,7 @@
     self.navigationController.navigationBar.barStyle = UIBarStyleBlack;
    
     [self setBottomToolsUI];
+    [self addNotification];
 }
 
 - (void)viewDidAppear:(BOOL)animated{
@@ -468,7 +469,12 @@
     }
 }
 
-
+- (void)addNotification{
+    [[TICManager sharedInstance] addIMessageListener:self];
+    [[TICManager sharedInstance] addEventListener:self];
+    [[TICManager sharedInstance] addStatusListener:self];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
+}
 - (void)setBottomToolsUI{
     //WithFrame:CGRectMake(0, Screen_Height-100, Screen_Width, 100)
     _bottomToos = [[bottomButtons alloc] init];
