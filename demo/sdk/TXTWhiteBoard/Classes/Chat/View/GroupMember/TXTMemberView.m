@@ -11,6 +11,9 @@
 #import "TXTTextField.h"
 #import "TXTMemberInfoView.h"
 #import "QSTapGestureRecognizer.h"
+#import "TXTAlertShareView.h"
+#import "WXApi.h"
+#import "TXTCustomConfig.h"
 
 @interface TXTMemberView () <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate>
 /** titleLabel */
@@ -244,9 +247,81 @@
     
 }
 
+/// allUnMuteBtnClick
+- (void)allUnMuteBtnClick {
+    NSMutableArray *usersArr = [NSMutableArray array];
+    for (TXTUserModel *usermodel in self.manageMembersArr) {
+        NSDictionary *dict = @{@"userId":usermodel.render.userId,@"muteAudio":@NO};
+        [usersArr addObject:dict];
+    }
+    NSDictionary *messagedict = @{@"serviceId":TXUserDefaultsGetObjectforKey(ServiceId),@"type":@"muteAudio",@"agentId":TXUserDefaultsGetObjectforKey(AgentId),@"users":usersArr};
+    NSString *str = [[TXTCommon sharedInstance] convertToJsonData:messagedict];
+    [[TICManager sharedInstance] sendGroupTextMessage:str callback:^(TICModule module, int code, NSString *desc) {
+        if(code == 0){
+             [[JMToast sharedToast] showDialogWithMsg:@"当前全体静音已解除，参会人本人可控制静音状态"];
+        }
+        [self setSoundStatus:YES];
+    }];
+}
+
+- (void)setSoundStatus:(BOOL)soundStatus{
+    NSString *serviceId = TXUserDefaultsGetObjectforKey(ServiceId);
+    NSDictionary *bodyDict = @{@"serviceId":serviceId,@"soundStatus":@(soundStatus)};
+    [[AFNHTTPSessionManager shareInstance] requestURL:ServiceRoom_SoundStatus RequestWay:@"POST" Header:nil Body:bodyDict params:nil isFormData:NO success:^(NSError *error, id response) {
+        NSLog(@"soundStatus == %@",[response description]);
+    } failure:^(NSError *error, id response) {
+        [[JMToast sharedToast] showDialogWithMsg:@"网络连接错误"];
+    }];
+}
+
 /// invitationBtnClick
 - (void)invitationBtnClick {
-    
+    TXTAlertShareView *alert = [TXTAlertShareView alert];
+    alert.sureBlock = ^{
+        [TXTAlertShareView hide];
+        
+        WXMiniProgramObject *object = [WXMiniProgramObject object];
+        object.webpageUrl = @"";
+        object.userName = TXUserDefaultsGetObjectforKey(ShareLink);
+        NSDictionary *shareConfig = @{@"version":TXTVersion,@"terminal":@"iOS",@"title":@"智慧展业"};
+        if ([[TXTCustomConfig sharedInstance].miniProgramPath isEqualToString:@""] || [TXTCustomConfig sharedInstance].miniProgramPath == nil) {
+            [TXTCustomConfig sharedInstance].miniProgramPath = @"pages/index/index";
+        }
+        NSString *path = [NSString stringWithFormat:@"%@?serviceId=%@&agentId=%@&inviteNumber=%@&shareConfig=%@",[TXTCustomConfig sharedInstance].miniProgramPath,TXUserDefaultsGetObjectforKey(ServiceId),TXUserDefaultsGetObjectforKey(AgentId),TXUserDefaultsGetObjectforKey(InviteNumber),[[TXTCommon sharedInstance] convertToJsonData:shareConfig]];
+        NSLog(@"chooseWeChat = %@",path);
+        object.path = path;
+        UIImage *logoimg = [UIImage imageNamed:@"smallLogo" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
+        object.hdImageData = UIImagePNGRepresentation(logoimg);
+        object.withShareTicket = NO;
+        NSString *environment = TXUserDefaultsGetObjectforKey(MiniEnvironment);
+        if ([environment isEqualToString:@"1"]) {
+            object.miniProgramType = WXMiniProgramTypePreview;
+        }else if ([environment isEqualToString:@"2"]){
+            object.miniProgramType = WXMiniProgramTypeRelease;
+        }else if ([environment isEqualToString:@"0"]){
+            object.miniProgramType = WXMiniProgramTypeTest;
+        }else{
+            object.miniProgramType = WXMiniProgramTypePreview;
+        }
+        
+        WXMediaMessage *message = [WXMediaMessage message];
+        message.title = @"智慧展业-足不出户，随时联系您的顾问";
+        message.description = @"智慧展业-足不出户，随时联系您的顾问";
+        message.thumbData = nil;  //兼容旧版本节点的图片，小于32KB，新版本优先
+                                  //使用WXMiniProgramObject的hdImageData属性
+        message.mediaObject = object;
+        SendMessageToWXReq *req = [[SendMessageToWXReq alloc] init];
+        req.bText = NO;
+        req.message = message;
+        req.scene = WXSceneSession;  //目前只支持会话
+        [WXApi sendReq:req completion:^(BOOL success) {
+            if (success) {
+
+            }else{
+
+            }
+        }];
+    };
 }
 
 #pragma mark - TableView DataSource
@@ -433,7 +508,7 @@
 /** allUnmuteBtn */
 - (UIButton *)allUnmuteBtn {
     if (!_allUnmuteBtn) {
-        UIButton *allUnmuteBtn = [UIButton buttonWithTitle:@"解除全员静音" titleColor:[UIColor colorWithHexString:@"333333"] font:[UIFont qs_regularFontWithSize:15] target:self action:@selector(allMuteBtnClick)];
+        UIButton *allUnmuteBtn = [UIButton buttonWithTitle:@"解除全员静音" titleColor:[UIColor colorWithHexString:@"333333"] font:[UIFont qs_regularFontWithSize:15] target:self action:@selector(allUnMuteBtnClick)];
         allUnmuteBtn.borderColor = [UIColor colorWithHexString:@"D6D6D6" alpha:0.8];
         allUnmuteBtn.borderWidth = 1;
         allUnmuteBtn.cornerRadius = 5;
