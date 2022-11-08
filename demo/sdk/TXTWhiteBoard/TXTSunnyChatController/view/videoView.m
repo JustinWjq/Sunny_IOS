@@ -8,6 +8,7 @@
 
 #import "videoView.h"
 
+#define nameWidth Screen_Width/7
 @implementation videoView
 
 - (instancetype)initWithFrame:(CGRect)frame{
@@ -15,6 +16,7 @@
     if (self) {
 //        [self initHideUI];
 //        self.backgroundColor = [UIColor whiteColor];
+       
     }
     return self;
 }
@@ -23,7 +25,6 @@
     [self userNameView:directionLeft];
     
     UILabel *nameLabel = [[UILabel alloc] init];
-    CGFloat nameWidth = Screen_Width/7;
     [self addSubview:nameLabel];
     [nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.mas_equalTo(self.mas_centerX).offset(0);
@@ -42,42 +43,51 @@
 }
 
 - (void)userNameView:(BOOL)directionLeft{
-    UIView *nameBackgroundView = [[UIView alloc] init];
-    [self addSubview:nameBackgroundView];
-    [nameBackgroundView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.mas_equalTo(self.mas_bottom).offset(0);
-        make.left.mas_equalTo(self.mas_left).offset(0);
-        make.right.mas_equalTo(self.mas_right).offset(0);
-        make.height.mas_equalTo(Screen_Width/7/2);
-    }];
-    nameBackgroundView.backgroundColor = [UIColor colorWithHexString:@"#000000"];;
-    
-    NSString *userRole = TXUserDefaultsGetObjectforKey(Agent);
+    NSString *userRole = self.userModel.userRole;
     //主持人
     if ([userRole isEqualToString:@"owner"]) {
         UIImageView *iconImage = [[UIImageView alloc] init];
-        [nameBackgroundView addSubview:iconImage];
+        [self addSubview:iconImage];
         [iconImage mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.mas_equalTo(nameBackgroundView.mas_top).offset(0);
-            make.bottom.mas_equalTo(nameBackgroundView.mas_bottom).offset(0);
-            make.left.mas_equalTo(nameBackgroundView.mas_left).offset(0);
-            make.width.mas_equalTo(Screen_Width/7/2);
+            make.bottom.mas_equalTo(self.mas_bottom).offset(0);
+            make.left.mas_equalTo(self.mas_left).offset(0);
+//            make.right.mas_equalTo(self.mas_right).offset(0);
+            make.height.mas_equalTo(nameWidth/2.5);
+            make.width.mas_equalTo(nameWidth/2.5);
         }];
         iconImage.contentMode = UIViewContentModeScaleAspectFit;
         [iconImage sd_setImageWithURL:[NSURL URLWithString:self.userModel.userIcon] placeholderImage:nil];
     }
+    
+    UIView *nameBackgroundView = [[UIView alloc] init];
+    [self addSubview:nameBackgroundView];
+    [nameBackgroundView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.mas_equalTo(self.mas_bottom).offset(0);
+        if ([userRole isEqualToString:@"owner"]) {
+            make.left.mas_equalTo(self.mas_left).offset(nameWidth/2.5);
+            if (directionLeft) {
+                make.width.mas_equalTo(Screen_Width/5);
+            }else{
+                make.right.mas_equalTo(self.mas_right).offset(0);
+            }
+            
+        }else{
+            make.centerX.mas_equalTo(self.mas_centerX).offset(0);
+            make.width.mas_equalTo(nameWidth+8);
+        }
+        
+        make.height.mas_equalTo(nameWidth/2.5);
+    }];
+    nameBackgroundView.backgroundColor = [UIColor colorWithHexString:@"#000000"];
+    nameBackgroundView.alpha = 0.7;
     
     UIImageView *voiceImage = [[UIImageView alloc] init];
     [nameBackgroundView addSubview:voiceImage];
     [voiceImage mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(nameBackgroundView.mas_top).offset(0);
         make.bottom.mas_equalTo(nameBackgroundView.mas_bottom).offset(0);
-        if ([userRole isEqualToString:@"owner"]) {
-            make.left.mas_equalTo(nameBackgroundView.mas_left).offset(70);
-        }else{
-            make.left.mas_equalTo(nameBackgroundView.mas_left).offset(20);
-        }
-        make.width.mas_equalTo(Screen_Width/7/2/2);
+        make.left.mas_equalTo(nameBackgroundView.mas_left).offset(5);
+        make.width.mas_equalTo(nameWidth/2/2);
     }];
     voiceImage.contentMode = UIViewContentModeScaleAspectFit;
     voiceImage.image = imageName(@"closeMicrophone_s");
@@ -87,11 +97,11 @@
     [allNameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(nameBackgroundView.mas_top).offset(0);
         make.bottom.mas_equalTo(nameBackgroundView.mas_bottom).offset(0);
-        make.left.mas_equalTo(voiceImage.mas_right).offset(0);
+        make.left.mas_equalTo(voiceImage.mas_right).offset(2);
         make.right.mas_equalTo(nameBackgroundView.mas_right).offset(0);
     }];
     allNameLabel.text = self.userModel.userName;
-    allNameLabel.textAlignment = NSTextAlignmentCenter;
+    allNameLabel.textAlignment = NSTextAlignmentLeft;
     allNameLabel.textColor = [UIColor whiteColor];
     allNameLabel.font = [UIFont systemFontOfSize:12];
 }
@@ -106,7 +116,7 @@
     }];
     [[[TICManager sharedInstance] getTRTCCloud] setRemoteViewFillMode:self.userModel.render.userId mode:TRTCVideoFillMode_Fill];
     [[[TICManager sharedInstance] getTRTCCloud] startRemoteView:self.userModel.render.userId view:self.userModel.render];
-//    [self userNameView];
+    [self userNameView:YES];
 }
 
 

@@ -32,7 +32,7 @@
 
 @property (assign, nonatomic) BOOL state;//打开摄像头
 @property (assign, nonatomic) BOOL muteState;//麦克风开关
-@property (assign, nonatomic) BOOL switchCamera;//反转镜头开关
+//@property (assign, nonatomic) BOOL switchCamera;//反转镜头开关
 @property (assign, nonatomic) BOOL shareState;//共享开关
 @property (assign, nonatomic) BOOL shareScene;//投屏开关
 
@@ -53,32 +53,15 @@
 
 //    //切换摄像头
     UIImage *cameraImg = [UIImage imageNamed:@"startRecord" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
-
-    
-//    UIButton *but = [UIButton buttonWithType:UIButtonTypeCustom];
-////    [but setFrame:CGRectMake(0, 0, 44, 44)];
-//        [but addTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
-//        [but setImage:[speakerImg imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] forState:UIControlStateNormal];
-//        [but sizeToFit];
-//        UIBarButtonItem *Item = [[UIBarButtonItem alloc] initWithCustomView:but];
-//    UIButton *but1 = [UIButton buttonWithType:UIButtonTypeCustom];
-////    [but1 setFrame:CGRectMake(54, 0, 44, 44)];
-//        [but1 addTarget:self action:nil forControlEvents:UIControlEventTouchUpInside];
-//        [but1 setImage:[cameraImg imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] forState:UIControlStateNormal];
-//        [but1 sizeToFit];
-//    UIBarButtonItem *Item1 = [[UIBarButtonItem alloc] initWithCustomView:but1];
-//    Item1.width = 5;
-//    self.navigationItem.leftBarButtonItems  =@[[Item fixedSpaceWithWidth:-20],Item1];
     
     self.navigationItem.leftBarButtonItems = @[[UIBarButtonItem itemWithTarget:self
-                                                                         action:@selector(pushAction)
+                                                                         action:@selector(changeAudioRoute)
                                                                           image:speakerImg],
                                                 [UIBarButtonItem itemWithTarget:self
-                                                                         action:@selector(pushAction)
+                                                                         action:@selector(switchCamera)
                                                                           image:cameraImg]];
-    self.navigationItem.rightBarButtonItem = [UIBarButtonItem itemWithTarget:self
-                                                                      action:@selector(onQuitClassRoom)
-                                                                       image:cameraImg];
+    //onQuitClassRoom
+    self.navigationItem.rightBarButtonItem = [UIBarButtonItem itemWithTarget:self action:@selector(onQuitClassRoom) title:@"退出" font:[UIFont qs_semiFontWithSize:15] titleColor:[UIColor colorWithHexString:@"#E19797"] highlightedColor:[UIColor colorWithHexString:@"#E19797"] titleEdgeInsets:UIEdgeInsetsMake(5, 5, -5, -5)];
 
     self.view.backgroundColor = [UIColor colorWithHexString:@"#222222"];
     self.navigationController.navigationBar.barTintColor = [UIColor colorWithHexString:@"#424548"];
@@ -259,24 +242,32 @@
 
 
 #pragma mark - bottomButtonsDelegate
+//静音
 - (void)bottomMuteClick{
     [self muteAudioAction];
 }
-
+//开关摄像头
 - (void)bottomButtonClick{
     
     [self closeVideoAction];
 }
+//文件分享
+- (void)bottomShareFileButtonClick{
+    
+}
 
+//成员
 - (void)bottomMembersButtonClick{
     TXTGroupMemberViewController *vc = [[TXTGroupMemberViewController alloc] init];
     [self.navigationController pushViewController:self.groupMemberViewController animated:YES];
-//    TXTChatViewController *vc = [[TXTChatViewController alloc] init];
-//    [self.navigationController pushViewController:vc animated:YES];
     return;
 }
-
+//录制
 - (void)bottomShareSceneButtonClick{
+    
+}
+//更多
+- (void)bottomMoreActionButtonClick{
     
 }
 
@@ -328,25 +319,70 @@
     self.muteState = !self.muteState;
 }
 
+- (void)switchCamera{
+    [[[TICManager sharedInstance] getTRTCCloud] switchCamera];
+}
+
+- (void)changeAudioRoute{
+    
+}
+
 #pragma mark - render view
 //更新布局
 - (void)updateRenderViewsLayout
 {
+//    [_renderVideoView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.mas_equalTo(self.view.mas_top).offset(Screen_Height/3);
+//        make.left.mas_equalTo(self.view.mas_left).offset(0);
+//        make.right.mas_equalTo(self.view.mas_right).offset(0);
+//        //
+//        make.height.mas_equalTo(500);
+//    }];
+    TXTUserModel *model = self.renderViews[0];
+    TXTUserModel *newModel = [[TXTUserModel alloc] init];
+    newModel.render = model.render;
+    newModel.showVideo = YES;
+    newModel.showAudio = model.showAudio;
+    newModel.info = model.info;
+    newModel.userRole = @"";
+    newModel.userName = model.userName;
+    newModel.userIcon = model.userIcon;
+    
+    TXTUserModel *newModel1 = [[TXTUserModel alloc] init];
+    newModel1.render = model.render;
+    newModel1.showVideo = NO;
+    newModel1.showAudio = model.showAudio;
+    newModel1.info = model.info;
+    newModel1.userRole = @"";
+    newModel1.userName = model.userName;
+    newModel1.userIcon = model.userIcon;
+    
+    [self.renderViews addObject:newModel];
+    [self.renderViews addObject:newModel1];
+
     self.renderVideoView.renderArray = self.renderViews;
     NSLog(@"updateRenderViewsLayout");
-//    if (self.renderViews.count == 1) {
-//        self.renderVideoView.backgroundColor = [UIColor yellowColor];
-//        [self.renderVideoView setVideoRenderNumber:TRTCVideoRenderNumber1 mode:TRTCVideoRenderModePortrait];
-//    }else if (self.renderViews.count == 2){
-//        [self.renderVideoView setVideoRenderNumber:TRTCVideoRenderNumber2 mode:TRTCVideoRenderModePortrait];
-//    }
-    [_renderVideoView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(self.view.mas_top).offset(Screen_Height/4);
-        make.left.mas_equalTo(self.view.mas_left).offset(0);
-        make.right.mas_equalTo(self.view.mas_right).offset(0);
-        make.height.mas_equalTo(Screen_Height/2.4);
-    }];
-    [self.renderVideoView setVideoRenderNumber:TRTCVideoRenderNumber1 mode:TRTCVideoRenderModePortrait];
+    if (self.renderViews.count == 1) {
+        [self.renderVideoView setVideoRenderNumber:TRTCVideoRenderNumber1 mode:TRTCVideoRenderModePortrait];
+    }else if (self.renderViews.count == 2){
+        TXTUserModel *model1 = self.renderViews[0];
+        TXTUserModel *model2 = self.renderViews[1];
+        if ( !model1.showVideo && !model2.showVideo){
+            
+        }else{
+            [_renderVideoView mas_updateConstraints:^(MASConstraintMaker *make) {
+                make.height.mas_equalTo(Screen_Height/3.5+Screen_Width/5.3/7*9);
+            }];
+        }
+       
+        [self.renderVideoView setVideoRenderNumber:TRTCVideoRenderNumber2 mode:TRTCVideoRenderModePortrait];
+    }else{
+        [_renderVideoView mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.height.mas_equalTo(Screen_Height/3.5+Screen_Width/5.3/7*9);
+        }];
+        [self.renderVideoView setVideoRenderNumber:TRTCVideoRenderNumber3 mode:TRTCVideoRenderModePortrait];
+    }
+    
 }
 
 
@@ -516,10 +552,14 @@
         _renderVideoView = [[renderVideoView alloc] init];
         [self.view addSubview:_renderVideoView];
         [_renderVideoView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.mas_equalTo(self.view.mas_safeAreaLayoutGuideTop).offset(Screen_Height/4);
+            make.top.mas_equalTo(self.view.mas_top).offset(Screen_Height/3);
             make.left.mas_equalTo(self.view.mas_left).offset(0);
             make.right.mas_equalTo(self.view.mas_right).offset(0);
             make.height.mas_equalTo(Screen_Height/3.5);
+//            make.top.mas_equalTo(self.view.mas_top).offset(Screen_Height/3);
+//            make.left.mas_equalTo(self.view.mas_left).offset(0);
+//            make.right.mas_equalTo(self.view.mas_right).offset(0);
+//            make.height.mas_equalTo(Screen_Height/3.5+Screen_Width/5.3/7*9);
         }];
     }
     return _renderVideoView;
