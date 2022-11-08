@@ -15,6 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 // 成员管理
 @property (strong, nonatomic) NSMutableArray *manageMembersArr;
 
+@property (nonatomic, copy) dispatch_block_t closeBlock;
 @end
 
 NS_ASSUME_NONNULL_END

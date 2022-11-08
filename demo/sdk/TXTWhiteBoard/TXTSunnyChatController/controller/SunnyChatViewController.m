@@ -19,6 +19,7 @@
 
 #import "TXTGroupMemberViewController.h"
 #import "TXTChatViewController.h"
+#import "TXTWhiteBoardViewController.h"
 
 @interface SunnyChatViewController ()<bottomButtonsDelegate, TICEventListener, TICMessageListener, TICStatusListener>
 @property (nonatomic, strong) bottomButtons *bottomToos;//底部视图
@@ -263,9 +264,21 @@
     [self muteAudioAction];
 }
 
-- (void)bottomButtonClick{
-    TXTGroupMemberViewController *vc = [[TXTGroupMemberViewController alloc] init];
-    [self.navigationController pushViewController:self.groupMemberViewController animated:YES];
+- (void)bottomButtonClick {
+    TXTWhiteBoardViewController *vc = [[TXTWhiteBoardViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
+//    [self addChildViewController:vc];
+//    [self.view addSubview:vc.view];
+//    [vc.view mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.edges.equalTo(self.view);
+//    }];
+//    TXTGroupMemberViewController *vc = [[TXTGroupMemberViewController alloc] init];
+//    vc.manageMembersArr = self.renderViews;
+//    self.groupMemberViewController = vc;
+//    vc.closeBlock = ^{
+//        self.groupMemberViewController = nil;
+//    };
+//    [self.navigationController pushViewController:vc animated:YES];
 //    TXTChatViewController *vc = [[TXTChatViewController alloc] init];
 //    [self.navigationController pushViewController:vc animated:YES];
     return;
@@ -611,13 +624,5 @@
 //- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation{
 //    return UIInterfaceOrientationLandscapeLeft;
 //}
-
-- (TXTGroupMemberViewController *)groupMemberViewController {
-    if (!_groupMemberViewController) {
-        TXTGroupMemberViewController *groupMemberViewController = [[TXTGroupMemberViewController alloc] init];
-        self.groupMemberViewController = groupMemberViewController;
-    }
-    return _groupMemberViewController;
-}
 
 @end

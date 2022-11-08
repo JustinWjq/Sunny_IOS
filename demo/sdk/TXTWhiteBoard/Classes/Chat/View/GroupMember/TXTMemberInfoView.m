@@ -186,25 +186,39 @@ static TXTMemberInfoView *_alertView = nil; //第一步：静态实例，并初�
 - (void)btnClick:(UIButton *)btn {
     NSInteger tag = btn.tag - kBtnTag;
     if (tag == 0) {
-        NSDictionary *dict = @{@"userId":self.model.render.userId,@"muteAudio":@(!self.model.showAudio)};
-        NSDictionary *messagedict = @{@"serviceId":TXUserDefaultsGetObjectforKey(ServiceId),@"type":@"muteAudio",@"agentId":TXUserDefaultsGetObjectforKey(AgentId),@"users":@[dict]};
-        NSString *str = [[TXTCommon sharedInstance] convertToJsonData:messagedict];
-        [[TICManager sharedInstance] sendGroupTextMessage:str callback:^(TICModule module, int code, NSString *desc) {
-            if(code == 0){
-                [[JMToast sharedToast] showDialogWithMsg:@"操作成功"];
-            }
-            [TXTMemberInfoView hide];
-        }];
+        if ([self.model.userRole isEqualToString:@"owner"]) {
+            self.model.showAudio = !self.model.showAudio;
+            [[[TICManager sharedInstance] getTRTCCloud] muteLocalVideo:self.model.showAudio];
+            [self sureBtnClick];
+        } else {
+            NSDictionary *dict = @{@"userId":self.model.render.userId,@"muteAudio":@(!self.model.showAudio)};
+            NSDictionary *messagedict = @{@"serviceId":TXUserDefaultsGetObjectforKey(ServiceId),@"type":@"muteAudio",@"agentId":TXUserDefaultsGetObjectforKey(AgentId),@"users":@[dict]};
+            NSString *str = [[TXTCommon sharedInstance] convertToJsonData:messagedict];
+            [[TICManager sharedInstance] sendGroupTextMessage:str callback:^(TICModule module, int code, NSString *desc) {
+                if(code == 0){
+                    [[JMToast sharedToast] showDialogWithMsg:@"操作成功"];
+                }
+                [TXTMemberInfoView hide];
+            }];
+        }
     } else if (tag == 1) {
-        NSDictionary *dict = @{@"userId":self.model.render.userId,@"muteVideo":@(!self.model.showVideo)};
-        NSDictionary *messagedict = @{@"serviceId":TXUserDefaultsGetObjectforKey(ServiceId),@"type":@"muteVideo",@"agentId":TXUserDefaultsGetObjectforKey(AgentId),@"users":@[dict]};
-        NSString *str = [[TXTCommon sharedInstance] convertToJsonData:messagedict];
-        [[TICManager sharedInstance] sendGroupTextMessage:str callback:^(TICModule module, int code, NSString *desc) {
-            if(code == 0){
-                [[JMToast sharedToast] showDialogWithMsg:@"操作成功"];
-            }
-            [TXTMemberInfoView hide];
-        }];
+        
+        if ([self.model.userRole isEqualToString:@"owner"]) {
+            self.model.showVideo = !self.model.showVideo;
+            [[[TICManager sharedInstance] getTRTCCloud] muteLocalVideo:self.model.showVideo];
+            [self sureBtnClick];
+        } else {
+            NSDictionary *dict = @{@"userId":self.model.render.userId,@"muteVideo":@(!self.model.showVideo)};
+            NSDictionary *messagedict = @{@"serviceId":TXUserDefaultsGetObjectforKey(ServiceId),@"type":@"muteVideo",@"agentId":TXUserDefaultsGetObjectforKey(AgentId),@"users":@[dict]};
+            NSString *str = [[TXTCommon sharedInstance] convertToJsonData:messagedict];
+            [[TICManager sharedInstance] sendGroupTextMessage:str callback:^(TICModule module, int code, NSString *desc) {
+                if(code == 0){
+                    [[JMToast sharedToast] showDialogWithMsg:@"操作成功"];
+                }
+                
+                [TXTMemberInfoView hide];
+            }];
+        }
     }
 }
 
