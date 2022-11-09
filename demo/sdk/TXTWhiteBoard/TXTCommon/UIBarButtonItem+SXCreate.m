@@ -53,7 +53,7 @@
 }
 
 +(UIBarButtonItem *)itemWithTarget:(id)target action:(SEL)action title:(NSString *)title titleEdgeInsets:(UIEdgeInsets)titleEdgeInsets {
-    return [self itemWithTarget:target action:action title:title font:nil titleColor:nil highlightedColor:nil titleEdgeInsets:titleEdgeInsets];
+    return [self itemWithTarget:target action:action title:title font:[UIFont systemFontOfSize:15] titleColor:nil highlightedColor:nil titleEdgeInsets:titleEdgeInsets];
 }
 
 +(UIBarButtonItem *)itemWithTarget:(id)target
@@ -66,12 +66,16 @@
     
     UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
     [button addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
-    
+
     [button setTitle:title forState:UIControlStateNormal];
     button.titleLabel.font = font?font:nil;
-    [button setTitleColor:titleColor?titleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [button setTitleColor:titleColor?titleColor:titleColor forState:UIControlStateNormal];
     [button setTitleColor:highlightedColor?highlightedColor:nil forState:UIControlStateHighlighted];
     
+//    UIButton *button = [UIButton buttonWithTitle:title titleColor:titleColor font:font target:target action:@selector(action)];
+    button.borderColor = titleColor;
+    button.borderWidth = 1;
+    button.cornerRadius = 5;
     [button sizeToFit];
     if (button.bounds.size.width < 40) {
         CGFloat width = 40 / button.bounds.size.height * button.bounds.size.width;
@@ -81,7 +85,8 @@
         CGFloat height = 40 / button.bounds.size.width * button.bounds.size.height;
         button.bounds = CGRectMake(0, 0, 40, height);
     }
-    button.titleEdgeInsets = titleEdgeInsets;
+    button.bounds = CGRectMake(-20, 0, 60, 30);
+//    button.titleEdgeInsets = titleEdgeInsets;
     return [[UIBarButtonItem alloc] initWithCustomView:button];
 }
 

@@ -11,8 +11,10 @@
 #import "TICRenderView.h"
 #import "TXTUserModel.h"
 
-#define imageWidth self.frame.size.width/4.2
-@interface TXTVideoCollectionView()<UICollectionViewDelegate,UICollectionViewDataSource>
+#define imageWidth Screen_Width/5.3
+#define imageHeight Screen_Width/5.3/7*9
+#define ReuseIdentifier @"videoCell"
+@interface TXTVideoCollectionView()<UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout>
 
 @end
 
@@ -21,16 +23,14 @@
 - (instancetype)init{
     self = [super init];
     if (self) {
-//        _collectionView = [[UICollectionView alloc] init];
-//        [self config];
+        [self config];
     }
     return self;
 }
 
 - (void)setRenderViewsArray:(NSArray *)renderViewsArray{
     _renderViewsArray = renderViewsArray;
-    [self config];
-//    [_collectionView reloadData];
+    [_collectionView reloadData];
 }
 
 - (void)setUserVolumesArray:(NSArray *)userVolumesArray{
@@ -60,17 +60,14 @@
         UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
         layout.minimumLineSpacing = 1;
         layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
-        _collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height) collectionViewLayout:layout];
+        _collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, Screen_Width, imageHeight) collectionViewLayout:layout];
+        
         [self addSubview:_collectionView];
-        _collectionView.backgroundColor = [UIColor orangeColor];
+        _collectionView.backgroundColor = [UIColor colorWithHexString:@"#222222"];
         _collectionView.showsHorizontalScrollIndicator = NO;
         _collectionView.delegate = self;
         _collectionView.dataSource = self;
-//        NSString *path = [[NSBundle mainBundle] pathForResource:@"txtBundle" ofType:@"bundle"];
-//        NSBundle *SDKBundle = [NSBundle bundleWithPath:path];
-//        [_collectionView registerNib:[UINib nibWithNibName:@"TXTVideoCollectionViewCell" bundle:SDKBundle] forCellWithReuseIdentifier:@"videoCell"];
-//        TXTVideoCollectionViewCell *cell = [[TXTVideoCollectionViewCell alloc] init];
-        [_collectionView registerClass:[TXTVideoCollectionViewCell class] forCellWithReuseIdentifier:@"videoCell"];
+        [_collectionView registerClass:[TXTVideoCollectionViewCell class] forCellWithReuseIdentifier:ReuseIdentifier];
     }else{
         [_collectionView reloadData];
     }
@@ -81,7 +78,10 @@
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
-    TXTVideoCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"videoCell" forIndexPath:indexPath];
+    TXTVideoCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:ReuseIdentifier forIndexPath:indexPath];
+//    if (cell == nil) {
+//        cell = [[TXTVideoCollectionViewCell alloc] initWithFrame:CGRectMake(0, 0, imageWidth, self.frame.size.height)];
+//    }
     [cell configVideoCell:self.renderViewsArray[indexPath.row] Width:imageWidth Height:self.frame.size.height VoiceVolume:self.userVolumesArray];
     return cell;
 }
@@ -92,15 +92,15 @@
 }
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section {
-    return 5;
+    return 1;
 }
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section {
-    return 5;
+    return 1;
 }
 
 -(UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section{
-    return UIEdgeInsetsMake(0, 5, 0, 0);
+    return UIEdgeInsetsMake(0, 1, 0, 0);
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{

@@ -8,25 +8,27 @@
 
 #import "TXTVideoCollectionViewCell.h"
 #import "UIImageView+WebCache.h"
+#import "videoView.h"
 
 #define COLOR_WITH_HEX(hexValue) [UIColor colorWithRed:((float)((hexValue & 0xFF0000) >> 16)) / 255.0 green:((float)((hexValue & 0xFF00) >> 8)) / 255.0 blue:((float)(hexValue & 0xFF)) / 255.0 alpha:1.0f]
 
 
 @implementation TXTVideoCollectionViewCell
 
-- (void)awakeFromNib {
-    [super awakeFromNib];
-    // Initialization code
+- (instancetype)initWithFrame:(CGRect)frame {
+    if(self = [super initWithFrame:frame]){
+//        [self setUI];
+    }
+    return self;
 }
 
-//- (void)testCellWidth:(CGFloat)width Height:(CGFloat)height{
-//    UIImageView *defaultImage = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, width, height)];
-//    defaultImage.contentMode = UIViewContentModeScaleAspectFit;
-//    //0x464950
-//    self.backgroundColor = COLOR_WITH_HEX(0x464950);
-//    [self addSubview:defaultImage];
-//    defaultImage.image = [UIImage imageNamed:@"noVideo" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
-//}
+- (void)setUI{
+    self.backgroundColor = COLOR_WITH_HEX(0x464950);
+    UIImageView *defaultImage = [[UIImageView alloc] initWithFrame:self.frame];
+    defaultImage.contentMode = UIViewContentModeScaleAspectFit;
+    [self addSubview:defaultImage];
+    defaultImage.image = [UIImage imageNamed:@"noVideo" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
+}
 
 - (void)configVideoCell:(TXTUserModel *)model Width:(CGFloat)width Height:(CGFloat)height VoiceVolume:(NSArray<TRTCVolumeInfo *> *)userVolumes{
     [self setcell:model Width:width Height:height VoiceVolume:userVolumes];
@@ -37,133 +39,105 @@
 //        [view removeFromSuperview];
 //    }
     NSLog(@"setcell");
-    TICRenderView *render = model.render;
+    videoView *videoview = [[videoView alloc] init];
+    [self addSubview:videoview];
+    [videoview mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(self.mas_top).offset(0);
+        make.left.mas_equalTo(self.mas_left).offset(0);
+        make.right.mas_equalTo(self.mas_right).offset(0);
+        make.bottom.mas_equalTo(self.mas_bottom).offset(0);
+    }];
+    videoview.userModel = model;
     if (model.showVideo) {
-        render.frame = CGRectMake(0, 0, width, height);
-        [self addSubview:render];
-        [[[TICManager sharedInstance] getTRTCCloud] startRemoteView:render.userId view:render];
-        [[[TICManager sharedInstance] getTRTCCloud] setRemoteViewFillMode:render.userId mode:TRTCVideoFillMode_Fill];
+       
+        [videoview showVideoView];
     }else{
-        self.backgroundColor = COLOR_WITH_HEX(0x464950);
-        UIImageView *defaultImage = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, width, height)];
-        defaultImage.contentMode = UIViewContentModeScaleAspectFit;
-        [self addSubview:defaultImage];
-//        [[[TICManager sharedInstance] getTRTCCloud] stopRemoteView:render.userId];
-        //videoing@2x.png
-        if (model.useShare) {
-            [[[TICManager sharedInstance] getTRTCCloud] startRemoteView:render.userId view:render];
-            [[[TICManager sharedInstance] getTRTCCloud] setRemoteViewFillMode:render.userId mode:TRTCVideoFillMode_Fill];
-            defaultImage.image = [UIImage imageNamed:@"videoing" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
-        }else{
-            [[[TICManager sharedInstance] getTRTCCloud] stopRemoteView:render.userId];
-            defaultImage.image = [UIImage imageNamed:@"noVideo" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
-        }
+//        [videoview mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.centerX.mas_equalTo(self.mas_centerX).offset(0);
+//            make.centerY.mas_equalTo(self.mas_centerY).offset(0);
+//            make.width.mas_equalTo(width);
+//            make.height.mas_equalTo(width);
+//        }];
+//        videoview.userModel = model;
+        [videoview initHideUIDirectionLeft:NO];
     }
     
-    
-    UIView *bgView = [[UIView alloc] initWithFrame:CGRectMake(0, height-20, width, 20)];
-    bgView.backgroundColor = [UIColor blackColor];
-    bgView.alpha = 0.6;
-    //    txViewRadius(bgView, 20/2);
-    [self addSubview:bgView];
-    
-    //[self.fileImage sd_setImageWithURL:[NSURL URLWithString:[dict valueForKey:@"url"]] placeholderImage:[UIImage imageNamed:@"default" inBundle:SDKBundle compatibleWithTraitCollection:nil]];
-    if ([model.userRole isEqualToString:@"owner"] || [model.userRole isEqualToString:@"assistant"]) {
-        UIImageView *ownerImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, height-20, 10, 20)];
-        ownerImageView.contentMode = UIViewContentModeScaleAspectFit;
-        [ownerImageView sd_setImageWithURL:[NSURL URLWithString:model.userIcon] placeholderImage:nil];
-//        ownerImageView.image = [UIImage imageNamed:@"ownerHeader@2x.png" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
-        [self addSubview:ownerImageView];
-    }
-    
-    //CGRectMake(25, height-25, width-25, 20)
-    UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(25, height-20, width-25, 20)];
-//    if ([model.userRole isEqualToString:@"owner"]) {
-//        nameLabel.text = @"业务员";
+//    UIImageView *muteImageView = [[UIImageView alloc] initWithFrame:CGRectMake(10, height-20, 10, 20)];
+//
+//    muteImageView.image = [UIImage imageNamed:@"mute_0@2x.png" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
+//    muteImageView.contentMode = UIViewContentModeScaleAspectFit;
+//    muteImageView.tag = 1234;
+//    [self addSubview:muteImageView];
+//    if (model.showAudio) {
+////        NSLog(@"2222222222222");
+//        for (TRTCVolumeInfo *info in userVolumes) {
+//            NSLog(@"=======++++++++++++++====%@==%@",info.userId,render.userId);
+//            if ([info.userId isEqualToString:render.userId]) {
+//                NSLog(@"进入%@-%d",info.userId,info.volume);
+//                NSInteger level = info.volume/20;
+//                switch (level) {
+//                    case 0:
+//                        muteImageView.image = [UIImage imageNamed:@"mute_0@2x.png" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
+//                        break;
+//                    case 1:
+//                        muteImageView.image = [UIImage imageNamed:@"mute_20@2x.png" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
+//                        break;
+//                    case 2:
+//                        muteImageView.image = [UIImage imageNamed:@"mute_40@2x.png" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
+//                        break;
+//                    case 3:
+//                        muteImageView.image = [UIImage imageNamed:@"mute_60@2x.png" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
+//                        break;
+//                    case 4:
+//                        muteImageView.image = [UIImage imageNamed:@"mute_80@2x.png" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
+//                        break;
+//                    case 5:
+//                        muteImageView.image = [UIImage imageNamed:@"mute_100@2x.png" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
+//                        break;
+//
+//                    default:
+//                        muteImageView.image = [UIImage imageNamed:@"mute_0@2x.png" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
+//                        break;
+//                }
+//            }else{
+//                if (info.userId == nil && [model.userRole isEqualToString:@"owner"]) {
+//                    NSLog(@"进入%@-%d",info.userId,info.volume);
+//                    NSInteger level = info.volume/20;
+//                    switch (level) {
+//                        case 0:
+//                            muteImageView.image = [UIImage imageNamed:@"mute_0@2x.png" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
+//                            break;
+//                        case 1:
+//                            muteImageView.image = [UIImage imageNamed:@"mute_20@2x.png" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
+//                            break;
+//                        case 2:
+//                            muteImageView.image = [UIImage imageNamed:@"mute_40@2x.png" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
+//                            break;
+//                        case 3:
+//                            muteImageView.image = [UIImage imageNamed:@"mute_60@2x.png" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
+//                            break;
+//                        case 4:
+//                            muteImageView.image = [UIImage imageNamed:@"mute_80@2x.png" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
+//                            break;
+//                        case 5:
+//                            muteImageView.image = [UIImage imageNamed:@"mute_100@2x.png" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
+//                            break;
+//
+//                        default:
+//                            muteImageView.image = [UIImage imageNamed:@"mute_0@2x.png" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
+//                            break;
+//                    }
+//                }else{
+//
+//                }
+//            }
+//
+//        }
+//
 //    }else{
-//        nameLabel.text = model.userName;
+////        NSLog(@"==================%@",render.userId);
+//        muteImageView.image = [UIImage imageNamed:@"mute_no@2x.png" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
 //    }
-    nameLabel.text = model.userName;
-    nameLabel.textColor = [UIColor whiteColor];
-    nameLabel.font = [UIFont systemFontOfSize:13.0];
-    [self addSubview:nameLabel];
-    
-    UIImageView *muteImageView = [[UIImageView alloc] initWithFrame:CGRectMake(10, height-20, 10, 20)];
-   
-    muteImageView.image = [UIImage imageNamed:@"mute_0@2x.png" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
-    muteImageView.contentMode = UIViewContentModeScaleAspectFit;
-    muteImageView.tag = 1234;
-    [self addSubview:muteImageView];
-    if (model.showAudio) {
-//        NSLog(@"2222222222222");
-        for (TRTCVolumeInfo *info in userVolumes) {
-            NSLog(@"=======++++++++++++++====%@==%@",info.userId,render.userId);
-            if ([info.userId isEqualToString:render.userId]) {
-                NSLog(@"进入%@-%d",info.userId,info.volume);
-                NSInteger level = info.volume/20;
-                switch (level) {
-                    case 0:
-                        muteImageView.image = [UIImage imageNamed:@"mute_0@2x.png" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
-                        break;
-                    case 1:
-                        muteImageView.image = [UIImage imageNamed:@"mute_20@2x.png" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
-                        break;
-                    case 2:
-                        muteImageView.image = [UIImage imageNamed:@"mute_40@2x.png" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
-                        break;
-                    case 3:
-                        muteImageView.image = [UIImage imageNamed:@"mute_60@2x.png" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
-                        break;
-                    case 4:
-                        muteImageView.image = [UIImage imageNamed:@"mute_80@2x.png" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
-                        break;
-                    case 5:
-                        muteImageView.image = [UIImage imageNamed:@"mute_100@2x.png" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
-                        break;
-                        
-                    default:
-                        muteImageView.image = [UIImage imageNamed:@"mute_0@2x.png" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
-                        break;
-                }
-            }else{
-                if (info.userId == nil && [model.userRole isEqualToString:@"owner"]) {
-                    NSLog(@"进入%@-%d",info.userId,info.volume);
-                    NSInteger level = info.volume/20;
-                    switch (level) {
-                        case 0:
-                            muteImageView.image = [UIImage imageNamed:@"mute_0@2x.png" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
-                            break;
-                        case 1:
-                            muteImageView.image = [UIImage imageNamed:@"mute_20@2x.png" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
-                            break;
-                        case 2:
-                            muteImageView.image = [UIImage imageNamed:@"mute_40@2x.png" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
-                            break;
-                        case 3:
-                            muteImageView.image = [UIImage imageNamed:@"mute_60@2x.png" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
-                            break;
-                        case 4:
-                            muteImageView.image = [UIImage imageNamed:@"mute_80@2x.png" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
-                            break;
-                        case 5:
-                            muteImageView.image = [UIImage imageNamed:@"mute_100@2x.png" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
-                            break;
-                            
-                        default:
-                            muteImageView.image = [UIImage imageNamed:@"mute_0@2x.png" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
-                            break;
-                    }
-                }else{
-                    
-                }
-            }
-            
-        }
-        
-    }else{
-//        NSLog(@"==================%@",render.userId);
-        muteImageView.image = [UIImage imageNamed:@"mute_no@2x.png" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
-    }
     [CATransaction commit];
 }
 
