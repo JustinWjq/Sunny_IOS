@@ -12,10 +12,12 @@
 #import "UINavigationSXFixSpace.h"
 #import "TXTCommon.h"
 #import "ZYSuspensionManager.h"
+//#import "TXTCommonAlertView.h"
 
 #import "TXTUserModel.h"
 #import "TICRenderView.h"
 #import "renderVideoView.h"
+#import "QFAlertView.h"
 
 #import "TXTGroupMemberViewController.h"
 #import "TXTChatViewController.h"
@@ -264,6 +266,40 @@
 }
 //录制
 - (void)bottomShareSceneButtonClick{
+    NSString *titleStr = @"本次录制需获得全部参会人员授权确";
+    NSString *desStr = @"认后可进行录制，请您确认";
+    UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:titleStr message:desStr preferredStyle:(UIAlertControllerStyleAlert)];
+     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+     NSLog(@"点击了Cancel");
+     [alertVC dismissViewControllerAnimated:YES completion:nil];
+     }];
+     UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+     NSLog(@"点击了OK");
+     //发消息
+         NSDictionary *messagedict = @{@"serviceId":TXUserDefaultsGetObjectforKey(ServiceId),@"type":MMStartRecordFromHost,@"userId":self.userId};
+         NSString *str = [[TXTCommon sharedInstance] convertToJsonData:messagedict];
+         [[TICManager sharedInstance] sendGroupTextMessage:str callback:^(TICModule module, int code, NSString *desc) {
+             NSLog(@"发消息");
+         }];
+     [alertVC dismissViewControllerAnimated:YES completion:nil];
+     }];
+     //修改title
+     NSMutableAttributedString *alertControllerStr = [[NSMutableAttributedString alloc] initWithString:titleStr];
+     [alertControllerStr addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithHexString:@"#666666"] range:NSRangeFromString(titleStr)];
+     [alertControllerStr addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:13] range:NSRangeFromString(titleStr)];
+     [alertVC setValue:alertControllerStr forKey:@"attributedTitle"];
+     //修改message
+     NSMutableAttributedString *alertControllerMessageStr = [[NSMutableAttributedString alloc] initWithString:desStr];
+     [alertControllerMessageStr addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithHexString:@"#666666"] range:NSRangeFromString(desStr)];
+     [alertControllerMessageStr addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:13] range:NSRangeFromString(desStr)];
+     [alertVC setValue:alertControllerMessageStr forKey:@"attributedMessage"];
+     //修改按钮字体颜色
+     [cancelAction setValue:[UIColor colorWithHexString:@"#666666"] forKey:@"titleTextColor"];
+     [okAction setValue:[UIColor colorWithHexString:@"#E6B980"] forKey:@"titleTextColor"];
+     [alertVC addAction:cancelAction];
+     [alertVC addAction:okAction];
+     [self presentViewController:alertVC animated:YES completion:nil];
+    
     
 }
 //更多
@@ -272,7 +308,7 @@
 }
 
 #pragma mark - action
-
+///开关摄像头
 - (void)closeVideoAction{
     for (int i = 0; i<self.renderViews.count; i++) {
         TXTUserModel *model = self.renderViews[i];
@@ -295,7 +331,7 @@
     self.state = !self.state;
 }
 
-
+///开关麦克风
 - (void)muteAudioAction{
     for (int i = 0; i<self.renderViews.count; i++) {
         TXTUserModel *model = self.renderViews[i];
@@ -319,12 +355,83 @@
     self.muteState = !self.muteState;
 }
 
+///翻转摄像头
 - (void)switchCamera{
     [[[TICManager sharedInstance] getTRTCCloud] switchCamera];
 }
 
+///切换扬声器
 - (void)changeAudioRoute{
     
+}
+
+///同屏
+- (void)selfPushToWebView:(NSString *)url WebId:(nonnull NSString *)webId ActionType:(NSString *)actionType{
+    if ([webId isEqualToString:@""] || [self.productName isEqualToString:@""]) {
+        [[JMToast sharedToast] showDialogWithMsg:@"同屏链接不存在"];
+        return;
+    }
+    
+//    UIViewController *currentvc = [[AFNHTTPSessionManager shareInstance] getCurrentVC];
+//    if ([currentvc isKindOfClass:[showWebViewController class]]) {
+//        [self.navigationController popViewControllerAnimated:YES];
+//    }
+//    self.webId = webId;
+//    NSLog(@"selfPushToWebView");
+//    self.backView.hidden = YES;
+//    self.shareState = YES;
+//    [self.webViewListController removeFromParentViewController];
+//    [self.webViewListController.view removeFromSuperview];
+//    self.drawBackView.hidden = YES;
+//    self.pptView.hidden = YES;
+//    self.showWebViewController.url = url;
+//    self.showWebViewController.webId = webId;
+//    self.showWebViewController.userModel = self.renderViews[0];
+//    self.showWebViewController.productName = self.productName;
+//    self.showWebViewController.actionType = actionType;
+//    self.showWebViewController.type = self.webType;
+//
+//    [self.navigationController pushViewController:self.showWebViewController animated:YES];
+  
+}
+///结束同屏
+- (void)hideshowview{
+//    self.backView.hidden = YES;
+//    self.otherShareStatus = NO;
+//    [self.webViewListController removeFromParentViewController];
+//    [self.webViewListController.view removeFromSuperview];
+//    [self.shareFileButton setImage:[UIImage imageNamed:@"fileShare_unselect" inBundle:TXSDKBundle compatibleWithTraitCollection:nil] forState:UIControlStateNormal];
+//    self.shareState = NO;
+}
+
+
+- (void)showAlertTitle:(NSString *)title Message:(NSString *)message cancleTitle:(NSString *)cancleTitle sureTitle:(NSString *)sureTitile{
+//    UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"" message:message preferredStyle:(UIAlertControllerStyleAlert)];
+//     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:cancleTitle style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+//     NSLog(@"点击了Cancel");
+//     [alertVC dismissViewControllerAnimated:YES completion:nil];
+//     }];
+//     UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+//     NSLog(@"点击了OK");
+////     [[NSUserDefaults standardUserDefaults] setObject:nil forKey:kLoginUserKey];
+//     [alertVC dismissViewControllerAnimated:YES completion:nil];
+//     }];
+//     //修改title
+//     NSMutableAttributedString *alertControllerStr = [[NSMutableAttributedString alloc] initWithString:@"提示"];
+//     [alertControllerStr addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithHexString:@"#666666"] range:NSMakeRange(0, 2)];
+//     [alertControllerStr addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:13] range:NSMakeRange(0, 2)];
+//     [alertVC setValue:alertControllerStr forKey:@"attributedTitle"];
+//     //修改message
+//     NSMutableAttributedString *alertControllerMessageStr = [[NSMutableAttributedString alloc] initWithString:desStr];
+//     [alertControllerMessageStr addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithHexString:@"#666666"] range:NSRangeFromString(desStr)];
+//     [alertControllerMessageStr addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:13] range:NSRangeFromString(desStr)];
+//     [alertVC setValue:alertControllerMessageStr forKey:@"attributedMessage"];
+//     //修改按钮字体颜色
+//     [cancelAction setValue:[UIColor colorWithHexString:@"#666666"] forKey:@"titleTextColor"];
+//     [okAction setValue:[UIColor colorWithHexString:@"#E6B980"] forKey:@"titleTextColor"];
+//     [alertVC addAction:cancelAction];
+//     [alertVC addAction:okAction];
+//     [self presentViewController:alertVC animated:YES completion:nil];
 }
 
 #pragma mark - render view
@@ -508,6 +615,249 @@
         [self roomInfo:userModel];
     }
 }
+
+- (void)onTICRecvMessage:(TIMMessage *)message{
+    int cnt = [message elemCount];
+    for (int i = 0; i < cnt; i++) {
+        TIMElem * elem = [message getElem:i];
+        NSLog(@"%@",[elem description]);
+        for (UIView *view in [ZYSuspensionManager windowForKey:@"videowindow"].subviews) {
+            if ([view isKindOfClass:[QFAlertView class]]) {
+                [view removeFromSuperview];
+            }
+        }
+        
+        
+        if ([elem isKindOfClass:[TIMTextElem class]]) {
+            TIMTextElem * text_elem = (TIMTextElem * )elem;
+            NSLog(@"onTICRecvMessage == %@",text_elem.text);
+            NSDictionary *dict = [[TXTCommon sharedInstance] dictionaryWithJsonString:text_elem.text];
+            NSString *type = [dict valueForKey:@"type"];
+            NSString *serviceId = [dict valueForKey:@"serviceId"];
+            NSDictionary *data = [dict valueForKey:@"data"];
+            //推送成功
+            if ([type isEqualToString:@"wxPushWebFileSuccess"]) {
+                NSLog(@"//推送成功");
+                NSString *userId = [dict valueForKey:@"userId"];
+                if ([userId isEqualToString:[TICConfig shareInstance].userId]) {
+                    [[JMToast sharedToast] showDialogWithMsg:@"推送成功"];
+                }
+            }
+            //参会人点击同意录制按钮
+            if ([type isEqualToString:MMAgreeStartRecord]) {
+                NSLog(@"参会人点击同意录制按钮");
+                NSString *userId = [dict valueForKey:@"userId"];
+                if ([userId isEqualToString:[TICConfig shareInstance].userId]) {
+                    //同意录制按钮变色
+                }
+            }
+            //参会人点击取消按钮
+            if ([type isEqualToString:MMRefuseStartRecord]) {
+                NSLog(@"参会人点击取消按钮");
+                NSString *userId = [dict valueForKey:@"userId"];
+                if ([userId isEqualToString:[TICConfig shareInstance].userId]) {
+                    //弹框，点击取消按钮,结束会议
+                }
+            }
+            //同屏
+            if ([type isEqualToString:@"wxShareWebFile"]) {
+                NSLog(@"同屏");
+                NSString *userId = [dict valueForKey:@"userId"];
+                if ([userId isEqualToString:[TICConfig shareInstance].userId]) {
+                    NSString *webURL = [dict valueForKey:@"webUrl"];
+                    NSString *webId = [dict valueForKey:@"webId"];
+                    self.webType = [dict valueForKey:@"fromId"];
+                    self.productName = [dict valueForKey:@"fileName"];
+                    [self selfPushToWebView:webURL WebId:webId ActionType:@"1"];
+                }
+                
+            }
+        
+            //结束同屏
+            if ([type isEqualToString:@"wxShareWebFileEnd"]) {
+                NSLog(@"同屏");
+                NSString *webURL = [dict valueForKey:@"webUrl"];
+                NSString *webId = [dict valueForKey:@"webId"];
+                NSString *userId = [dict valueForKey:@"userId"];
+                NSString *fromUserId = [dict valueForKey:@"fromUserId"];
+                NSString *toUserId = [dict valueForKey:@"toUserId"];
+                
+                if ([fromUserId isEqualToString:[TICConfig shareInstance].userId]) {
+                    NSDictionary *bodydic = @{@"webId":self.webId,@"serviceId":TXUserDefaultsGetObjectforKey(ServiceId),@"userId":userId};
+                    [[AFNHTTPSessionManager shareInstance] requestURL:ShareWebs_Stop RequestWay:@"POST" Header:nil Body:bodydic params:nil isFormData:NO success:^(NSError *error, id response) {
+                        NSString *errCode = [response valueForKey:@"errCode"];
+                        if ([errCode intValue] == 0) {
+                            [self.navigationController popViewControllerAnimated:YES];
+                            [self hideshowview];
+                        }
+                    } failure:^(NSError *error, id response) {
+                        
+                    }];
+                    [[JMToast sharedToast] showDialogWithMsg:@"对方已结束同屏"];
+                }
+                if ([toUserId isEqualToString:[TICConfig shareInstance].userId]) {
+                    [self.navigationController popViewControllerAnimated:YES];
+                    [self hideshowview];
+                    [[JMToast sharedToast] showDialogWithMsg:@"对方已结束同屏"];
+                }
+                
+                
+            }
+            
+            //共享白板
+            if ([type isEqualToString:@"shareWhiteboard"]) {
+                NSLog(@"shareWhiteboard");
+//                self.ShareStatusUserId = [dict valueForKey:@"shareUserId"];
+//                [self updateVideoView:@"insert" Index:self.renderViews.count];
+//                [self getWhiteBoard];
+//                self.isShowWhiteBoard = YES;
+//                self.otherShareStatus = YES;
+//                //                self.shareState = YES;
+//                self.pptView.hidden = YES;
+//                [self.drawBackView addSubview:self.brushView];
+//                [self.drawBackView addSubview:self.changeButton];
+            }
+            //结束共享白板
+            if ([type isEqualToString:@"endWhiteboard"]) {
+//                if (self.landscapeRoomViewController) {
+//                    [self.landscapeRoomViewController dismissViewControllerAnimated:YES completion:nil];
+//                }
+//                self.ShareStatusUserId = [dict valueForKey:@"shareUserId"];
+//                [self updateVideoView:@"remove" Index:1];
+//                self.isShowWhiteBoard = NO;
+//                [self removeWhiteBoard];
+//                [[[TICManager sharedInstance] getBoardController] reset];
+//                [self.brushView removeFromSuperview];
+//                self.otherShareStatus = NO;
+//                [self.shareFileButton setImage:[UIImage imageNamed:@"fileShare_unselect" inBundle:TXSDKBundle compatibleWithTraitCollection:nil] forState:UIControlStateNormal];
+            }
+            
+            //静音muteAudio
+            if ([type isEqualToString:@"muteAudio"]) {
+                NSLog(@"静音");
+                NSArray *usersArr = [dict valueForKey:@"users"];
+                for (NSDictionary *dict in usersArr) {
+                    NSString *userid = [dict valueForKey:@"userId"];
+                    if ([userid isEqualToString:[TICConfig shareInstance].userId]) {
+                        self.muteState = ![[dict valueForKey:@"muteAudio"] boolValue];
+                        [self muteAudioAction];
+                    }
+                    
+                }
+                
+            }
+            //摄像头
+            if ([type isEqualToString:@"muteVideo"]) {
+                NSLog(@"摄像头");
+                NSArray *usersArr = [dict valueForKey:@"users"];
+                for (NSDictionary *dict in usersArr) {
+                    NSString *userid = [dict valueForKey:@"userId"];
+                    if ([userid isEqualToString:[TICConfig shareInstance].userId]) {
+                        self.state = ![[dict valueForKey:@"muteVideo"] boolValue];
+                        [self closeVideoAction];
+                    }
+                    
+                }
+                
+            }
+            //客户拒绝加入房间
+            if ([type isEqualToString:@"notifyRefused"]) {
+                NSLog(@"客户拒绝加入房间");
+                NSDictionary *dataDict = [dict valueForKey:@"data"];
+                if ([[dataDict valueForKey:@"inviteAccount"] isEqualToString:[TICConfig shareInstance].userId]) {
+                    [[JMToast sharedToast] showDialogWithMsg:[NSString stringWithFormat:@"%@拒绝了您的邀请,请稍后再试",[dataDict valueForKey:@"userName"]]];
+                }
+            }
+            //通知延长
+//            if ([[TICConfig shareInstance].role isEqualToString:@"owner"]) {
+//                if (!self.sendMessage) {
+//                    return;
+//                }
+//                UIWindow *currentWindow = [ZYSuspensionManager windowForKey:@"videowindow"];
+//
+//                //通知延长
+//                if ([type isEqualToString:@"notifyExtend"]) {
+//                    if (currentWindow.frame.size.width < Screen_Width) {
+//                        NSLog(@"小屏中%f-%f",currentWindow.frame.size.width,Screen_Width);
+//                        return;
+//                    }
+//                    for (UIView *view in [ZYSuspensionManager windowForKey:@"videowindow"].subviews) {
+//                        if ([view isKindOfClass:[QFAlertView class]]) {
+//                            [view removeFromSuperview];
+//                        }
+//                    }
+//                    float notifyExtendTime = [[data valueForKey:@"notifyExtendTime"] floatValue];
+//                    NSInteger notifyExtendTimeMin = notifyExtendTime / 60 ;//房间通知延长时剩余时间/秒
+//                    float extendRoomTime = [[data valueForKey:@"extendRoomTime"] floatValue];//房间单次延长时间/秒
+//                    NSInteger extendRoomTimeMin = extendRoomTime / 60 ;
+//                    [[QFAlertView alertViewTitle:[NSString stringWithFormat:@"距离会议结束还有%d分钟,",notifyExtendTimeMin] des:[NSString stringWithFormat:@"确认延长有效时间%d分钟!",extendRoomTimeMin] leftTitle:@"取消延长" rightTitle:@"延长会话" leftAction:^{
+//
+//                    } rightAction:^{
+//                        [self extendTime:serviceId];
+//                    }] show];
+//                }
+//                //通知结束
+//                else if ([type isEqualToString:@"notifyEnd"]){
+//                    if (!self.sendMessage) {
+//                        return;
+//                    }
+//                    float extendRoomTime = [[data valueForKey:@"extendRoomTime"] floatValue];//房间单次延长时间/秒
+//                    NSInteger extendRoomTimeMin = extendRoomTime / 60 ;
+//                    NSInteger notifyEndTime = [[data valueForKey:@"notifyEndTime"] intValue];////房间通知延长时剩余时间/秒
+//                    __block NSInteger timeout = notifyEndTime +1;
+//                    dispatch_source_t _timer;
+//                    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+//                    _timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue);
+//                    dispatch_source_set_timer(_timer, dispatch_walltime(NULL, 0), 1.0*NSEC_PER_SEC, 0);//每秒执行
+//                    dispatch_source_set_event_handler(_timer, ^{
+//                        if (timeout == 0) {
+//                            dispatch_source_cancel(_timer);
+//                            dispatch_async(dispatch_get_main_queue(), ^{
+//                                NSLog(@"计时结束");
+//                                for (UIView *view in self.view.subviews) {
+//                                    if ([view isKindOfClass:[QFAlertView class]]) {
+//                                        [view removeFromSuperview];
+//                                    }
+//                                }
+//                                [self quit];
+//                            });
+//                        }else {
+//                            timeout--;
+//                        }
+//                    });
+//                    dispatch_resume(_timer);
+//                    if (currentWindow.frame.size.width < Screen_Width) {
+//                        NSLog(@"小屏中%f-%f",currentWindow.frame.size.width,Screen_Width);
+//                        return;
+//                    }
+//                    for (UIView *view in [ZYSuspensionManager windowForKey:@"videowindow"].subviews) {
+//                        if ([view isKindOfClass:[QFAlertView class]]) {
+//                            [view removeFromSuperview];
+//                        }
+//                    }
+//                    [[QFAlertView alertViewTitle:@"会议有效时间已用尽" msg:[NSString stringWithFormat:@"确认延长有效时间%d分钟?",extendRoomTimeMin] des:[NSString stringWithFormat:@"(若%d秒内无操作将自动结束会话)",notifyEndTime] leftTitle:[NSString stringWithFormat:@"结束会话(%ds)",notifyEndTime] rightTitle:@"延长会话" time:notifyEndTime leftAction:^{
+//                        dispatch_source_cancel(_timer);
+//                        [self quit];
+//                    } rightAction:^{
+//                        dispatch_source_cancel(_timer);
+//                        [self extendTime:serviceId];
+//                    }] show];
+//
+//
+//                }else{
+//                    break;
+//                }
+//
+//            }else{
+//                if ([type isEqualToString:@"end"]) {
+//                    [self participantQuit];
+//                }
+//            }
+            
+        }
+    }
+}
+
 
 - (void)addNotification{
     [[TICManager sharedInstance] addIMessageListener:self];

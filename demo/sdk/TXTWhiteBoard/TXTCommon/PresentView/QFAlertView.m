@@ -289,6 +289,16 @@ typedef void(^animateBlock)(void);
     
 }
 
+//+(instancetype _Nullable )alertSystemViewTitle:(NSString *_Nullable)title
+//                                     msg:(NSString *_Nullable)msg
+//                                     des:(NSString *_Nullable)des
+//                                     leftTitle:(NSString *_Nullable)leftTitle
+//                                    rightTitle:(NSString *_Nullable)rightTitle
+//                                    leftAction:(void(^ _Nullable)(void))leftAction
+//                                   rightAction:(void(^ _Nullable)(void))rightAction{
+//    QFAlertView* view = [[QFAlertView alloc]init];
+//}
+
 
 - (void)setRightBtnColor:(UIColor *)rightBtnColor{
     _rightBtnColor = rightBtnColor;
@@ -332,16 +342,16 @@ typedef void(^animateBlock)(void);
         contentView=contentV;
         
         UILabel* tLb = [[UILabel alloc]init];
-        tLb.textColor=COLOR_WITH_HEX(0x4D4D4D);
-        tLb.font= [UIFont systemFontOfSize:Adapt(18)];
+        tLb.textColor=[UIColor colorWithHexString:@"#666666"];
+        tLb.font= [UIFont systemFontOfSize:Adapt(13)];
         tLb.numberOfLines=0;
         tLb.textAlignment=NSTextAlignmentCenter;
         [contentView addSubview:tLb];
         titleLb = tLb;
         
         UILabel* msgb = [[UILabel alloc]init];
-        msgb.textColor=COLOR_WITH_HEX(0x4D4D4D);
-        msgb.font= [UIFont systemFontOfSize:Adapt(18)];
+        msgb.textColor=[UIColor colorWithHexString:@"#666666"];
+        msgb.font= [UIFont systemFontOfSize:Adapt(13)];
         msgb.numberOfLines=0;
         msgb.textAlignment=NSTextAlignmentCenter;
         [contentView addSubview:msgb];
@@ -349,7 +359,7 @@ typedef void(^animateBlock)(void);
         
         UILabel* dLb = [[UILabel alloc]init];
         dLb.textColor=[UIColor redColor];
-        dLb.font= [UIFont systemFontOfSize:Adapt(14)];
+        dLb.font= [UIFont systemFontOfSize:Adapt(13)];
         dLb.numberOfLines=0;
         dLb.textAlignment=NSTextAlignmentCenter;
         [contentView addSubview:dLb];
@@ -357,25 +367,25 @@ typedef void(^animateBlock)(void);
         
         UIButton* sureB  = [[UIButton alloc]init];
         sureB.backgroundColor=[UIColor whiteColor];//_tintColor;
-        [sureB setTitleColor:COLOR_WITH_HEX(0x3E3E3E) forState:UIControlStateNormal];
-        sureB.titleLabel.font=[UIFont systemFontOfSize:Adapt(20)];
+        [sureB setTitleColor:[UIColor colorWithHexString:@"#E6B980"] forState:UIControlStateNormal];
+        sureB.titleLabel.font=[UIFont systemFontOfSize:Adapt(16)];
         sureB.tag=0;
         [sureB addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
         [contentView addSubview:sureB];
         sureBtn=sureB;
         sureB.layer.borderWidth = 0.5;
-        sureB.layer.borderColor = COLOR_WITH_HEX(0xCCCCCC).CGColor;
+        sureB.layer.borderColor = [UIColor colorWithHexString:@"#666666"].CGColor;
         
         UIButton* cancelB  = [[UIButton alloc]init];
         cancelB.backgroundColor = [UIColor whiteColor];
-        [cancelB setTitleColor:COLOR_WITH_HEX(0x02BB00) forState:UIControlStateNormal];
-        cancelB.titleLabel.font=[UIFont systemFontOfSize:Adapt(20)];
+        [cancelB setTitleColor:[UIColor colorWithHexString:@"#666666"] forState:UIControlStateNormal];
+        cancelB.titleLabel.font=[UIFont systemFontOfSize:Adapt(16)];
         cancelB.tag=1;
         [cancelB addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
         [contentView addSubview:cancelB];
         cancelBtn=cancelB;
         cancelB.layer.borderWidth = 0.5;
-        cancelB.layer.borderColor = COLOR_WITH_HEX(0xCCCCCC).CGColor;
+        cancelB.layer.borderColor = [UIColor colorWithHexString:@"#666666"].CGColor;
         
         //add shadow
         contentView.layer.shadowColor=[UIColor blackColor].CGColor;
