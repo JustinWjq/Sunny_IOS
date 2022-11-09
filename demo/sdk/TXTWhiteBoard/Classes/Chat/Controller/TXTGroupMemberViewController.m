@@ -8,10 +8,14 @@
 
 #import "TXTGroupMemberViewController.h"
 #import "TXTMemberView.h"
+#import "TXTTeleprompView.h"
 
-@interface TXTGroupMemberViewController () <TXTMemberViewDelegate>
+@interface TXTGroupMemberViewController () <TXTMemberViewDelegate, TXTTeleprompViewDelegate>
 /** memberView */
 @property (nonatomic, strong) TXTMemberView *memberView;
+
+/** teleprompView */
+@property (nonatomic, strong) TXTTeleprompView *teleprompView;
 
 @end
 
@@ -51,6 +55,15 @@
         make.top.equalTo(self.view.mas_top).offset([UIApplication sharedApplication].statusBarFrame.size.height);
         make.left.right.bottom.equalTo(self.view);
     }];
+    
+    [self.view addSubview:self.teleprompView];
+    [self.teleprompView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(10);
+        make.top.mas_equalTo(200);
+//        make.right.equalTo(self.view.mas_right).offset(-10);
+        make.height.mas_equalTo(36);
+        make.width.mas_equalTo(122);
+    }];
 }
 
 /// orientationChange
@@ -71,6 +84,7 @@
         }];
         [self.memberView updateUI:NO];
     }
+    [self teleprompViewDidClickSwitchView:self.teleprompView.switchView];
     [self.view layoutIfNeeded];
 }
 
@@ -90,11 +104,57 @@
 - (void)memberViewDidClickCloseBtn:(UIButton *)closeBtn {
 //    [self.memberView removeFromSuperview];
     [self.navigationController popViewControllerAnimated:YES];
+    if (self.closeBlock) {
+        self.closeBlock();
+    }
+}
+
+/// 点击了switch
+- (void)teleprompViewDidClickSwitchView:(UISwitch *)switchView {
+    if (switchView.isOn) {
+        if ([UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationPortrait || [UIApplication sharedApplication].statusBarOrientation == UIDeviceOrientationPortraitUpsideDown) {
+            [self.teleprompView mas_remakeConstraints:^(MASConstraintMaker *make) {
+                make.left.mas_equalTo(10);
+                make.top.mas_equalTo(200);
+                make.right.equalTo(self.view.mas_safeAreaLayoutGuideRight).offset(-10);
+                make.height.mas_equalTo(150).priorityHigh();
+            }];
+        } else {
+            [self.teleprompView mas_remakeConstraints:^(MASConstraintMaker *make) {
+                make.right.equalTo(self.view.mas_safeAreaLayoutGuideRight).offset(-10);
+                make.height.mas_equalTo(225).priorityHigh();
+                make.width.mas_equalTo(180);
+                make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideBottom).offset(-20);
+            }];
+        }
+        [self.teleprompView upDateUI:YES];
+    } else {
+        if ([UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationPortrait || [UIApplication sharedApplication].statusBarOrientation == UIDeviceOrientationPortraitUpsideDown) {
+            [self.teleprompView mas_remakeConstraints:^(MASConstraintMaker *make) {
+                make.left.mas_equalTo(10);
+                make.top.mas_equalTo(200);
+        //        make.right.equalTo(self.view.mas_right).offset(-10);
+                make.height.mas_equalTo(36);
+                make.width.mas_equalTo(122);
+            }];
+        } else {
+            [self.teleprompView mas_remakeConstraints:^(MASConstraintMaker *make) {
+                make.right.equalTo(self.view.mas_safeAreaLayoutGuideRight).offset(-10);
+                make.top.mas_equalTo(200);
+                make.height.mas_equalTo(36);
+                make.width.mas_equalTo(122);
+            }];
+        }
+        [self.teleprompView upDateUI:NO];
+    }
+    [self.view layoutIfNeeded];
 }
 #pragma mark - ☎️notification
 
 #pragma mark - 🎬event response
-
+- (void)dealloc {
+    
+}
 #pragma mark - ☸getter and setter
 - (TXTMemberView *)memberView {
     if (!_memberView) {
@@ -103,6 +163,15 @@
         self.memberView = memberView;
     }
     return _memberView;
+}
+
+- (TXTTeleprompView *)teleprompView {
+    if (!_teleprompView) {
+        TXTTeleprompView *teleprompView = [[TXTTeleprompView alloc] init];
+        teleprompView.delegate = self;
+        self.teleprompView = teleprompView;
+    }
+    return _teleprompView;
 }
 
 @end

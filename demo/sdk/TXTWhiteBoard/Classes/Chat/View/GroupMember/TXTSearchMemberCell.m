@@ -75,12 +75,12 @@
     _model = model;
     if (self.keyWord) {
         NSRange range = [model.userName rangeOfString:self.keyWord];
-        NSMutableAttributedString *attribute = [[NSMutableAttributedString alloc] initWithString:model.userName];
+        NSMutableAttributedString *attribute = [[NSMutableAttributedString alloc] initWithString:[model.userRole isEqualToString:@"owner"] ? [NSString stringWithFormat:@"%@（主持人、我）", model.userName] : model.userName];
         [attribute addAttribute:NSFontAttributeName value:[UIFont qs_regularFontWithSize:15] range:range];
         [attribute addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithHexString:@"E6B980"] range:range];
         self.nameLabel.attributedText = attribute;
     } else {
-        self.nameLabel.text = model.userName;
+        self.nameLabel.text = [model.userRole isEqualToString:@"owner"] ? [NSString stringWithFormat:@"%@（主持人、我）", model.userName] : model.userName;
     }
     [self.icon sd_setImageWithURL:[NSURL URLWithString:model.userIcon] placeholderImage:[UIImage imageNamed:@"HeadPortrait_s" inBundle:TXTSDKBundle compatibleWithTraitCollection:nil] completed:nil];
     self.videoBtn.selected = model.showVideo;

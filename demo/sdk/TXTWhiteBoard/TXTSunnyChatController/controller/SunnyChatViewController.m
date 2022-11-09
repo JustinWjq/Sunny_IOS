@@ -21,6 +21,7 @@
 
 #import "TXTGroupMemberViewController.h"
 #import "TXTChatViewController.h"
+#import "TXTWhiteBoardViewController.h"
 
 @interface SunnyChatViewController ()<bottomButtonsDelegate, TICEventListener, TICMessageListener, TICStatusListener>
 @property (nonatomic, strong) bottomButtons *bottomToos;//底部视图
@@ -248,9 +249,25 @@
 - (void)bottomMuteClick{
     [self muteAudioAction];
 }
-//开关摄像头
-- (void)bottomButtonClick{
-    
+
+- (void)bottomButtonClick {
+    TXTWhiteBoardViewController *vc = [[TXTWhiteBoardViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
+//    [self addChildViewController:vc];
+//    [self.view addSubview:vc.view];
+//    [vc.view mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.edges.equalTo(self.view);
+//    }];
+//    TXTGroupMemberViewController *vc = [[TXTGroupMemberViewController alloc] init];
+//    vc.manageMembersArr = self.renderViews;
+//    self.groupMemberViewController = vc;
+//    vc.closeBlock = ^{
+//        self.groupMemberViewController = nil;
+//    };
+//    [self.navigationController pushViewController:vc animated:YES];
+//    TXTChatViewController *vc = [[TXTChatViewController alloc] init];
+//    [self.navigationController pushViewController:vc animated:YES];
+    return;
     [self closeVideoAction];
 }
 //文件分享
@@ -1008,13 +1025,5 @@
 //- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation{
 //    return UIInterfaceOrientationLandscapeLeft;
 //}
-
-- (TXTGroupMemberViewController *)groupMemberViewController {
-    if (!_groupMemberViewController) {
-        TXTGroupMemberViewController *groupMemberViewController = [[TXTGroupMemberViewController alloc] init];
-        self.groupMemberViewController = groupMemberViewController;
-    }
-    return _groupMemberViewController;
-}
 
 @end

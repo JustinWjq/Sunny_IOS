@@ -105,6 +105,10 @@
 		F01D22E72917FB700025F107 /* QSTapGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = F01D22E52917FB700025F107 /* QSTapGestureRecognizer.m */; };
 		F050C78B2918B186002CA386 /* TXTAlertShareView.h in Headers */ = {isa = PBXBuildFile; fileRef = F050C7892918B186002CA386 /* TXTAlertShareView.h */; };
 		F050C78C2918B186002CA386 /* TXTAlertShareView.m in Sources */ = {isa = PBXBuildFile; fileRef = F050C78A2918B186002CA386 /* TXTAlertShareView.m */; };
+		F050C7902918BA1B002CA386 /* TXTCommonAlertView.h in Headers */ = {isa = PBXBuildFile; fileRef = F050C78E2918BA1B002CA386 /* TXTCommonAlertView.h */; };
+		F050C7912918BA1B002CA386 /* TXTCommonAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = F050C78F2918BA1B002CA386 /* TXTCommonAlertView.m */; };
+		F050C7952918E1A1002CA386 /* TXTTeleprompView.h in Headers */ = {isa = PBXBuildFile; fileRef = F050C7932918E1A1002CA386 /* TXTTeleprompView.h */; };
+		F050C7962918E1A1002CA386 /* TXTTeleprompView.m in Sources */ = {isa = PBXBuildFile; fileRef = F050C7942918E1A1002CA386 /* TXTTeleprompView.m */; };
 		F06CC9B62910E4A300CA4D6A /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = F06CC9832910E4A200CA4D6A /* LICENSE */; };
 		F06CC9B72910E4A300CA4D6A /* UIScrollView+MJRefresh.m in Sources */ = {isa = PBXBuildFile; fileRef = F06CC9852910E4A200CA4D6A /* UIScrollView+MJRefresh.m */; };
 		F06CC9B82910E4A300CA4D6A /* MJRefreshConst.m in Sources */ = {isa = PBXBuildFile; fileRef = F06CC9862910E4A200CA4D6A /* MJRefreshConst.m */; };
@@ -263,6 +267,14 @@
 		F0E22BBB2915179E00C1E031 /* NSString+Emoji.h in Headers */ = {isa = PBXBuildFile; fileRef = F0E22BB92915179E00C1E031 /* NSString+Emoji.h */; };
 		F0E22BBE291609A300C1E031 /* TXTGroupMemberViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = F0E22BBC291609A300C1E031 /* TXTGroupMemberViewController.h */; };
 		F0E22BBF291609A300C1E031 /* TXTGroupMemberViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0E22BBD291609A300C1E031 /* TXTGroupMemberViewController.m */; };
+		F0F3EFD32919F93F00FC0940 /* TXTWhiteBoardView.h in Headers */ = {isa = PBXBuildFile; fileRef = F0F3EFD12919F93F00FC0940 /* TXTWhiteBoardView.h */; };
+		F0F3EFD42919F93F00FC0940 /* TXTWhiteBoardView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0F3EFD22919F93F00FC0940 /* TXTWhiteBoardView.m */; };
+		F0F3EFD7291A1AFF00FC0940 /* TXTWhiteToolView.h in Headers */ = {isa = PBXBuildFile; fileRef = F0F3EFD5291A1AFE00FC0940 /* TXTWhiteToolView.h */; };
+		F0F3EFD8291A1AFF00FC0940 /* TXTWhiteToolView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0F3EFD6291A1AFE00FC0940 /* TXTWhiteToolView.m */; };
+		F0F3EFDF291A1B7500FC0940 /* TXTBrushThinView.h in Headers */ = {isa = PBXBuildFile; fileRef = F0F3EFDD291A1B7500FC0940 /* TXTBrushThinView.h */; };
+		F0F3EFE0291A1B7500FC0940 /* TXTBrushThinView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0F3EFDE291A1B7500FC0940 /* TXTBrushThinView.m */; };
+		F0F3EFE3291A2AB400FC0940 /* TXTWhiteBoardViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = F0F3EFE1291A2AB400FC0940 /* TXTWhiteBoardViewController.h */; };
+		F0F3EFE4291A2AB400FC0940 /* TXTWhiteBoardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0F3EFE2291A2AB400FC0940 /* TXTWhiteBoardViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -486,6 +498,10 @@
 		F01D22E52917FB700025F107 /* QSTapGestureRecognizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSTapGestureRecognizer.m; sourceTree = "<group>"; };
 		F050C7892918B186002CA386 /* TXTAlertShareView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXTAlertShareView.h; sourceTree = "<group>"; };
 		F050C78A2918B186002CA386 /* TXTAlertShareView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TXTAlertShareView.m; sourceTree = "<group>"; };
+		F050C78E2918BA1B002CA386 /* TXTCommonAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXTCommonAlertView.h; sourceTree = "<group>"; };
+		F050C78F2918BA1B002CA386 /* TXTCommonAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TXTCommonAlertView.m; sourceTree = "<group>"; };
+		F050C7932918E1A1002CA386 /* TXTTeleprompView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXTTeleprompView.h; sourceTree = "<group>"; };
+		F050C7942918E1A1002CA386 /* TXTTeleprompView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TXTTeleprompView.m; sourceTree = "<group>"; };
 		F06CC9832910E4A200CA4D6A /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		F06CC9852910E4A200CA4D6A /* UIScrollView+MJRefresh.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+MJRefresh.m"; sourceTree = "<group>"; };
 		F06CC9862910E4A200CA4D6A /* MJRefreshConst.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJRefreshConst.m; sourceTree = "<group>"; };
@@ -644,6 +660,14 @@
 		F0E22BB92915179E00C1E031 /* NSString+Emoji.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Emoji.h"; sourceTree = "<group>"; };
 		F0E22BBC291609A300C1E031 /* TXTGroupMemberViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXTGroupMemberViewController.h; sourceTree = "<group>"; };
 		F0E22BBD291609A300C1E031 /* TXTGroupMemberViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TXTGroupMemberViewController.m; sourceTree = "<group>"; };
+		F0F3EFD12919F93F00FC0940 /* TXTWhiteBoardView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXTWhiteBoardView.h; sourceTree = "<group>"; };
+		F0F3EFD22919F93F00FC0940 /* TXTWhiteBoardView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TXTWhiteBoardView.m; sourceTree = "<group>"; };
+		F0F3EFD5291A1AFE00FC0940 /* TXTWhiteToolView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXTWhiteToolView.h; sourceTree = "<group>"; };
+		F0F3EFD6291A1AFE00FC0940 /* TXTWhiteToolView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TXTWhiteToolView.m; sourceTree = "<group>"; };
+		F0F3EFDD291A1B7500FC0940 /* TXTBrushThinView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXTBrushThinView.h; sourceTree = "<group>"; };
+		F0F3EFDE291A1B7500FC0940 /* TXTBrushThinView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TXTBrushThinView.m; sourceTree = "<group>"; };
+		F0F3EFE1291A2AB400FC0940 /* TXTWhiteBoardViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXTWhiteBoardViewController.h; sourceTree = "<group>"; };
+		F0F3EFE2291A2AB400FC0940 /* TXTWhiteBoardViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TXTWhiteBoardViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1090,6 +1114,24 @@
 			path = view;
 			sourceTree = "<group>";
 		};
+		F050C78D2918B9E0002CA386 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				F050C78E2918BA1B002CA386 /* TXTCommonAlertView.h */,
+				F050C78F2918BA1B002CA386 /* TXTCommonAlertView.m */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		F050C7922918E16F002CA386 /* Teleprompter */ = {
+			isa = PBXGroup;
+			children = (
+				F050C7932918E1A1002CA386 /* TXTTeleprompView.h */,
+				F050C7942918E1A1002CA386 /* TXTTeleprompView.m */,
+			);
+			path = Teleprompter;
+			sourceTree = "<group>";
+		};
 		F06CC9822910E4A200CA4D6A /* MJRefresh */ = {
 			isa = PBXGroup;
 			children = (
@@ -1204,6 +1246,8 @@
 				F06CC9EC2910E5E600CA4D6A /* TXTChatViewController.m */,
 				F0E22BBC291609A300C1E031 /* TXTGroupMemberViewController.h */,
 				F0E22BBD291609A300C1E031 /* TXTGroupMemberViewController.m */,
+				F0F3EFE1291A2AB400FC0940 /* TXTWhiteBoardViewController.h */,
+				F0F3EFE2291A2AB400FC0940 /* TXTWhiteBoardViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1224,6 +1268,8 @@
 		F06CC9EE2910E5E600CA4D6A /* View */ = {
 			isa = PBXGroup;
 			children = (
+				F0F3EFCC2919E86F00FC0940 /* WhiteBoard */,
+				F050C7922918E16F002CA386 /* Teleprompter */,
 				F0E22BC029160AB400C1E031 /* GroupMember */,
 				F06CC9F22910E5E600CA4D6A /* TXTChatView.h */,
 				F06CC9F02910E5E600CA4D6A /* TXTChatView.m */,
@@ -1274,6 +1320,7 @@
 		F0816861290FC99400C5CA29 /* Main */ = {
 			isa = PBXGroup;
 			children = (
+				F050C78D2918B9E0002CA386 /* View */,
 				F0816862290FC9A100C5CA29 /* Category */,
 			);
 			path = Main;
@@ -1549,6 +1596,19 @@
 			path = GroupMember;
 			sourceTree = "<group>";
 		};
+		F0F3EFCC2919E86F00FC0940 /* WhiteBoard */ = {
+			isa = PBXGroup;
+			children = (
+				F0F3EFD12919F93F00FC0940 /* TXTWhiteBoardView.h */,
+				F0F3EFD22919F93F00FC0940 /* TXTWhiteBoardView.m */,
+				F0F3EFD5291A1AFE00FC0940 /* TXTWhiteToolView.h */,
+				F0F3EFD6291A1AFE00FC0940 /* TXTWhiteToolView.m */,
+				F0F3EFDD291A1B7500FC0940 /* TXTBrushThinView.h */,
+				F0F3EFDE291A1B7500FC0940 /* TXTBrushThinView.m */,
+			);
+			path = WhiteBoard;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -1567,6 +1627,7 @@
 				31C8511925B832C800D9EEA5 /* TXTCommon.h in Headers */,
 				F08168C7290FC9A200C5CA29 /* UIImage+ResizeMagick.h in Headers */,
 				31BE4842257A06E600AD1CEF /* ZYSuspensionManager.h in Headers */,
+				F050C7952918E1A1002CA386 /* TXTTeleprompView.h in Headers */,
 				F08168CE290FC9A200C5CA29 /* UIWindow+Extesion.h in Headers */,
 				F08168F7290FC9A200C5CA29 /* NSString+Frame.h in Headers */,
 				F08168F8290FC9A200C5CA29 /* NSString+EsayEncrypt.h in Headers */,
@@ -1612,6 +1673,7 @@
 				F06CC9C62910E4A300CA4D6A /* MJRefreshBackStateFooter.h in Headers */,
 				F08158462916713500EABBAC /* TXTTextField.h in Headers */,
 				F08168D6290FC9A200C5CA29 /* UIButton+link.h in Headers */,
+				F0F3EFD32919F93F00FC0940 /* TXTWhiteBoardView.h in Headers */,
 				F0E22BB22915109D00C1E031 /* TXTEmojiView.h in Headers */,
 				F06CC9DF2910E4A300CA4D6A /* MJRefreshFooter.h in Headers */,
 				F0E22BAC2915011900C1E031 /* YYModel.h in Headers */,
@@ -1630,6 +1692,7 @@
 				F08168E7290FC9A200C5CA29 /* UIView+IBExtension.h in Headers */,
 				F06CC9C22910E4A300CA4D6A /* UIScrollView+MJRefresh.h in Headers */,
 				311426F925A300AF00AC639A /* UIButton+Extension.h in Headers */,
+				F0F3EFE3291A2AB400FC0940 /* TXTWhiteBoardViewController.h in Headers */,
 				F0816900290FC9A200C5CA29 /* UIViewController+Extension.h in Headers */,
 				F0E22BBB2915179E00C1E031 /* NSString+Emoji.h in Headers */,
 				F0E22B9A2914F68100C1E031 /* TXTSmallMessageCell.h in Headers */,
@@ -1650,14 +1713,17 @@
 				F01D22DF2917B8B20025F107 /* QSCover.h in Headers */,
 				31D45EE22915271700765B6B /* UINavigationSXFixSpace.h in Headers */,
 				31D45ED82915270200765B6B /* videoView.h in Headers */,
+				F050C7902918BA1B002CA386 /* TXTCommonAlertView.h in Headers */,
 				31B5FD2B2501DC58006587C0 /* TICDef.h in Headers */,
 				311B596325F9B8630016CD59 /* UIColor+ColorHex.h in Headers */,
 				F0816908290FC9A200C5CA29 /* Extensions.h in Headers */,
 				F0E22BB6291512CC00C1E031 /* TXTEmojiCollectionViewCell.h in Headers */,
+				F0F3EFD7291A1AFF00FC0940 /* TXTWhiteToolView.h in Headers */,
 				F01D22E62917FB700025F107 /* QSTapGestureRecognizer.h in Headers */,
 				F06CC9C02910E4A300CA4D6A /* MJRefreshConfig.h in Headers */,
 				F08168F5290FC9A200C5CA29 /* NSString+extend.h in Headers */,
 				31B5FD242501DC58006587C0 /* ios-ntp.h in Headers */,
+				F0F3EFDF291A1B7500FC0940 /* TXTBrushThinView.h in Headers */,
 				F06CCA052910F03800CA4D6A /* QSLeftMessageCell.h in Headers */,
 				F08168D3290FC9A200C5CA29 /* UILabel+Extension.h in Headers */,
 				F06CCA0F2910F08600CA4D6A /* QSIMBubbleView.h in Headers */,
@@ -1792,6 +1858,7 @@
 				31D45ED72915270200765B6B /* TXTVideoCollectionViewCell.m in Sources */,
 				31B5FD342501DC58006587C0 /* TICConfig.m in Sources */,
 				31B5FD222501DC58006587C0 /* NSDate+NetworkClock.m in Sources */,
+				F0F3EFE0291A1B7500FC0940 /* TXTBrushThinView.m in Sources */,
 				F06CC9D62910E4A300CA4D6A /* MJRefreshGifHeader.m in Sources */,
 				F06CC9CF2910E4A300CA4D6A /* MJRefreshAutoGifFooter.m in Sources */,
 				F081690A290FC9A200C5CA29 /* UITextField+placeholderColor.m in Sources */,
@@ -1819,6 +1886,7 @@
 				F08168F4290FC9A200C5CA29 /* NSString+EsayEncrypt.m in Sources */,
 				F0E22BAD2915011900C1E031 /* NSObject+YYModel.m in Sources */,
 				F06CC9BF2910E4A300CA4D6A /* UIScrollView+MJExtension.m in Sources */,
+				F0F3EFD42919F93F00FC0940 /* TXTWhiteBoardView.m in Sources */,
 				F08168CC290FC9A200C5CA29 /* UIScreen+Extension.m in Sources */,
 				F06CC9D92910E4A300CA4D6A /* MJRefreshHeader.m in Sources */,
 				F06CC9C32910E4A300CA4D6A /* NSBundle+MJRefresh.m in Sources */,
@@ -1827,6 +1895,7 @@
 				311426FA25A300AF00AC639A /* UIView+JKBlockGesture.m in Sources */,
 				F08158432916504B00EABBAC /* TXTSearchMemberCell.m in Sources */,
 				31B5FD2A2501DC58006587C0 /* TICKeychainWrapper.m in Sources */,
+				F050C7962918E1A1002CA386 /* TXTTeleprompView.m in Sources */,
 				F06CCA092910F03800CA4D6A /* QSRightMessageCell.m in Sources */,
 				F06CC9B72910E4A300CA4D6A /* UIScrollView+MJRefresh.m in Sources */,
 				F0E22B972914F0C500C1E031 /* TXTSmallMessageView.m in Sources */,
@@ -1867,6 +1936,8 @@
 				31D45ED12915270200765B6B /* videoView.m in Sources */,
 				31D45ECC2915270200765B6B /* TXTUserModel.m in Sources */,
 				31B5FD272501DC58006587C0 /* NetAssociation.m in Sources */,
+				F0F3EFE4291A2AB400FC0940 /* TXTWhiteBoardViewController.m in Sources */,
+				F050C7912918BA1B002CA386 /* TXTCommonAlertView.m in Sources */,
 				F08168D2290FC9A200C5CA29 /* UILabel+currency.m in Sources */,
 				F0E22B802913C48600C1E031 /* TXTSmallChatView.m in Sources */,
 				F08168EA290FC9A200C5CA29 /* UIFont+QSExtention.m in Sources */,
@@ -1880,6 +1951,7 @@
 				F081690C290FC9A200C5CA29 /* NSDate+Utilities.m in Sources */,
 				311426F825A300AF00AC639A /* UIImage+Triangle.m in Sources */,
 				F081690E290FC9A200C5CA29 /* NSDate+Extension.m in Sources */,
+				F0F3EFD8291A1AFF00FC0940 /* TXTWhiteToolView.m in Sources */,
 				F06CCA182910F43A00CA4D6A /* JCHATStringUtils.m in Sources */,
 				F0816903290FC9A200C5CA29 /* NSArray+crash.m in Sources */,
 				31D45EE02915271700765B6B /* UINavigationSXFixSpace.m in Sources */,

@@ -14,6 +14,7 @@
 #import "TXTAlertShareView.h"
 #import "WXApi.h"
 #import "TXTCustomConfig.h"
+#import "TXTCommonAlertView.h"
 
 @interface TXTMemberView () <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate>
 /** titleLabel */
@@ -109,7 +110,7 @@
     
     [self addSubview:self.allUnmuteBtn];
     [self.allUnmuteBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.equalTo(self);
+        make.centerX.equalTo(self.mas_centerX).priorityHigh();
         make.width.mas_equalTo(125);
         make.bottom.equalTo(self.mas_safeAreaLayoutGuideBottom).offset(-10);
         make.height.mas_equalTo(35);
@@ -156,11 +157,11 @@
         [self.closeBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.width.mas_equalTo(56);
             make.centerY.equalTo(self.titleLabel);
-            make.right.equalTo(self);
+            make.right.equalTo(self.mas_right);
             make.height.mas_equalTo(40);
         }];
         [self.allUnmuteBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.centerX.equalTo(self);
+            make.centerX.equalTo(self.mas_centerX).priorityHigh();
             make.width.mas_equalTo(125);
             make.bottom.equalTo(self.mas_safeAreaLayoutGuideBottom).offset(-10);
             make.height.mas_equalTo(35);
@@ -169,17 +170,17 @@
         [self.closeBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.width.mas_equalTo(56);
             make.centerY.equalTo(self.titleLabel);
-            make.left.equalTo(self);
+            make.left.equalTo(self.mas_left);
             make.height.mas_equalTo(40);
         }];
         [self.allUnmuteBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.centerX.equalTo(self).offset(15);
+            make.centerX.equalTo(self.mas_centerX).offset(15).priorityHigh();
             make.width.mas_equalTo(120);
             make.bottom.equalTo(self.mas_safeAreaLayoutGuideBottom).offset(-10);
             make.height.mas_equalTo(35);
         }];
     }
-    [self layoutIfNeeded];
+//    [self layoutIfNeeded];
 }
 
 - (void)setManageMembersArr:(NSMutableArray *)manageMembersArr {
@@ -244,7 +245,26 @@
 
 /// allMuteBtnClick
 - (void)allMuteBtnClick {
-    
+//    TXTCommonAlertView *alert = [TXTCommonAlertView alertWithTitle:@"所有参会人员将被静音" titleColor:nil titleFont:nil leftBtnStr:@"取消" rightBtnStr:@"确定" leftColor:nil rightColor:nil];
+    TXTCommonAlertView *alert = [TXTCommonAlertView alertWithTitle:@"所有参会人员将被静音" message:@"允许参会人员自行解除静音" leftBtnStr:@"取消" rightBtnStr:@"确定" leftColor:nil rightColor:nil];
+    alert.sureBlock = ^{
+        [TXTCommonAlertView hide];
+ 
+        NSMutableArray *usersArr = [NSMutableArray array];
+        for (TXTUserModel *usermodel in self.manageMembersArr) {
+            NSDictionary *dict = @{@"userId":usermodel.render.userId,@"muteAudio":@YES};
+            [usersArr addObject:dict];
+        }
+        NSDictionary *messagedict = @{@"serviceId":TXUserDefaultsGetObjectforKey(ServiceId),@"type":@"muteAudio",@"agentId":TXUserDefaultsGetObjectforKey(AgentId),@"users":usersArr};
+        NSString *str = [[TXTCommon sharedInstance] convertToJsonData:messagedict];
+        [[TICManager sharedInstance] sendGroupTextMessage:str callback:^(TICModule module, int code, NSString *desc) {
+            if (code == 0) {
+                 NSLog(@"消息发送成功");
+            }
+//            [self getTableData];
+            [self setSoundStatus:NO];
+        }];
+    };
 }
 
 /// allUnMuteBtnClick
@@ -260,6 +280,7 @@
         if(code == 0){
              [[JMToast sharedToast] showDialogWithMsg:@"当前全体静音已解除，参会人本人可控制静音状态"];
         }
+//        [self getTableData];
         [self setSoundStatus:YES];
     }];
 }
@@ -343,7 +364,14 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     TXTSearchMemberCell *cell = (TXTSearchMemberCell *)[tableView cellForRowAtIndexPath:indexPath];
-    [TXTMemberInfoView alertWithUserModel:cell.model];
+    TXTMemberInfoView *infoView = [TXTMemberInfoView alertWithUserModel:cell.model];
+    infoView.sureBlock = ^{
+        if ([self.delegate respondsToSelector:@selector(memberViewDidUpdateInfo:)]) {
+            [self.delegate memberViewDidUpdateInfo:cell.model];
+        }
+        [TXTMemberInfoView hide];
+        [tableView reloadData];
+    };
 }
 
 #pragma mark -给每个cell中的textfield添加事件，只要值改变就调用此函数

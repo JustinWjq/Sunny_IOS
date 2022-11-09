@@ -8,14 +8,17 @@
 
 #import <UIKit/UIKit.h>
 
-NS_ASSUME_NONNULL_BEGIN
 
+NS_ASSUME_NONNULL_BEGIN
+@class TXTUserModel;
 @protocol TXTMemberViewDelegate <NSObject>
 
 @optional
 
 /// 点击关闭
 - (void)memberViewDidClickCloseBtn:(UIButton *)closeBtn;
+
+- (void)memberViewDidUpdateInfo:(TXTUserModel *)model;
 @end
 
 @interface TXTMemberView : UIView
