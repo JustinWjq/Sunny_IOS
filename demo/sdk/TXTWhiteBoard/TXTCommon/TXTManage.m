@@ -15,7 +15,7 @@
 #import "SunnyChatViewController.h"
 #import "ZYSuspensionManager.h"
 //#import "TXTNavigationViewController.h"
-#import "UINavigationController+Revolve.h"
+#import "TXTNavigationController.h"
 
 
 @interface TXTManage ()
@@ -355,7 +355,7 @@
                     ws.nnwindow =[[UIWindow alloc]initWithFrame:CGRectMake(0, 0, Screen_Width, Screen_Height)];
                     ws.nnwindow.windowLevel=UIWindowLevelAlert;
                     SunnyChatViewController *classRoom = [[SunnyChatViewController alloc] init];
-                    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:classRoom];
+                    TXTNavigationController *nav = [[TXTNavigationController alloc] initWithRootViewController:classRoom];
                     [nav.navigationBar setShadowImage:[[UIImage alloc] init]];
                     ws.nnwindow.rootViewController = nav;
                     [ZYSuspensionManager saveWindow:ws.nnwindow forKey:@"videowindow"];

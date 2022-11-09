@@ -73,6 +73,8 @@
 		31C1F0BA27228724001AA383 /* TICManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 31C1F0B927228724001AA383 /* TICManager.m */; };
 		31C8511925B832C800D9EEA5 /* TXTCommon.h in Headers */ = {isa = PBXBuildFile; fileRef = 31C8511725B832C800D9EEA5 /* TXTCommon.h */; };
 		31C8511A25B832C800D9EEA5 /* TXTCommon.m in Sources */ = {isa = PBXBuildFile; fileRef = 31C8511825B832C800D9EEA5 /* TXTCommon.m */; };
+		31CA9162291BB1CE00186BB6 /* TXTNavigationController.h in Headers */ = {isa = PBXBuildFile; fileRef = 31CA9160291BB1CD00186BB6 /* TXTNavigationController.h */; };
+		31CA9163291BB1CE00186BB6 /* TXTNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31CA9161291BB1CD00186BB6 /* TXTNavigationController.m */; };
 		31D45ECA2915270200765B6B /* SunnyChatViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 31D45EB62915270100765B6B /* SunnyChatViewController.h */; };
 		31D45ECB2915270200765B6B /* SunnyChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31D45EB72915270100765B6B /* SunnyChatViewController.m */; };
 		31D45ECC2915270200765B6B /* TXTUserModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 31D45EB92915270100765B6B /* TXTUserModel.m */; };
@@ -439,6 +441,8 @@
 		31C8511825B832C800D9EEA5 /* TXTCommon.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TXTCommon.m; sourceTree = "<group>"; };
 		31C8EE87260DEA3700431E04 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		31C8EE88260DEA3800431E04 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		31CA9160291BB1CD00186BB6 /* TXTNavigationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXTNavigationController.h; sourceTree = "<group>"; };
+		31CA9161291BB1CD00186BB6 /* TXTNavigationController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TXTNavigationController.m; sourceTree = "<group>"; };
 		31CE8CE429027EFE00FDA57F /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		31CE8CE629027EFE00FDA57F /* MASCompositeConstraint.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MASCompositeConstraint.h; sourceTree = "<group>"; };
 		31CE8CE729027EFE00FDA57F /* NSLayoutConstraint+MASDebugAdditions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSLayoutConstraint+MASDebugAdditions.m"; sourceTree = "<group>"; };
@@ -930,6 +934,8 @@
 				31D45EDD2915271600765B6B /* UIBarButtonItem+SXCreate.m */,
 				31D45EDE2915271600765B6B /* UINavigationSXFixSpace.h */,
 				31D45EDC2915271600765B6B /* UINavigationSXFixSpace.m */,
+				31CA9160291BB1CD00186BB6 /* TXTNavigationController.h */,
+				31CA9161291BB1CD00186BB6 /* TXTNavigationController.m */,
 			);
 			path = TXTCommon;
 			sourceTree = "<group>";
@@ -1717,6 +1723,7 @@
 				31B5FD2B2501DC58006587C0 /* TICDef.h in Headers */,
 				311B596325F9B8630016CD59 /* UIColor+ColorHex.h in Headers */,
 				F0816908290FC9A200C5CA29 /* Extensions.h in Headers */,
+				31CA9162291BB1CE00186BB6 /* TXTNavigationController.h in Headers */,
 				F0E22BB6291512CC00C1E031 /* TXTEmojiCollectionViewCell.h in Headers */,
 				F0F3EFD7291A1AFF00FC0940 /* TXTWhiteToolView.h in Headers */,
 				F01D22E62917FB700025F107 /* QSTapGestureRecognizer.h in Headers */,
@@ -1873,6 +1880,7 @@
 				F06CC9C82910E4A300CA4D6A /* MJRefreshBackGifFooter.m in Sources */,
 				31F4A4C9260895B00015B75A /* UINavigationController+Revolve.m in Sources */,
 				F08168F1290FC9A200C5CA29 /* UIImageView+Indicator.m in Sources */,
+				31CA9163291BB1CE00186BB6 /* TXTNavigationController.m in Sources */,
 				F0E22B882913F78400C1E031 /* TXTChatInputToolBar.m in Sources */,
 				31B5FD312501DC58006587C0 /* GCDAsyncUdpSocket.m in Sources */,
 				F06CC9FC2910EED000CA4D6A /* QSIMMessageModel.m in Sources */,

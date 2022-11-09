@@ -123,6 +123,90 @@ static TXTCommonAlertView *_alertView = nil; //第一步：静态实例，并初
     return _alertView;
 }
 
++ (instancetype)alertWithNoImageTitle:(NSString *)title message:(NSString *)message leftBtnStr:(nullable NSString *)leftStr rightBtnStr:(nullable NSString *)rightStr leftColor:(nullable UIColor *)leftColor rightColor:(nullable UIColor *)rightColor {
+    QSCover *cover = [QSCover show];
+    cover.alpha = 0.3;
+    cover.frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height);
+    [TXTCommonAlertView alertView];
+    _alertView.frame = cover.frame;
+
+    UIView *bgView = [[UIView alloc] init];
+    bgView.backgroundColor = [UIColor whiteColor];
+    [_alertView addSubview:bgView];
+    CGFloat width = 295;
+    [bgView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.mas_equalTo(width);
+        make.center.equalTo(_alertView);
+    }];
+    bgView.cornerRadius = 10;
+
+    /** label */
+    UILabel *tipLabel = [UILabel labelWithTitle:title color:[UIColor colorWithHexString:@"333333"] font:[UIFont qs_regularFontWithSize:15]];
+    tipLabel.numberOfLines = 0;
+    [bgView addSubview:tipLabel];
+    [tipLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(26);
+        make.width.mas_lessThanOrEqualTo(265);
+        make.centerX.equalTo(bgView.mas_centerX);
+    }];
+
+    /** divider */
+    UIView *divider = [[UIView alloc] init];
+    divider.backgroundColor = [[UIColor colorWithHexString:@"D8D8D8"] colorWithAlphaComponent:0.8];
+    [bgView addSubview:divider];
+    [divider mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.equalTo(bgView);
+        make.height.mas_equalTo(1);
+        make.bottom.equalTo(bgView.mas_bottom).offset(-44);
+    }];
+            
+    
+    CGFloat btnWidth = leftStr.length > 0 ? width / 2 : width;
+
+    if (!rightColor) {
+        rightColor = [UIColor colorWithHexString:@"E6B980"];
+    }
+    UIButton *sureBtn = [UIButton buttonWithTitle:rightStr titleColor:rightColor font:[UIFont qs_regularFontWithSize:16] target:_alertView action:@selector(sureBtnClick)];
+    [bgView addSubview:sureBtn];
+    [sureBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.height.mas_equalTo(44);
+        make.width.mas_equalTo(btnWidth);
+        make.centerX.mas_equalTo(bgView.mas_centerX);
+        make.bottom.equalTo(bgView.mas_bottom);
+    }];
+    
+    if (leftStr) {
+        [sureBtn mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.centerX.mas_equalTo(bgView.mas_centerX).offset(btnWidth / 2);
+        }];
+        
+        if (!leftColor) {
+            leftColor = [UIColor colorWithHexString:@"666666"];
+        }
+        UIButton *cancelBtn = [UIButton buttonWithTitle:leftStr titleColor:leftColor font:[UIFont qs_regularFontWithSize:16] target:_alertView action:@selector(cancelButtonClick)];
+        [bgView addSubview:cancelBtn];
+        [cancelBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.height.width.bottom.equalTo(sureBtn);
+            make.left.mas_equalTo(0);
+        }];
+        
+        UIView *line = [[UIView alloc] init];
+        line.backgroundColor = [[UIColor colorWithHexString:@"D8D8D8"] colorWithAlphaComponent:0.8];
+        [cancelBtn addSubview:line];
+        [line mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.bottom.right.equalTo(cancelBtn);
+            make.width.mas_equalTo(1);
+        }];
+    }
+
+    [_alertView animationWithView:bgView duration:0.5];
+
+    [[UIWindow getKeyWindow] addSubview:_alertView];
+    return _alertView;
+}
+
+
+
 
 + (instancetype)alertWithTitle:(NSString *)title titleColor:(nullable UIColor *)titleColor titleFont:(UIFont *)titleFont leftBtnStr:(nullable NSString *)leftStr rightBtnStr:(nullable NSString *)rightStr leftColor:(nullable UIColor *)leftColor rightColor:(nullable UIColor *)rightColor {
     QSCover *cover = [QSCover show];

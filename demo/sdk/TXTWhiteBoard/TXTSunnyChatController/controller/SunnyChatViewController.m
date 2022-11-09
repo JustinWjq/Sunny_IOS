@@ -12,7 +12,7 @@
 #import "UINavigationSXFixSpace.h"
 #import "TXTCommon.h"
 #import "ZYSuspensionManager.h"
-//#import "TXTCommonAlertView.h"
+#import "TXTCommonAlertView.h"
 
 #import "TXTUserModel.h"
 #import "TICRenderView.h"
@@ -52,10 +52,10 @@
     self.title = @"远程会议";
 
 //    //扬声器
-    UIImage *speakerImg = [UIImage imageNamed:@"openMicrophone" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
+    UIImage *speakerImg = [UIImage imageNamed:@"speaker" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
 
 //    //切换摄像头
-    UIImage *cameraImg = [UIImage imageNamed:@"startRecord" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
+    UIImage *cameraImg = [UIImage imageNamed:@"camera" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
     
     self.navigationItem.leftBarButtonItems = @[[UIBarButtonItem itemWithTarget:self
                                                                          action:@selector(changeAudioRoute)
@@ -81,7 +81,8 @@
 }
 
 - (void)initParams{
-    
+    NSString *portrait = [NSString stringWithFormat:@"%ld",(long)TRTCVideoRenderModePortrait];
+    TXUserDefaultsSetObjectforKey(portrait, Direction);
 }
 
 - (void)joinRoom{
@@ -283,40 +284,23 @@
 }
 //录制
 - (void)bottomShareSceneButtonClick{
-    NSString *titleStr = @"本次录制需获得全部参会人员授权确";
-    NSString *desStr = @"认后可进行录制，请您确认";
-    UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:titleStr message:desStr preferredStyle:(UIAlertControllerStyleAlert)];
-     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-     NSLog(@"点击了Cancel");
-     [alertVC dismissViewControllerAnimated:YES completion:nil];
-     }];
-     UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-     NSLog(@"点击了OK");
-     //发消息
-         NSDictionary *messagedict = @{@"serviceId":TXUserDefaultsGetObjectforKey(ServiceId),@"type":MMStartRecordFromHost,@"userId":self.userId};
-         NSString *str = [[TXTCommon sharedInstance] convertToJsonData:messagedict];
-         [[TICManager sharedInstance] sendGroupTextMessage:str callback:^(TICModule module, int code, NSString *desc) {
-             NSLog(@"发消息");
-         }];
-     [alertVC dismissViewControllerAnimated:YES completion:nil];
-     }];
-     //修改title
-     NSMutableAttributedString *alertControllerStr = [[NSMutableAttributedString alloc] initWithString:titleStr];
-     [alertControllerStr addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithHexString:@"#666666"] range:NSRangeFromString(titleStr)];
-     [alertControllerStr addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:13] range:NSRangeFromString(titleStr)];
-     [alertVC setValue:alertControllerStr forKey:@"attributedTitle"];
-     //修改message
-     NSMutableAttributedString *alertControllerMessageStr = [[NSMutableAttributedString alloc] initWithString:desStr];
-     [alertControllerMessageStr addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithHexString:@"#666666"] range:NSRangeFromString(desStr)];
-     [alertControllerMessageStr addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:13] range:NSRangeFromString(desStr)];
-     [alertVC setValue:alertControllerMessageStr forKey:@"attributedMessage"];
-     //修改按钮字体颜色
-     [cancelAction setValue:[UIColor colorWithHexString:@"#666666"] forKey:@"titleTextColor"];
-     [okAction setValue:[UIColor colorWithHexString:@"#E6B980"] forKey:@"titleTextColor"];
-     [alertVC addAction:cancelAction];
-     [alertVC addAction:okAction];
-     [self presentViewController:alertVC animated:YES completion:nil];
-    
+    if (self.renderViews.count == 1) {
+        NSDictionary *messagedict = @{@"serviceId":TXUserDefaultsGetObjectforKey(ServiceId),@"type":MMAgreeStartRecord,@"userId":self.userId};
+        NSString *str = [[TXTCommon sharedInstance] convertToJsonData:messagedict];
+        [[TICManager sharedInstance] sendGroupTextMessage:str callback:^(TICModule module, int code, NSString *desc) {
+            NSLog(@"发消息");
+        }];
+    }else{
+        TXTCommonAlertView *alert = [TXTCommonAlertView alertWithTitle:@"本次录制需获得全部参会人员授权确认后可进行录制，请您确认" message:@"" leftBtnStr:@"取消" rightBtnStr:@"确认" leftColor:nil rightColor:nil];
+        alert.sureBlock = ^{
+            [TXTCommonAlertView hide];
+            NSDictionary *messagedict = @{@"serviceId":TXUserDefaultsGetObjectforKey(ServiceId),@"type":MMStartRecordFromHost,@"userId":self.userId};
+            NSString *str = [[TXTCommon sharedInstance] convertToJsonData:messagedict];
+            [[TICManager sharedInstance] sendGroupTextMessage:str callback:^(TICModule module, int code, NSString *desc) {
+                NSLog(@"发消息");
+            }];
+        };
+    }
     
 }
 //更多
@@ -455,13 +439,7 @@
 //更新布局
 - (void)updateRenderViewsLayout
 {
-//    [_renderVideoView mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.top.mas_equalTo(self.view.mas_top).offset(Screen_Height/3);
-//        make.left.mas_equalTo(self.view.mas_left).offset(0);
-//        make.right.mas_equalTo(self.view.mas_right).offset(0);
-//        //
-//        make.height.mas_equalTo(500);
-//    }];
+    
     TXTUserModel *model = self.renderViews[0];
     TXTUserModel *newModel = [[TXTUserModel alloc] init];
     newModel.render = model.render;
@@ -481,13 +459,27 @@
     newModel1.userName = model.userName;
     newModel1.userIcon = model.userIcon;
     
-    [self.renderViews addObject:newModel];
-    [self.renderViews addObject:newModel1];
+//    [self.renderViews addObject:newModel];
+//    [self.renderViews addObject:newModel1];
 
     self.renderVideoView.renderArray = self.renderViews;
+    
+    NSString *direction = TXUserDefaultsGetObjectforKey(Direction);
+    NSInteger directionInt = [direction integerValue];
+    
     NSLog(@"updateRenderViewsLayout");
     if (self.renderViews.count == 1) {
-        [self.renderVideoView setVideoRenderNumber:TRTCVideoRenderNumber1 mode:TRTCVideoRenderModePortrait];
+        if (directionInt == TRTCVideoRenderModeLandscape) {
+            [_renderVideoView mas_updateConstraints:^(MASConstraintMaker *make) {
+                make.top.mas_equalTo(self.view.mas_top).offset(0);
+                make.left.mas_equalTo(self.view.mas_left).offset(0);
+                make.right.mas_equalTo(self.view.mas_right).offset(0);
+                make.height.mas_equalTo(Screen_Height);
+            }];
+        }else{
+            
+        }
+        [self.renderVideoView setVideoRenderNumber:TRTCVideoRenderNumber1 mode:directionInt];
     }else if (self.renderViews.count == 2){
         TXTUserModel *model1 = self.renderViews[0];
         TXTUserModel *model2 = self.renderViews[1];
@@ -499,12 +491,12 @@
             }];
         }
        
-        [self.renderVideoView setVideoRenderNumber:TRTCVideoRenderNumber2 mode:TRTCVideoRenderModePortrait];
+        [self.renderVideoView setVideoRenderNumber:TRTCVideoRenderNumber2 mode:directionInt];
     }else{
         [_renderVideoView mas_updateConstraints:^(MASConstraintMaker *make) {
             make.height.mas_equalTo(Screen_Height/3.5+Screen_Width/5.3/7*9);
         }];
-        [self.renderVideoView setVideoRenderNumber:TRTCVideoRenderNumber3 mode:TRTCVideoRenderModePortrait];
+        [self.renderVideoView setVideoRenderNumber:TRTCVideoRenderNumber3 mode:directionInt];
     }
     
 }
@@ -893,9 +885,10 @@
         make.bottom.mas_equalTo(self.view.mas_bottom).offset(0);
         make.left.mas_equalTo(self.view.mas_left).offset(0);
         make.right.mas_equalTo(self.view.mas_right).offset(0);
-        make.height.mas_equalTo(100);
+        make.height.mas_equalTo(Adapt(80));
     }];
     _bottomToos.delegate = self;
+    [self.view bringSubviewToFront:_bottomToos];
 }
 
 - (bottomButtons *)bottomToos{
@@ -1014,16 +1007,16 @@
 }
 #pragma  mark 横屏设置
 
-//- (BOOL)shouldAutorotate{
-//    return YES;
-//}
-//
-//- (UIInterfaceOrientationMask)supportedInterfaceOrientations{
-//    return UIInterfaceOrientationMaskLandscapeLeft;
-//}
-//
-//- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation{
-//    return UIInterfaceOrientationLandscapeLeft;
-//}
+- (BOOL)shouldAutorotate{
+    return YES;
+}
+
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations{
+    return UIInterfaceOrientationMaskLandscapeLeft;
+}
+
+- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation{
+    return UIInterfaceOrientationLandscapeLeft;
+}
 
 @end

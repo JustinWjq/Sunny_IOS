@@ -134,6 +134,7 @@ return _ ## className; \
 #define MaxRoomTime @"maxRoomTime"
 #define MaxRoomUser @"maxRoomUser"
 #define TXTVersion @"v1.3.1"
+#define Direction @"direction"
 
 ///消息类型
 //主持人点击开始录制按钮
