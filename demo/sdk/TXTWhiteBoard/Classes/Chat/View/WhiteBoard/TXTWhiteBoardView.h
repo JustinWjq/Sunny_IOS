@@ -10,7 +10,23 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+
+@protocol TXTWhiteBoardViewDelegate <NSObject>
+
+@optional
+
+/// 点击关闭按钮
+- (void)whiteBoardViewDidClickEndBtn:(UIButton *)endBtn;
+
+
+@end
+
 @interface TXTWhiteBoardView : UIView
+
+
+/** delegate */
+@property (nonatomic, weak) id<TXTWhiteBoardViewDelegate> delegate;
+
 
 @end
 

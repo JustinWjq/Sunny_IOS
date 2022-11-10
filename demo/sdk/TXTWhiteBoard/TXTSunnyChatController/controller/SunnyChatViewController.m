@@ -249,20 +249,20 @@
 }
 
 - (void)bottomButtonClick {
-    TXTWhiteBoardViewController *vc = [[TXTWhiteBoardViewController alloc] init];
-    [self.navigationController pushViewController:vc animated:YES];
+//    TXTWhiteBoardViewController *vc = [[TXTWhiteBoardViewController alloc] init];
+//    [self.navigationController pushViewController:vc animated:YES];
 //    [self addChildViewController:vc];
 //    [self.view addSubview:vc.view];
 //    [vc.view mas_makeConstraints:^(MASConstraintMaker *make) {
 //        make.edges.equalTo(self.view);
 //    }];
-//    TXTGroupMemberViewController *vc = [[TXTGroupMemberViewController alloc] init];
-//    vc.manageMembersArr = self.renderViews;
-//    self.groupMemberViewController = vc;
-//    vc.closeBlock = ^{
-//        self.groupMemberViewController = nil;
-//    };
-//    [self.navigationController pushViewController:vc animated:YES];
+    TXTGroupMemberViewController *vc = [[TXTGroupMemberViewController alloc] init];
+    vc.manageMembersArr = self.renderViews;
+    self.groupMemberViewController = vc;
+    vc.closeBlock = ^{
+        self.groupMemberViewController = nil;
+    };
+    [self.navigationController pushViewController:vc animated:YES];
 //    TXTChatViewController *vc = [[TXTChatViewController alloc] init];
 //    [self.navigationController pushViewController:vc animated:YES];
     return;
