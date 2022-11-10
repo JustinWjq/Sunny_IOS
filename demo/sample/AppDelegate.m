@@ -42,15 +42,15 @@
 }
 
 ///// 如果属性值为YES，仅允许屏幕向左旋转，否则仅允许竖屏。
--(UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
-    if (self.allowRotation) {
-        return UIInterfaceOrientationMaskPortrait|UIInterfaceOrientationMaskLandscapeLeft|UIInterfaceOrientationMaskLandscapeRight;
-    }else if(self.rightRotation) {
-        return UIInterfaceOrientationMaskLandscapeRight;
-    }
-    return UIInterfaceOrientationMaskPortrait;
-
-}
+//-(UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
+//    if (self.allowRotation) {
+//        return UIInterfaceOrientationMaskPortrait|UIInterfaceOrientationMaskLandscapeLeft|UIInterfaceOrientationMaskLandscapeRight;
+//    }else if(self.rightRotation) {
+//        return UIInterfaceOrientationMaskLandscapeRight;
+//    }
+//    return UIInterfaceOrientationMaskPortrait;
+//
+//}
 - (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray<id<UIUserActivityRestoring>> * _Nullable))restorationHandler{
     NSLog(@"handleOpenUniversalLink");
     return [WXApi handleOpenUniversalLink:userActivity delegate:self];

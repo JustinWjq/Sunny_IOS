@@ -41,17 +41,32 @@
 
 - (void)setVideoRenderNumber:(TRTCVideoRenderNumber)number mode:(TRTCVideoRenderMode)mode{
     NSLog(@"setVideoRenderNumber");
-    switch (number) {
-        case TRTCVideoRenderNumber1:
-            [self setTRTCVideoRenderNumber1UI];
-            break;
-        case TRTCVideoRenderNumber2:
-            [self setTRTCVideoRenderNumber2UI];
-            break;
-        default:
-            [self setTRTCVideoRenderUI];
-            break;
+    if (mode == TRTCVideoRenderModePortrait) {
+        switch (number) {
+            case TRTCVideoRenderNumber1:
+                [self setTRTCVideoRenderNumber1UI];
+                break;
+            case TRTCVideoRenderNumber2:
+                [self setTRTCVideoRenderNumber2UI];
+                break;
+            default:
+                [self setTRTCVideoRenderUI];
+                break;
+        }
+    }else{
+        switch (number) {
+            case TRTCVideoRenderNumber1:
+                [self setTRTCVideoRenderNumber1UI];
+                break;
+            case TRTCVideoRenderNumber2:
+                [self setTRTCVideoRenderNumber2UI];
+                break;
+            default:
+                [self setTRTCVideoRenderUI];
+                break;
+        }
     }
+    
 }
 
 - (void)setTRTCVideoRenderNumber1UI{
@@ -149,10 +164,10 @@
         videoview.userModel = model1;
         [videoview initHideUIDirectionLeft:NO];
     }
-    
-    
 }
 
-
+- (void)setTRTCVideoRenderNumber1UILandscape{
+    
+}
 
 @end

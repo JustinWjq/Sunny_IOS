@@ -110,7 +110,7 @@
 //        make.height.mas_equalTo(30);
         make.bottom.mas_equalTo(self.mas_bottom).offset(-30);
     }];
-    [self customButtonUI:self.txMoreActionButton ImageName:@"startRecord" ButtonName:@"更多"];
+    [self customButtonUI:self.txMoreActionButton ImageName:@"moreButton" ButtonName:@"更多"];
     [self.txMoreActionButton addTarget:self action:@selector(txMoreActionButtonClick) forControlEvents:UIControlEventTouchDown];
     
 }
@@ -199,6 +199,18 @@
         [self.txVideoButton setImage:btnImage forState:UIControlStateNormal];
     }else{
         UIImage *btnImage = imageName(@"closeMicrophone");
+        [self.txVideoButton setImage:btnImage forState:UIControlStateNormal];
+    }
+}
+
+- (void)changeShareSceneStatus:(BOOL)open{
+    if (open) {
+        //结束录制
+        UIImage *btnImage = imageName(@"endRecord");
+        [self.txVideoButton setImage:btnImage forState:UIControlStateNormal];
+    }else{
+        //开始录制
+        UIImage *btnImage = imageName(@"startRecord");
         [self.txVideoButton setImage:btnImage forState:UIControlStateNormal];
     }
 }

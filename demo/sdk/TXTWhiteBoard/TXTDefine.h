@@ -134,6 +134,17 @@ return _ ## className; \
 #define MaxRoomTime @"maxRoomTime"
 #define MaxRoomUser @"maxRoomUser"
 #define TXTVersion @"v1.3.1"
+#define Direction @"direction"
+
+///消息类型
+//主持人点击开始录制按钮
+#define MMStartRecordFromHost @"startRecordFromHost"
+//参会人点击同意录制按钮
+#define MMAgreeStartRecord @"agreeStartRecord"
+//参会人点击取消按钮
+#define MMRefuseStartRecord @"refuseStartRecord"
+//移出会议室消息
+#define MMmoveOutRoom @"moveOutRoom"
 
 
 //代理人进入房间接口

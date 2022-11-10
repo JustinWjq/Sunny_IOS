@@ -30,6 +30,7 @@
 
 - (void)changeVideoButtonStatus:(BOOL)open;
 - (void)changeAudioButtonStatus:(BOOL)open;
+- (void)changeShareSceneStatus:(BOOL)open;
 @end
 
 
