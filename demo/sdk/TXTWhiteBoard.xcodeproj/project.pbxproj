@@ -99,6 +99,8 @@
 		31D45EE32915271700765B6B /* UIBarButtonItem+SXCreate.h in Headers */ = {isa = PBXBuildFile; fileRef = 31D45EDF2915271700765B6B /* UIBarButtonItem+SXCreate.h */; };
 		31F4A4C8260895B00015B75A /* UINavigationController+Revolve.h in Headers */ = {isa = PBXBuildFile; fileRef = 31F4A4C6260895AF0015B75A /* UINavigationController+Revolve.h */; };
 		31F4A4C9260895B00015B75A /* UINavigationController+Revolve.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F4A4C7260895AF0015B75A /* UINavigationController+Revolve.m */; };
+		F017A555291CA95600BC0E10 /* TXTToast.h in Headers */ = {isa = PBXBuildFile; fileRef = F017A553291CA95600BC0E10 /* TXTToast.h */; };
+		F017A556291CA95600BC0E10 /* TXTToast.m in Sources */ = {isa = PBXBuildFile; fileRef = F017A554291CA95600BC0E10 /* TXTToast.m */; };
 		F01D22DE2917B8B20025F107 /* QSCover.m in Sources */ = {isa = PBXBuildFile; fileRef = F01D22DC2917B8B10025F107 /* QSCover.m */; };
 		F01D22DF2917B8B20025F107 /* QSCover.h in Headers */ = {isa = PBXBuildFile; fileRef = F01D22DD2917B8B20025F107 /* QSCover.h */; };
 		F01D22E22917B8E70025F107 /* TXTMemberInfoView.h in Headers */ = {isa = PBXBuildFile; fileRef = F01D22E02917B8E70025F107 /* TXTMemberInfoView.h */; };
@@ -494,6 +496,8 @@
 		31D45EDF2915271700765B6B /* UIBarButtonItem+SXCreate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIBarButtonItem+SXCreate.h"; sourceTree = "<group>"; };
 		31F4A4C6260895AF0015B75A /* UINavigationController+Revolve.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+Revolve.h"; sourceTree = "<group>"; };
 		31F4A4C7260895AF0015B75A /* UINavigationController+Revolve.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+Revolve.m"; sourceTree = "<group>"; };
+		F017A553291CA95600BC0E10 /* TXTToast.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXTToast.h; sourceTree = "<group>"; };
+		F017A554291CA95600BC0E10 /* TXTToast.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TXTToast.m; sourceTree = "<group>"; };
 		F01D22DC2917B8B10025F107 /* QSCover.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSCover.m; sourceTree = "<group>"; };
 		F01D22DD2917B8B20025F107 /* QSCover.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSCover.h; sourceTree = "<group>"; };
 		F01D22E02917B8E70025F107 /* TXTMemberInfoView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXTMemberInfoView.h; sourceTree = "<group>"; };
@@ -1125,6 +1129,8 @@
 			children = (
 				F050C78E2918BA1B002CA386 /* TXTCommonAlertView.h */,
 				F050C78F2918BA1B002CA386 /* TXTCommonAlertView.m */,
+				F017A553291CA95600BC0E10 /* TXTToast.h */,
+				F017A554291CA95600BC0E10 /* TXTToast.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1637,6 +1643,7 @@
 				F08168CE290FC9A200C5CA29 /* UIWindow+Extesion.h in Headers */,
 				F08168F7290FC9A200C5CA29 /* NSString+Frame.h in Headers */,
 				F08168F8290FC9A200C5CA29 /* NSString+EsayEncrypt.h in Headers */,
+				F017A555291CA95600BC0E10 /* TXTToast.h in Headers */,
 				31B5FD2D2501DC58006587C0 /* TICManager.h in Headers */,
 				F06CC9BA2910E4A300CA4D6A /* UIScrollView+MJExtension.h in Headers */,
 				31B5FD202501DC58006587C0 /* NetworkClock.h in Headers */,
@@ -1934,6 +1941,7 @@
 				F08158472916713500EABBAC /* TXTTextField.m in Sources */,
 				F06CCA072910F03800CA4D6A /* QSShowTimeCell.m in Sources */,
 				F08168DA290FC9A200C5CA29 /* UIButton+link.m in Sources */,
+				F017A556291CA95600BC0E10 /* TXTToast.m in Sources */,
 				F06CC9F42910E5E600CA4D6A /* TXTChatViewController.m in Sources */,
 				F0E22BB7291512CC00C1E031 /* TXTEmojiCollectionViewCell.m in Sources */,
 				3100A4FB2614466200ECA26A /* TXTCustomConfig.m in Sources */,
