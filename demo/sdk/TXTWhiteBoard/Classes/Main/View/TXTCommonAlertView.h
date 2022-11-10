@@ -13,12 +13,14 @@ typedef void(^btnCallBack)(NSString * _Nullable str);
 
 @interface TXTCommonAlertView : UIView
 
+/// 有打沟框的普通弹窗
 + (instancetype)alertWithTitle:(NSString *)title message:(NSString *)message leftBtnStr:(nullable NSString *)leftStr rightBtnStr:(nullable NSString *)rightStr leftColor:(nullable UIColor *)leftColor rightColor:(nullable UIColor *)rightColor;
 
-+ (instancetype)alertWithNoImageTitle:(NSString *)title message:(NSString *)message leftBtnStr:(nullable NSString *)leftStr rightBtnStr:(nullable NSString *)rightStr leftColor:(nullable UIColor *)leftColor rightColor:(nullable UIColor *)rightColor;
-
+/// 没有打沟框的普通弹窗
 + (instancetype)alertWithTitle:(NSString *)title titleColor:(nullable UIColor *)titleColor titleFont:(UIFont *)titleFont leftBtnStr:(nullable NSString *)leftStr rightBtnStr:(nullable NSString *)rightStr leftColor:(nullable UIColor *)leftColor rightColor:(nullable UIColor *)rightColor;
 
+/// 倒计时弹窗
++ (instancetype)countDownAlertWithTitle:(NSString *)title message:(NSString *)message rightBtnStr:(nullable NSString *)rightStr rightColor:(nullable UIColor *)rightColor time:(NSInteger)time;
 
 + (void)hide;
 
