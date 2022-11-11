@@ -102,7 +102,7 @@ static NSInteger const kInputToolBarH = 62;
     [self.view addSubview:self.smallMessageView];
     [self.smallMessageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.smallChatView);
-        make.height.mas_equalTo(39 * 3);
+//        make.height.mas_equalTo(39 * 3);
         make.bottom.equalTo(self.smallChatView.mas_top).offset(-10);
         make.width.mas_equalTo(265);
     }];

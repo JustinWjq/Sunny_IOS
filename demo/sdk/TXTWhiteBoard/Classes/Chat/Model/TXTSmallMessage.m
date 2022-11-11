@@ -11,10 +11,10 @@
 @implementation TXTSmallMessage
 
 - (CGFloat)cellH {
-    CGFloat sizeH = [[NSString stringWithFormat:@"%@：%@", self.userName, self.content] sizeWithFont:[UIFont qs_regularFontWithSize:12] maxSize:CGSizeMake(MAXFLOAT, MAXFLOAT)].height;
-    if (sizeH + 22 > 52) {
-        return 52;
-    }
+    CGFloat sizeH = [[NSString stringWithFormat:@"%@：%@", self.userName, self.content] sizeWithFont:[UIFont qs_regularFontWithSize:12] maxSize:CGSizeMake(252, MAXFLOAT)].height;
+//    if (sizeH + 22 > 52) {
+//        return 52;
+//    }
     return sizeH + 22;
 }
 

@@ -76,11 +76,11 @@ static TXTToast *_alertView = nil; //第一步：静态实例，并初始化。
         make.width.height.mas_equalTo(16);
     }];
 
-    _alertView.count = 3 + 0.5;
+    _alertView.count = 3;
     
     [_alertView animationWithView:bgView duration:0.5];
     
-    [_alertView performSelector:@selector(countDown) withObject:nil afterDelay:1.0];
+    [_alertView performSelector:@selector(countDown) withObject:nil afterDelay:1.5];
     [[UIWindow getKeyWindow] addSubview:_alertView];
     return _alertView;
 }
