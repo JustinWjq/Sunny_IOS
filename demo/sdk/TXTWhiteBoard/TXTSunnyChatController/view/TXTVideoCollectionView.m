@@ -11,8 +11,9 @@
 #import "TICRenderView.h"
 #import "TXTUserModel.h"
 
-#define imageWidth Screen_Width/5.3
-#define imageHeight Screen_Width/5.3/7*9
+#define imageWidth Adapt(70)
+//
+#define imageHeight Adapt(90)
 #define ReuseIdentifier @"videoCell"
 @interface TXTVideoCollectionView()<UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout>
 
@@ -59,9 +60,14 @@
         NSLog(@"config_collectionView");
         UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
         layout.minimumLineSpacing = 1;
-        layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
-        _collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, Screen_Width, imageHeight) collectionViewLayout:layout];
-        
+        NSString *direction = TXUserDefaultsGetObjectforKey(Direction);
+        if ([direction integerValue] == TRTCVideoResolutionModePortrait) {
+            layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+            _collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, Screen_Width, imageHeight) collectionViewLayout:layout];
+        }else{
+            layout.scrollDirection = UICollectionViewScrollDirectionVertical;
+            _collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, Adapt(132), Screen_Height-kTopHeight) collectionViewLayout:layout];
+        }
         [self addSubview:_collectionView];
         _collectionView.backgroundColor = [UIColor colorWithHexString:@"#222222"];
         _collectionView.showsHorizontalScrollIndicator = NO;
@@ -79,16 +85,18 @@
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     TXTVideoCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:ReuseIdentifier forIndexPath:indexPath];
-//    if (cell == nil) {
-//        cell = [[TXTVideoCollectionViewCell alloc] initWithFrame:CGRectMake(0, 0, imageWidth, self.frame.size.height)];
-//    }
-    [cell configVideoCell:self.renderViewsArray[indexPath.row] Width:imageWidth Height:self.frame.size.height VoiceVolume:self.userVolumesArray];
+//    [cell configVideoCell:self.renderViewsArray[indexPath.row] Width:imageWidth Height:self.frame.size.height VoiceVolume:self.userVolumesArray];
+    [cell configVideoCell:self.renderViewsArray[indexPath.row] Width:Adapt(132) Height:Adapt(100) VoiceVolume:self.userVolumesArray];
     return cell;
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-//    NSLog(@"collectionView == %f",self.frame.size.height);
-    return CGSizeMake(imageWidth,self.frame.size.height);
+    NSString *direction = TXUserDefaultsGetObjectforKey(Direction);
+    if ([direction integerValue] == TRTCVideoResolutionModePortrait) {
+        return CGSizeMake(imageWidth,self.frame.size.height);
+    }else{
+        return CGSizeMake(Adapt(132),Adapt(100));
+    }
 }
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section {

@@ -60,7 +60,7 @@ return _ ## className; \
 #define kStatusBarHeight [[UIApplication sharedApplication] statusBarFrame].size.height
 #define kNavBarHeight 44.0
 #define kTabBarFixHeight ([[UIApplication sharedApplication] statusBarFrame].size.height>20?34.0:10)
-#define kTabBarHeight ([[UIApplication sharedApplication] statusBarFrame].size.height>20?83:49)
+#define kTabBarHeight ([[UIApplication sharedApplication] statusBarFrame].size.height>20?83:53)
 #define kTopHeight (kStatusBarHeight + kTabBarHeight)
 
 #define PageItemMenuHeight 44.0f

@@ -17,6 +17,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    self.navigationBar.translucent = NO;
+    self.navigationBar.barTintColor = [UIColor colorWithHexString:@"#424548"];
+    [self.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}];
+    self.navigationBar.barStyle = UIBarStyleBlack;
 }
 
 //是否自动旋转,返回YES可以自动旋转
@@ -25,10 +29,10 @@
 }
 //返回支持的方向
 - (NSUInteger)supportedInterfaceOrientations {
-    return [self.topViewController supportedInterfaceOrientations];
+    return self.interfaceOrientationMask;
 }
 //这个是返回优先方向
 - (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation {
-    return [self.topViewController preferredInterfaceOrientationForPresentation];
+    return self.interfaceOrientation;
 }
 @end

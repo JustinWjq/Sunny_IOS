@@ -16,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSString *userName;
 @property (nonatomic, strong) TXTUserModel *userModel;
 - (void)initHideUIDirectionLeft:(BOOL)directionLeft;
-- (void)showVideoView;
+- (void)showVideoViewDirectionLeft:(BOOL)directionLeft;
 @end
 
 NS_ASSUME_NONNULL_END
