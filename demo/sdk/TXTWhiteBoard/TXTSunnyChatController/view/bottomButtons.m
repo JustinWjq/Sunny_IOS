@@ -30,7 +30,7 @@
         make.left.equalTo(self.mas_left).offset(0);
         make.width.mas_equalTo(btnwidth);
 //        make.height.mas_equalTo(30);
-        make.bottom.mas_equalTo(self.mas_bottom).offset(-30);
+        make.bottom.mas_equalTo(self.mas_bottom).offset(-15);
     }];
     [self customButtonUI:self.txVideoButton ImageName:@"openCamera" ButtonName:@"摄像头"];
     [self.txVideoButton addTarget:self action:@selector(txButtonClick) forControlEvents:UIControlEventTouchDown];
@@ -58,7 +58,7 @@
         make.left.mas_equalTo(self.mas_left).offset(btnwidth);
         make.width.mas_equalTo(btnwidth);
 //        make.height.mas_equalTo(30);
-        make.bottom.mas_equalTo(self.mas_bottom).offset(-30);
+        make.bottom.mas_equalTo(self.mas_bottom).offset(-15);
     }];
     [self customButtonUI:self.txMuteButton ImageName:@"openMicrophone" ButtonName:@"麦克风"];
     [self.txMuteButton addTarget:self action:@selector(txMuteClick) forControlEvents:UIControlEventTouchDown];
@@ -70,7 +70,7 @@
         make.left.mas_equalTo(self.mas_left).offset(2*btnwidth);
         make.width.mas_equalTo(btnwidth);
 //        make.height.mas_equalTo(30);
-        make.bottom.mas_equalTo(self.mas_bottom).offset(-30);
+        make.bottom.mas_equalTo(self.mas_bottom).offset(-15);
     }];
     [self customButtonUI:self.txShareFileButton ImageName:@"shareFiles" ButtonName:@"共享"];
     [self.txShareFileButton addTarget:self action:@selector(txShareFileButtonClick) forControlEvents:UIControlEventTouchDown];
@@ -83,7 +83,7 @@
         make.left.mas_equalTo(self.mas_left).offset(3*btnwidth);
         make.width.mas_equalTo(btnwidth);
 //        make.height.mas_equalTo(30);
-        make.bottom.mas_equalTo(self.mas_bottom).offset(-30);
+        make.bottom.mas_equalTo(self.mas_bottom).offset(-15);
     }];
     [self customButtonUI:self.txMembersButton ImageName:@"members" ButtonName:@"成员"];
     [self.txMembersButton addTarget:self action:@selector(txMembersButtonClick) forControlEvents:UIControlEventTouchDown];
@@ -96,7 +96,7 @@
         make.left.mas_equalTo(self.mas_left).offset(4*btnwidth);
         make.width.mas_equalTo(btnwidth);
 //        make.height.mas_equalTo(30);
-        make.bottom.mas_equalTo(self.mas_bottom).offset(-30);
+        make.bottom.mas_equalTo(self.mas_bottom).offset(-15);
     }];
     [self customButtonUI:self.txShareSceneButton ImageName:@"startRecord" ButtonName:@"开始录制"];
     [self.txShareSceneButton addTarget:self action:@selector(txShareSceneButtonClick) forControlEvents:UIControlEventTouchDown];
@@ -108,18 +108,64 @@
         make.left.mas_equalTo(self.mas_left).offset(5*btnwidth);
         make.width.mas_equalTo(btnwidth);
 //        make.height.mas_equalTo(30);
-        make.bottom.mas_equalTo(self.mas_bottom).offset(-30);
+        make.bottom.mas_equalTo(self.mas_bottom).offset(-15);
     }];
     [self customButtonUI:self.txMoreActionButton ImageName:@"moreButton" ButtonName:@"更多"];
     [self.txMoreActionButton addTarget:self action:@selector(txMoreActionButtonClick) forControlEvents:UIControlEventTouchDown];
     
 }
 
+- (void)updateButtons{
+    CGFloat btnwidth = Screen_Width/6;
+    [self.txVideoButton mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.mas_top).offset(0);
+        make.left.equalTo(self.mas_left).offset(0);
+        make.width.mas_equalTo(btnwidth);
+//        make.height.mas_equalTo(30);
+        make.bottom.mas_equalTo(self.mas_bottom).offset(-15);
+    }];
+    [self.txMuteButton mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(self.mas_top).offset(0);
+        make.left.mas_equalTo(self.mas_left).offset(btnwidth);
+        make.width.mas_equalTo(btnwidth);
+//        make.height.mas_equalTo(30);
+        make.bottom.mas_equalTo(self.mas_bottom).offset(-15);
+    }];
+    [self.txShareFileButton mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(self.mas_top).offset(0);
+        make.left.mas_equalTo(self.mas_left).offset(2*btnwidth);
+        make.width.mas_equalTo(btnwidth);
+//        make.height.mas_equalTo(30);
+        make.bottom.mas_equalTo(self.mas_bottom).offset(-15);
+    }];
+    [self.txMembersButton mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(self.mas_top).offset(0);
+        make.left.mas_equalTo(self.mas_left).offset(3*btnwidth);
+        make.width.mas_equalTo(btnwidth);
+//        make.height.mas_equalTo(30);
+        make.bottom.mas_equalTo(self.mas_bottom).offset(-15);
+    }];
+    [self.txShareSceneButton mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(self.mas_top).offset(0);
+        make.left.mas_equalTo(self.mas_left).offset(4*btnwidth);
+        make.width.mas_equalTo(btnwidth);
+//        make.height.mas_equalTo(30);
+        make.bottom.mas_equalTo(self.mas_bottom).offset(-15);
+    }];
+    [self.txMoreActionButton mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(self.mas_top).offset(0);
+        make.left.mas_equalTo(self.mas_left).offset(5*btnwidth);
+        make.width.mas_equalTo(btnwidth);
+//        make.height.mas_equalTo(30);
+        make.bottom.mas_equalTo(self.mas_bottom).offset(-15);
+    }];
+}
+
 - (void)customButtonUI:(UIButton *)button  ImageName:(NSString *)imageName ButtonName:(NSString *)title{
     UIImage *btnImage = imageName(imageName);
-    button.imageView.contentMode = UIViewContentModeScaleAspectFit;
-    [button setImage:btnImage forState:UIControlStateNormal];
     
+    [button setImage:btnImage forState:UIControlStateNormal];
+    button.imageView.contentMode = UIViewContentModeScaleAspectFit;
     NSLog(@"button = %@",button);
     
 //    UILabel *label = [[UILabel alloc] init];

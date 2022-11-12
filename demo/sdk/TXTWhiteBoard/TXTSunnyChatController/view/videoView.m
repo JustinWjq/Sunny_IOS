@@ -8,7 +8,9 @@
 
 #import "videoView.h"
 
-#define nameWidth Screen_Width/7
+//Screen_Width/7
+//Screen_Width > Screen_Height ? Screen_Width/12 : Screen_Width/7
+#define nameWidth Adapt(55)
 @implementation videoView
 
 - (instancetype)initWithFrame:(CGRect)frame{
@@ -34,8 +36,13 @@
     }];
     nameLabel.layer.cornerRadius = nameWidth/2;
     nameLabel.layer.masksToBounds = YES;
-    NSString *showNameStr = [self.userModel.userName substringFromIndex:self.userModel.userName.length-2];
-    nameLabel.text = showNameStr;
+    if (self.userModel.userName.length < 2) {
+        nameLabel.text = self.userModel.userName;
+    }else{
+        NSString *showNameStr = [self.userModel.userName substringFromIndex:self.userModel.userName.length-2];
+        nameLabel.text = showNameStr;
+    }
+    
     nameLabel.textColor = [UIColor whiteColor];
     nameLabel.textAlignment = NSTextAlignmentCenter;
     nameLabel.backgroundColor = [UIColor colorWithHexString:@"#E6B980"];
@@ -49,9 +56,12 @@
         UIImageView *iconImage = [[UIImageView alloc] init];
         [self addSubview:iconImage];
         [iconImage mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.bottom.mas_equalTo(self.mas_bottom).offset(0);
+            if (directionLeft) {
+                make.bottom.mas_equalTo(self.mas_bottom).offset(0);
+            }else{
+                make.centerY.mas_equalTo(self.mas_centerY).offset(nameWidth/2+5);
+            }
             make.left.mas_equalTo(self.mas_left).offset(0);
-//            make.right.mas_equalTo(self.mas_right).offset(0);
             make.height.mas_equalTo(nameWidth/2.5);
             make.width.mas_equalTo(nameWidth/2.5);
         }];
@@ -62,17 +72,26 @@
     UIView *nameBackgroundView = [[UIView alloc] init];
     [self addSubview:nameBackgroundView];
     [nameBackgroundView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.mas_equalTo(self.mas_bottom).offset(0);
+        if (directionLeft) {
+            make.bottom.mas_equalTo(self.mas_bottom).offset(0);
+        }else{
+            make.centerY.mas_equalTo(self.mas_centerY).offset(nameWidth/2+5);
+        }
+        
         if ([userRole isEqualToString:@"owner"]) {
             make.left.mas_equalTo(self.mas_left).offset(nameWidth/2.5);
             if (directionLeft) {
-                make.width.mas_equalTo(Screen_Width/5);
+                make.width.mas_equalTo(nameWidth+8);
             }else{
                 make.right.mas_equalTo(self.mas_right).offset(0);
             }
             
         }else{
-            make.centerX.mas_equalTo(self.mas_centerX).offset(0);
+            if (directionLeft) {
+                make.left.mas_equalTo(self.mas_left).offset(0);
+            }else{
+                make.centerX.mas_equalTo(self.mas_centerX).offset(0);
+            }
             make.width.mas_equalTo(nameWidth+8);
         }
         
@@ -106,7 +125,8 @@
     allNameLabel.font = [UIFont systemFontOfSize:12];
 }
 
-- (void)showVideoView{
+- (void)showVideoViewDirectionLeft:(BOOL)directionLeft{
+//    self = self.userModel.render;
     [self addSubview:self.userModel.render];
     [self.userModel.render mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(self.mas_top).offset(0);
@@ -116,7 +136,7 @@
     }];
     [[[TICManager sharedInstance] getTRTCCloud] setRemoteViewFillMode:self.userModel.render.userId mode:TRTCVideoFillMode_Fill];
     [[[TICManager sharedInstance] getTRTCCloud] startRemoteView:self.userModel.render.userId view:self.userModel.render];
-    [self userNameView:YES];
+    [self userNameView:directionLeft];
 }
 
 

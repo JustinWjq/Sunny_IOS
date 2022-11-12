@@ -21,6 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) NSArray *renderViewsArray;
 @property (strong, nonatomic) UICollectionView *collectionView;
 @property (strong, nonatomic) NSArray *userVolumesArray;
+@property (assign, nonatomic) BOOL isHorizontal;//是否水平
 @end
 
 NS_ASSUME_NONNULL_END

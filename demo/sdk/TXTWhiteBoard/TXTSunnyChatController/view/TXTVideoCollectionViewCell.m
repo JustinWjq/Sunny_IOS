@@ -50,7 +50,7 @@
     videoview.userModel = model;
     if (model.showVideo) {
        
-        [videoview showVideoView];
+        [videoview showVideoViewDirectionLeft:NO];
     }else{
 //        [videoview mas_makeConstraints:^(MASConstraintMaker *make) {
 //            make.centerX.mas_equalTo(self.mas_centerX).offset(0);

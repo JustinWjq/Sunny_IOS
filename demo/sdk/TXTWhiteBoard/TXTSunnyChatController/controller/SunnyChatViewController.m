@@ -22,6 +22,7 @@
 #import "TXTGroupMemberViewController.h"
 #import "TXTChatViewController.h"
 #import "TXTWhiteBoardViewController.h"
+#import "TXTNavigationController.h"
 
 @interface SunnyChatViewController ()<bottomButtonsDelegate, TICEventListener, TICMessageListener, TICStatusListener>
 @property (nonatomic, strong) bottomButtons *bottomToos;//底部视图
@@ -32,12 +33,15 @@
 @property (strong, nonatomic) NSString *productName;//同屏产品名
 @property (strong, nonatomic) NSString *webId;//同屏de id
 @property (strong, nonatomic) renderVideoView *renderVideoView;//视频视图
+@property (nonatomic,strong) UIButton *crossBtn;//移动机器人
 
 @property (assign, nonatomic) BOOL state;//打开摄像头
 @property (assign, nonatomic) BOOL muteState;//麦克风开关
 //@property (assign, nonatomic) BOOL switchCamera;//反转镜头开关
 @property (assign, nonatomic) BOOL shareState;//共享开关
 @property (assign, nonatomic) BOOL shareScene;//投屏开关
+
+@property (assign, nonatomic) BOOL hideBottomAndTop;//是否隐藏
 
 // 成员管理
 /** groupMemberViewController */
@@ -50,27 +54,25 @@
     [super viewDidLoad];
     
     self.title = @"远程会议";
-
-//    //扬声器
+    
+    //    //扬声器
     UIImage *speakerImg = [UIImage imageNamed:@"speaker" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
-
-//    //切换摄像头
+    
+    //    //切换摄像头
     UIImage *cameraImg = [UIImage imageNamed:@"camera" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
     
     self.navigationItem.leftBarButtonItems = @[[UIBarButtonItem itemWithTarget:self
-                                                                         action:@selector(changeAudioRoute)
-                                                                          image:speakerImg],
-                                                [UIBarButtonItem itemWithTarget:self
-                                                                         action:@selector(switchCamera)
-                                                                          image:cameraImg]];
+                                                                        action:@selector(changeAudioRoute)
+                                                                         image:speakerImg],
+                                               [UIBarButtonItem itemWithTarget:self
+                                                                        action:@selector(switchCamera)
+                                                                         image:cameraImg]];
     //onQuitClassRoom
     self.navigationItem.rightBarButtonItem = [UIBarButtonItem itemWithTarget:self action:@selector(onQuitClassRoom) title:@"退出" font:[UIFont qs_semiFontWithSize:15] titleColor:[UIColor colorWithHexString:@"#E19797"] highlightedColor:[UIColor colorWithHexString:@"#E19797"] titleEdgeInsets:UIEdgeInsetsMake(5, 5, -5, -5)];
-
+    
     self.view.backgroundColor = [UIColor colorWithHexString:@"#222222"];
-    self.navigationController.navigationBar.barTintColor = [UIColor colorWithHexString:@"#424548"];
-    [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}];
-    self.navigationController.navigationBar.barStyle = UIBarStyleBlack;
-   
+    
+    
     [self setBottomToolsUI];
     [self addNotification];
 }
@@ -78,11 +80,43 @@
 - (void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
     [self joinRoom];
+    [self initParams];
 }
 
 - (void)initParams{
-    NSString *portrait = [NSString stringWithFormat:@"%ld",(long)TRTCVideoRenderModePortrait];
-    TXUserDefaultsSetObjectforKey(portrait, Direction);
+    TXTNavigationController *navigationController = (TXTNavigationController *)self.navigationController;
+    if (navigationController.interfaceOrientation == UIInterfaceOrientationPortrait) {
+        NSString *portrait = [NSString stringWithFormat:@"%ld",(long)TRTCVideoRenderModePortrait];
+        TXUserDefaultsSetObjectforKey(portrait, Direction);
+    }else{
+        NSString *portrait = [NSString stringWithFormat:@"%ld",(long)TRTCVideoRenderModeLandscape];
+        TXUserDefaultsSetObjectforKey(portrait, Direction);
+    }
+    self.hideBottomAndTop = NO;
+    
+    TXTUserModel *model = self.renderViews[0];
+    TXTUserModel *newModel = [[TXTUserModel alloc] init];
+    newModel.render = model.render;
+    newModel.showVideo = YES;
+    newModel.showAudio = model.showAudio;
+    newModel.info = model.info;
+    newModel.userRole = @"";
+    newModel.userName = model.userName;
+    newModel.userIcon = model.userIcon;
+    
+    TXTUserModel *newModel1 = [[TXTUserModel alloc] init];
+    newModel1.render = model.render;
+    newModel1.showVideo = NO;
+    newModel1.showAudio = model.showAudio;
+    newModel1.info = model.info;
+    newModel1.userRole = @"";
+    newModel1.userName = model.userName;
+    newModel1.userIcon = model.userIcon;
+    
+    [self.renderViews addObject:newModel];
+    [self.renderViews addObject:newModel1];
+    [self.renderViews addObject:newModel1];
+    [self.renderViews addObject:newModel1];
 }
 
 - (void)joinRoom{
@@ -106,7 +140,7 @@
     [[[TICManager sharedInstance] getTRTCCloud] startRemoteView:[TICConfig shareInstance].userId view:render];
     [[[TICManager sharedInstance] getTRTCCloud] startLocalPreview:YES view:render];
     [[[TICManager sharedInstance] getTRTCCloud] startLocalAudio];
-   
+    
     [self.renderViews addObject:userModel];
     [self roomInfo:userModel];
 }
@@ -126,27 +160,27 @@
                 NSDictionary *userdic = userInfo[i];
                 NSArray *keysArr = [userdic allKeys];
                 //判断本人是同屏的发送方还是接收方
-//                if ([userModel.render.userId isEqualToString:[TICConfig shareInstance].userId]) {
-//                    if ([[userdic valueForKey:@"userId"] isEqualToString:[TICConfig shareInstance].userId]) {
-//                        if ([keysArr containsObject:@"shareWebRole"]) {
-//                            NSString *shareWebRole = [userdic valueForKey:@"shareWebRole"] ? [userdic valueForKey:@"shareWebRole"] : @"";
-//                            //发送方
-//                            if ([shareWebRole isEqualToString:@"fromUser"]) {
-//                                self.webType = @"0";
-//                                if ([keysArr containsObject:@"shareWebName"]) {
-//                                    NSString *shareWebName = [userdic valueForKey:@"shareWebName"];
-//                                    self.productName = shareWebName;
-//                                }
-//                                if ([keysArr containsObject:@"shareWebId"]) {
-//                                    if (![[userdic valueForKey:@"shareWebId"] isEqualToString:@""]) {
-//                                        [self selfPushToWebView:[userdic valueForKey:@"shareWebUrl"] WebId:[userdic valueForKey:@"shareWebId"] ActionType:@"1"];
-//                                    }
-//                                }
-//
-//                            }
-//                        }
-//                    }
-//                }
+                //                if ([userModel.render.userId isEqualToString:[TICConfig shareInstance].userId]) {
+                //                    if ([[userdic valueForKey:@"userId"] isEqualToString:[TICConfig shareInstance].userId]) {
+                //                        if ([keysArr containsObject:@"shareWebRole"]) {
+                //                            NSString *shareWebRole = [userdic valueForKey:@"shareWebRole"] ? [userdic valueForKey:@"shareWebRole"] : @"";
+                //                            //发送方
+                //                            if ([shareWebRole isEqualToString:@"fromUser"]) {
+                //                                self.webType = @"0";
+                //                                if ([keysArr containsObject:@"shareWebName"]) {
+                //                                    NSString *shareWebName = [userdic valueForKey:@"shareWebName"];
+                //                                    self.productName = shareWebName;
+                //                                }
+                //                                if ([keysArr containsObject:@"shareWebId"]) {
+                //                                    if (![[userdic valueForKey:@"shareWebId"] isEqualToString:@""]) {
+                //                                        [self selfPushToWebView:[userdic valueForKey:@"shareWebUrl"] WebId:[userdic valueForKey:@"shareWebId"] ActionType:@"1"];
+                //                                    }
+                //                                }
+                //
+                //                            }
+                //                        }
+                //                    }
+                //                }
                 
                 for (int j = 0; j<renderNewArr.count; j++) {
                     
@@ -174,60 +208,60 @@
                         break;
                     }
                 }
-//                for (int j = 0; j<self.manageMembersArr.count; j++) {
-//
-//                    TXTUserModel *manageModel = self.manageMembersArr[j];
-//                    if ([manageModel.render.userId isEqualToString:[userdic valueForKey:@"userId"]]) {
-//                        manageModel.userName = [userdic valueForKey:@"userName"];
-//                        manageModel.userRole = [userdic valueForKey:@"userRole"];
-//                        manageModel.userIcon = [userdic valueForKey:@"userIcon"];
-//                        [self.manageMembersArr replaceObjectAtIndex:j withObject:manageModel];
-//                        break;
-//                    }
-//                }
-//
+                //                for (int j = 0; j<self.manageMembersArr.count; j++) {
+                //
+                //                    TXTUserModel *manageModel = self.manageMembersArr[j];
+                //                    if ([manageModel.render.userId isEqualToString:[userdic valueForKey:@"userId"]]) {
+                //                        manageModel.userName = [userdic valueForKey:@"userName"];
+                //                        manageModel.userRole = [userdic valueForKey:@"userRole"];
+                //                        manageModel.userIcon = [userdic valueForKey:@"userIcon"];
+                //                        [self.manageMembersArr replaceObjectAtIndex:j withObject:manageModel];
+                //                        break;
+                //                    }
+                //                }
+                //
             }
             
-          
             
-//            if (self.otherShareStatus) {
-//                self.isShowWhiteBoard = YES;
-//                [self updateVideoView:@"insert" Index:1];
-//                if (self.landscapeRoomViewController) {
-//
-//                }else{
-//                    [self getWhiteBoard];
-//                }
-//
-//                self.shareState = YES;
-//
-//                if ([self.ShareStatusUserId isEqualToString:self.userId]) {
-//                    //                    self.pptView.hidden = YES;
-//
-//                }else{
-//                    self.pptView.hidden = YES;
-//                }
-//                [self.shareFileButton setImage:[UIImage imageNamed:@"fileShare_select" inBundle:TXSDKBundle compatibleWithTraitCollection:nil] forState:UIControlStateNormal];
-//                [self.drawBackView addSubview:self.brushView];
-//                [self.drawBackView addSubview:self.changeButton];
-//            }else{
-//                //没有大图
-//                if (self.currentBigVideoModel == nil) {
-//                    [self updateVideoView:@"remove" Index:1];
-//                }else{
-//                    NSLog(@"直接加入房间");
-//                }
-//            }
-       
+            
+            //            if (self.otherShareStatus) {
+            //                self.isShowWhiteBoard = YES;
+            //                [self updateVideoView:@"insert" Index:1];
+            //                if (self.landscapeRoomViewController) {
+            //
+            //                }else{
+            //                    [self getWhiteBoard];
+            //                }
+            //
+            //                self.shareState = YES;
+            //
+            //                if ([self.ShareStatusUserId isEqualToString:self.userId]) {
+            //                    //                    self.pptView.hidden = YES;
+            //
+            //                }else{
+            //                    self.pptView.hidden = YES;
+            //                }
+            //                [self.shareFileButton setImage:[UIImage imageNamed:@"fileShare_select" inBundle:TXSDKBundle compatibleWithTraitCollection:nil] forState:UIControlStateNormal];
+            //                [self.drawBackView addSubview:self.brushView];
+            //                [self.drawBackView addSubview:self.changeButton];
+            //            }else{
+            //                //没有大图
+            //                if (self.currentBigVideoModel == nil) {
+            //                    [self updateVideoView:@"remove" Index:1];
+            //                }else{
+            //                    NSLog(@"直接加入房间");
+            //                }
+            //            }
+            
             [self reloadManageMembersArray];
             [self updateRenderViewsLayout];
             
-//            if ([userModel.render.userId isEqualToString:self.userId]) {
-//                if ([[result valueForKey:@"soundStatus"] boolValue]) {
-//                    self.muteState = YES;
-//                    [self muteAudioAction];
-//                }
-//            }
+            //            if ([userModel.render.userId isEqualToString:self.userId]) {
+            //                if ([[result valueForKey:@"soundStatus"] boolValue]) {
+            //                    self.muteState = YES;
+            //                    [self muteAudioAction];
+            //                }
+            //            }
             
         }else{
             userModel.userName = userModel.render.userId;
@@ -373,131 +407,137 @@
         return;
     }
     
-//    UIViewController *currentvc = [[AFNHTTPSessionManager shareInstance] getCurrentVC];
-//    if ([currentvc isKindOfClass:[showWebViewController class]]) {
-//        [self.navigationController popViewControllerAnimated:YES];
-//    }
-//    self.webId = webId;
-//    NSLog(@"selfPushToWebView");
-//    self.backView.hidden = YES;
-//    self.shareState = YES;
-//    [self.webViewListController removeFromParentViewController];
-//    [self.webViewListController.view removeFromSuperview];
-//    self.drawBackView.hidden = YES;
-//    self.pptView.hidden = YES;
-//    self.showWebViewController.url = url;
-//    self.showWebViewController.webId = webId;
-//    self.showWebViewController.userModel = self.renderViews[0];
-//    self.showWebViewController.productName = self.productName;
-//    self.showWebViewController.actionType = actionType;
-//    self.showWebViewController.type = self.webType;
-//
-//    [self.navigationController pushViewController:self.showWebViewController animated:YES];
-  
+    //    UIViewController *currentvc = [[AFNHTTPSessionManager shareInstance] getCurrentVC];
+    //    if ([currentvc isKindOfClass:[showWebViewController class]]) {
+    //        [self.navigationController popViewControllerAnimated:YES];
+    //    }
+    //    self.webId = webId;
+    //    NSLog(@"selfPushToWebView");
+    //    self.backView.hidden = YES;
+    //    self.shareState = YES;
+    //    [self.webViewListController removeFromParentViewController];
+    //    [self.webViewListController.view removeFromSuperview];
+    //    self.drawBackView.hidden = YES;
+    //    self.pptView.hidden = YES;
+    //    self.showWebViewController.url = url;
+    //    self.showWebViewController.webId = webId;
+    //    self.showWebViewController.userModel = self.renderViews[0];
+    //    self.showWebViewController.productName = self.productName;
+    //    self.showWebViewController.actionType = actionType;
+    //    self.showWebViewController.type = self.webType;
+    //
+    //    [self.navigationController pushViewController:self.showWebViewController animated:YES];
+    
 }
 ///结束同屏
 - (void)hideshowview{
-//    self.backView.hidden = YES;
-//    self.otherShareStatus = NO;
-//    [self.webViewListController removeFromParentViewController];
-//    [self.webViewListController.view removeFromSuperview];
-//    [self.shareFileButton setImage:[UIImage imageNamed:@"fileShare_unselect" inBundle:TXSDKBundle compatibleWithTraitCollection:nil] forState:UIControlStateNormal];
-//    self.shareState = NO;
+    //    self.backView.hidden = YES;
+    //    self.otherShareStatus = NO;
+    //    [self.webViewListController removeFromParentViewController];
+    //    [self.webViewListController.view removeFromSuperview];
+    //    [self.shareFileButton setImage:[UIImage imageNamed:@"fileShare_unselect" inBundle:TXSDKBundle compatibleWithTraitCollection:nil] forState:UIControlStateNormal];
+    //    self.shareState = NO;
 }
 
 
 - (void)showAlertTitle:(NSString *)title Message:(NSString *)message cancleTitle:(NSString *)cancleTitle sureTitle:(NSString *)sureTitile{
-//    UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"" message:message preferredStyle:(UIAlertControllerStyleAlert)];
-//     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:cancleTitle style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-//     NSLog(@"点击了Cancel");
-//     [alertVC dismissViewControllerAnimated:YES completion:nil];
-//     }];
-//     UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-//     NSLog(@"点击了OK");
-////     [[NSUserDefaults standardUserDefaults] setObject:nil forKey:kLoginUserKey];
-//     [alertVC dismissViewControllerAnimated:YES completion:nil];
-//     }];
-//     //修改title
-//     NSMutableAttributedString *alertControllerStr = [[NSMutableAttributedString alloc] initWithString:@"提示"];
-//     [alertControllerStr addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithHexString:@"#666666"] range:NSMakeRange(0, 2)];
-//     [alertControllerStr addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:13] range:NSMakeRange(0, 2)];
-//     [alertVC setValue:alertControllerStr forKey:@"attributedTitle"];
-//     //修改message
-//     NSMutableAttributedString *alertControllerMessageStr = [[NSMutableAttributedString alloc] initWithString:desStr];
-//     [alertControllerMessageStr addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithHexString:@"#666666"] range:NSRangeFromString(desStr)];
-//     [alertControllerMessageStr addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:13] range:NSRangeFromString(desStr)];
-//     [alertVC setValue:alertControllerMessageStr forKey:@"attributedMessage"];
-//     //修改按钮字体颜色
-//     [cancelAction setValue:[UIColor colorWithHexString:@"#666666"] forKey:@"titleTextColor"];
-//     [okAction setValue:[UIColor colorWithHexString:@"#E6B980"] forKey:@"titleTextColor"];
-//     [alertVC addAction:cancelAction];
-//     [alertVC addAction:okAction];
-//     [self presentViewController:alertVC animated:YES completion:nil];
+    //    UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"" message:message preferredStyle:(UIAlertControllerStyleAlert)];
+    //     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:cancleTitle style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+    //     NSLog(@"点击了Cancel");
+    //     [alertVC dismissViewControllerAnimated:YES completion:nil];
+    //     }];
+    //     UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    //     NSLog(@"点击了OK");
+    ////     [[NSUserDefaults standardUserDefaults] setObject:nil forKey:kLoginUserKey];
+    //     [alertVC dismissViewControllerAnimated:YES completion:nil];
+    //     }];
+    //     //修改title
+    //     NSMutableAttributedString *alertControllerStr = [[NSMutableAttributedString alloc] initWithString:@"提示"];
+    //     [alertControllerStr addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithHexString:@"#666666"] range:NSMakeRange(0, 2)];
+    //     [alertControllerStr addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:13] range:NSMakeRange(0, 2)];
+    //     [alertVC setValue:alertControllerStr forKey:@"attributedTitle"];
+    //     //修改message
+    //     NSMutableAttributedString *alertControllerMessageStr = [[NSMutableAttributedString alloc] initWithString:desStr];
+    //     [alertControllerMessageStr addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithHexString:@"#666666"] range:NSRangeFromString(desStr)];
+    //     [alertControllerMessageStr addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:13] range:NSRangeFromString(desStr)];
+    //     [alertVC setValue:alertControllerMessageStr forKey:@"attributedMessage"];
+    //     //修改按钮字体颜色
+    //     [cancelAction setValue:[UIColor colorWithHexString:@"#666666"] forKey:@"titleTextColor"];
+    //     [okAction setValue:[UIColor colorWithHexString:@"#E6B980"] forKey:@"titleTextColor"];
+    //     [alertVC addAction:cancelAction];
+    //     [alertVC addAction:okAction];
+    //     [self presentViewController:alertVC animated:YES completion:nil];
 }
+
+//横竖屏切换
+- (void)btnAction{
+    TXTNavigationController *navigationController = (TXTNavigationController *)self.navigationController;
+    //切换rootViewController的旋转方向
+    if (navigationController.interfaceOrientation == UIInterfaceOrientationPortrait) {
+        navigationController.interfaceOrientation = UIInterfaceOrientationLandscapeLeft;
+        navigationController.interfaceOrientationMask = UIInterfaceOrientationMaskLandscapeLeft;
+        //设置屏幕的转向为横屏
+        [[UIDevice currentDevice] setValue:@(UIDeviceOrientationLandscapeLeft) forKey:@"orientation"];
+        NSString *portrait = [NSString stringWithFormat:@"%ld",(long)TRTCVideoRenderModeLandscape];
+        TXUserDefaultsSetObjectforKey(portrait, Direction);
+    }
+    else {
+        navigationController.interfaceOrientation = UIInterfaceOrientationPortrait;
+        navigationController.interfaceOrientationMask = UIInterfaceOrientationMaskPortrait;
+        //设置屏幕的转向为竖屏
+        [[UIDevice currentDevice] setValue:@(UIDeviceOrientationPortrait) forKey:@"orientation"];
+        NSString *portrait = [NSString stringWithFormat:@"%ld",(long)TRTCVideoRenderModePortrait];
+        TXUserDefaultsSetObjectforKey(portrait, Direction);
+    }
+    //刷新
+    [UIViewController attemptRotationToDeviceOrientation];
+    [self updateRenderViewsLayout];
+    [self.bottomToos updateButtons];
+}
+
 
 #pragma mark - render view
 //更新布局
 - (void)updateRenderViewsLayout
 {
-    
-    TXTUserModel *model = self.renderViews[0];
-    TXTUserModel *newModel = [[TXTUserModel alloc] init];
-    newModel.render = model.render;
-    newModel.showVideo = YES;
-    newModel.showAudio = model.showAudio;
-    newModel.info = model.info;
-    newModel.userRole = @"";
-    newModel.userName = model.userName;
-    newModel.userIcon = model.userIcon;
-    
-    TXTUserModel *newModel1 = [[TXTUserModel alloc] init];
-    newModel1.render = model.render;
-    newModel1.showVideo = NO;
-    newModel1.showAudio = model.showAudio;
-    newModel1.info = model.info;
-    newModel1.userRole = @"";
-    newModel1.userName = model.userName;
-    newModel1.userIcon = model.userIcon;
-    
-//    [self.renderViews addObject:newModel];
-//    [self.renderViews addObject:newModel1];
-
+//    [self.renderVideoView removeFromSuperview];
     self.renderVideoView.renderArray = self.renderViews;
     
     NSString *direction = TXUserDefaultsGetObjectforKey(Direction);
+    NSLog(@"Direction = %@-%lu",direction,(unsigned long)self.renderViews.count);
     NSInteger directionInt = [direction integerValue];
     
     NSLog(@"updateRenderViewsLayout");
-    if (self.renderViews.count == 1) {
-        if (directionInt == TRTCVideoRenderModeLandscape) {
-            [_renderVideoView mas_updateConstraints:^(MASConstraintMaker *make) {
-                make.top.mas_equalTo(self.view.mas_top).offset(0);
-                make.left.mas_equalTo(self.view.mas_left).offset(0);
-                make.right.mas_equalTo(self.view.mas_right).offset(0);
-                make.height.mas_equalTo(Screen_Height);
-            }];
-        }else{
-            
-        }
-        [self.renderVideoView setVideoRenderNumber:TRTCVideoRenderNumber1 mode:directionInt];
-    }else if (self.renderViews.count == 2){
-        TXTUserModel *model1 = self.renderViews[0];
-        TXTUserModel *model2 = self.renderViews[1];
-        if ( !model1.showVideo && !model2.showVideo){
-            
-        }else{
-            [_renderVideoView mas_updateConstraints:^(MASConstraintMaker *make) {
-                make.height.mas_equalTo(Screen_Height/3.5+Screen_Width/5.3/7*9);
-            }];
-        }
-       
-        [self.renderVideoView setVideoRenderNumber:TRTCVideoRenderNumber2 mode:directionInt];
-    }else{
-        [_renderVideoView mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.height.mas_equalTo(Screen_Height/3.5+Screen_Width/5.3/7*9);
+    if (directionInt == TRTCVideoRenderModeLandscape) {
+        [_renderVideoView mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.top.mas_equalTo(self.view.mas_safeAreaLayoutGuideTop).offset(0);
+            make.left.mas_equalTo(self.view.mas_safeAreaLayoutGuideLeft).offset(0);
+            make.right.mas_equalTo(self.view.mas_safeAreaLayoutGuideRight).offset(0);
+            make.bottom.mas_equalTo(self.view.mas_safeAreaLayoutGuideBottom).offset(0);
         }];
-        [self.renderVideoView setVideoRenderNumber:TRTCVideoRenderNumber3 mode:directionInt];
+    }else{
+        [_renderVideoView mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.top.mas_equalTo(self.view.mas_safeAreaLayoutGuideTop).offset(Screen_Height/4);
+            make.left.mas_equalTo(self.view.mas_safeAreaLayoutGuideLeft).offset(0);
+            make.right.mas_equalTo(self.view.mas_safeAreaLayoutGuideRight).offset(0);
+            make.height.mas_equalTo(Adapt(230)+Adapt(90));
+        }];
     }
+    [self.renderVideoView setVideoRenderNumber:(self.renderViews.count - 1) mode:directionInt];
+//    if (self.renderViews.count == 1) {
+//        [self.renderVideoView setVideoRenderNumber:TRTCVideoRenderNumber1 mode:directionInt];
+//    }else if (self.renderViews.count == 2){
+//
+//        [self.renderVideoView setVideoRenderNumber:TRTCVideoRenderNumber2 mode:directionInt];
+//    }else{
+////        if (directionInt == TRTCVideoRenderModePortrait) {
+////            [_renderVideoView mas_updateConstraints:^(MASConstraintMaker *make) {
+//////                make.height.mas_equalTo(Screen_Height/3.5+Screen_Width/5.3/7*9);
+////                make.height.mas_equalTo(Adapt(230)+Adapt(90));
+////            }];
+////        }
+//        [self.renderVideoView setVideoRenderNumber:(self.renderViews.count - 1) mode:directionInt];
+//    }
     
 }
 
@@ -599,7 +639,7 @@
                 newModel.userIcon = model.userIcon;
                 [self.renderViews replaceObjectAtIndex:i withObject:newModel];
                 //更新单个视频UI
-         
+                
                 break;
             }
         }
@@ -681,7 +721,7 @@
                 }
                 
             }
-        
+            
             //结束同屏
             if ([type isEqualToString:@"wxShareWebFileEnd"]) {
                 NSLog(@"同屏");
@@ -716,29 +756,29 @@
             //共享白板
             if ([type isEqualToString:@"shareWhiteboard"]) {
                 NSLog(@"shareWhiteboard");
-//                self.ShareStatusUserId = [dict valueForKey:@"shareUserId"];
-//                [self updateVideoView:@"insert" Index:self.renderViews.count];
-//                [self getWhiteBoard];
-//                self.isShowWhiteBoard = YES;
-//                self.otherShareStatus = YES;
-//                //                self.shareState = YES;
-//                self.pptView.hidden = YES;
-//                [self.drawBackView addSubview:self.brushView];
-//                [self.drawBackView addSubview:self.changeButton];
+                //                self.ShareStatusUserId = [dict valueForKey:@"shareUserId"];
+                //                [self updateVideoView:@"insert" Index:self.renderViews.count];
+                //                [self getWhiteBoard];
+                //                self.isShowWhiteBoard = YES;
+                //                self.otherShareStatus = YES;
+                //                //                self.shareState = YES;
+                //                self.pptView.hidden = YES;
+                //                [self.drawBackView addSubview:self.brushView];
+                //                [self.drawBackView addSubview:self.changeButton];
             }
             //结束共享白板
             if ([type isEqualToString:@"endWhiteboard"]) {
-//                if (self.landscapeRoomViewController) {
-//                    [self.landscapeRoomViewController dismissViewControllerAnimated:YES completion:nil];
-//                }
-//                self.ShareStatusUserId = [dict valueForKey:@"shareUserId"];
-//                [self updateVideoView:@"remove" Index:1];
-//                self.isShowWhiteBoard = NO;
-//                [self removeWhiteBoard];
-//                [[[TICManager sharedInstance] getBoardController] reset];
-//                [self.brushView removeFromSuperview];
-//                self.otherShareStatus = NO;
-//                [self.shareFileButton setImage:[UIImage imageNamed:@"fileShare_unselect" inBundle:TXSDKBundle compatibleWithTraitCollection:nil] forState:UIControlStateNormal];
+                //                if (self.landscapeRoomViewController) {
+                //                    [self.landscapeRoomViewController dismissViewControllerAnimated:YES completion:nil];
+                //                }
+                //                self.ShareStatusUserId = [dict valueForKey:@"shareUserId"];
+                //                [self updateVideoView:@"remove" Index:1];
+                //                self.isShowWhiteBoard = NO;
+                //                [self removeWhiteBoard];
+                //                [[[TICManager sharedInstance] getBoardController] reset];
+                //                [self.brushView removeFromSuperview];
+                //                self.otherShareStatus = NO;
+                //                [self.shareFileButton setImage:[UIImage imageNamed:@"fileShare_unselect" inBundle:TXSDKBundle compatibleWithTraitCollection:nil] forState:UIControlStateNormal];
             }
             
             //静音muteAudio
@@ -778,90 +818,90 @@
                 }
             }
             //通知延长
-//            if ([[TICConfig shareInstance].role isEqualToString:@"owner"]) {
-//                if (!self.sendMessage) {
-//                    return;
-//                }
-//                UIWindow *currentWindow = [ZYSuspensionManager windowForKey:@"videowindow"];
-//
-//                //通知延长
-//                if ([type isEqualToString:@"notifyExtend"]) {
-//                    if (currentWindow.frame.size.width < Screen_Width) {
-//                        NSLog(@"小屏中%f-%f",currentWindow.frame.size.width,Screen_Width);
-//                        return;
-//                    }
-//                    for (UIView *view in [ZYSuspensionManager windowForKey:@"videowindow"].subviews) {
-//                        if ([view isKindOfClass:[QFAlertView class]]) {
-//                            [view removeFromSuperview];
-//                        }
-//                    }
-//                    float notifyExtendTime = [[data valueForKey:@"notifyExtendTime"] floatValue];
-//                    NSInteger notifyExtendTimeMin = notifyExtendTime / 60 ;//房间通知延长时剩余时间/秒
-//                    float extendRoomTime = [[data valueForKey:@"extendRoomTime"] floatValue];//房间单次延长时间/秒
-//                    NSInteger extendRoomTimeMin = extendRoomTime / 60 ;
-//                    [[QFAlertView alertViewTitle:[NSString stringWithFormat:@"距离会议结束还有%d分钟,",notifyExtendTimeMin] des:[NSString stringWithFormat:@"确认延长有效时间%d分钟!",extendRoomTimeMin] leftTitle:@"取消延长" rightTitle:@"延长会话" leftAction:^{
-//
-//                    } rightAction:^{
-//                        [self extendTime:serviceId];
-//                    }] show];
-//                }
-//                //通知结束
-//                else if ([type isEqualToString:@"notifyEnd"]){
-//                    if (!self.sendMessage) {
-//                        return;
-//                    }
-//                    float extendRoomTime = [[data valueForKey:@"extendRoomTime"] floatValue];//房间单次延长时间/秒
-//                    NSInteger extendRoomTimeMin = extendRoomTime / 60 ;
-//                    NSInteger notifyEndTime = [[data valueForKey:@"notifyEndTime"] intValue];////房间通知延长时剩余时间/秒
-//                    __block NSInteger timeout = notifyEndTime +1;
-//                    dispatch_source_t _timer;
-//                    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-//                    _timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue);
-//                    dispatch_source_set_timer(_timer, dispatch_walltime(NULL, 0), 1.0*NSEC_PER_SEC, 0);//每秒执行
-//                    dispatch_source_set_event_handler(_timer, ^{
-//                        if (timeout == 0) {
-//                            dispatch_source_cancel(_timer);
-//                            dispatch_async(dispatch_get_main_queue(), ^{
-//                                NSLog(@"计时结束");
-//                                for (UIView *view in self.view.subviews) {
-//                                    if ([view isKindOfClass:[QFAlertView class]]) {
-//                                        [view removeFromSuperview];
-//                                    }
-//                                }
-//                                [self quit];
-//                            });
-//                        }else {
-//                            timeout--;
-//                        }
-//                    });
-//                    dispatch_resume(_timer);
-//                    if (currentWindow.frame.size.width < Screen_Width) {
-//                        NSLog(@"小屏中%f-%f",currentWindow.frame.size.width,Screen_Width);
-//                        return;
-//                    }
-//                    for (UIView *view in [ZYSuspensionManager windowForKey:@"videowindow"].subviews) {
-//                        if ([view isKindOfClass:[QFAlertView class]]) {
-//                            [view removeFromSuperview];
-//                        }
-//                    }
-//                    [[QFAlertView alertViewTitle:@"会议有效时间已用尽" msg:[NSString stringWithFormat:@"确认延长有效时间%d分钟?",extendRoomTimeMin] des:[NSString stringWithFormat:@"(若%d秒内无操作将自动结束会话)",notifyEndTime] leftTitle:[NSString stringWithFormat:@"结束会话(%ds)",notifyEndTime] rightTitle:@"延长会话" time:notifyEndTime leftAction:^{
-//                        dispatch_source_cancel(_timer);
-//                        [self quit];
-//                    } rightAction:^{
-//                        dispatch_source_cancel(_timer);
-//                        [self extendTime:serviceId];
-//                    }] show];
-//
-//
-//                }else{
-//                    break;
-//                }
-//
-//            }else{
-//                if ([type isEqualToString:@"end"]) {
-//                    [self participantQuit];
-//                }
-//            }
+            //            if ([[TICConfig shareInstance].role isEqualToString:@"owner"]) {
+            //                if (!self.sendMessage) {
+            //                    return;
+            //                }
+            //                UIWindow *currentWindow = [ZYSuspensionManager windowForKey:@"videowindow"];
+            //
+            //                //通知延长
+            //                if ([type isEqualToString:@"notifyExtend"]) {
+            //                    if (currentWindow.frame.size.width < Screen_Width) {
+            //                        NSLog(@"小屏中%f-%f",currentWindow.frame.size.width,Screen_Width);
+            //                        return;
+            //                    }
+            //                    for (UIView *view in [ZYSuspensionManager windowForKey:@"videowindow"].subviews) {
+            //                        if ([view isKindOfClass:[QFAlertView class]]) {
+            //                            [view removeFromSuperview];
+            //                        }
+            //                    }
+            //                    float notifyExtendTime = [[data valueForKey:@"notifyExtendTime"] floatValue];
+            //                    NSInteger notifyExtendTimeMin = notifyExtendTime / 60 ;//房间通知延长时剩余时间/秒
+            //                    float extendRoomTime = [[data valueForKey:@"extendRoomTime"] floatValue];//房间单次延长时间/秒
+            //                    NSInteger extendRoomTimeMin = extendRoomTime / 60 ;
+            //                    [[QFAlertView alertViewTitle:[NSString stringWithFormat:@"距离会议结束还有%d分钟,",notifyExtendTimeMin] des:[NSString stringWithFormat:@"确认延长有效时间%d分钟!",extendRoomTimeMin] leftTitle:@"取消延长" rightTitle:@"延长会话" leftAction:^{
+            //
+            //                    } rightAction:^{
+            //                        [self extendTime:serviceId];
+            //                    }] show];
+            //                }
+            //                //通知结束
+            //                else if ([type isEqualToString:@"notifyEnd"]){
+            //                    if (!self.sendMessage) {
+            //                        return;
+            //                    }
+            //                    float extendRoomTime = [[data valueForKey:@"extendRoomTime"] floatValue];//房间单次延长时间/秒
+            //                    NSInteger extendRoomTimeMin = extendRoomTime / 60 ;
+            //                    NSInteger notifyEndTime = [[data valueForKey:@"notifyEndTime"] intValue];////房间通知延长时剩余时间/秒
+            //                    __block NSInteger timeout = notifyEndTime +1;
+            //                    dispatch_source_t _timer;
+            //                    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+            //                    _timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue);
+            //                    dispatch_source_set_timer(_timer, dispatch_walltime(NULL, 0), 1.0*NSEC_PER_SEC, 0);//每秒执行
+            //                    dispatch_source_set_event_handler(_timer, ^{
+            //                        if (timeout == 0) {
+            //                            dispatch_source_cancel(_timer);
+            //                            dispatch_async(dispatch_get_main_queue(), ^{
+            //                                NSLog(@"计时结束");
+            //                                for (UIView *view in self.view.subviews) {
+            //                                    if ([view isKindOfClass:[QFAlertView class]]) {
+            //                                        [view removeFromSuperview];
+            //                                    }
+            //                                }
+            //                                [self quit];
+            //                            });
+            //                        }else {
+            //                            timeout--;
+            //                        }
+            //                    });
+            //                    dispatch_resume(_timer);
+            //                    if (currentWindow.frame.size.width < Screen_Width) {
+            //                        NSLog(@"小屏中%f-%f",currentWindow.frame.size.width,Screen_Width);
+            //                        return;
+            //                    }
+            //                    for (UIView *view in [ZYSuspensionManager windowForKey:@"videowindow"].subviews) {
+            //                        if ([view isKindOfClass:[QFAlertView class]]) {
+            //                            [view removeFromSuperview];
+            //                        }
+            //                    }
+            //                    [[QFAlertView alertViewTitle:@"会议有效时间已用尽" msg:[NSString stringWithFormat:@"确认延长有效时间%d分钟?",extendRoomTimeMin] des:[NSString stringWithFormat:@"(若%d秒内无操作将自动结束会话)",notifyEndTime] leftTitle:[NSString stringWithFormat:@"结束会话(%ds)",notifyEndTime] rightTitle:@"延长会话" time:notifyEndTime leftAction:^{
+            //                        dispatch_source_cancel(_timer);
+            //                        [self quit];
+            //                    } rightAction:^{
+            //                        dispatch_source_cancel(_timer);
+            //                        [self extendTime:serviceId];
+            //                    }] show];
+            //
+            //
+            //                }else{
+            //                    break;
+            //                }
+            //
+            //            }else{
+            //                if ([type isEqualToString:@"end"]) {
+            //                    [self participantQuit];
+            //                }
+            //            }
             
         }
     }
@@ -872,7 +912,7 @@
     [[TICManager sharedInstance] addIMessageListener:self];
     [[TICManager sharedInstance] addEventListener:self];
     [[TICManager sharedInstance] addStatusListener:self];
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
+    //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
 }
 
 #pragma  mark --懒加载
@@ -882,13 +922,27 @@
     _bottomToos = [[bottomButtons alloc] init];
     [self.view addSubview:self.bottomToos];
     [_bottomToos mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.mas_equalTo(self.view.mas_bottom).offset(0);
+        make.bottom.mas_equalTo(self.view.mas_safeAreaLayoutGuideBottom).offset(0);
         make.left.mas_equalTo(self.view.mas_left).offset(0);
         make.right.mas_equalTo(self.view.mas_right).offset(0);
-        make.height.mas_equalTo(Adapt(80));
+        make.height.mas_equalTo(Adapt(60));
     }];
     _bottomToos.delegate = self;
     [self.view bringSubviewToFront:_bottomToos];
+    
+    _crossBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [self.view addSubview:_crossBtn];
+    [_crossBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.mas_equalTo(self.view.mas_safeAreaLayoutGuideRight).offset(-Adapt(15));
+        make.bottom.mas_equalTo(self.view.mas_safeAreaLayoutGuideBottom).offset(self.hideBottomAndTop ? -Adapt(15) : -(Adapt(15+60)));
+        make.width.mas_equalTo(Adapt(38));
+        make.height.mas_equalTo(Adapt(38));
+    }];
+    NSString *direction = TXUserDefaultsGetObjectforKey(Direction);
+    NSString *imageNameStr = ( direction = @"0" )? @"Landscape-Portrait" : @"Portrait-Landscape";
+    [_crossBtn setImage:[UIImage imageNamed:imageNameStr inBundle:TXSDKBundle compatibleWithTraitCollection:nil] forState:UIControlStateNormal];
+    //     _crossBtn.frame = CGRectMake(15, 0, 50, 50);
+    [_crossBtn addTarget:self action:@selector(btnAction) forControlEvents:UIControlEventTouchUpInside];
 }
 
 - (bottomButtons *)bottomToos{
@@ -912,15 +966,12 @@
         _renderVideoView = [[renderVideoView alloc] init];
         [self.view addSubview:_renderVideoView];
         [_renderVideoView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.mas_equalTo(self.view.mas_top).offset(Screen_Height/3);
-            make.left.mas_equalTo(self.view.mas_left).offset(0);
-            make.right.mas_equalTo(self.view.mas_right).offset(0);
-            make.height.mas_equalTo(Screen_Height/3.5);
-//            make.top.mas_equalTo(self.view.mas_top).offset(Screen_Height/3);
-//            make.left.mas_equalTo(self.view.mas_left).offset(0);
-//            make.right.mas_equalTo(self.view.mas_right).offset(0);
-//            make.height.mas_equalTo(Screen_Height/3.5+Screen_Width/5.3/7*9);
+            make.top.mas_equalTo(self.view.mas_safeAreaLayoutGuideTop).offset(Screen_Height/4);
+            make.left.mas_equalTo(self.view.mas_safeAreaLayoutGuideLeft).offset(0);
+            make.right.mas_equalTo(self.view.mas_safeAreaLayoutGuideRight).offset(0);
+            make.height.mas_equalTo(Adapt(230)+Adapt(90));//Screen_Height/3.5
         }];
+        [self.view sendSubviewToBack:_renderVideoView];
     }
     return _renderVideoView;
 }
@@ -931,7 +982,7 @@
     
     if ([[TICConfig shareInstance].role isEqualToString:@"owner"])  {
         UIAlertController *actionSheet = [UIAlertController alertControllerWithTitle:nil message:@"您确定要结束会议吗？" preferredStyle:UIAlertControllerStyleActionSheet];
-     
+        
         UIAlertAction *action1 = [UIAlertAction actionWithTitle:@"结束会议" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             [self quit];
         }];
@@ -947,10 +998,10 @@
         [self presentViewController:actionSheet animated:YES completion:nil];
     }else{
         if (self.shareState) {
-//            if ([self.ShareStatusUserId isEqualToString:self.userId]) {
-//                [[JMToast sharedToast] showDialogWithMsg:@"当前正在共享，请结束后再试"];
-//                return;
-//            }
+            //            if ([self.ShareStatusUserId isEqualToString:self.userId]) {
+            //                [[JMToast sharedToast] showDialogWithMsg:@"当前正在共享，请结束后再试"];
+            //                return;
+            //            }
         }
         if (self.shareScene) {
             [[JMToast sharedToast] showDialogWithMsg:@"当前正在投屏，请结束后再试"];
@@ -993,6 +1044,19 @@
     NSDictionary *dict = @{@"serviceId":serviceId};
     [[AFNHTTPSessionManager shareInstance] requestURL:ServiceRoom_EndRecord RequestWay:@"POST" Header:nil Body:dict params:nil isFormData:NO success:^(NSError *error, id response) {
         NSLog(@"结束录制并结束会话");
+        //切为竖屏
+//        TXTNavigationController *navigationController = (TXTNavigationController *)self.navigationController;
+//        //切换rootViewController的旋转方向
+//        navigationController.interfaceOrientation = UIInterfaceOrientationPortrait;
+//        navigationController.interfaceOrientationMask = UIInterfaceOrientationMaskPortrait;
+//        //设置屏幕的转向为横屏
+//        [[UIDevice currentDevice] setValue:@(UIDeviceOrientationLandscapeLeft) forKey:@"orientation"];
+//        NSString *portrait = [NSString stringWithFormat:@"%ld",(long)TRTCVideoRenderModePortrait];
+//        TXUserDefaultsSetObjectforKey(portrait, Direction);
+//        //刷新
+//        [UIViewController attemptRotationToDeviceOrientation];
+//        [self updateRenderViewsLayout];
+//        [self.bottomToos updateButtons];
         [ZYSuspensionManager destroyWindowForKey:@"videowindow"];
     } failure:^(NSError *error, id response) {
         [ZYSuspensionManager destroyWindowForKey:@"videowindow"];
