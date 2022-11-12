@@ -73,7 +73,8 @@
 - (void)setupUI {
     [self addSubview:self.titleLabel];
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.right.equalTo(self);
+        make.left.equalTo(self);
+        make.right.equalTo(self.mas_safeAreaLayoutGuideRight);
         make.height.mas_equalTo(23);
         make.top.mas_equalTo(15);
     }];
@@ -82,13 +83,13 @@
     [self.closeBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.mas_equalTo(56);
         make.centerY.equalTo(self.titleLabel);
-        make.right.equalTo(self);
+        make.right.equalTo(self.mas_safeAreaLayoutGuideRight);
         make.height.mas_equalTo(40);
     }];
     
     [self addSubview:self.cancelBtn];
     [self.cancelBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.mas_equalTo(-5);
+        make.right.equalTo(self.mas_safeAreaLayoutGuideRight).offset(-5);
         make.height.mas_equalTo(30);
         make.width.mas_equalTo(50);
         make.top.mas_equalTo(64);
@@ -98,13 +99,14 @@
         make.left.mas_equalTo(15);
         make.top.mas_equalTo(64);
         make.height.mas_equalTo(30);
-        make.right.equalTo(self.mas_right).offset(-15);
+        make.right.equalTo(self.mas_safeAreaLayoutGuideRight).offset(-15);
     }];
     
     [self addSubview:self.tableView];
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.textField.mas_bottom).offset(10);
-        make.left.right.equalTo(self);
+        make.left.equalTo(self);
+        make.right.equalTo(self.mas_safeAreaLayoutGuideRight);
         make.bottom.equalTo(self.mas_safeAreaLayoutGuideBottom).offset(-60);
     }];
     
@@ -143,7 +145,7 @@
     if ([UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationPortrait || [UIApplication sharedApplication].statusBarOrientation == UIDeviceOrientationPortraitUpsideDown) {
         corners = UIRectCornerTopLeft | UIRectCornerTopRight;
     }
-    UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:self.bounds byRoundingCorners:corners cornerRadii:CGSizeMake(20, 20)];
+    UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:self.bounds byRoundingCorners:corners cornerRadii:CGSizeMake(15, 15)];
     CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
     //设置大小
     maskLayer.frame = self.bounds;
@@ -157,7 +159,7 @@
         [self.closeBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.width.mas_equalTo(56);
             make.centerY.equalTo(self.titleLabel);
-            make.right.equalTo(self.mas_right);
+            make.right.equalTo(self.mas_safeAreaLayoutGuideRight);
             make.height.mas_equalTo(40);
         }];
         [self.allUnmuteBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
@@ -377,12 +379,12 @@
 #pragma mark -给每个cell中的textfield添加事件，只要值改变就调用此函数
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
     [self.textField mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(self.mas_right).offset(-55);
+        make.right.equalTo(self.mas_safeAreaLayoutGuideRight).offset(-55);
     }];
 }
 - (void)textFieldDidEndEditing:(UITextField *)textField {
     [self.textField mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(self.mas_right).offset(-15);
+        make.right.equalTo(self.mas_safeAreaLayoutGuideRight).offset(-15);
     }];
 }
 

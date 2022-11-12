@@ -11,11 +11,17 @@
 #import "TXTBrushThinView.h"
 
 @interface TXTWhiteBoardView () <TXTWhiteToolViewDelegate>
+/** endBtn */
+@property (nonatomic, strong) UIButton *endBtn;
+///** endIcon */
+//@property (nonatomic, strong) UIImageView *endIcon;
+///** endLabel */
+//@property (nonatomic, strong) UILabel *endLabel;
+
 /** toolView */
 @property (nonatomic, strong) TXTWhiteToolView *toolView;
 /** coverView */
 @property (nonatomic, strong) UIView *coverView;
-
 /** brushThinView */
 @property (nonatomic, strong) TXTBrushThinView *brushThinView;
 @end
@@ -35,6 +41,15 @@
 
 /// initUI
 - (void)initUI {
+    [self addSubview:self.endBtn];
+    [self.endBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(self.mas_safeAreaLayoutGuideRight).offset(-30);
+        make.top.equalTo(self.mas_safeAreaLayoutGuideTop);
+        make.width.mas_equalTo(95);
+        make.height.mas_equalTo(30);
+    }];
+    self.endBtn.cornerRadius = 5;
+    
     [self addSubview:self.toolView];
     [self.toolView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.mas_safeAreaLayoutGuideRight).offset(-15);
@@ -47,6 +62,7 @@
         make.edges.equalTo(self);
     }];
     [self.coverView addTarget:self action:@selector(hideCover)];
+    self.coverView.hidden = YES;
 }
 
 /// hideCover
@@ -72,6 +88,12 @@
     }
 }
 
+/// endBtnClick
+- (void)endBtnClick {
+    if ([self.delegate respondsToSelector:@selector(whiteBoardViewDidClickEndBtn:)]) {
+        [self.delegate whiteBoardViewDidClickEndBtn:self.endBtn];
+    }
+}
 
 - (void)whiteToolViewDidClickToolBtn:(UIButton *)toolBtn {
     if (toolBtn.selected) { // 展开
@@ -141,4 +163,32 @@
     }
     return _brushThinView;
 }
+
+/** endBtn */
+- (UIButton *)endBtn {
+    if (!_endBtn) {
+        UIButton *endBtn = [UIButton buttonWithTitle:@" 结束共享" titleColor:[UIColor colorWithHexString:@"FFFFFF"] font:[UIFont qs_regularFontWithSize:14] target:self action:@selector(endBtnClick)];
+        [endBtn setImage:[UIImage imageNamed:@"white_icon_endWhite" inBundle:TXTSDKBundle compatibleWithTraitCollection:nil] forState:UIControlStateNormal];
+        endBtn.backgroundColor = [UIColor colorWithHexString:@"FF6666"];
+        self.endBtn = endBtn;
+    }
+    return _endBtn;
+}
+///** endIcon */
+//- (UIImageView *)endIcon {
+//    if (!_endIcon) {
+//        UIImageView *endIcon = [[UIImageView alloc] init];
+//        endIcon.image = [UIImage imageNamed:@"white_icon_endWhite" inBundle:TXTSDKBundle compatibleWithTraitCollection:nil];
+//        self.endIcon = endIcon;
+//    }
+//    return _endIcon;
+//}
+///** endLabel */
+//- (UILabel *)endLabel {
+//    if (!_endLabel) {
+//        UILabel *endLabel = [UILabel labelWithTitle:@"结束共享" color:[UIColor colorWithHexString:@"FFFFFF"] font:[UIFont qs_regularFontWithSize:14]];
+//        self.endLabel = endLabel;
+//    }
+//    return _endLabel;
+//}
 @end

@@ -65,15 +65,17 @@
     NSDictionary *dict = [[TXTCommon sharedInstance] dictionaryWithJsonString:text];
     NSString *userName = dict[@"userName"];
     NSString *content = dict[@"content"];
-    self.contentLabel.attributedText = [self differentStringForLable:[NSString stringWithFormat:@"%@：%@", userName, content] uintStr:content];
+    self.contentLabel.attributedText = [self differentStringForLable:[NSString stringWithFormat:@"%@：", userName] uintStr:content];
 }
 
 /** 不同字体*/
 - (NSMutableAttributedString *)differentStringForLable:(NSString *)string uintStr:(NSString *)uintStr {
-    NSString *originStr = [NSString stringWithFormat:@"%@", string];
-    NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:originStr];
+//    NSString *originStr = [NSString stringWithFormat:@"%@", string];
+    NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:string];
     [str addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithHexString:@"E6B980"] range:NSMakeRange(0, string.length)];
-    [str addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithHexString:@"FFFFFF"] range:[originStr rangeOfString:uintStr]];
+    NSMutableAttributedString *str2 = [[NSMutableAttributedString alloc] initWithString:uintStr];
+    [str2 addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithHexString:@"FFFFFF"] range:NSMakeRange(0, uintStr.length)];
+    [str appendAttributedString:str2];
     return str;
 }
 

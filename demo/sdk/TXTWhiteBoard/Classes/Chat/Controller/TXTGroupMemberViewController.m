@@ -64,6 +64,14 @@
         make.height.mas_equalTo(36);
         make.width.mas_equalTo(122);
     }];
+    
+    if ([UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationPortrait || [UIApplication sharedApplication].statusBarOrientation == UIDeviceOrientationPortraitUpsideDown) {
+        [self updateUI:YES];
+        [self.memberView updateUI:YES];
+    } else {
+        [self updateUI:NO];
+        [self.memberView updateUI:NO];
+    }
 }
 
 /// orientationChange
@@ -71,21 +79,38 @@
     AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
     app.allowRotation = YES;
     if ([UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationPortrait || [UIApplication sharedApplication].statusBarOrientation == UIDeviceOrientationPortraitUpsideDown) {
-        [self.memberView mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.view.mas_top).offset([UIApplication sharedApplication].statusBarFrame.size.height);
-            make.left.right.bottom.equalTo(self.view);
-        }];
+//        [self.memberView mas_remakeConstraints:^(MASConstraintMaker *make) {
+//            make.top.equalTo(self.view.mas_top).offset([UIApplication sharedApplication].statusBarFrame.size.height);
+//            make.left.right.bottom.equalTo(self.view);
+//        }];
+        [self updateUI:YES];
         [self.memberView updateUI:YES];
     } else {
-        [self.memberView mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.view.mas_top);
-            make.right.bottom.equalTo(self.view);
-            make.width.mas_equalTo(330);
-        }];
+//        [self.memberView mas_remakeConstraints:^(MASConstraintMaker *make) {
+//            make.top.equalTo(self.view.mas_top);
+//            make.right.bottom.equalTo(self.view);
+//            make.width.mas_equalTo(330);
+//        }];
+        [self updateUI:NO];
         [self.memberView updateUI:NO];
     }
     [self teleprompViewDidClickSwitchView:self.teleprompView.switchView];
     [self.view layoutIfNeeded];
+}
+
+- (void)updateUI:(BOOL)isPortrait {
+    if (isPortrait) {
+        [self.memberView mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.view.mas_top).offset([UIApplication sharedApplication].statusBarFrame.size.height);
+            make.left.right.bottom.equalTo(self.view);
+        }];
+    } else {
+        [self.memberView mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.view.mas_top);
+            make.right.bottom.equalTo(self.view);
+            make.width.mas_equalTo(330 + [UIApplication sharedApplication].keyWindow.safeAreaInsets.right);
+        }];
+    }
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation {

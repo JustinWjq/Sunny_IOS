@@ -17,7 +17,8 @@
 
 static NSInteger const kInputToolBarH = 62;
 
-@interface TXTChatViewController () <TICMessageListener, UITextViewDelegate, TXTSmallChatViewDelegate, TXTEmojiViewDelegate>
+@interface TXTChatViewController () <TICMessageListener, UITextViewDelegate, TXTSmallChatViewDelegate, TXTEmojiViewDelegate, TXTChatViewDelegate>
+
 /** groupChatRoomView */
 @property (nonatomic, strong) TXTChatView *groupChatRoomView;
 /** smallChatView */
@@ -50,7 +51,7 @@ static NSInteger const kInputToolBarH = 62;
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-//    [self.navigationController setNavigationBarHidden:YES animated:YES];
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -70,16 +71,17 @@ static NSInteger const kInputToolBarH = 62;
 }
 
 - (void)qs_initSubViews {
-    self.view.backgroundColor = [UIColor colorWithHexString:@"FFFFFF"];
+    self.view.backgroundColor = [UIColor colorWithHexString:@"000000"];
 
     self.title = [NSString stringWithFormat:@"%@",TXUserDefaultsGetObjectforKey(RoomId)];
     
     [self.view addSubview:self.groupChatRoomView];
     [self.groupChatRoomView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view.mas_safeAreaLayoutGuideTop);
-        make.left.equalTo(self.view.mas_safeAreaLayoutGuideLeft);
-        make.right.equalTo(self.view.mas_safeAreaLayoutGuideRight);
-        make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideBottom);
+        make.edges.equalTo(self.view);
+//        make.top.equalTo(self.view.mas_top);
+//        make.left.equalTo(self.view.mas_safeAreaLayoutGuideLeft);
+//        make.right.equalTo(self.view.mas_safeAreaLayoutGuideRight);
+//        make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideBottom);
     }];
 
     [self.groupChatRoomView addSubview:self.smallChatView];
@@ -102,7 +104,7 @@ static NSInteger const kInputToolBarH = 62;
     [self.view addSubview:self.smallMessageView];
     [self.smallMessageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.smallChatView);
-        make.height.mas_equalTo(39 * 3);
+//        make.height.mas_equalTo(39 * 3);
         make.bottom.equalTo(self.smallChatView.mas_top).offset(-10);
         make.width.mas_equalTo(265);
     }];
@@ -122,19 +124,62 @@ static NSInteger const kInputToolBarH = 62;
         make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideBottom);
         make.height.mas_equalTo(kInputToolBarH);
     }];
+    if ([UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationPortrait || [UIApplication sharedApplication].statusBarOrientation == UIDeviceOrientationPortraitUpsideDown) {
+        [self updateUI:YES];
+    } else {
+        [self updateUI:NO];
+    }
 }
 /// orientationChange
 - (void)handleScreenOrientationChange:(NSNotification *)noti {
     AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
     app.allowRotation = YES;
+    
     if ([UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationPortrait || [UIApplication sharedApplication].statusBarOrientation == UIDeviceOrientationPortraitUpsideDown) {
-        [self leftAction];
-        // 竖屏
+//        [self leftAction];
+//        // 竖屏
+//        [self.groupChatRoomView mas_remakeConstraints:^(MASConstraintMaker *make) {
+//            make.top.equalTo(self.view.mas_safeAreaLayoutGuideTop);
+//            make.right.equalTo(self.view.mas_safeAreaLayoutGuideRight);
+//            make.left.equalTo(self.view.mas_safeAreaLayoutGuideLeft);
+//            make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideBottom);
+//        }];
+//        [self.smallChatView mas_remakeConstraints:^(MASConstraintMaker *make) {
+//            make.left.mas_equalTo(15);
+//            make.bottom.equalTo(self.groupChatRoomView.mas_bottom).offset(-75);
+//            make.width.mas_equalTo(150);
+//            make.height.mas_equalTo(34);
+//        }];
+        [self updateUI:YES];
+        [self.groupChatRoomView updateUI:YES];
+    } else {
+//        [self rightAction];
+//        // 横屏
+//        [self.groupChatRoomView mas_remakeConstraints:^(MASConstraintMaker *make) {
+//            make.top.equalTo(self.view.mas_safeAreaLayoutGuideTop);
+//            make.width.mas_equalTo(330);
+//            make.right.equalTo(self.view.mas_safeAreaLayoutGuideRight);
+//            make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideBottom);
+//        }];
+//        [self.smallChatView mas_remakeConstraints:^(MASConstraintMaker *make) {
+//            make.left.mas_equalTo(30);
+//            make.bottom.equalTo(self.groupChatRoomView.mas_bottom).offset(-75);
+//            make.width.mas_equalTo(150);
+//            make.height.mas_equalTo(34);
+//        }];
+        [self updateUI:NO];
+        [self.groupChatRoomView updateUI:NO];
+    }
+}
+
+- (void)updateUI:(BOOL)isPortrait {
+    if (isPortrait) {
         [self.groupChatRoomView mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.view.mas_safeAreaLayoutGuideTop);
-            make.right.equalTo(self.view.mas_safeAreaLayoutGuideRight);
-            make.left.equalTo(self.view.mas_safeAreaLayoutGuideLeft);
-            make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideBottom);
+            make.edges.equalTo(self.view);
+//            make.edges.equalTo(self.view.mas_top);
+//            make.right.equalTo(self.view.mas_safeAreaLayoutGuideRight);
+//            make.left.equalTo(self.view.mas_safeAreaLayoutGuideLeft);
+//            make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideBottom);
         }];
         [self.smallChatView mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.left.mas_equalTo(15);
@@ -143,21 +188,21 @@ static NSInteger const kInputToolBarH = 62;
             make.height.mas_equalTo(34);
         }];
     } else {
-        [self rightAction];
         // 横屏
         [self.groupChatRoomView mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.view.mas_safeAreaLayoutGuideTop);
-            make.width.mas_equalTo(375);
-            make.right.equalTo(self.view.mas_safeAreaLayoutGuideRight);
-            make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideBottom);
+            make.top.right.bottom.equalTo(self.view);
+            make.width.mas_equalTo(330 + [UIApplication sharedApplication].keyWindow.safeAreaInsets.right);
+//            make.right.equalTo(self.view.mas_safeAreaLayoutGuideRight);
+//            make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideBottom);
         }];
         [self.smallChatView mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.left.mas_equalTo(30);
             make.bottom.equalTo(self.groupChatRoomView.mas_bottom).offset(-75);
-            make.width.mas_equalTo(150);
+            make.width.mas_equalTo(150 + [UIApplication sharedApplication].keyWindow.safeAreaInsets.right);
             make.height.mas_equalTo(34);
         }];
     }
+//    [self layoutIfNeeded];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation {
@@ -235,6 +280,10 @@ static NSInteger const kInputToolBarH = 62;
 #pragma mark - 🚪public
 
 #pragma mark - 🍐delegate
+- (void)chatViewDidClickCloseBtn:(UIButton *)closeBtn {
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
 - (void)onTICRecvMessage:(TIMMessage *)message {
     NSString *msgID = message.msgId;
     [[V2TIMManager sharedInstance] findMessages:@[msgID] succ:^(NSArray<V2TIMMessage *> *msgs) {
@@ -431,7 +480,8 @@ static NSInteger const kInputToolBarH = 62;
 - (TXTChatView *)groupChatRoomView {
     if (!_groupChatRoomView) {
         TXTChatView *groupChatRoomView = [[TXTChatView alloc] init];
-        groupChatRoomView.backgroundColor = [UIColor colorWithHexString:@"D70110"];
+        groupChatRoomView.backgroundColor = [UIColor colorWithHexString:@"FFFFFF"];
+        groupChatRoomView.delegate = self;
         self.groupChatRoomView = groupChatRoomView;
     }
     return _groupChatRoomView;

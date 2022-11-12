@@ -8,6 +8,8 @@
 
 #import "TXTSmallMessageView.h"
 #import "TXTSmallMessageCell.h"
+#import "TXTSmallMessage.h"
+#import "YYModel.h"
 
 @interface TXTSmallMessageView () <UITableViewDelegate, UITableViewDataSource, TICMessageListener>
 /** tableView */
@@ -16,6 +18,8 @@
 /** dataArray */
 @property (nonatomic, strong) NSMutableArray *dataArray;
 
+/** count */
+@property (nonatomic, assign) NSInteger count;
 @end
 
 @implementation TXTSmallMessageView
@@ -24,7 +28,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         [self setupUI];
-        
+        self.hidden = YES;
         [[TICManager sharedInstance] addIMessageListener:self];
     }
     return self;
@@ -37,16 +41,51 @@
 - (void)setupUI {
     [self addSubview:self.messageTableView];
     [self.messageTableView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(self);
+        make.left.right.top.equalTo(self);
+        make.height.mas_equalTo(0);
+        make.bottom.equalTo(self.mas_bottom);
     }];
 }
 
+- (void)endPolling {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [NSObject cancelPreviousPerformRequestsWithTarget:self];
+    });
+}
+
+- (void)countDown {
+    self.count -= 1;
+    if (self.count <= 0.01) {
+        [self endPolling];
+        self.hidden = YES;
+        [self.dataArray removeAllObjects];
+    } else {
+        [self performSelector:@selector(countDown) withObject:nil afterDelay:1.0];
+    }
+}
+
+
 /// 添加消息
 - (void)addMessage:(NSString *)message {
+    [self endPolling];
+    self.hidden = NO;
+    self.count = 5;
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self countDown];
+    });
     if (self.dataArray.count >= 3) {
         [self.dataArray removeObjectAtIndex:0];
     }
     [self.dataArray addObject:message];
+    CGFloat tableViewH = 0;
+    for (int i=0; i<self.dataArray.count; i++) {
+        NSDictionary *dict = [[TXTCommon sharedInstance] dictionaryWithJsonString:self.dataArray[i]];
+        TXTSmallMessage *msg = [TXTSmallMessage yy_modelWithDictionary:dict];
+        tableViewH += [msg cellH];
+    }
+    [self.messageTableView mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.height.mas_equalTo(tableViewH);
+    }];
     [self.messageTableView reloadData];
     [self scrollToEnd];
 }
@@ -70,10 +109,11 @@
         if (!v2message.textElem) return;
         NSDictionary *dict = [[TXTCommon sharedInstance] dictionaryWithJsonString:v2message.textElem.text];
         if (![dict[@"type"] isEqualToString:@"wxIM"]) return;
-        if (self.dataArray.count >= 3) {
-            [self.dataArray removeObjectAtIndex:0];
-        }
-        [self.dataArray addObject:v2message.textElem.text];
+//        if (self.dataArray.count >= 3) {
+//            [self.dataArray removeObjectAtIndex:0];
+//        }
+//        [self.dataArray addObject:v2message.textElem.text];
+        [self addMessage:v2message.textElem.text];
         [self.messageTableView reloadData];
         [self scrollToEnd];
 //        [self addCellToTabel];
@@ -105,13 +145,14 @@
         messageTableView.dataSource = self;
         messageTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         messageTableView.showsVerticalScrollIndicator = NO;
-        messageTableView.backgroundColor = [UIColor colorWithHexString:@"F8F9FB"];
+        messageTableView.backgroundColor = [UIColor clearColor];
         messageTableView.tableFooterView = [UIView new];
         messageTableView.estimatedRowHeight = 100;
         messageTableView.rowHeight = UITableViewAutomaticDimension;
         messageTableView.estimatedSectionHeaderHeight = 0;
         messageTableView.estimatedSectionFooterHeight = 0;
           messageTableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
+        messageTableView.userInteractionEnabled = NO;
         self.messageTableView = messageTableView;
         if (@available(iOS 11.0, *)) {
             self.messageTableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;

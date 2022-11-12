@@ -8,6 +8,7 @@
 
 #import "TXTMemberInfoView.h"
 #import "QSCover.h"
+#import "TXTToast.h"
 
 static NSInteger const kBtnTag = 10000;
 
@@ -58,7 +59,7 @@ static TXTMemberInfoView *_alertView = nil; //第一步：静态实例，并初�
     } else {
         [bgView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.width.mas_equalTo(270);
-            make.right.equalTo(_alertView.mas_right).offset(-28);
+            make.right.equalTo(_alertView.mas_right).offset(-28 - [UIApplication sharedApplication].keyWindow.safeAreaInsets.right);
             make.centerY.equalTo(_alertView);
         }];
     }
@@ -195,10 +196,11 @@ static TXTMemberInfoView *_alertView = nil; //第一步：静态实例，并初�
             NSDictionary *messagedict = @{@"serviceId":TXUserDefaultsGetObjectforKey(ServiceId),@"type":@"muteAudio",@"agentId":TXUserDefaultsGetObjectforKey(AgentId),@"users":@[dict]};
             NSString *str = [[TXTCommon sharedInstance] convertToJsonData:messagedict];
             [[TICManager sharedInstance] sendGroupTextMessage:str callback:^(TICModule module, int code, NSString *desc) {
-                if(code == 0){
-                    [[JMToast sharedToast] showDialogWithMsg:@"操作成功"];
-                }
                 [TXTMemberInfoView hide];
+                if(code == 0){
+                    NSString *str = self.model.showAudio ? @"已将该成员静音" : @"已将该成员解除静音";
+                    [TXTToast toastWithTitle:str];
+                }
             }];
         }
     } else if (tag == 1) {
@@ -212,13 +214,23 @@ static TXTMemberInfoView *_alertView = nil; //第一步：静态实例，并初�
             NSDictionary *messagedict = @{@"serviceId":TXUserDefaultsGetObjectforKey(ServiceId),@"type":@"muteVideo",@"agentId":TXUserDefaultsGetObjectforKey(AgentId),@"users":@[dict]};
             NSString *str = [[TXTCommon sharedInstance] convertToJsonData:messagedict];
             [[TICManager sharedInstance] sendGroupTextMessage:str callback:^(TICModule module, int code, NSString *desc) {
-                if(code == 0){
-                    [[JMToast sharedToast] showDialogWithMsg:@"操作成功"];
-                }
-                
                 [TXTMemberInfoView hide];
+                if(code == 0){
+                    NSString *str = self.model.showAudio ? @"已将该成员摄像头关闭" : @"已将该成员摄像头打开";
+                    [TXTToast toastWithTitle:str];
+                }
             }];
         }
+    } else if (tag == 3) {
+        
+        NSDictionary *messagedict = @{@"serviceId":TXUserDefaultsGetObjectforKey(ServiceId),@"type":@"moveOutRoom",@"agentId":TXUserDefaultsGetObjectforKey(AgentId),@"userId":self.model.render.userId};
+        NSString *str = [[TXTCommon sharedInstance] convertToJsonData:messagedict];
+        [[TICManager sharedInstance] sendGroupTextMessage:str callback:^(TICModule module, int code, NSString *desc) {
+            [TXTMemberInfoView hide];
+            if(code == 0){
+                [TXTToast toastWithTitle:@"已将该成员移除会议室"];
+            }
+        }];
     }
 }
 

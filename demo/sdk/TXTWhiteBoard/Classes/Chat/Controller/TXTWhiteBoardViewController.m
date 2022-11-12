@@ -10,7 +10,7 @@
 #import "TXTWhiteBoardView.h"
 #import "TICManager.h"
 
-@interface TXTWhiteBoardViewController () <TEduBoardDelegate>
+@interface TXTWhiteBoardViewController () <TEduBoardDelegate, TXTWhiteBoardViewDelegate>
 /** whiteBoardView */
 @property (nonatomic, strong) TXTWhiteBoardView *whiteBoardView;
 @end
@@ -68,15 +68,6 @@
     } failure:^(NSError *error, id response) {
         [[JMToast sharedToast] showDialogWithMsg:@"网络连接错误"];
     }];
-    
-    UIButton *back = [UIButton buttonWithTitle:@"back" titleColor:[UIColor colorWithHexString:@"000000"] font:[UIFont qs_regularFontWithSize:15] target:self action:@selector(backClick)];
-    [self.view addSubview:back];
-    [back mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(15);
-        make.top.mas_equalTo(15);
-        make.width.height.mas_equalTo(50);
-    }];
-    
 }
 
 /// orientationChange
@@ -136,7 +127,9 @@
 #pragma mark - 🚪public
 
 #pragma mark - 🍐delegate
-
+- (void)whiteBoardViewDidClickEndBtn:(UIButton *)endBtn {
+    [self backClick];
+}
 #pragma mark - ☎️notification
 
 #pragma mark - 🎬event response
@@ -145,6 +138,7 @@
 - (TXTWhiteBoardView *)whiteBoardView {
     if (!_whiteBoardView) {
         TXTWhiteBoardView *whiteBoardView = [[TXTWhiteBoardView alloc] init];
+        whiteBoardView.delegate = self;
         self.whiteBoardView = whiteBoardView;
     }
     return _whiteBoardView;
