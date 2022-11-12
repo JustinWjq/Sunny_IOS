@@ -12,6 +12,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface UIWindow (Extesion)
 + (UIWindow *)getKeyWindow;
+
+/// 横向
++ (BOOL)isLandscape;
 @end
 
 NS_ASSUME_NONNULL_END

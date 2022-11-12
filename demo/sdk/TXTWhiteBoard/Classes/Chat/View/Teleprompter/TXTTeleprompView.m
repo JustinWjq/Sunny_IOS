@@ -104,16 +104,16 @@
         make.top.equalTo(self.midFontBtn.mas_bottom);
     }];
     
-    if ([UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationPortrait || [UIApplication sharedApplication].statusBarOrientation == UIDeviceOrientationPortraitUpsideDown) {
-        [self updateUI:YES];
-    } else {
-        [self updateUI:NO];
-    }
+//    if (![UIWindow isLandscape]) {
+//        [self updateUI:YES];
+//    } else {
+//        [self updateUI:NO];
+//    }
 }
 
 /// orientationChange
 - (void)handleScreenOrientationChange:(NSNotification *)noti {
-    if ([UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationPortrait || [UIApplication sharedApplication].statusBarOrientation == UIDeviceOrientationPortraitUpsideDown) {
+    if (![UIWindow isLandscape]) {
         [self updateUI:YES];
     } else {
         [self updateUI:NO];
@@ -164,7 +164,7 @@
 //}
 
 // 更新界面
-- (void)upDateUI:(BOOL)isOn {
+- (void)upDateUIWithSwithch:(BOOL)isOn {
     self.fontBtn.hidden = !isOn;
     self.contentLabel.hidden = !isOn;
     self.fontBgView.hidden = YES;

@@ -131,7 +131,7 @@
         make.top.height.equalTo(self.allUnmuteBtn);
     }];
     
-    if ([UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationPortrait || [UIApplication sharedApplication].statusBarOrientation == UIDeviceOrientationPortraitUpsideDown) {
+    if (![UIWindow isLandscape]) {
         [self updateUI:YES];
     } else {
         [self updateUI:NO];
@@ -142,7 +142,7 @@
     [super layoutSubviews];
     
     UIRectCorner corners = UIRectCornerTopLeft | UIRectCornerBottomLeft;
-    if ([UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationPortrait || [UIApplication sharedApplication].statusBarOrientation == UIDeviceOrientationPortraitUpsideDown) {
+    if (![UIWindow isLandscape]) {
         corners = UIRectCornerTopLeft | UIRectCornerTopRight;
     }
     UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:self.bounds byRoundingCorners:corners cornerRadii:CGSizeMake(15, 15)];

@@ -928,7 +928,16 @@
 #pragma  mark 离开房间
 - (void)onQuitClassRoom
 {
-    
+    TXTGroupMemberViewController *vc = [[TXTGroupMemberViewController alloc] init];
+    vc.manageMembersArr = self.renderViews;
+    self.groupMemberViewController = vc;
+    vc.closeBlock = ^{
+        self.groupMemberViewController = nil;
+    };
+    [self.navigationController pushViewController:vc animated:YES];
+//    TXTChatViewController *vc = [[TXTChatViewController alloc] init];
+//    [self.navigationController pushViewController:vc animated:YES];
+    return;
     if ([[TICConfig shareInstance].role isEqualToString:@"owner"])  {
         UIAlertController *actionSheet = [UIAlertController alertControllerWithTitle:nil message:@"您确定要结束会议吗？" preferredStyle:UIAlertControllerStyleActionSheet];
      

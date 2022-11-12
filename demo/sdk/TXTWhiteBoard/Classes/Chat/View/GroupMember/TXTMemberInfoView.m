@@ -50,7 +50,7 @@ static TXTMemberInfoView *_alertView = nil; //第一步：静态实例，并初�
     bgView.backgroundColor = [UIColor colorWithHexString:@"F1F1F1"];
     [_alertView addSubview:bgView];
     
-    if ([UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationPortrait || [UIApplication sharedApplication].statusBarOrientation == UIDeviceOrientationPortraitUpsideDown) {
+    if (![UIWindow isLandscape]) {
         [bgView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.width.mas_equalTo(270);
             make.centerX.equalTo(_alertView);

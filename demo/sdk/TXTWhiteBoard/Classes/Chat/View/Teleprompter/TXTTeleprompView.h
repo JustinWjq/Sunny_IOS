@@ -24,9 +24,10 @@ NS_ASSUME_NONNULL_BEGIN
 /** delegate */
 @property (nonatomic, weak) id<TXTTeleprompViewDelegate> delegate;
 
-// 更新界面按钮是否打开
-- (void)upDateUI:(BOOL)isOn;
-
+/// 更新界面按钮是否打开
+- (void)upDateUIWithSwithch:(BOOL)isOn;
+/// 是否横竖屏
+- (void)updateUI:(BOOL)isPortrait;
 @end
 
 NS_ASSUME_NONNULL_END

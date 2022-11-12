@@ -1401,10 +1401,10 @@
 		F0816872290FC9A100C5CA29 /* UILabel */ = {
 			isa = PBXGroup;
 			children = (
-				F0816873290FC9A100C5CA29 /* UILabel+currency.h */,
-				F0816874290FC9A100C5CA29 /* UILabel+Extension.m */,
-				F0816875290FC9A100C5CA29 /* UILabel+currency.m */,
 				F0816876290FC9A100C5CA29 /* UILabel+Extension.h */,
+				F0816874290FC9A100C5CA29 /* UILabel+Extension.m */,
+				F0816873290FC9A100C5CA29 /* UILabel+currency.h */,
+				F0816875290FC9A100C5CA29 /* UILabel+currency.m */,
 			);
 			path = UILabel;
 			sourceTree = "<group>";

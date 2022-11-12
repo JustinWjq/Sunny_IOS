@@ -73,7 +73,7 @@
 
 /// orientationChange
 - (void)handleScreenOrientationChange:(NSNotification *)noti {
-    if ([UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationPortrait || [UIApplication sharedApplication].statusBarOrientation == UIDeviceOrientationPortraitUpsideDown) {
+    if (![UIWindow isLandscape]) {
         [self updateUI:YES];
     } else {
         [self updateUI:NO];

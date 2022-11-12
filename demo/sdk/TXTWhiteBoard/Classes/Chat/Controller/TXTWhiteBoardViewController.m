@@ -74,7 +74,7 @@
 - (void)handleScreenOrientationChange:(NSNotification *)noti {
     AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
     app.allowRotation = YES;
-    if ([UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationPortrait || [UIApplication sharedApplication].statusBarOrientation == UIDeviceOrientationPortraitUpsideDown) {
+    if (![UIWindow isLandscape]) {
        
     } else {
         

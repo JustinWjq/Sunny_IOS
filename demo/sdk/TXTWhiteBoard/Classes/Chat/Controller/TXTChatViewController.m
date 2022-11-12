@@ -56,10 +56,16 @@ static NSInteger const kInputToolBarH = 62;
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
 }
 
 - (void)viewWillLayoutSubviews {
     [super viewWillLayoutSubviews];
+    if (![UIWindow isLandscape]) {
+        [self updateUI:YES];
+    } else {
+        [self updateUI:NO];
+    }
 }
 
 #pragma mark - 🔒private
@@ -124,18 +130,13 @@ static NSInteger const kInputToolBarH = 62;
         make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideBottom);
         make.height.mas_equalTo(kInputToolBarH);
     }];
-    if ([UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationPortrait || [UIApplication sharedApplication].statusBarOrientation == UIDeviceOrientationPortraitUpsideDown) {
-        [self updateUI:YES];
-    } else {
-        [self updateUI:NO];
-    }
 }
 /// orientationChange
 - (void)handleScreenOrientationChange:(NSNotification *)noti {
     AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
     app.allowRotation = YES;
     
-    if ([UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationPortrait || [UIApplication sharedApplication].statusBarOrientation == UIDeviceOrientationPortraitUpsideDown) {
+    if (![UIWindow isLandscape]) {
 //        [self leftAction];
 //        // 竖屏
 //        [self.groupChatRoomView mas_remakeConstraints:^(MASConstraintMaker *make) {

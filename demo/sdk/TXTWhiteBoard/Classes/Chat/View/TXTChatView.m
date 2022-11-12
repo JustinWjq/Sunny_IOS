@@ -708,7 +708,7 @@ static NSInteger const kInputToolBarH = 65;
 - (void)layoutSubviews {
     [super layoutSubviews];
 //    UIRectCorner corners = 0;
-    if ([UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationPortrait || [UIApplication sharedApplication].statusBarOrientation == UIDeviceOrientationPortraitUpsideDown) {
+    if (![UIWindow isLandscape]) {
         self.layer.mask = nil;
     } else {
         UIRectCorner corners = UIRectCornerTopLeft | UIRectCornerBottomLeft;

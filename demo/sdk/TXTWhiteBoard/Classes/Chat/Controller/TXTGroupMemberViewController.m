@@ -36,10 +36,20 @@
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
 }
 
 - (void)viewWillLayoutSubviews {
     [super viewWillLayoutSubviews];
+    if (![UIWindow isLandscape]) {
+        [self updateUI:YES];
+        [self.memberView updateUI:YES];
+        [self.teleprompView updateUI:YES];
+    } else {
+        [self updateUI:NO];
+        [self.memberView updateUI:NO];
+        [self.teleprompView updateUI:NO];
+    }
 }
 
 #pragma mark - 🔒private
@@ -64,21 +74,24 @@
         make.height.mas_equalTo(36);
         make.width.mas_equalTo(122);
     }];
+//    [self.view layoutIfNeeded];
     
-    if ([UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationPortrait || [UIApplication sharedApplication].statusBarOrientation == UIDeviceOrientationPortraitUpsideDown) {
-        [self updateUI:YES];
-        [self.memberView updateUI:YES];
-    } else {
-        [self updateUI:NO];
-        [self.memberView updateUI:NO];
-    }
+//    if (![UIWindow isLandscape]) {
+//        [self updateUI:YES];
+//        [self.memberView updateUI:YES];
+//    } else {
+//        [self updateUI:NO];
+//        [self.memberView updateUI:NO];
+//    }
 }
+
 
 /// orientationChange
 - (void)handleScreenOrientationChange:(NSNotification *)noti {
     AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
     app.allowRotation = YES;
-    if ([UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationPortrait || [UIApplication sharedApplication].statusBarOrientation == UIDeviceOrientationPortraitUpsideDown) {
+//    if ([UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationPortrait || [UIApplication sharedApplication].statusBarOrientation == UIDeviceOrientationPortraitUpsideDown) {
+    if (![UIWindow isLandscape]) {
 //        [self.memberView mas_remakeConstraints:^(MASConstraintMaker *make) {
 //            make.top.equalTo(self.view.mas_top).offset([UIApplication sharedApplication].statusBarFrame.size.height);
 //            make.left.right.bottom.equalTo(self.view);
@@ -137,7 +150,7 @@
 /// 点击了switch
 - (void)teleprompViewDidClickSwitchView:(UISwitch *)switchView {
     if (switchView.isOn) {
-        if ([UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationPortrait || [UIApplication sharedApplication].statusBarOrientation == UIDeviceOrientationPortraitUpsideDown) {
+        if (![UIWindow isLandscape]) {
             [self.teleprompView mas_remakeConstraints:^(MASConstraintMaker *make) {
                 make.left.mas_equalTo(10);
                 make.top.mas_equalTo(200);
@@ -152,9 +165,9 @@
                 make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideBottom).offset(-20);
             }];
         }
-        [self.teleprompView upDateUI:YES];
+        [self.teleprompView upDateUIWithSwithch:YES];
     } else {
-        if ([UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationPortrait || [UIApplication sharedApplication].statusBarOrientation == UIDeviceOrientationPortraitUpsideDown) {
+        if (![UIWindow isLandscape]) {
             [self.teleprompView mas_remakeConstraints:^(MASConstraintMaker *make) {
                 make.left.mas_equalTo(10);
                 make.top.mas_equalTo(200);
@@ -170,7 +183,7 @@
                 make.width.mas_equalTo(122);
             }];
         }
-        [self.teleprompView upDateUI:NO];
+        [self.teleprompView upDateUIWithSwithch:NO];
     }
     [self.view layoutIfNeeded];
 }
