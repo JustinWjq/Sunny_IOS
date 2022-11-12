@@ -19,7 +19,7 @@
         cell = [[QSLeftMessageCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:ID];
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    cell.backgroundColor = [UIColor colorWithHexString:@"F8F9FB"];
+    cell.backgroundColor = [UIColor clearColor];
     return cell;
 }
 
@@ -75,6 +75,8 @@
 }
 
 - (void)refreshTextLayout {
+    self.contentview.backgroundColor = [UIColor colorWithHexString:@"FFFFFF"];
+    self.textContent.textColor = [UIColor colorWithHexString:@"333333"];
 //    _textContent
     [self.textContent mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(7);
@@ -116,5 +118,14 @@
 #pragma mark ---- set/get
 #pragma mark ---- 代理
 #pragma mark ---- 懒加载
+//- (void)layoutSubviews {
+//    [super layoutSubviews];
+//    UIRectCorner corners = UIRectCornerTopRight | UIRectCornerBottomLeft | UIRectCornerBottomRight;
+//    UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:self.contentview.bounds byRoundingCorners:corners cornerRadii:CGSizeMake(6, 6)];
+//    CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
+//    maskLayer.frame = self.contentview.bounds;
+//    maskLayer.path = maskPath.CGPath;
+//    self.contentview.layer.mask = maskLayer;
+//}
 
 @end

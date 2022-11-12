@@ -23,7 +23,12 @@
 static NSInteger const kInputToolBarH = 65;
 
 @interface TXTChatView()  <TEduBoardDelegate, TICEventListener, TICMessageListener, TICStatusListener, UITextViewDelegate, UITableViewDelegate, UITableViewDataSource, V2TIMAdvancedMsgListener, TIMMessageListener, QSChatInputToolBarDelegate>
-
+/** navBgView */
+@property (nonatomic, strong) UIView *navBgView;
+/** titleLabel */
+@property (nonatomic, strong) UILabel *titleLabel;
+/** closeBtn */
+@property (nonatomic, strong) UIButton *closeBtn;
 /** tableView */
 @property (nonatomic, strong) UITableView *messageTableView;
 /** inputToolBar */
@@ -72,17 +77,41 @@ static NSInteger const kInputToolBarH = 65;
 
 /// initUI
 - (void)initUI {
+    [self addSubview:self.navBgView];
+    [self.navBgView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.top.equalTo(self);
+        make.right.equalTo(self.mas_safeAreaLayoutGuideRight);
+        make.top.equalTo(self.mas_safeAreaLayoutGuideTop);
+        make.height.mas_equalTo([UIApplication sharedApplication].keyWindow.safeAreaInsets.top + 44);
+//        make.height.mas_equalTo(44);
+    }];
+    [self.navBgView addSubview:self.titleLabel];
+    [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.bottom.equalTo(self.navBgView);
+        make.height.mas_equalTo(44);
+    }];
+    [self.navBgView addSubview:self.closeBtn];
+    [self.closeBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.mas_equalTo(56);
+        make.centerY.equalTo(self.titleLabel);
+        make.left.equalTo(self);
+        make.height.mas_equalTo(40);
+    }];
+    
     [self addSubview:self.inputToolBar];
     [self.inputToolBar mas_makeConstraints:^(MASConstraintMaker *make) {
-      make.left.right.bottom.equalTo(self);
-      make.height.mas_equalTo(kInputToolBarH);
+        make.left.equalTo(self);
+        make.right.equalTo(self.mas_safeAreaLayoutGuideRight);
+        make.bottom.equalTo(self.mas_safeAreaLayoutGuideBottom);
+        make.height.mas_equalTo(kInputToolBarH);
     }];
     [self addSubview:self.messageTableView];
     [self.messageTableView mas_makeConstraints:^(MASConstraintMaker *make) {
-      make.left.top.right.equalTo(self);
-      make.bottom.equalTo(self.inputToolBar.mas_top);
+        make.top.equalTo(self.navBgView.mas_bottom);
+        make.left.equalTo(self);
+        make.right.equalTo(self.mas_safeAreaLayoutGuideRight);
+        make.bottom.equalTo(self.inputToolBar.mas_top);
     }];
-    
     [self bringSubviewToFront:self.inputToolBar];
 
     MJRefreshNormalHeader *header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(flashToLoadMessage)];
@@ -92,6 +121,27 @@ static NSInteger const kInputToolBarH = 65;
     [self addNotification];
     
     [self getPageMessage];
+}
+
+- (void)updateUI:(BOOL)isPortrait {
+    [self.navBgView mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.height.mas_equalTo([UIApplication sharedApplication].keyWindow.safeAreaInsets.top + 44);
+    }];
+    
+//    if (isPortrait) {
+//
+//        [self.navBgView mas_updateConstraints:^(MASConstraintMaker *make) {
+//            make.height.mas_equalTo([UIApplication sharedApplication].keyWindow.safeAreaInsets.top + 44);
+//        }];
+//    } else {
+//        [self.allUnmuteBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
+//            make.centerX.equalTo(self.mas_centerX).offset(15).priorityHigh();
+//            make.width.mas_equalTo(120);
+//            make.bottom.equalTo(self.mas_safeAreaLayoutGuideBottom).offset(-10);
+//            make.height.mas_equalTo(35);
+//        }];
+//    }
+//    [self layoutIfNeeded];
 }
 
 #pragma mark --加载通知
@@ -345,7 +395,7 @@ static NSInteger const kInputToolBarH = 65;
   QSLog(@"%f........", animationDuration);
   // 2.更改inputToolBar 底部约束
   [self.inputToolBar mas_updateConstraints:^(MASConstraintMaker *make) {
-     make.bottom.mas_equalTo(-kbHeight + [UIApplication sharedApplication].keyWindow.safeAreaInsets.bottom);
+     make.bottom.mas_equalTo(-kbHeight);
   }];
 
   [UIView animateWithDuration:animationDuration animations:^{
@@ -364,7 +414,7 @@ static NSInteger const kInputToolBarH = 65;
 
   //inputToolbar恢复原位
   [self.inputToolBar mas_updateConstraints:^(MASConstraintMaker *make) {
-     make.bottom.mas_equalTo(0);
+     make.bottom.mas_equalTo(- [UIApplication sharedApplication].keyWindow.safeAreaInsets.bottom);
   }];
   // 添加动画
   [UIView animateWithDuration:animationDuration animations:^{
@@ -440,6 +490,9 @@ static NSInteger const kInputToolBarH = 65;
 #pragma mark ----发送文本消息
 - (void)prepareTextMessage:(NSString *)text {
     if ([text isEqualToString:@""] || text == nil) {
+        return;
+    }
+    if ([NSString isEmpty:text]) {
         return;
     }
     
@@ -644,6 +697,58 @@ static NSInteger const kInputToolBarH = 65;
 }
 
 
+/// closeBtnClick
+- (void)closeBtnClick {
+    [self endEditing:YES];
+    if ([self.delegate respondsToSelector:@selector(chatViewDidClickCloseBtn:)]) {
+        [self.delegate chatViewDidClickCloseBtn:self.closeBtn];
+    }
+}
+
+- (void)layoutSubviews {
+    [super layoutSubviews];
+//    UIRectCorner corners = 0;
+    if ([UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationPortrait || [UIApplication sharedApplication].statusBarOrientation == UIDeviceOrientationPortraitUpsideDown) {
+        self.layer.mask = nil;
+    } else {
+        UIRectCorner corners = UIRectCornerTopLeft | UIRectCornerBottomLeft;
+        UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:self.bounds byRoundingCorners:corners cornerRadii:CGSizeMake(15, 15)];
+        CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
+        //设置大小
+        maskLayer.frame = self.bounds;
+        //设置图形样子
+        maskLayer.path = maskPath.CGPath;
+        self.layer.mask = maskLayer;
+    }
+}
+
+/** navBgView */
+- (UIView *)navBgView {
+    if (!_navBgView) {
+        UIView *navBgView = [[UIView alloc] init];
+        navBgView.backgroundColor = [UIColor colorWithHexString:@"FFFFFF"];
+        self.navBgView = navBgView;
+    }
+    return _navBgView;
+}
+/** titleLabel */
+- (UILabel *)titleLabel {
+    if (!_titleLabel) {
+        UILabel *titleLabel = [UILabel labelWithTitle:[NSString stringWithFormat:@"%@",TXUserDefaultsGetObjectforKey(RoomId)] color:[UIColor colorWithHexString:@"333333"] font:[UIFont qs_semiFontWithSize:16]];
+        self.titleLabel = titleLabel;
+    }
+    return _titleLabel;
+}
+/** closeBtn */
+- (UIButton *)closeBtn {
+    if (!_closeBtn) {
+        UIButton *closeBtn = [UIButton buttonWithTitle:@"" titleColor:[UIColor colorWithHexString:@"D70110"] font:[UIFont qs_regularFontWithSize:15] target:self action:@selector(closeBtnClick)];
+        [closeBtn setImage:[UIImage imageNamed:@"member_icon_close" inBundle:TXTSDKBundle compatibleWithTraitCollection:nil] forState:UIControlStateNormal];
+        self.closeBtn = closeBtn;
+    }
+    return _closeBtn;
+}
+
 - (UITableView *)messageTableView {
   if (!_messageTableView) {
     UITableView *messageTableView = [[UITableView alloc] init];
@@ -651,7 +756,7 @@ static NSInteger const kInputToolBarH = 65;
     messageTableView.dataSource = self;
     messageTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     messageTableView.showsVerticalScrollIndicator = NO;
-    messageTableView.backgroundColor = [UIColor colorWithHexString:@"F8F9FB"];
+    messageTableView.backgroundColor = [UIColor colorWithHexString:@"F5F5F5"];
     messageTableView.tableFooterView = [UIView new];
     messageTableView.estimatedRowHeight = 100;
     messageTableView.rowHeight = UITableViewAutomaticDimension;
@@ -669,10 +774,10 @@ static NSInteger const kInputToolBarH = 65;
 - (QSChatInputToolBar *)inputToolBar {
   if (!_inputToolBar) {
     QSChatInputToolBar *inputToolBar = [[QSChatInputToolBar alloc] init];
-    inputToolBar.layer.shadowColor = [UIColor colorWithRed:185/255.0 green:185/255.0 blue:192/255.0 alpha:0.16].CGColor;
-    inputToolBar.layer.shadowOffset = CGSizeMake(0,2);
-    inputToolBar.layer.shadowOpacity = 1;
-    inputToolBar.layer.shadowRadius = 10;
+//    inputToolBar.layer.shadowColor = [UIColor colorWithRed:185/255.0 green:185/255.0 blue:192/255.0 alpha:0.16].CGColor;
+//    inputToolBar.layer.shadowOffset = CGSizeMake(0,2);
+//    inputToolBar.layer.shadowOpacity = 1;
+//    inputToolBar.layer.shadowRadius = 10;
       inputToolBar.delegate = self;
     self.inputToolBar = inputToolBar;
   }

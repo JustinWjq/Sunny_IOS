@@ -26,7 +26,7 @@
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
-    cell.backgroundColor = [UIColor colorWithHexString:@"F8F9FB"];
+    cell.backgroundColor = [UIColor clearColor];
     return cell;
 }
 

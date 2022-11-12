@@ -53,7 +53,7 @@
     
     _contentview = [[QSIMBubbleView alloc] init];
     _contentview.backgroundColor = [UIColor clearColor];
-    _contentview.layer.cornerRadius = 10;
+    _contentview.layer.cornerRadius = 6;
 //    _contentview.layer.masksToBounds = YES;
     UITapGestureRecognizer *contentviewTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickContentView)];
     [_contentview addGestureRecognizer:contentviewTap];

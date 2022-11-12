@@ -152,6 +152,7 @@
         messageTableView.estimatedSectionHeaderHeight = 0;
         messageTableView.estimatedSectionFooterHeight = 0;
           messageTableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
+        messageTableView.userInteractionEnabled = NO;
         self.messageTableView = messageTableView;
         if (@available(iOS 11.0, *)) {
             self.messageTableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
