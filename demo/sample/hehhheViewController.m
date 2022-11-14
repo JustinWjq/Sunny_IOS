@@ -56,7 +56,7 @@
     self.config.miniprogramCard = @"智慧展业-足不出户，随时联系您的顾问";
     self.config.isShowInviteButton = YES;
     self.config.isShowTemporaryButton = YES;
-    self.config.miniProgramPath = @"components/PromoteBusiness/pages/index/index";
+    self.config.miniProgramPath = @"/pages/index/index";
     self.config.enableVideo = YES;
     self.config.isChat = NO;
 }

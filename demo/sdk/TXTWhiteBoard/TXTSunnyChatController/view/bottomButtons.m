@@ -242,10 +242,10 @@
 - (void)changeAudioButtonStatus:(BOOL)open{
     if (open) {
         UIImage *btnImage = imageName(@"openMicrophone");
-        [self.txVideoButton setImage:btnImage forState:UIControlStateNormal];
+        [self.txMuteButton setImage:btnImage forState:UIControlStateNormal];
     }else{
         UIImage *btnImage = imageName(@"closeMicrophone");
-        [self.txVideoButton setImage:btnImage forState:UIControlStateNormal];
+        [self.txMuteButton setImage:btnImage forState:UIControlStateNormal];
     }
 }
 
@@ -253,11 +253,11 @@
     if (open) {
         //结束录制
         UIImage *btnImage = imageName(@"endRecord");
-        [self.txVideoButton setImage:btnImage forState:UIControlStateNormal];
+        [self.txShareSceneButton setImage:btnImage forState:UIControlStateNormal];
     }else{
         //开始录制
         UIImage *btnImage = imageName(@"startRecord");
-        [self.txVideoButton setImage:btnImage forState:UIControlStateNormal];
+        [self.txShareSceneButton setImage:btnImage forState:UIControlStateNormal];
     }
 }
 

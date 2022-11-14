@@ -93,7 +93,7 @@
             make.bottom.mas_equalTo(self.mas_bottom).offset(0);
         }];
         videoview.userModel = model;
-        [videoview showVideoViewDirectionLeft:NO];
+        [videoview showVideoViewDirectionLeft:YES];
     }else{
         [videoview mas_makeConstraints:^(MASConstraintMaker *make) {
             make.centerX.mas_equalTo(self.mas_centerX).offset(0);
@@ -157,17 +157,17 @@
     videoView *videoview = [[videoView alloc] init];
     [self addSubview:videoview];
     if (model1.showVideo) {
-        [videoview mas_makeConstraints:^(MASConstraintMaker *make) {
+        [videoview mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.top.mas_equalTo(self.mas_top).offset(0);
             make.left.mas_equalTo(self.mas_left).offset(0);
             make.right.mas_equalTo(self.mas_right).offset(0);
             //-self.frame.size.height/2.5
-            make.bottom.mas_equalTo(self.renderViewCollectionView.mas_bottom).offset(0);
+            make.bottom.mas_equalTo(self.renderViewCollectionView.mas_top).offset(0);
         }];
         videoview.userModel = model1;
-        [videoview showVideoViewDirectionLeft:NO];
+        [videoview showVideoViewDirectionLeft:YES];
     }else{
-        [videoview mas_makeConstraints:^(MASConstraintMaker *make) {
+        [videoview mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.centerX.mas_equalTo(self.mas_centerX).offset(0);
 //            make.centerY.mas_equalTo(self.mas_centerY).offset(-(viewHeigth/3.5+Screen_Width/5.3/7*9)/5);
             make.top.mas_equalTo(self.mas_top).offset(Adapt(72));
@@ -429,6 +429,82 @@
         }];
         videoview.userModel = model1;
         [videoview initHideUIDirectionLeft:NO];
+    }
+}
+
+- (void)changeViewNumber:(TRTCVideoRenderNumber)number mode:(TRTCVideoRenderMode)mode Index:(NSInteger)index userVolumes:(NSArray<TRTCVolumeInfo *> *)userVolumes{
+    if (index > self.renderArray.count) {
+        for (UIView *svideoView in self.subviews) {
+            if ([svideoView isKindOfClass:[videoView class]]) {
+                videoView *nsvideoView = (videoView *)svideoView;
+                for (TRTCVolumeInfo *info in userVolumes) {
+                    if ([nsvideoView.userModel.render.userId isEqualToString:info.userId] || info.userId == nil) {
+                        [nsvideoView changeVoiceImage:info];
+                    }
+                }
+            }else if([svideoView isKindOfClass:[TXTVideoCollectionView class]]){
+                self.renderViewCollectionView.userVolumesArray = userVolumes;
+            }
+        }
+    }else{
+        for (UIView *svideoView in self.subviews) {
+            if ([svideoView isKindOfClass:[videoView class]]) {
+                videoView *nsvideoView = (videoView *)svideoView;
+                TXTUserModel *userModel = self.renderArray[index];
+                if ([nsvideoView.userModel.render.userId isEqualToString:userModel.render.userId]) {
+                    for (TRTCVolumeInfo *info in userVolumes) {
+                        if ([info.userId isEqualToString:userModel.render.userId] || info.userId == nil) {
+                            nsvideoView.userModel = userModel;
+                            [nsvideoView changeVoiceImage:info];
+                        }
+                    }
+                   
+                }
+                
+            }else if([svideoView isKindOfClass:[TXTVideoCollectionView class]]){
+                self.renderViewCollectionView.userVolumesArray = userVolumes;
+            }
+        }
+    }
+    
+//    if (mode == TRTCVideoRenderModePortrait) {
+//        switch (number) {
+//            case TRTCVideoRenderNumber1:
+//                [self changeTRTCVideoRenderNumber1UI];
+//                break;
+//            case TRTCVideoRenderNumber2:
+////                [self changeTRTCVideoRenderNumber2UI];
+//                break;
+//            default:
+//                [self setTRTCVideoRenderUI];
+//                break;
+//        }
+//    }else{
+//        switch (number) {
+//            case TRTCVideoRenderNumber1:
+//                [self setTRTCVideoRenderNumber1UI];
+//                break;
+//            case TRTCVideoRenderNumber2:
+//                [self setTRTCVideoRenderNumber2UILandscape];
+//                break;
+//            case TRTCVideoRenderNumber3:
+//                [self setTRTCVideoRenderNumber3UILandscape];
+//                break;
+//            case TRTCVideoRenderNumber4:
+//                [self setTRTCVideoRenderNumber4UILandscape];
+//                break;
+//            default:
+//                [self setTRTCVideoRenderNumber5UILandscape];
+//                break;
+//        }
+//    }
+}
+
+- (void)changeTRTCVideoRenderNumber1UI{
+    for (UIView *svideoView in self.subviews) {
+        if ([svideoView isKindOfClass:[videoView class]]) {
+            
+        }
     }
 }
 
