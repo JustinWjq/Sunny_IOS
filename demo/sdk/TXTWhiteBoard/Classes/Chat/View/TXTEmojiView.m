@@ -8,6 +8,7 @@
 
 #import "TXTEmojiView.h"
 #import "TXTEmojiCollectionViewCell.h"
+#import "QSTapGestureRecognizer.h"
 
 
 static NSString  *const kEmojiCollectionViewCell = @"TXTEmojiCollectionViewCell";
@@ -18,6 +19,9 @@ static NSString  *const kEmojiCollectionViewCell = @"TXTEmojiCollectionViewCell"
 
 /** dataArray */
 @property (nonatomic, strong) NSMutableArray *dataArray;
+
+///** fromView */
+//@property (nonatomic, strong) UIView *fromView;
 @end
 
 @implementation TXTEmojiView
@@ -36,9 +40,18 @@ static NSString  *const kEmojiCollectionViewCell = @"TXTEmojiCollectionViewCell"
  */
 - (void)setupUI {
     [self addSubview:self.collectionView];
+//    [self.collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.edges.equalTo(self);
+//    }];
     [self.collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(self);
+        make.left.equalTo(self.mas_safeAreaLayoutGuideLeft).offset(15);
+        make.height.mas_equalTo(160);
+        make.width.mas_equalTo(345);
+        make.bottom.equalTo(self.mas_safeAreaLayoutGuideBottom).offset(-75 - 10 - 34);
     }];
+//    QSTapGestureRecognizer *gesture = [[QSTapGestureRecognizer alloc] initWithTarget:self action:@selector(dismiss)];
+//    [self addGestureRecognizer:gesture];
+    [self addTarget:self action:@selector(dismiss) forControlEvents:UIControlEventTouchUpInside];
 }
 
 #pragma mark - 🍐delegate
@@ -64,6 +77,79 @@ static NSString  *const kEmojiCollectionViewCell = @"TXTEmojiCollectionViewCell"
 //        NSString *emojiStr = [NSString emojiWithStringCode:str];
         [self.delegate emojiViewDidClickEmoji:cell.text];
     }
+}
+
+
+/**
+ *  显示
+ */
+- (void)showFromView:(UIView *)fromView {
+//    self.fromView = fromView;
+    // 1获得最上面的窗口
+    UIWindow *window = [UIWindow getKeyWindow];
+    // 2添加自己到窗口上去
+    [window addSubview:self];
+    [self mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(window);
+    }];
+    
+    // 3设置frame
+//    self.frame = window.bounds;
+//    QSLog(@"%@", NSStringFromCGRect(fromView.frame));
+//    // 4.调整灰色图片的位置
+//    // 转换坐标系
+////    CGRect newFrame = [from convertRect:from.bounds toView:window];
+//    CGRect newFrame = [fromView.superview convertRect:fromView.frame toView:window];
+//    QSLog(@"%@", NSStringFromCGRect(newFrame));
+//
+//    //        make.left.equalTo(self.smallChatView);
+//    //        make.height.mas_equalTo(160);
+//    //        make.bottom.equalTo(self.smallChatView.mas_top).offset(-10);
+//    //        make.width.mas_equalTo(345);
+//    self.collectionView.frame = CGRectMake(0, 0, 345, 160);
+//    self.collectionView.y = CGRectGetMinY(newFrame) - 10 - self.collectionView.height;
+//    self.collectionView.x = CGRectGetMinX(newFrame);
+    
+//    [self.collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.left.equalTo(self.mas_safeAreaLayoutGuideLeft).offset(15);
+//        make.height.mas_equalTo(160);
+//        make.width.mas_equalTo(345);
+//        make.bottom.equalTo(self.mas_safeAreaLayoutGuideBottom).offset(-75 - 10 - 34);
+//    }];
+}
+
+/**
+ *  销毁
+ */
+- (void)dismiss {
+    [self removeFromSuperview];
+}
+
+- (void)updateUI {
+    
+//    // 1获得最上面的窗口
+//    UIWindow *window = [UIWindow getKeyWindow];
+//    // 3设置frame
+//    self.frame = window.bounds;
+//    QSLog(@"%@", NSStringFromCGRect(self.fromView.frame));
+//    // 4.调整灰色图片的位置
+//    // 转换坐标系
+////    CGRect newFrame = [from convertRect:from.bounds toView:window];
+//    CGRect newFrame = [self.fromView.superview convertRect:self.fromView.frame toView:window];
+//    QSLog(@"%@", NSStringFromCGRect(newFrame));
+//
+//    //        make.left.equalTo(self.smallChatView);
+//    //        make.height.mas_equalTo(160);
+//    //        make.bottom.equalTo(self.smallChatView.mas_top).offset(-10);
+//    //        make.width.mas_equalTo(345);
+//    self.collectionView.frame = CGRectMake(0, 0, 345, 160);
+//    self.collectionView.y = CGRectGetMinY(newFrame) - 10 - self.collectionView.height;
+//    self.collectionView.x = CGRectGetMinX(newFrame);
+//    if (isPortrait) {
+//
+//    } else {
+//
+//    }
 }
 
 - (UICollectionView *)collectionView  {
@@ -96,6 +182,8 @@ static NSString  *const kEmojiCollectionViewCell = @"TXTEmojiCollectionViewCell"
         _collectionView.bounces  = false;
         _collectionView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
         _collectionView.backgroundColor = [UIColor clearColor];
+        _collectionView.backgroundColor = [UIColor colorWithHexString:@"000000" alpha:0.74];
+        _collectionView.cornerRadius = 8;
     }
     return _collectionView;
 }

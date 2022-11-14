@@ -120,6 +120,15 @@
     [boardView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.whiteBoardView);
     }];
+    
+//    [[[TICManager sharedInstance] getBoardController] addH5File:@"https://slupweb.sinosig.com/H5/qnbProjectV3/index.html#/rayVisitFile"];
+//https://upload-images.jianshu.io/upload_images/3096441-6c7b84a6c44c4ba2.png?imageMogr2/auto-orient/strip|imageView2/2/w/1200
+//    - (NSString *)addH5File:(NSString *)url
+//    [TEduBoardResourceController loadCustomResource:@"https://res.qcloudtiw.com/demo/tiw-vod.mp4" resouceType:TEDU_BOARD_PRELOAD_RESOURCE_TYPE_MEDIA expireTime:259200 callback:^(NSString * _Nonnull url, NSInteger progress, NSError * _Nonnull error) {
+//        NSLog(@"%@:  下载进度：%ld, err: %@......", url, (long)progress, error);
+//    }];
+//测试：https://precisemkttest.sinosig.com/resourceNginx/H5Project/qnbProjectV3/index.html#/rayVisitFile
+//生产：https://slupweb.sinosig.com/H5/qnbProjectV3/index.html#/rayVisitFile
 }
 
 #pragma mark - 🔄overwrite
