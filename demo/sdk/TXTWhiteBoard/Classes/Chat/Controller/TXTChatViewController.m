@@ -13,6 +13,7 @@
 #import "TXTCommon.h"
 #import "TXTSmallMessageView.h"
 #import "TXTEmojiView.h"
+#import "TXTNavigationController.h"
 
 
 static NSInteger const kInputToolBarH = 62;
@@ -78,7 +79,8 @@ static NSInteger const kInputToolBarH = 62;
 
 - (void)qs_initSubViews {
     self.view.backgroundColor = [UIColor colorWithHexString:@"000000"];
-
+    TXTNavigationController *navigationController = (TXTNavigationController *)self.navigationController;
+    navigationController.interfaceOrientationMask =UIInterfaceOrientationMaskAll;
     self.title = [NSString stringWithFormat:@"%@",TXUserDefaultsGetObjectforKey(RoomId)];
     
     [self.view addSubview:self.groupChatRoomView];
@@ -90,10 +92,10 @@ static NSInteger const kInputToolBarH = 62;
 //        make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideBottom);
     }];
 
-    [self.groupChatRoomView addSubview:self.smallChatView];
+    [self.view addSubview:self.smallChatView];
     [self.smallChatView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(15);
-        make.bottom.equalTo(self.groupChatRoomView.mas_bottom).offset(-75);
+        make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideBottom).offset(-75);
         make.width.mas_equalTo(150);
         make.height.mas_equalTo(34);
     }];
@@ -114,14 +116,14 @@ static NSInteger const kInputToolBarH = 62;
         make.bottom.equalTo(self.smallChatView.mas_top).offset(-10);
         make.width.mas_equalTo(265);
     }];
-    [self.view addSubview:self.emojiView];
-    [self.emojiView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.smallChatView);
-        make.height.mas_equalTo(160);
-        make.bottom.equalTo(self.smallChatView.mas_top).offset(-10);
-        make.width.mas_equalTo(345);
-    }];
-    self.emojiView.hidden = YES;
+//    [self.view addSubview:self.emojiView];
+//    [self.emojiView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.left.equalTo(self.smallChatView);
+//        make.height.mas_equalTo(160);
+//        make.bottom.equalTo(self.smallChatView.mas_top).offset(-10);
+//        make.width.mas_equalTo(345);
+//    }];
+//    self.emojiView.hidden = YES;
     
     [self.view addSubview:self.inputToolBar];
     [self.inputToolBar mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -153,6 +155,9 @@ static NSInteger const kInputToolBarH = 62;
 //        }];
         [self updateUI:YES];
         [self.groupChatRoomView updateUI:YES];
+        
+//        [self.emojiView updateUI];
+        
     } else {
 //        [self rightAction];
 //        // 横屏
@@ -170,6 +175,7 @@ static NSInteger const kInputToolBarH = 62;
 //        }];
         [self updateUI:NO];
         [self.groupChatRoomView updateUI:NO];
+//        [self.emojiView updateUI];
     }
 }
 
@@ -429,12 +435,14 @@ static NSInteger const kInputToolBarH = 62;
 }
 
 - (void)smallChatViewDidClickEmoji:(UIButton *)btn {
-    self.emojiView.hidden = NO;
+//    self.emojiView.hidden = NO;
+    [self.emojiView showFromView:btn];
 }
 
 - (void)emojiViewDidClickEmoji:(NSString *)emoji {
     [self sendText:emoji];
-    self.emojiView.hidden = YES;
+//    self.emojiView.hidden = YES;
+    [self.emojiView dismiss];
 }
 
 - (void)dealloc {
@@ -461,6 +469,11 @@ static NSInteger const kInputToolBarH = 62;
     
     V2TIMMessage *message = [[V2TIMManager sharedInstance] createTextMessage:str];
     NSString *classId = [NSString stringWithFormat:@"%@",TXUserDefaultsGetObjectforKey(RoomId)];
+    
+//    [[TICManager sharedInstance] sendGroupTextMessage:str callback:^(TICModule module, int code, NSString *desc) {
+//
+//    }];
+    
    NSString *msgID = [[V2TIMManager sharedInstance] sendMessage:message receiver:nil groupID:classId priority:V2TIM_PRIORITY_DEFAULT onlineUserOnly:NO offlinePushInfo:nil progress:nil succ:^{
         QSLog(@"发送成功");
        [self.smallMessageView addMessage:str];
@@ -502,8 +515,8 @@ static NSInteger const kInputToolBarH = 62;
 - (TXTEmojiView *)emojiView {
     if (!_emojiView) {
         TXTEmojiView *emojiView = [[TXTEmojiView alloc] init];
-        emojiView.backgroundColor = [UIColor colorWithHexString:@"000000" alpha:0.74];
-        emojiView.cornerRadius = 8;
+//        emojiView.backgroundColor = [UIColor colorWithHexString:@"000000" alpha:0.74];
+//        emojiView.cornerRadius = 8;
         emojiView.delegate = self;
         self.emojiView = emojiView;
     }

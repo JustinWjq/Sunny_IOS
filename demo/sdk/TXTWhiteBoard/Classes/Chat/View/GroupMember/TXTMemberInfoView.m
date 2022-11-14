@@ -44,7 +44,7 @@ static TXTMemberInfoView *_alertView = nil; //第一步：静态实例，并初�
     _alertView.model = model;
     
     [[NSNotificationCenter defaultCenter] addObserver:_alertView selector:@selector(handleScreenOrientationChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(leave:) name:@"ManageMembersViewControllerLeave" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:_alertView selector:@selector(leave:) name:@"ManageMembersViewControllerLeave" object:nil];
     
     UIView *bgView = [[UIView alloc] init];
     bgView.backgroundColor = [UIColor colorWithHexString:@"F1F1F1"];

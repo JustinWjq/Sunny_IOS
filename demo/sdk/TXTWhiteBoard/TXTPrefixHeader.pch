@@ -22,4 +22,5 @@
 #import "UIImageView+WebCache.h"
 #import "Extensions.h"
 #import "TXTCommon.h"
+#import "TXTToast.h"
 #endif /* TXTPrefixHeader_pch */

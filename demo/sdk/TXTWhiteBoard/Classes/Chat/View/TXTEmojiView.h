@@ -19,12 +19,23 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 
-@interface TXTEmojiView : UIView
+@interface TXTEmojiView : UIButton
 
 /** delegate */
 @property (nonatomic, weak) id<TXTEmojiViewDelegate> delegate;
 
 
+/**
+ *  显示
+ */
+- (void)showFromView:(UIView *)fromView;
+
+- (void)updateUI;
+
+/**
+ *  销毁
+ */
+- (void)dismiss;
 @end
 
 NS_ASSUME_NONNULL_END

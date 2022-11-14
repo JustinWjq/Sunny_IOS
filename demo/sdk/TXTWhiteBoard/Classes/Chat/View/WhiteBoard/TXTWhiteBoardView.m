@@ -117,6 +117,7 @@
     self.coverView.hidden = NO;
     [self.coverView addSubview:self.brushThinView];
     [self.brushThinView setType:TXTBrushThinViewTypeArrow];
+    [self layoutIfNeeded];
     [self.brushThinView mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.width.mas_equalTo(165);
         make.height.mas_equalTo(97);
@@ -130,6 +131,7 @@
     self.coverView.hidden = NO;
     [self.coverView addSubview:self.brushThinView];
     [self.brushThinView setType:TXTBrushThinViewTypePaint];
+    [self layoutIfNeeded];
     [self.brushThinView mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.width.mas_equalTo(165);
         make.height.mas_equalTo(97);
