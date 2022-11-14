@@ -9,6 +9,7 @@
 #import "TXTWhiteBoardViewController.h"
 #import "TXTWhiteBoardView.h"
 #import "TICManager.h"
+#import "TXTToast.h"
 
 @interface TXTWhiteBoardViewController () <TEduBoardDelegate, TXTWhiteBoardViewDelegate>
 /** whiteBoardView */
@@ -62,11 +63,13 @@
                 [self showWhiteBoard];
             }];
         } else {
-            [[JMToast sharedToast] showDialogWithMsg:@"他人正在操作"];
+//            [[JMToast sharedToast] showDialogWithMsg:@"他人正在操作"];
+            [TXTToast toastWithTitle:@"他人正在操作" type:TXTToastTypeWarn];
         }
         NSLog(@"shareStatus == %@",[response description]);
     } failure:^(NSError *error, id response) {
-        [[JMToast sharedToast] showDialogWithMsg:@"网络连接错误"];
+//        [[JMToast sharedToast] showDialogWithMsg:@"网络连接错误"];
+        [TXTToast toastWithTitle:@"网络连接错误" type:TXTToastTypeWarn];
     }];
 }
 
@@ -97,9 +100,13 @@
     NSLog(@"shareStatusoooo == %@",[bodyDict description]);
     [[AFNHTTPSessionManager shareInstance] requestURL:ServiceRoom_ShareStatus RequestWay:@"POST" Header:nil Body:bodyDict params:nil isFormData:NO success:^(NSError *error, id response) {
         NSLog(@"shareStatus == %@",[response description]);
-        [self.navigationController popViewControllerAnimated:YES];
+//        [self.navigationController popViewControllerAnimated:YES];
+        if (self.closeBlock) {
+            self.closeBlock();
+        }
     } failure:^(NSError *error, id response) {
-        [[JMToast sharedToast] showDialogWithMsg:@"网络连接错误"];
+//        [JMToast showDialogWithMsg:@"网络连接错误"];
+        [TXTToast toastWithTitle:@"网络连接错误" type:TXTToastTypeWarn];
     }];
 }
 

@@ -23,6 +23,7 @@
 #import "TXTChatViewController.h"
 #import "TXTWhiteBoardViewController.h"
 #import "TXTNavigationController.h"
+#import "TXTShareFileAlertView.h"
 
 @interface SunnyChatViewController ()<bottomButtonsDelegate, TICEventListener, TICMessageListener, TICStatusListener>
 @property (nonatomic, strong) bottomButtons *bottomToos;//底部视图
@@ -46,6 +47,8 @@
 // 成员管理
 /** groupMemberViewController */
 @property (nonatomic, strong) TXTGroupMemberViewController *groupMemberViewController;
+/** whiteBoardViewController */
+@property (nonatomic, strong) TXTWhiteBoardViewController *whiteBoardViewController;
 @end
 
 @implementation SunnyChatViewController
@@ -307,7 +310,23 @@
 }
 //文件分享
 - (void)bottomShareFileButtonClick{
-    
+    TXTShareFileAlertView *shareFileAlertView = [[TXTShareFileAlertView alloc] init];
+    shareFileAlertView.fileBlock = ^{
+    };
+    shareFileAlertView.whiteBoardBlock = ^{
+        TXTWhiteBoardViewController *vc = [[TXTWhiteBoardViewController alloc] init];
+        vc.closeBlock = ^{
+            [self.whiteBoardViewController.view removeFromSuperview];
+            self.whiteBoardViewController = nil;
+        };
+        [self addChildViewController:vc];
+        [self.view addSubview:vc.view];
+        self.whiteBoardViewController = vc;
+        [vc.view mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(self.view);
+        }];
+    };
+    [shareFileAlertView show];
 }
 
 //成员

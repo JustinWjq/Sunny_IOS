@@ -283,6 +283,8 @@
 		F0F63001292232A100B4C91C /* WeakScriptMessageDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = F0F62FFD292232A100B4C91C /* WeakScriptMessageDelegate.h */; };
 		F0F63002292232A100B4C91C /* TXTWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0F62FFE292232A100B4C91C /* TXTWebViewController.m */; };
 		F0F63003292232A100B4C91C /* TXTWebViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = F0F62FFF292232A100B4C91C /* TXTWebViewController.h */; };
+		F0F6300629223ABA00B4C91C /* TXTShareFileAlertView.h in Headers */ = {isa = PBXBuildFile; fileRef = F0F6300429223ABA00B4C91C /* TXTShareFileAlertView.h */; };
+		F0F6300729223ABA00B4C91C /* TXTShareFileAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0F6300529223ABA00B4C91C /* TXTShareFileAlertView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -684,6 +686,8 @@
 		F0F62FFD292232A100B4C91C /* WeakScriptMessageDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeakScriptMessageDelegate.h; sourceTree = "<group>"; };
 		F0F62FFE292232A100B4C91C /* TXTWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TXTWebViewController.m; sourceTree = "<group>"; };
 		F0F62FFF292232A100B4C91C /* TXTWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TXTWebViewController.h; sourceTree = "<group>"; };
+		F0F6300429223ABA00B4C91C /* TXTShareFileAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXTShareFileAlertView.h; sourceTree = "<group>"; };
+		F0F6300529223ABA00B4C91C /* TXTShareFileAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TXTShareFileAlertView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1321,6 +1325,8 @@
 				F0E22BB12915109D00C1E031 /* TXTEmojiView.m */,
 				F0E22BB4291512CC00C1E031 /* TXTEmojiCollectionViewCell.h */,
 				F0E22BB5291512CC00C1E031 /* TXTEmojiCollectionViewCell.m */,
+				F0F6300429223ABA00B4C91C /* TXTShareFileAlertView.h */,
+				F0F6300529223ABA00B4C91C /* TXTShareFileAlertView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1684,6 +1690,7 @@
 				311426FB25A300AF00AC639A /* UIView+QFExtension.h in Headers */,
 				F01D22E22917B8E70025F107 /* TXTMemberInfoView.h in Headers */,
 				F06CC9D22910E4A300CA4D6A /* MJRefreshStateHeader.h in Headers */,
+				F0F6300629223ABA00B4C91C /* TXTShareFileAlertView.h in Headers */,
 				F0E22B962914F0C500C1E031 /* TXTSmallMessageView.h in Headers */,
 				F08168DE290FC9A200C5CA29 /* UIColor+Extention.h in Headers */,
 				F08168F0290FC9A200C5CA29 /* UIImageView+Indicator.h in Headers */,
@@ -1974,6 +1981,7 @@
 				F0E22B802913C48600C1E031 /* TXTSmallChatView.m in Sources */,
 				F08168EA290FC9A200C5CA29 /* UIFont+QSExtention.m in Sources */,
 				F081690F290FC9A200C5CA29 /* NSDate+extend.m in Sources */,
+				F0F6300729223ABA00B4C91C /* TXTShareFileAlertView.m in Sources */,
 				31B5FD1D2501DC58006587C0 /* TICReport.m in Sources */,
 				31B5FD292501DC58006587C0 /* TICRecorder.mm in Sources */,
 				31B5FD282501DC58006587C0 /* NetworkClock.m in Sources */,
