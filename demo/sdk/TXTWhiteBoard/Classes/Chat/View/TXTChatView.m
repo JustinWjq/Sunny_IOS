@@ -734,7 +734,8 @@ static NSInteger const kInputToolBarH = 65;
 /** titleLabel */
 - (UILabel *)titleLabel {
     if (!_titleLabel) {
-        UILabel *titleLabel = [UILabel labelWithTitle:[NSString stringWithFormat:@"%@",TXUserDefaultsGetObjectforKey(RoomId)] color:[UIColor colorWithHexString:@"333333"] font:[UIFont qs_semiFontWithSize:16]];
+//        [NSString stringWithFormat:@"%@",TXUserDefaultsGetObjectforKey(RoomId)]
+        UILabel *titleLabel = [UILabel labelWithTitle:@"聊天" color:[UIColor colorWithHexString:@"333333"] font:[UIFont qs_semiFontWithSize:16]];
         self.titleLabel = titleLabel;
     }
     return _titleLabel;
