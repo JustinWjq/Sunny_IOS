@@ -28,7 +28,7 @@
     [button addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
     
     [button setImage:[nomalImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] forState:UIControlStateNormal];
-    button.contentEdgeInsets = UIEdgeInsetsMake(0, -10, 0, 0);
+    button.contentEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 0);
 //    button.imageEdgeInsets = UIEdgeInsetsMake(0, -10, 0, 0);
     button.contentMode = UIViewContentModeScaleAspectFit;
     if (higeLightedImage) {
@@ -86,7 +86,7 @@
         button.bounds = CGRectMake(0, 0, 40, height);
     }
     button.bounds = CGRectMake(-20, 0, 60, 30);
-//    button.titleEdgeInsets = titleEdgeInsets;
+    button.contentEdgeInsets = titleEdgeInsets;
     return [[UIBarButtonItem alloc] initWithCustomView:button];
 }
 

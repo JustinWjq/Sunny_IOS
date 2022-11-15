@@ -68,6 +68,8 @@
         make.bottom.lessThanOrEqualTo(@(-10)).priorityHigh();
     }];
     
+    
+    
 }
 
 - (void)refreshTextLayout {
@@ -122,16 +124,22 @@
 //}
 #pragma mark ---- 懒加载
 
-//- (void)layoutSubviews {
-//    [super layoutSubviews];
-//    UIRectCorner corners = UIRectCornerTopLeft | UIRectCornerBottomLeft | UIRectCornerBottomRight;
-//    UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:self.contentview.bounds byRoundingCorners:corners cornerRadii:CGSizeMake(6, 6)];
-//    CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
-//    maskLayer.frame = self.contentview.bounds;
-//    maskLayer.path = maskPath.CGPath;
-//    self.contentview.layer.mask = maskLayer;
-//}
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    
+    
+}
 
+- (void)drawRect:(CGRect)rect {
+  // Drawing code
+    UIRectCorner corners = UIRectCornerTopLeft | UIRectCornerBottomLeft | UIRectCornerBottomRight;
+    UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:self.contentview.bounds byRoundingCorners:corners cornerRadii:CGSizeMake(6, 6)];
+    CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
+    maskLayer.frame = self.contentview.bounds;
+    maskLayer.path = maskPath.CGPath;
+    self.contentview.layer.mask = maskLayer;
+
+}
 
 @end
 

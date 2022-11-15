@@ -53,7 +53,7 @@
     
     _contentview = [[QSIMBubbleView alloc] init];
     _contentview.backgroundColor = [UIColor clearColor];
-    _contentview.layer.cornerRadius = 6;
+//    _contentview.layer.cornerRadius = 6;
 //    _contentview.layer.masksToBounds = YES;
     UITapGestureRecognizer *contentviewTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickContentView)];
     [_contentview addGestureRecognizer:contentviewTap];
@@ -62,7 +62,6 @@
     _contentview.layer.shadowOffset = CGSizeMake(0,2);//shadowOffset阴影偏移
     _contentview.layer.shadowOpacity = 1; //阴影透明度，默认0
     _contentview.layer.shadowRadius = 10; //阴影半径，默认3
-    
     
     _textContent = [[UILabel alloc] init];
     _textContent.text = @"测试文案测试";

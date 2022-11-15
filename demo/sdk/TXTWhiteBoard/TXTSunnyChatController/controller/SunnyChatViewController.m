@@ -41,7 +41,7 @@ static NSInteger const kInputToolBarH = 62;
 @property (strong, nonatomic) NSString *productName;//同屏产品名
 @property (strong, nonatomic) NSString *webId;//同屏de id
 @property (strong, nonatomic) renderVideoView *renderVideoView;//视频视图
-@property (nonatomic,strong) UIButton *crossBtn;//移动机器人
+@property (nonatomic,strong) UIButton *crossBtn;//横竖屏按钮
 
 @property (assign, nonatomic) BOOL state;//打开摄像头
 @property (assign, nonatomic) BOOL muteState;//麦克风开关
@@ -89,7 +89,7 @@ static NSInteger const kInputToolBarH = 62;
     
     //    //切换摄像头
     UIImage *cameraImg = [UIImage imageNamed:@"camera" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
-    
+//    TXTNavigationController *navigationController = (TXTNavigationController *)self.navigationController;
     self.navigationItem.leftBarButtonItems = @[[UIBarButtonItem itemWithTarget:self
                                                                         action:@selector(changeAudioRoute)
                                                                          image:speakerImg],
@@ -97,7 +97,12 @@ static NSInteger const kInputToolBarH = 62;
                                                                         action:@selector(switchCamera)
                                                                          image:cameraImg]];
     //onQuitClassRoom
-    self.navigationItem.rightBarButtonItem = [UIBarButtonItem itemWithTarget:self action:@selector(onQuitClassRoom) title:@"退出" font:[UIFont qs_semiFontWithSize:15] titleColor:[UIColor colorWithHexString:@"#E19797"] highlightedColor:[UIColor colorWithHexString:@"#E19797"] titleEdgeInsets:UIEdgeInsetsMake(5, 5, -5, -5)];
+    self.navigationItem.rightBarButtonItem = [UIBarButtonItem itemWithTarget:self action:@selector(onQuitClassRoom) title:@"退出" font:[UIFont qs_semiFontWithSize:15] titleColor:[UIColor colorWithHexString:@"#E19797"] highlightedColor:[UIColor colorWithHexString:@"#E19797"] titleEdgeInsets:UIEdgeInsetsMake(0, 0, -0, -0)];
+    
+//    self.navigationController.navigationBar.translucent = NO;
+    self.navigationController.navigationBar.barTintColor = [UIColor colorWithHexString:@"#424548"];
+    [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}];
+    self.navigationController.navigationBar.barStyle = UIBarStyleBlack;
     
     self.view.backgroundColor = [UIColor colorWithHexString:@"#222222"];
     
@@ -168,6 +173,8 @@ static NSInteger const kInputToolBarH = 62;
             make.width.mas_equalTo(150);
             make.height.mas_equalTo(34);
         }];
+        NSString *portrait = [NSString stringWithFormat:@"%ld",(long)TRTCVideoRenderModePortrait];
+        TXUserDefaultsSetObjectforKey(portrait, Direction);
     } else {
         [self.smallChatView mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.left.mas_equalTo(30);
@@ -175,7 +182,12 @@ static NSInteger const kInputToolBarH = 62;
             make.width.mas_equalTo(150 + [UIApplication sharedApplication].keyWindow.safeAreaInsets.right);
             make.height.mas_equalTo(34);
         }];
+        NSString *portrait = [NSString stringWithFormat:@"%ld",(long)TRTCVideoRenderModeLandscape];
+        TXUserDefaultsSetObjectforKey(portrait, Direction);
     }
+    NSString *direction = TXUserDefaultsGetObjectforKey(Direction);
+    NSString *imageNameStr = ( [direction intValue] == 0 )? @"Landscape-Portrait" : @"Portrait-Landscape";
+    [_crossBtn setImage:[UIImage imageNamed:imageNameStr inBundle:TXSDKBundle compatibleWithTraitCollection:nil] forState:UIControlStateNormal];
 }
 
 #pragma mark - UITextViewDelegate
@@ -270,30 +282,7 @@ static NSInteger const kInputToolBarH = 62;
         TXUserDefaultsSetObjectforKey(portrait, Direction);
     }
     self.hideBottomAndTop = NO;
-    
-//    TXTUserModel *model = self.renderViews[0];
-//    TXTUserModel *newModel = [[TXTUserModel alloc] init];
-//    newModel.render = model.render;
-//    newModel.showVideo = YES;
-//    newModel.showAudio = model.showAudio;
-//    newModel.info = model.info;
-//    newModel.userRole = @"";
-//    newModel.userName = model.userName;
-//    newModel.userIcon = model.userIcon;
-//
-//    TXTUserModel *newModel1 = [[TXTUserModel alloc] init];
-//    newModel1.render = model.render;
-//    newModel1.showVideo = NO;
-//    newModel1.showAudio = model.showAudio;
-//    newModel1.info = model.info;
-//    newModel1.userRole = @"";
-//    newModel1.userName = model.userName;
-//    newModel1.userIcon = model.userIcon;
-//
-//    [self.renderViews addObject:newModel];
-//    [self.renderViews addObject:newModel1];
-//    [self.renderViews addObject:newModel1];
-//    [self.renderViews addObject:newModel1];
+
 }
 
 - (void)joinRoom{
@@ -656,36 +645,6 @@ static NSInteger const kInputToolBarH = 62;
     //    self.shareState = NO;
 }
 
-
-- (void)showAlertTitle:(NSString *)title Message:(NSString *)message cancleTitle:(NSString *)cancleTitle sureTitle:(NSString *)sureTitile{
-    //    UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"" message:message preferredStyle:(UIAlertControllerStyleAlert)];
-    //     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:cancleTitle style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-    //     NSLog(@"点击了Cancel");
-    //     [alertVC dismissViewControllerAnimated:YES completion:nil];
-    //     }];
-    //     UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-    //     NSLog(@"点击了OK");
-    ////     [[NSUserDefaults standardUserDefaults] setObject:nil forKey:kLoginUserKey];
-    //     [alertVC dismissViewControllerAnimated:YES completion:nil];
-    //     }];
-    //     //修改title
-    //     NSMutableAttributedString *alertControllerStr = [[NSMutableAttributedString alloc] initWithString:@"提示"];
-    //     [alertControllerStr addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithHexString:@"#666666"] range:NSMakeRange(0, 2)];
-    //     [alertControllerStr addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:13] range:NSMakeRange(0, 2)];
-    //     [alertVC setValue:alertControllerStr forKey:@"attributedTitle"];
-    //     //修改message
-    //     NSMutableAttributedString *alertControllerMessageStr = [[NSMutableAttributedString alloc] initWithString:desStr];
-    //     [alertControllerMessageStr addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithHexString:@"#666666"] range:NSRangeFromString(desStr)];
-    //     [alertControllerMessageStr addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:13] range:NSRangeFromString(desStr)];
-    //     [alertVC setValue:alertControllerMessageStr forKey:@"attributedMessage"];
-    //     //修改按钮字体颜色
-    //     [cancelAction setValue:[UIColor colorWithHexString:@"#666666"] forKey:@"titleTextColor"];
-    //     [okAction setValue:[UIColor colorWithHexString:@"#E6B980"] forKey:@"titleTextColor"];
-    //     [alertVC addAction:cancelAction];
-    //     [alertVC addAction:okAction];
-    //     [self presentViewController:alertVC animated:YES completion:nil];
-}
-
 //横竖屏切换
 - (void)btnAction{
     TXTNavigationController *navigationController = (TXTNavigationController *)self.navigationController;
@@ -732,7 +691,7 @@ static NSInteger const kInputToolBarH = 62;
         }];
     }else{
         [_renderVideoView mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.top.mas_equalTo(self.view.mas_safeAreaLayoutGuideTop).offset(Screen_Height/4);
+            make.top.mas_equalTo(self.view.mas_safeAreaLayoutGuideTop).offset(Adapt(168));
             make.left.mas_equalTo(self.view.mas_safeAreaLayoutGuideLeft).offset(0);
             make.right.mas_equalTo(self.view.mas_safeAreaLayoutGuideRight).offset(0);
             make.height.mas_equalTo(Adapt(230)+Adapt(90));
@@ -1252,7 +1211,7 @@ static NSInteger const kInputToolBarH = 62;
         make.height.mas_equalTo(Adapt(38));
     }];
     NSString *direction = TXUserDefaultsGetObjectforKey(Direction);
-    NSString *imageNameStr = ( direction = @"0" )? @"Landscape-Portrait" : @"Portrait-Landscape";
+    NSString *imageNameStr = ( [direction intValue] == 0 )? @"Landscape-Portrait" : @"Portrait-Landscape";
     [_crossBtn setImage:[UIImage imageNamed:imageNameStr inBundle:TXSDKBundle compatibleWithTraitCollection:nil] forState:UIControlStateNormal];
     //     _crossBtn.frame = CGRectMake(15, 0, 50, 50);
     [_crossBtn addTarget:self action:@selector(btnAction) forControlEvents:UIControlEventTouchUpInside];
@@ -1279,7 +1238,7 @@ static NSInteger const kInputToolBarH = 62;
         _renderVideoView = [[renderVideoView alloc] init];
         [self.view addSubview:_renderVideoView];
         [_renderVideoView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.mas_equalTo(self.view.mas_safeAreaLayoutGuideTop).offset(Screen_Height/4);
+            make.top.mas_equalTo(self.view.mas_safeAreaLayoutGuideTop).offset(Adapt(168));
             make.left.mas_equalTo(self.view.mas_safeAreaLayoutGuideLeft).offset(0);
             make.right.mas_equalTo(self.view.mas_safeAreaLayoutGuideRight).offset(0);
             make.height.mas_equalTo(Adapt(230)+Adapt(90));//Screen_Height/3.5
