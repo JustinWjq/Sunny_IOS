@@ -92,6 +92,10 @@ static NSString  *const kEmojiCollectionViewCell = @"TXTEmojiCollectionViewCell"
     [self mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(window);
     }];
+    CGFloat bottomH = self.isWhite ? (-20 - 10 - 34) : (-75 - 10 - 34);
+    [self.collectionView mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(self.mas_safeAreaLayoutGuideBottom).offset(bottomH);
+    }];
     
     // 3设置frame
 //    self.frame = window.bounds;

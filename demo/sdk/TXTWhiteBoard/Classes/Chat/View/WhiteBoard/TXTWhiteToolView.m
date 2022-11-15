@@ -107,9 +107,6 @@
         make.right.equalTo(self.paintBtn.mas_left).offset(-15.5);
         make.width.height.centerY.equalTo(self.eraserBtn);
     }];
-    
-    
-   
 }
 
 /// orientationChange

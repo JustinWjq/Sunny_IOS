@@ -68,6 +68,12 @@
     }];
     [self.coverView addTarget:self action:@selector(hideCover)];
     self.coverView.hidden = YES;
+    
+    if (![UIWindow isLandscape]) {
+        [self updateUI:YES];
+    } else {
+        [self updateUI:NO];
+    }
 }
 
 /// hideCover
@@ -78,6 +84,7 @@
 
 /// orientationChange
 - (void)handleScreenOrientationChange:(NSNotification *)noti {
+    [self hideCover];
     if (![UIWindow isLandscape]) {
         [self updateUI:YES];
     } else {
@@ -91,6 +98,10 @@
     } else {
         
     }
+    CGFloat bottomH = isPortrait ? -76 : - 20;
+    [self.toolView mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(self.mas_safeAreaLayoutGuideBottom).offset(bottomH);
+    }];
 }
 
 /// endBtnClick
@@ -101,18 +112,19 @@
 }
 
 - (void)whiteToolViewDidClickToolBtn:(UIButton *)toolBtn {
+    CGFloat bottomH = [UIWindow isLandscape] ? - 20 : -76;
     if (toolBtn.selected) { // 展开
         [self.toolView mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.right.equalTo(self.mas_safeAreaLayoutGuideRight).offset(-15);
             make.height.mas_equalTo(40);
             make.width.mas_equalTo(232);
-            make.bottom.equalTo(self.mas_safeAreaLayoutGuideBottom).offset(-76);
+            make.bottom.equalTo(self.mas_safeAreaLayoutGuideBottom).offset(bottomH);
         }];
     } else {
         [self.toolView mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.right.equalTo(self.mas_safeAreaLayoutGuideRight).offset(-15);
             make.width.height.mas_equalTo(40);
-            make.bottom.equalTo(self.mas_safeAreaLayoutGuideBottom).offset(-76);
+            make.bottom.equalTo(self.mas_safeAreaLayoutGuideBottom).offset(bottomH);
         }];
     }
 }
@@ -123,11 +135,13 @@
     [self.coverView addSubview:self.brushThinView];
     [self.brushThinView setType:TXTBrushThinViewTypeArrow];
     [self layoutIfNeeded];
+    
+    CGFloat bottomH = [UIWindow isLandscape] ? -61 : -124;
     [self.brushThinView mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.width.mas_equalTo(165);
         make.height.mas_equalTo(97);
         make.right.equalTo(self.mas_safeAreaLayoutGuideRight).offset(-48.5);
-        make.bottom.equalTo(self.mas_safeAreaLayoutGuideBottom).offset(-124);
+        make.bottom.equalTo(self.mas_safeAreaLayoutGuideBottom).offset(bottomH);
     }];
 }
 
@@ -137,11 +151,12 @@
     [self.coverView addSubview:self.brushThinView];
     [self.brushThinView setType:TXTBrushThinViewTypePaint];
     [self layoutIfNeeded];
+    CGFloat bottomH = [UIWindow isLandscape] ? -61 : -124;
     [self.brushThinView mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.width.mas_equalTo(165);
         make.height.mas_equalTo(97);
         make.right.equalTo(self.mas_safeAreaLayoutGuideRight).offset(-48.5);
-        make.bottom.equalTo(self.mas_safeAreaLayoutGuideBottom).offset(-124);
+        make.bottom.equalTo(self.mas_safeAreaLayoutGuideBottom).offset(bottomH);
     }];
 }
 

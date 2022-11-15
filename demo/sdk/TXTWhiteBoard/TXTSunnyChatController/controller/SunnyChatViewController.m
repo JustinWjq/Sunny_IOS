@@ -29,7 +29,6 @@
 #import "TXTEmojiView.h"
 #import "TXTChatInputToolBar.h"
 #import "TXTSmallMessageView.h"
-#import "QSTapGestureRecognizer.h"
 
 static NSInteger const kInputToolBarH = 62;
 
@@ -59,6 +58,8 @@ static NSInteger const kInputToolBarH = 62;
 @property (nonatomic, assign) BOOL isShowWhiteBoard;
 /** whiteBoardViewController */
 @property (nonatomic, strong) TXTWhiteBoardViewController *whiteBoardViewController;
+/** 是否当前展示白板 */
+@property (nonatomic, assign) BOOL isWhite;
 /** chatViewController */
 @property (nonatomic, strong) TXTChatViewController *chatViewController;
 /** smallChatView */
@@ -66,7 +67,7 @@ static NSInteger const kInputToolBarH = 62;
 /** emojiView */
 @property (nonatomic, strong) TXTEmojiView *emojiView;
 /** coverView */
-//@property (nonatomic, strong) UIView *coverView;
+@property (nonatomic, strong) UIView *coverView;
 /** inputToolBar */
 @property (nonatomic, strong) TXTChatInputToolBar *inputToolBar;
 /** 当前键盘的高度 */
@@ -128,6 +129,12 @@ static NSInteger const kInputToolBarH = 62;
         make.width.mas_equalTo(265);
     }];
     
+    [self.view addSubview:self.coverView];
+    [self.coverView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self.view);
+    }];
+    [self.coverView addTarget:self action:@selector(hideKeyBoard)];
+    self.coverView.hidden = YES;
     [self.view addSubview:self.inputToolBar];
     [self.inputToolBar mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.view.mas_safeAreaLayoutGuideLeft);
@@ -135,19 +142,12 @@ static NSInteger const kInputToolBarH = 62;
         make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideBottom);
         make.height.mas_equalTo(kInputToolBarH);
     }];
-    
-//    [self.view addSubview:self.coverView];
-//    [self.coverView mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.edges.equalTo(self);
-//    }];
-//    [self.coverView addTarget:self action:@selector(hideKeyBoard)];
-//    self.coverView.hidden = YES;
-//    [self.view addTarget:self action:@selector(hideKeyBoard)];
-    QSTapGestureRecognizer *gesture = [[QSTapGestureRecognizer alloc] initWithTarget:self action:@selector(hideKeyBoard)];
-    [self.view addGestureRecognizer:gesture];
+//    QSTapGestureRecognizer *gesture = [[QSTapGestureRecognizer alloc] initWithTarget:self action:@selector(hideKeyBoard)];
+//    [self.view addGestureRecognizer:gesture];
 }
 
 - (void)hideKeyBoard {
+    self.coverView.hidden = YES;
     [self.view endEditing:YES];
 }
 
@@ -165,19 +165,19 @@ static NSInteger const kInputToolBarH = 62;
 
 - (void)updateUI:(BOOL)isPortrait {
     if (isPortrait) {
-        [self.smallChatView mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.left.mas_equalTo(15);
-            make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideBottom).offset(-75);
-            make.width.mas_equalTo(150);
-            make.height.mas_equalTo(34);
-        }];
+//        [self.smallChatView mas_remakeConstraints:^(MASConstraintMaker *make) {
+//            make.left.mas_equalTo(15);
+//            make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideBottom).offset(-75);
+//            make.width.mas_equalTo(150);
+//            make.height.mas_equalTo(34);
+//        }];
     } else {
-        [self.smallChatView mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.left.mas_equalTo(30);
-            make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideBottom).offset(-75);
-            make.width.mas_equalTo(150 + [UIApplication sharedApplication].keyWindow.safeAreaInsets.right);
-            make.height.mas_equalTo(34);
-        }];
+//        [self.smallChatView mas_remakeConstraints:^(MASConstraintMaker *make) {
+//            make.left.mas_equalTo(30);
+//            make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideBottom).offset(-75);
+//            make.width.mas_equalTo(150 + [UIApplication sharedApplication].keyWindow.safeAreaInsets.right);
+//            make.height.mas_equalTo(34);
+//        }];
     }
 }
 
@@ -486,13 +486,21 @@ static NSInteger const kInputToolBarH = 62;
     __weak __typeof(self)weakSelf = self;
     self.whiteBoardViewController.closeBlock = ^{
         weakSelf.isShowWhiteBoard = NO;
+        weakSelf.isWhite = NO;
         [weakSelf.whiteBoardViewController.view removeFromSuperview];
         weakSelf.whiteBoardViewController = nil;
+        [weakSelf.smallChatView mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.bottom.equalTo(weakSelf.view.mas_safeAreaLayoutGuideBottom).offset(-75);
+        }];
     };
     [self addChildViewController:self.whiteBoardViewController];
     [self.view insertSubview:self.whiteBoardViewController.view belowSubview:self.smallChatView];
     [self.whiteBoardViewController.view mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.view);
+    }];
+    weakSelf.isWhite = YES;
+    [self.smallChatView mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideBottom).offset(-20);
     }];
 }
 
@@ -1135,6 +1143,7 @@ static NSInteger const kInputToolBarH = 62;
 
 - (void)inputKeyboardWillShow:(NSNotification *)noti {
     if (![self.inputToolBar.textView isFirstResponder]) return;
+    self.coverView.hidden = NO;
     self.inputToolBar.hidden = NO;
     //1.获取键盘高度
     //1.1获取键盘结束时候的位置
@@ -1162,12 +1171,14 @@ static NSInteger const kInputToolBarH = 62;
    [UIView animateWithDuration:animationDuration animations:^{
        [self.view layoutIfNeeded];
        self.inputToolBar.hidden = YES;
+       self.coverView.hidden = YES;
    }];
 }
 
 - (void)smallChatViewDidClickEmoji:(UIButton *)btn {
 //    self.emojiView.hidden = NO;
-   [self.emojiView showFromView:btn];
+    self.emojiView.isWhite = self.isWhite;
+    [self.emojiView showFromView:btn];
 }
 
 - (void)emojiViewDidClickEmoji:(NSString *)emoji {
@@ -1213,6 +1224,7 @@ static NSInteger const kInputToolBarH = 62;
 
 /// showKeyBoard
 - (void)showKeyBoard {
+    self.coverView.hidden = NO;
     self.inputToolBar.hidden = NO;
     [self.inputToolBar.textView becomeFirstResponder];
 }
@@ -1445,14 +1457,14 @@ static NSInteger const kInputToolBarH = 62;
     }
     return _emojiView;
 }
-//- (UIView *)coverView {
-//    if (!_coverView) {
-//        UIView *coverView = [[UIView alloc] init];
-////        coverView.backgroundColor = [UIColor colorWithHexString:@"D70110"];
-//        self.coverView = coverView;
-//    }
-//    return _coverView;
-//}
+- (UIView *)coverView {
+    if (!_coverView) {
+        UIView *coverView = [[UIView alloc] init];
+//        coverView.backgroundColor = [UIColor colorWithHexString:@"D70110"];
+        self.coverView = coverView;
+    }
+    return _coverView;
+}
 - (TXTChatInputToolBar *)inputToolBar {
     if (!_inputToolBar) {
         TXTChatInputToolBar *inputToolBar = [[TXTChatInputToolBar alloc] init];
