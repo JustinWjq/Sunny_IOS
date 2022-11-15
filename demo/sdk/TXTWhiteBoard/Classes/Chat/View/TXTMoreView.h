@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface TXTMoreView : UIButton
 
-@property (nonatomic, copy) dispatch_block_t messageBlock;
+@property (nonatomic, copy) dispatch_block_t chatBlock;
 
 /**
  *  显示

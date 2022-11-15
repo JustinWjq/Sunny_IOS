@@ -74,6 +74,10 @@ static NSInteger const kInputToolBarH = 65;
     [self.inputToolBar.textView resignFirstResponder];
 }
 
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 
 /// initUI
 - (void)initUI {
@@ -509,7 +513,7 @@ static NSInteger const kInputToolBarH = 65;
                                   @"userId":[TICConfig shareInstance].userId,
                                   @"userName":TXUserDefaultsGetObjectforKey(Agent),
                                   @"content":text};
-    NSString *str = [[TXTCommon sharedInstance] convertToJsonData:messagedict];
+    NSString *str = [NSString objectToJsonString:messagedict];
     
     V2TIMMessage *message = [[V2TIMManager sharedInstance] createTextMessage:str];
     QSIMMessageModel *model = [[QSIMMessageModel alloc] init];

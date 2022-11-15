@@ -11,11 +11,12 @@
 @interface TXTMoreView ()
 /** contenView */
 @property (nonatomic, strong) UIView *contenView;
-/** fileBtn */
-@property (nonatomic, strong) UIButton *fileBtn;
-
-/** whiteBtn */
-@property (nonatomic, strong) UIButton *whiteBtn;
+/** chatBtn */
+@property (nonatomic, strong) UIButton *chatBtn;
+/** chatIcon */
+@property (nonatomic, strong) UIImageView *chatIcon;
+/** chatLabel */
+@property (nonatomic, strong) UILabel *chatLabel;
 
 @end
 
@@ -37,21 +38,29 @@
 - (void)setupUI {
     [self addSubview:self.contenView];
     [self.contenView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.equalTo(self.mas_centerX).multipliedBy(5.0/6.0);
-        make.width.mas_equalTo(112);
-        make.height.mas_equalTo(80);
+        make.right.equalTo(self.mas_right).offset(-90);
+        make.width.mas_equalTo(60);
+        make.height.mas_equalTo(60);
         make.bottom.equalTo(self.mas_safeAreaLayoutGuideBottom).offset(-62);
     }];
-    self.contenView.cornerRadius = 3;
-    [self.contenView addSubview:self.fileBtn];
-    [self.fileBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.right.equalTo(self.contenView);
-        make.height.mas_equalTo(40);
+    self.contenView.cornerRadius = 10;
+    [self.contenView addSubview:self.chatBtn];
+    [self.chatBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.centerY.equalTo(self.contenView);
+        make.height.width.mas_equalTo(44);
     }];
-    [self.contenView addSubview:self.whiteBtn];
-    [self.whiteBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.left.right.equalTo(self.contenView);
-        make.height.mas_equalTo(40);
+    self.chatBtn.cornerRadius = 6;
+    [self.chatBtn addSubview:self.chatIcon];
+    [self.chatIcon mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.height.width.mas_equalTo(20);
+        make.centerX.equalTo(self.chatBtn);
+        make.top.mas_equalTo(6);
+    }];
+    [self.chatBtn addSubview:self.chatLabel];
+    [self.chatLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.height.mas_equalTo(14);
+        make.centerX.equalTo(self.chatBtn);
+        make.bottom.equalTo(self.chatBtn.mas_bottom).offset(-3);
     }];
 }
 
@@ -76,42 +85,47 @@
 }
 
 
-/// fileBtnClick
-- (void)fileBtnClick {
-   
+/// chatBtnClick
+- (void)chatBtnClick {
+    [self dismiss];
+    if (self.chatBlock) {
+        self.chatBlock();
+    }
 }
 
-/// whiteBtnClick
-- (void)whiteBtnClick {
-//    if (self.whiteBoardBlock) {
-//        self.whiteBoardBlock();
-//    }
-    [self dismiss];
-}
 
 - (UIView *)contenView {
     if (!_contenView) {
         UIView *contenView = [[UIView alloc] init];
-        contenView.backgroundColor = [UIColor colorWithHexString:@"000000" alpha:0.74];
+        contenView.backgroundColor = [UIColor colorWithHexString:@"080808" alpha:1.0];
         self.contenView = contenView;
     }
     return _contenView;
 }
 
-- (UIButton *)fileBtn {
-    if (!_fileBtn) {
-        UIButton *fileBtn = [UIButton buttonWithTitle:@"文件" titleColor:[UIColor colorWithHexString:@"FFFFFF"] font:[UIFont qs_semiFontWithSize:14] target:self action:@selector(fileBtnClick)];
-        self.fileBtn = fileBtn;
+- (UIButton *)chatBtn {
+    if (!_chatBtn) {
+        UIButton *chatBtn = [UIButton buttonWithTitle:@"" titleColor:[UIColor colorWithHexString:@"FFFFFF"] font:[UIFont qs_semiFontWithSize:14] target:self action:@selector(chatBtnClick)];
+        chatBtn.backgroundColor = [UIColor colorWithHexString:@"212226"];
+        self.chatBtn = chatBtn;
     }
-    return _fileBtn;
+    return _chatBtn;
 }
 
-- (UIButton *)whiteBtn {
-    if (!_whiteBtn) {
-        UIButton *whiteBtn = [UIButton buttonWithTitle:@"电子白板" titleColor:[UIColor colorWithHexString:@"FFFFFF"] font:[UIFont qs_semiFontWithSize:14] target:self action:@selector(whiteBtnClick)];
-        self.whiteBtn = whiteBtn;
+- (UIImageView *)chatIcon {
+    if (!_chatIcon) {
+        UIImageView *chatIcon = [[UIImageView alloc] init];
+        chatIcon.image = [UIImage imageNamed:@"chat_icon_chat" inBundle:TXTSDKBundle compatibleWithTraitCollection:nil];
+        self.chatIcon = chatIcon;
     }
-    return _whiteBtn;
+    return _chatIcon;
+}
+- (UILabel *)chatLabel {
+    if (!_chatLabel) {
+        UILabel *chatLabel = [UILabel labelWithTitle:@"聊天" color:[UIColor colorWithHexString:@"FFFFFF"] font:[UIFont qs_regularFontWithSize:10]];
+        self.chatLabel = chatLabel;
+    }
+    return _chatLabel;
 }
 
 @end
