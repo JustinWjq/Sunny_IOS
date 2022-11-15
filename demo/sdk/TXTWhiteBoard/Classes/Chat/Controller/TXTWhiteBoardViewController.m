@@ -161,7 +161,10 @@
 #pragma mark - ☎️notification
 
 #pragma mark - 🎬event response
-
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 #pragma mark - ☸getter and setter
 - (TXTWhiteBoardView *)whiteBoardView {
     if (!_whiteBoardView) {

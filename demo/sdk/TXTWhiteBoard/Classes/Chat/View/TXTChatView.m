@@ -74,6 +74,10 @@ static NSInteger const kInputToolBarH = 65;
     [self.inputToolBar.textView resignFirstResponder];
 }
 
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 
 /// initUI
 - (void)initUI {

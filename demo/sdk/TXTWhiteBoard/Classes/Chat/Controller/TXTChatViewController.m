@@ -400,7 +400,8 @@
 //}
 
 - (void)dealloc {
-    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 //#pragma mark - 🎬event response
 //- (void)sendText:(NSString *)text {

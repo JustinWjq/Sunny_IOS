@@ -42,6 +42,10 @@
     }
     return self;
 }
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 
 /// initUI
 - (void)initUI {
