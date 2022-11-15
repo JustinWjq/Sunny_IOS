@@ -29,6 +29,7 @@
 #import "TXTEmojiView.h"
 #import "TXTChatInputToolBar.h"
 #import "TXTSmallMessageView.h"
+#import "QSTapGestureRecognizer.h"
 
 static NSInteger const kInputToolBarH = 62;
 
@@ -141,7 +142,9 @@ static NSInteger const kInputToolBarH = 62;
 //    }];
 //    [self.coverView addTarget:self action:@selector(hideKeyBoard)];
 //    self.coverView.hidden = YES;
-    [self.view addTarget:self action:@selector(hideKeyBoard)];
+//    [self.view addTarget:self action:@selector(hideKeyBoard)];
+    QSTapGestureRecognizer *gesture = [[QSTapGestureRecognizer alloc] initWithTarget:self action:@selector(hideKeyBoard)];
+    [self.view addGestureRecognizer:gesture];
 }
 
 - (void)hideKeyBoard {
@@ -502,6 +505,7 @@ static NSInteger const kInputToolBarH = 62;
 //        self.groupMemberViewController = nil;
 //    };
 //    [self.navigationController pushViewController:vc animated:YES];
+//    return;
     // 添加成员页面
     __weak __typeof(self)weakSelf = self;
     self.groupMemberViewController.closeBlock = ^{
@@ -524,7 +528,7 @@ static NSInteger const kInputToolBarH = 62;
             NSLog(@"发消息");
         }];
     }else{
-        TXTCommonAlertView *alert = [TXTCommonAlertView alertWithTitle:@"本次录制需获得全部参会人员授权确认后可进行录制，请您确认" message:@"" leftBtnStr:@"取消" rightBtnStr:@"确认" leftColor:nil rightColor:nil];
+        TXTCommonAlertView *alert = [TXTCommonAlertView alertWithTitle:@"本次录制需获得全部参会人员授权确认后可进行录制，请您确认"  titleColor:nil titleFont:nil leftBtnStr:@"取消" rightBtnStr:@"确定" leftColor:nil rightColor:nil];
         alert.sureBlock = ^{
             [TXTCommonAlertView hide];
             NSDictionary *messagedict = @{@"serviceId":TXUserDefaultsGetObjectforKey(ServiceId),@"type":MMStartRecordFromHost,@"userId":self.userId};
@@ -534,10 +538,9 @@ static NSInteger const kInputToolBarH = 62;
             }];
         };
     }
-    
 }
 //更多
-- (void)bottomMoreActionButtonClick{
+- (void)bottomMoreActionButtonClick {
     TXTMoreView *moreView = [[TXTMoreView alloc] init];
     moreView.chatBlock = ^{
         // 添加聊天页面
@@ -548,6 +551,7 @@ static NSInteger const kInputToolBarH = 62;
         };
         [self addChildViewController:self.chatViewController];
         [self.view addSubview:self.chatViewController.view];
+//        [self.view insertSubview:self.chatViewController.view belowSubview:self.smallChatView];
         [self.chatViewController.view mas_makeConstraints:^(MASConstraintMaker *make) {
             make.edges.equalTo(self.view);
         }];
@@ -1194,12 +1198,15 @@ static NSInteger const kInputToolBarH = 62;
 //    [[TICManager sharedInstance] sendGroupTextMessage:str callback:^(TICModule module, int code, NSString *desc) {
 //
 //    }];
-    
    NSString *msgID = [[V2TIMManager sharedInstance] sendMessage:message receiver:nil groupID:classId priority:V2TIM_PRIORITY_DEFAULT onlineUserOnly:NO offlinePushInfo:nil progress:nil succ:^{
         QSLog(@"发送成功");
-       [self.smallMessageView addMessage:str];
     } fail:^(int code, NSString *desc) {
-
+    }];
+    
+    [[V2TIMManager sharedInstance] findMessages:@[msgID] succ:^(NSArray<V2TIMMessage *> *msgs) {
+        [self.smallMessageView addMessage:str];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"POSTSmallMessage" object:nil userInfo:@{@"POSTSmallMessage" : [msgs firstObject]}];
+    } fail:^(int code, NSString *desc) {
     }];
 }
 

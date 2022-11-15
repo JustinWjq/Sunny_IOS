@@ -30,8 +30,17 @@
         [self setupUI];
         self.hidden = YES;
         [[TICManager sharedInstance] addIMessageListener:self];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(postMessage:) name:@"POSTMessage" object:nil];
     }
     return self;
+}
+
+/// 别人发送消息
+- (void)postMessage:(NSNotification *)notification {
+    NSDictionary *dict = [notification userInfo];
+    V2TIMMessage *message = dict[@"POSTMessage"];
+    if (!message.textElem) return;
+    [self addMessage:message.textElem.text];
 }
 
 #pragma mark - Setup UI
@@ -88,6 +97,10 @@
     }];
     [self.messageTableView reloadData];
     [self scrollToEnd];
+}
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - TableView DataSource

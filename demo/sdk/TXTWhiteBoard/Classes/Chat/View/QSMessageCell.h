@@ -36,7 +36,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic,strong) UILabel *timeLable; // 时间
 
 @property (nonatomic,strong) UIImageView *userIcon; // 用户图片
-
+@property (nonatomic,strong) UILabel *userNameLabel; // 用户昵称
+/** iconLabel */
+@property (nonatomic, strong) UILabel *iconLabel;
 @property (nonatomic,strong) QSIMBubbleView *contentview; // 内容视图
 
 @property (nonatomic,strong) UILabel *textContent; // 内容文本
