@@ -46,8 +46,7 @@
     [self.view addSubview:self.whiteBoardView];
     [self.whiteBoardView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.view);
-    }];;
-    
+    }];
     
     NSString *serviceId = TXUserDefaultsGetObjectforKey(ServiceId);
     NSDictionary *bodyDict = @{@"serviceId":serviceId,@"shareStatus":@(YES),@"userId":[TICConfig shareInstance].userId};
