@@ -1242,10 +1242,10 @@ static NSInteger const kInputToolBarH = 62;
     _bottomToos = [[bottomButtons alloc] init];
     [self.view addSubview:self.bottomToos];
     [_bottomToos mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.mas_equalTo(self.view.mas_safeAreaLayoutGuideBottom).offset(0);
+        make.bottom.mas_equalTo(self.view.mas_bottom).offset(0);
         make.left.mas_equalTo(self.view.mas_left).offset(0);
         make.right.mas_equalTo(self.view.mas_right).offset(0);
-        make.height.mas_equalTo(Adapt(60));
+        make.height.mas_equalTo(Adapt(60) + safeAreaBottom);
     }];
     _bottomToos.delegate = self;
     [self.view bringSubviewToFront:_bottomToos];
