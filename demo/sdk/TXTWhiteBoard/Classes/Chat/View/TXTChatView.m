@@ -509,7 +509,7 @@ static NSInteger const kInputToolBarH = 65;
                                   @"userId":[TICConfig shareInstance].userId,
                                   @"userName":TXUserDefaultsGetObjectforKey(Agent),
                                   @"content":text};
-    NSString *str = [[TXTCommon sharedInstance] convertToJsonData:messagedict];
+    NSString *str = [NSString objectToJsonString:messagedict];
     
     V2TIMMessage *message = [[V2TIMManager sharedInstance] createTextMessage:str];
     QSIMMessageModel *model = [[QSIMMessageModel alloc] init];

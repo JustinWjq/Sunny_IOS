@@ -10,6 +10,7 @@
 #import "TXTWhiteBoardView.h"
 #import "TICManager.h"
 #import "TXTToast.h"
+#import "TXTNavigationController.h"
 
 @interface TXTWhiteBoardViewController () <TEduBoardDelegate, TXTWhiteBoardViewDelegate>
 /** whiteBoardView */
@@ -42,6 +43,8 @@
 }
 
 - (void)qs_initSubViews {
+    TXTNavigationController *navigationController = (TXTNavigationController *)self.navigationController;
+    navigationController.interfaceOrientationMask = UIInterfaceOrientationMaskAll;
     self.view.backgroundColor = [UIColor clearColor];
     [self.view addSubview:self.whiteBoardView];
     [self.whiteBoardView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -84,8 +87,8 @@
 
 /// orientationChange
 - (void)handleScreenOrientationChange:(NSNotification *)noti {
-    AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
-    app.allowRotation = YES;
+//    AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
+//    app.allowRotation = YES;
     if (![UIWindow isLandscape]) {
        
     } else {

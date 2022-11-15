@@ -12,6 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface TXTChatViewController : UIViewController
 
+@property (nonatomic, copy) dispatch_block_t closeBlock;
+
 @end
 
 NS_ASSUME_NONNULL_END

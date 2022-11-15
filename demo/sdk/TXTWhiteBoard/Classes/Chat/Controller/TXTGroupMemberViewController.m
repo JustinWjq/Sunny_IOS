@@ -9,6 +9,7 @@
 #import "TXTGroupMemberViewController.h"
 #import "TXTMemberView.h"
 #import "TXTTeleprompView.h"
+#import "TXTNavigationController.h"
 
 @interface TXTGroupMemberViewController () <TXTMemberViewDelegate, TXTTeleprompViewDelegate>
 /** memberView */
@@ -59,7 +60,9 @@
 }
 
 - (void)qs_initSubViews {
-    self.view.backgroundColor = [UIColor colorWithHexString:@"000000"];
+    TXTNavigationController *navigationController = (TXTNavigationController *)self.navigationController;
+    navigationController.interfaceOrientationMask = UIInterfaceOrientationMaskAll;
+    self.view.backgroundColor = [UIColor clearColor];
     [self.view addSubview:self.memberView];
     [self.memberView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.view.mas_top).offset([UIApplication sharedApplication].statusBarFrame.size.height);
@@ -83,13 +86,19 @@
 //        [self updateUI:NO];
 //        [self.memberView updateUI:NO];
 //    }
+    [self.view addTarget:self action:@selector(hide)];
 }
 
-
+/// hide
+- (void)hide {
+    if (self.closeBlock) {
+        self.closeBlock();
+    }
+}
 /// orientationChange
 - (void)handleScreenOrientationChange:(NSNotification *)noti {
-    AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
-    app.allowRotation = YES;
+//    AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
+//    app.allowRotation = YES;
 //    if ([UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationPortrait || [UIApplication sharedApplication].statusBarOrientation == UIDeviceOrientationPortraitUpsideDown) {
     if (![UIWindow isLandscape]) {
 //        [self.memberView mas_remakeConstraints:^(MASConstraintMaker *make) {
@@ -141,10 +150,11 @@
 #pragma mark - 🍐delegate
 - (void)memberViewDidClickCloseBtn:(UIButton *)closeBtn {
 //    [self.memberView removeFromSuperview];
-    [self.navigationController popViewControllerAnimated:YES];
-    if (self.closeBlock) {
-        self.closeBlock();
-    }
+//    [self.navigationController popViewControllerAnimated:YES];
+//    if (self.closeBlock) {
+//        self.closeBlock();
+//    }
+    [self hide];
 }
 
 /// 点击了switch

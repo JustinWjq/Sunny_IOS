@@ -24,8 +24,15 @@
 #import "TXTWhiteBoardViewController.h"
 #import "TXTNavigationController.h"
 #import "TXTShareFileAlertView.h"
+#import "TXTMoreView.h"
+#import "TXTSmallChatView.h"
+#import "TXTEmojiView.h"
+#import "TXTChatInputToolBar.h"
+#import "TXTSmallMessageView.h"
 
-@interface SunnyChatViewController ()<bottomButtonsDelegate, TICEventListener, TICMessageListener, TICStatusListener>
+static NSInteger const kInputToolBarH = 62;
+
+@interface SunnyChatViewController ()<bottomButtonsDelegate, TICEventListener, TICMessageListener, TICStatusListener, UITextViewDelegate, TXTSmallChatViewDelegate, TXTEmojiViewDelegate>
 @property (nonatomic, strong) bottomButtons *bottomToos;//底部视图
 @property (nonatomic, strong) NSString *userId;//主持人id
 @property (strong, nonatomic) NSMutableArray *userIdArr;//房间存在人员id数组
@@ -51,6 +58,23 @@
 @property (nonatomic, assign) BOOL isShowWhiteBoard;
 /** whiteBoardViewController */
 @property (nonatomic, strong) TXTWhiteBoardViewController *whiteBoardViewController;
+/** chatViewController */
+@property (nonatomic, strong) TXTChatViewController *chatViewController;
+/** smallChatView */
+@property (nonatomic, strong) TXTSmallChatView *smallChatView;
+/** emojiView */
+@property (nonatomic, strong) TXTEmojiView *emojiView;
+/** coverView */
+//@property (nonatomic, strong) UIView *coverView;
+/** inputToolBar */
+@property (nonatomic, strong) TXTChatInputToolBar *inputToolBar;
+/** 当前键盘的高度 */
+@property (nonatomic, assign) CGFloat previousTextViewContentHeight;
+/** 当前的contentOffSet */
+@property (nonatomic, assign) CGFloat contentOffsetY;
+/** smallMessageView */
+@property (nonatomic, strong) TXTSmallMessageView *smallMessageView;
+
 @end
 
 @implementation SunnyChatViewController
@@ -81,11 +105,159 @@
     [self setBottomToolsUI];
     [self addNotification];
     [self initParams];
+    
+    [self setUpSmallChatUI];
 }
+
+/// setUpSmallChatUI
+- (void)setUpSmallChatUI {
+    [self.view addSubview:self.smallChatView];
+    [self.smallChatView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(15);
+        make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideBottom).offset(-75);
+        make.width.mas_equalTo(150);
+        make.height.mas_equalTo(34);
+    }];
+
+    [self.view addSubview:self.smallMessageView];
+    [self.smallMessageView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.smallChatView);
+//        make.height.mas_equalTo(39 * 3);
+        make.bottom.equalTo(self.smallChatView.mas_top).offset(-10);
+        make.width.mas_equalTo(265);
+    }];
+    
+    [self.view addSubview:self.inputToolBar];
+    [self.inputToolBar mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.view.mas_safeAreaLayoutGuideLeft);
+        make.right.equalTo(self.view.mas_safeAreaLayoutGuideRight);
+        make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideBottom);
+        make.height.mas_equalTo(kInputToolBarH);
+    }];
+    
+//    [self.view addSubview:self.coverView];
+//    [self.coverView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.edges.equalTo(self);
+//    }];
+//    [self.coverView addTarget:self action:@selector(hideKeyBoard)];
+//    self.coverView.hidden = YES;
+    [self.view addTarget:self action:@selector(hideKeyBoard)];
+}
+
+- (void)hideKeyBoard {
+    [self.view endEditing:YES];
+}
+
+
+/// orientationChange
+- (void)handleScreenOrientationChange:(NSNotification *)noti {
+//    AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
+//    app.allowRotation = YES;
+    if (![UIWindow isLandscape]) {
+        [self updateUI:YES];
+    } else {
+        [self updateUI:NO];
+    }
+}
+
+- (void)updateUI:(BOOL)isPortrait {
+    if (isPortrait) {
+        [self.smallChatView mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.left.mas_equalTo(15);
+            make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideBottom).offset(-75);
+            make.width.mas_equalTo(150);
+            make.height.mas_equalTo(34);
+        }];
+    } else {
+        [self.smallChatView mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.left.mas_equalTo(30);
+            make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideBottom).offset(-75);
+            make.width.mas_equalTo(150 + [UIApplication sharedApplication].keyWindow.safeAreaInsets.right);
+            make.height.mas_equalTo(34);
+        }];
+    }
+}
+
+#pragma mark - UITextViewDelegate
+- (void)textViewDidChange:(UITextView *)textView {
+  QSLog(@"%@", textView.text);
+    if (![textView.text hasSuffix:@"\n"] && textView.text.length >= 50) {
+        textView.text = [textView.text substringToIndex:50];
+    }
+    // 1.计算textView的高度
+    CGFloat textViewH = 0;
+    CGFloat minHeight = 32; // textView最小的高度
+    CGFloat maxHeight = 82 + 10; // textView最大的高度
+
+    // 获取contentSize 的高度
+    CGFloat contentHeight = textView.contentSize.height;
+    if (contentHeight < minHeight) {
+      textViewH = minHeight;
+      [textView setContentInset:UIEdgeInsetsZero];
+    } else if (contentHeight > maxHeight) {
+      textViewH = maxHeight + 4.5;
+      [textView setContentInset:UIEdgeInsetsMake(-5, 0, -3.5, 0)];
+    } else {
+      if (contentHeight - (minHeight + 7) < 0.01) {
+          [textView setContentInset:UIEdgeInsetsMake(-4.5, 0, -4.5, 0)];
+          textViewH = minHeight;
+      } else {
+          textViewH = contentHeight - 8;
+          [textView setContentInset:UIEdgeInsetsMake(-4.5, 0, -4.5, 0)];
+      }
+    }
+    // 2.监听send事件--判断最后一个字符串是不是换行符
+    if ([textView.text hasSuffix:@"\n"]) {
+    textView.text = [textView.text stringByReplacingOccurrencesOfString:@"\n" withString:@"" options:NSBackwardsSearch range:NSMakeRange(0, textView.text.length)];
+      if (textView.text.length > 0) {
+          if ([NSString isEmpty:textView.text]) {
+          } else {
+              [self.view endEditing:YES];
+              [self sendText:textView.text];
+          }
+      } else {
+      }
+      // 清空textView的文字
+      textView.text = nil;
+      [textView setContentInset:UIEdgeInsetsMake(0, 0, 0, 0)];
+      
+      // 发送时，textViewH的高度为33
+      textViewH = minHeight;
+      [textView scrollRangeToVisible:textView.selectedRange];
+    }
+    // 3.调整整个InputToolBar 的高度
+    [self.inputToolBar mas_updateConstraints:^(MASConstraintMaker *make) {
+      make.height.mas_equalTo(textViewH + 30);
+    }];
+    CGFloat changeH = textViewH - self.previousTextViewContentHeight;
+    if (changeH != 0) {
+    // 加个动画
+    [UIView animateWithDuration:0.25 animations:^{
+        [self.view layoutIfNeeded];
+        // 4.记光标回到原位
+        // 下面这几行代码需要写在[self.view layoutIfNeeded]后面，不然系统会自动调整为位置
+        if (contentHeight < maxHeight) {
+            [textView setContentOffset:CGPointZero animated:YES];
+            [textView scrollRangeToVisible:textView.selectedRange];
+        }
+    }];
+      self.previousTextViewContentHeight = textViewH;
+    }
+    if (contentHeight > maxHeight) {
+        [UIView animateWithDuration:0.2 animations:^{
+            if (self.contentOffsetY) {
+                if (textView.selectedRange.location != textView.text.length && textView.contentOffset.y != self.contentOffsetY) return;
+            }
+            [textView setContentOffset:CGPointMake(0.0, textView.contentSize.height - textView.frame.size.height - 3.5)];
+            self.contentOffsetY = textView.contentOffset.y;
+        }];
+        [textView scrollRangeToVisible:textView.selectedRange];
+    }
+}
+
 
 - (void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
-    
 }
 
 - (void)initParams{
@@ -315,7 +487,7 @@
         weakSelf.whiteBoardViewController = nil;
     };
     [self addChildViewController:self.whiteBoardViewController];
-    [self.view addSubview:self.whiteBoardViewController.view];
+    [self.view insertSubview:self.whiteBoardViewController.view belowSubview:self.smallChatView];
     [self.whiteBoardViewController.view mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.view);
     }];
@@ -323,13 +495,25 @@
 
 //成员
 - (void)bottomMembersButtonClick{
-    TXTGroupMemberViewController *vc = [[TXTGroupMemberViewController alloc] init];
-    vc.manageMembersArr = self.renderViews;
-    self.groupMemberViewController = vc;
-    vc.closeBlock = ^{
-        self.groupMemberViewController = nil;
+//    TXTGroupMemberViewController *vc = [[TXTGroupMemberViewController alloc] init];
+//    vc.manageMembersArr = self.renderViews;
+//    self.groupMemberViewController = vc;
+//    vc.closeBlock = ^{
+//        self.groupMemberViewController = nil;
+//    };
+//    [self.navigationController pushViewController:vc animated:YES];
+    // 添加成员页面
+    __weak __typeof(self)weakSelf = self;
+    self.groupMemberViewController.closeBlock = ^{
+        [weakSelf.groupMemberViewController.view removeFromSuperview];
+        weakSelf.groupMemberViewController = nil;
     };
-    [self.navigationController pushViewController:vc animated:YES];
+    [self addChildViewController:self.groupMemberViewController];
+    [self.view addSubview:self.groupMemberViewController.view];
+    self.groupMemberViewController.manageMembersArr = self.renderViews;
+    [self.groupMemberViewController.view mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self.view);
+    }];
 }
 //录制
 - (void)bottomShareSceneButtonClick{
@@ -354,7 +538,21 @@
 }
 //更多
 - (void)bottomMoreActionButtonClick{
-    
+    TXTMoreView *moreView = [[TXTMoreView alloc] init];
+    moreView.chatBlock = ^{
+        // 添加聊天页面
+        __weak __typeof(self)weakSelf = self;
+        self.chatViewController.closeBlock = ^{
+            [weakSelf.chatViewController.view removeFromSuperview];
+            weakSelf.chatViewController = nil;
+        };
+        [self addChildViewController:self.chatViewController];
+        [self.view addSubview:self.chatViewController.view];
+        [self.chatViewController.view mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(self.view);
+        }];
+    };
+    [moreView show];
 }
 
 #pragma mark - action
@@ -931,12 +1129,103 @@
     }
 }
 
+- (void)inputKeyboardWillShow:(NSNotification *)noti {
+    if (![self.inputToolBar.textView isFirstResponder]) return;
+    self.inputToolBar.hidden = NO;
+    //1.获取键盘高度
+    //1.1获取键盘结束时候的位置
+    CGRect kbEndFrame = [noti.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    CGFloat kbHeight = kbEndFrame.size.height;
+    CGFloat animationDuration = [[noti.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
+    QSLog(@"%f........", animationDuration);
+    // 2.更改inputToolBar 底部约束
+    [self.inputToolBar mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.bottom.mas_equalTo(-kbHeight);
+    }];
+    [UIView animateWithDuration:animationDuration animations:^{
+        [self.view layoutIfNeeded];
+    }];
+}
+
+#pragma mark 键盘退出时会触发的方法
+- (void)inputKeyboardWillHide:(NSNotification *)noti {
+   CGFloat animationDuration = [[[noti userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
+   //inputToolbar恢复原位
+   [self.inputToolBar mas_updateConstraints:^(MASConstraintMaker *make) {
+       make.bottom.mas_equalTo(0);
+   }];
+   // 添加动画
+   [UIView animateWithDuration:animationDuration animations:^{
+       [self.view layoutIfNeeded];
+       self.inputToolBar.hidden = YES;
+   }];
+}
+
+- (void)smallChatViewDidClickEmoji:(UIButton *)btn {
+//    self.emojiView.hidden = NO;
+   [self.emojiView showFromView:btn];
+}
+
+- (void)emojiViewDidClickEmoji:(NSString *)emoji {
+   [self sendText:emoji];
+//    self.emojiView.hidden = YES;
+   [self.emojiView dismiss];
+}
+
+#pragma mark - 🎬event response
+- (void)sendText:(NSString *)text {
+  [self prepareTextMessage:text];
+}
+#pragma mark ----发送文本消息
+- (void)prepareTextMessage:(NSString *)text {
+    if ([text isEqualToString:@""] || text == nil) {
+        return;
+    }
+    NSDictionary *messagedict = @{@"serviceId":TXUserDefaultsGetObjectforKey(ServiceId),
+                                  @"type":@"wxIM",
+                                  @"userId":[TICConfig shareInstance].userId,
+                                  @"userName":TXUserDefaultsGetObjectforKey(Agent),
+                                  @"content":text};
+    NSString *str = [NSString objectToJsonString:messagedict];
+    
+    V2TIMMessage *message = [[V2TIMManager sharedInstance] createTextMessage:str];
+    NSString *classId = [NSString stringWithFormat:@"%@",TXUserDefaultsGetObjectforKey(RoomId)];
+    
+//    [[TICManager sharedInstance] sendGroupTextMessage:str callback:^(TICModule module, int code, NSString *desc) {
+//
+//    }];
+    
+   NSString *msgID = [[V2TIMManager sharedInstance] sendMessage:message receiver:nil groupID:classId priority:V2TIM_PRIORITY_DEFAULT onlineUserOnly:NO offlinePushInfo:nil progress:nil succ:^{
+        QSLog(@"发送成功");
+       [self.smallMessageView addMessage:str];
+    } fail:^(int code, NSString *desc) {
+
+    }];
+}
+
+
+/// showKeyBoard
+- (void)showKeyBoard {
+    self.inputToolBar.hidden = NO;
+    [self.inputToolBar.textView becomeFirstResponder];
+}
 
 - (void)addNotification{
     [[TICManager sharedInstance] addIMessageListener:self];
     [[TICManager sharedInstance] addEventListener:self];
     [[TICManager sharedInstance] addStatusListener:self];
-    //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleScreenOrientationChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
+    //给键盘注册通知
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(inputKeyboardWillShow:)
+     
+                                                 name:UIKeyboardWillShowNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(inputKeyboardWillHide:)
+                                                 name:UIKeyboardWillHideNotification
+                                               object:nil];
 }
 
 #pragma  mark --懒加载
@@ -1107,7 +1396,13 @@
     return UIInterfaceOrientationLandscapeLeft;
 }
 
-
+- (TXTGroupMemberViewController *)groupMemberViewController {
+    if (!_groupMemberViewController) {
+        TXTGroupMemberViewController *groupMemberViewController = [[TXTGroupMemberViewController alloc] init];
+        self.groupMemberViewController = groupMemberViewController;
+    }
+    return _groupMemberViewController;
+}
 - (TXTWhiteBoardViewController *)whiteBoardViewController {
     if (!_whiteBoardViewController) {
         TXTWhiteBoardViewController *whiteBoardViewController = [[TXTWhiteBoardViewController alloc] init];
@@ -1115,4 +1410,59 @@
     }
     return _whiteBoardViewController;
 }
+- (TXTChatViewController *)chatViewController {
+    if (!_chatViewController) {
+        TXTChatViewController *chatViewController = [[TXTChatViewController alloc] init];
+        self.chatViewController = chatViewController;
+    }
+    return _chatViewController;
+}
+
+- (TXTSmallChatView *)smallChatView {
+    if (!_smallChatView) {
+        TXTSmallChatView *smallChatView = [[TXTSmallChatView alloc] init];
+        smallChatView.cornerRadius = 5;
+        [smallChatView addTarget:self action:@selector(showKeyBoard) forControlEvents:UIControlEventTouchUpInside];
+        smallChatView.delegate = self;
+        self.smallChatView = smallChatView;
+    }
+    return _smallChatView;
+}
+- (TXTEmojiView *)emojiView {
+    if (!_emojiView) {
+        TXTEmojiView *emojiView = [[TXTEmojiView alloc] init];
+//        emojiView.backgroundColor = [UIColor colorWithHexString:@"000000" alpha:0.74];
+//        emojiView.cornerRadius = 8;
+        emojiView.delegate = self;
+        self.emojiView = emojiView;
+    }
+    return _emojiView;
+}
+//- (UIView *)coverView {
+//    if (!_coverView) {
+//        UIView *coverView = [[UIView alloc] init];
+////        coverView.backgroundColor = [UIColor colorWithHexString:@"D70110"];
+//        self.coverView = coverView;
+//    }
+//    return _coverView;
+//}
+- (TXTChatInputToolBar *)inputToolBar {
+    if (!_inputToolBar) {
+        TXTChatInputToolBar *inputToolBar = [[TXTChatInputToolBar alloc] init];
+        inputToolBar.hidden = YES;
+        inputToolBar.textView.delegate = self;
+        self.inputToolBar = inputToolBar;
+    }
+    return _inputToolBar;
+}
+
+- (TXTSmallMessageView *)smallMessageView {
+    if (!_smallMessageView) {
+        TXTSmallMessageView *smallMessageView = [[TXTSmallMessageView alloc] init];
+        smallMessageView.backgroundColor = [UIColor clearColor];
+        self.smallMessageView = smallMessageView;
+    }
+    return _smallMessageView;
+}
+
 @end

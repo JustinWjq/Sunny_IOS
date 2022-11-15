@@ -224,7 +224,7 @@
 
 - (void)txMoreActionButtonClick{
     if (self.delegate && [self.delegate respondsToSelector:@selector(bottomMoreActionButtonClick)]){
-        [self.delegate bottomShareSceneButtonClick];
+        [self.delegate bottomMoreActionButtonClick];
     }
 }
 
