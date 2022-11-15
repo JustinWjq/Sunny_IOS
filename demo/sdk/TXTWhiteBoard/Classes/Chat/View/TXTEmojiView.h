@@ -16,6 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// 点击发送按钮
 - (void)emojiViewDidClickEmoji:(NSString *)emoji;
+
 @end
 
 
@@ -36,6 +37,9 @@ NS_ASSUME_NONNULL_BEGIN
  *  销毁
  */
 - (void)dismiss;
+
+/** isWhite */
+@property (nonatomic, assign) BOOL isWhite;
 @end
 
 NS_ASSUME_NONNULL_END

@@ -222,7 +222,10 @@ static TXTMemberInfoView *_alertView = nil; //第一步：静态实例，并初�
             }];
         }
     } else if (tag == 3) {
-        
+        if ([self.model.userRole isEqualToString:@"owner"]) {
+//            [TXTToast toastWithTitle:@"自己不能移除自己"];
+            return;
+        }
         NSDictionary *messagedict = @{@"serviceId":TXUserDefaultsGetObjectforKey(ServiceId),@"type":@"moveOutRoom",@"agentId":TXUserDefaultsGetObjectforKey(AgentId),@"userId":self.model.render.userId};
         NSString *str = [[TXTCommon sharedInstance] convertToJsonData:messagedict];
         [[TICManager sharedInstance] sendGroupTextMessage:str callback:^(TICModule module, int code, NSString *desc) {

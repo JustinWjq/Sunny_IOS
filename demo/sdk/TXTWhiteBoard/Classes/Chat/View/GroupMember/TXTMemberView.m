@@ -55,9 +55,10 @@
         // 添加textField改变
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidTextChange:) name:UITextFieldTextDidChangeNotification object:nil];
         
-        QSTapGestureRecognizer *gesture =[[QSTapGestureRecognizer alloc] initWithTarget:self action:@selector(tipClick)];
+        QSTapGestureRecognizer *gesture = [[QSTapGestureRecognizer alloc] initWithTarget:self action:@selector(tipClick)];
       //    gesture.cancelsTouchesInView = NO;
         [self addGestureRecognizer:gesture];
+//        [self addTarget:self action:@selector(tipClick)];
     }
     return self;
 }
@@ -247,8 +248,8 @@
 
 /// allMuteBtnClick
 - (void)allMuteBtnClick {
-//    TXTCommonAlertView *alert = [TXTCommonAlertView alertWithTitle:@"所有参会人员将被静音" titleColor:nil titleFont:nil leftBtnStr:@"取消" rightBtnStr:@"确定" leftColor:nil rightColor:nil];
-    TXTCommonAlertView *alert = [TXTCommonAlertView alertWithTitle:@"所有参会人员将被静音" message:@"允许参会人员自行解除静音" leftBtnStr:@"取消" rightBtnStr:@"确定" leftColor:nil rightColor:nil];
+    TXTCommonAlertView *alert = [TXTCommonAlertView alertWithTitle:@"所有参会人员将被静音" titleColor:nil titleFont:nil leftBtnStr:@"取消" rightBtnStr:@"确定" leftColor:nil rightColor:nil];
+//    TXTCommonAlertView *alert = [TXTCommonAlertView alertWithTitle:@"所有参会人员将被静音" message:@"允许参会人员自行解除静音" leftBtnStr:@"取消" rightBtnStr:@"确定" leftColor:nil rightColor:nil];
     alert.sureBlock = ^{
         [TXTCommonAlertView hide];
  

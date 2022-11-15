@@ -150,17 +150,31 @@ static NSInteger const kInputToolBarH = 65;
 
 #pragma mark --加载通知
 - (void)addNotification {
-  //给键盘注册通知
-  [[NSNotificationCenter defaultCenter] addObserver:self
-                                           selector:@selector(inputKeyboardWillShow:)
-   
-                                               name:UIKeyboardWillShowNotification
-                                             object:nil];
-  [[NSNotificationCenter defaultCenter] addObserver:self
-                                           selector:@selector(inputKeyboardWillHide:)
-                                               name:UIKeyboardWillHideNotification
-                                             object:nil];
-  self.inputToolBar.textView.delegate = self;
+    //给键盘注册通知
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                       selector:@selector(inputKeyboardWillShow:)
+
+                                           name:UIKeyboardWillShowNotification
+                                         object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                       selector:@selector(inputKeyboardWillHide:)
+                                           name:UIKeyboardWillHideNotification
+                                         object:nil];
+    self.inputToolBar.textView.delegate = self;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(postMessage:) name:@"POSTSmallMessage" object:nil];
+}
+
+/// 别人发送消息
+- (void)postMessage:(NSNotification *)notification {
+    NSDictionary *dict = [notification userInfo];
+    V2TIMMessage *message = dict[@"POSTSmallMessage"];
+    if (!message.textElem) return;
+    QSIMMessageModel *model = [[QSIMMessageModel alloc] init];
+    model.message = message;
+    model.messageTime = [NSNumber numberWithLong:(long)[message.timestamp timeIntervalSince1970] * 1000];
+//    [self addmessageShowTimeData:model.messageTime];
+    [self addMessage:model];
 }
 
 - (void)getPageMessage {
@@ -184,7 +198,7 @@ static NSInteger const kInputToolBarH = 65;
                 QSIMMessageModel *model = [[QSIMMessageModel alloc] init];
                  model.message = message;
                  model.messageTime = [NSNumber numberWithLong:(long)[message.timestamp timeIntervalSince1970] * 1000];
-                [self dataMessageShowTime:model.messageTime];
+//                [self dataMessageShowTime:model.messageTime];
                 [self.allMessageDic setObject:model forKey:model.message.msgID];
                 [self.allmessageIdArr addObject:model.message.msgID];
             }
@@ -239,7 +253,7 @@ static NSInteger const kInputToolBarH = 65;
                 [self.allMessageDic setObject:model forKey:model.message.msgID];
                 [self.allmessageIdArr insertObject:model.message.msgID atIndex:0];
                 model.messageTime = [NSNumber numberWithLong:(long)[message.timestamp timeIntervalSince1970] * 1000];
-                [self dataMessageShowTimeToTop:model.messageTime];// FIXME:
+//                [self dataMessageShowTimeToTop:model.messageTime];// FIXME:
             }
         }
         [self.messageTableView.mj_header endRefreshing];
@@ -528,8 +542,9 @@ static NSInteger const kInputToolBarH = 65;
     [[V2TIMManager sharedInstance] findMessages:@[msgID] succ:^(NSArray<V2TIMMessage *> *msgs) {
         model.message = [msgs firstObject];
         model.messageTime = [NSNumber numberWithLong:(long)[message.timestamp timeIntervalSince1970] * 1000];
-        [self addmessageShowTimeData:model.messageTime];
+//        [self addmessageShowTimeData:model.messageTime];
         [self addMessage:model];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"POSTMessage" object:nil userInfo:@{@"POSTMessage" : [msgs firstObject]}];
     } fail:^(int code, NSString *desc) {
 
     }];
@@ -559,12 +574,12 @@ static NSInteger const kInputToolBarH = 65;
 
 #pragma mark --添加message
 - (void)addMessage:(QSIMMessageModel *)model {
-  if (model.isTime) {
-    [self.allMessageDic setObject:model forKey:model.timeId];
-    [self.allmessageIdArr addObject:model.timeId];
-    [self addCellToTabel];
-    return;
-  }
+//  if (model.isTime) {
+//    [self.allMessageDic setObject:model forKey:model.timeId];
+//    [self.allmessageIdArr addObject:model.timeId];
+//    [self addCellToTabel];
+//    return;
+//  }
   [self.allMessageDic setObject:model forKey:model.message.msgID];
   [self.allmessageIdArr addObject:model.message.msgID];
   [self addCellToTabel];
@@ -666,7 +681,7 @@ static NSInteger const kInputToolBarH = 65;
             model = [[QSIMMessageModel alloc] init];
             model.message = v2message;
             model.messageTime = [NSNumber numberWithLong:(long)[v2message.timestamp timeIntervalSince1970] * 1000];
-            [self addmessageShowTimeData:model.messageTime];
+//            [self addmessageShowTimeData:model.messageTime];
             [self addMessage:model];
         }
     } fail:^(int code, NSString *desc) {
@@ -695,7 +710,7 @@ static NSInteger const kInputToolBarH = 65;
         }
         model = [[QSIMMessageModel alloc] init];
         model.messageTime = [NSNumber numberWithLong:(long)[message.timestamp timeIntervalSince1970] * 1000];
-        [self addmessageShowTimeData:model.messageTime];
+//        [self addmessageShowTimeData:model.messageTime];
         [self addMessage:model];
     }
 }

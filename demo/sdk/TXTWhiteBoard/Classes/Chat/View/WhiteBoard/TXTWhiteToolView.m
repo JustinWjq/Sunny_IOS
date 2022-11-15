@@ -107,9 +107,6 @@
         make.right.equalTo(self.paintBtn.mas_left).offset(-15.5);
         make.width.height.centerY.equalTo(self.eraserBtn);
     }];
-    
-    
-   
 }
 
 /// orientationChange
@@ -227,8 +224,8 @@
 - (UIButton *)arrowBtn {
     if (!_arrowBtn) {
         UIButton *arrowBtn = [UIButton buttonWithTitle:@"" titleColor:[UIColor colorWithHexString:@"D70110"] font:[UIFont qs_regularFontWithSize:15] target:self action:@selector(arrowBtnClick)];
-        [arrowBtn setImage:[UIImage imageNamed:@"white_icon_arrowNormal" inBundle:TXTSDKBundle compatibleWithTraitCollection:nil] forState:UIControlStateNormal];
-        [arrowBtn setImage:[UIImage imageNamed:@"white_icon_arrowSelected" inBundle:TXTSDKBundle compatibleWithTraitCollection:nil] forState:UIControlStateSelected];
+        [arrowBtn setImage:[UIImage imageNamed:@"white_icon_ellipseNormal" inBundle:TXTSDKBundle compatibleWithTraitCollection:nil] forState:UIControlStateNormal];
+        [arrowBtn setImage:[UIImage imageNamed:@"white_icon_ellipseSelected" inBundle:TXTSDKBundle compatibleWithTraitCollection:nil] forState:UIControlStateSelected];
         self.arrowBtn = arrowBtn;
     }
     return _arrowBtn;

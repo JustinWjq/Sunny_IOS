@@ -22,9 +22,8 @@
 }
  
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
-    
     if ([touch.view isKindOfClass:NSClassFromString(@"UITableViewCellContentView")]) {
-        return ![touch.view isKindOfClass:NSClassFromString(@"UITableViewCellContentView")];
+        return NO;
     } else if ([touch.view isKindOfClass:NSClassFromString(@"TXTSearchMemberCell")]) {
         return ![touch.view isKindOfClass:NSClassFromString(@"TXTSearchMemberCell")];
     }

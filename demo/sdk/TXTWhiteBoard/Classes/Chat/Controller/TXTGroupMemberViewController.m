@@ -10,8 +10,11 @@
 #import "TXTMemberView.h"
 #import "TXTTeleprompView.h"
 #import "TXTNavigationController.h"
+#import "QSTapGestureRecognizer.h"
 
 @interface TXTGroupMemberViewController () <TXTMemberViewDelegate, TXTTeleprompViewDelegate>
+/** bgView */
+@property (nonatomic, strong) UIView *bgView;
 /** memberView */
 @property (nonatomic, strong) TXTMemberView *memberView;
 
@@ -63,6 +66,11 @@
     TXTNavigationController *navigationController = (TXTNavigationController *)self.navigationController;
     navigationController.interfaceOrientationMask = UIInterfaceOrientationMaskAll;
     self.view.backgroundColor = [UIColor clearColor];
+    [self.view addSubview:self.bgView];
+    [self.bgView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self.view);
+    }];
+    
     [self.view addSubview:self.memberView];
     [self.memberView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.view.mas_top).offset([UIApplication sharedApplication].statusBarFrame.size.height);
@@ -86,7 +94,8 @@
 //        [self updateUI:NO];
 //        [self.memberView updateUI:NO];
 //    }
-    [self.view addTarget:self action:@selector(hide)];
+    QSTapGestureRecognizer *gesture = [[QSTapGestureRecognizer alloc] initWithTarget:self action:@selector(hide)];
+    [self.bgView addGestureRecognizer:gesture];
 }
 
 /// hide
@@ -222,5 +231,12 @@
     }
     return _teleprompView;
 }
-
+- (UIView *)bgView {
+    if (!_bgView) {
+        UIView *bgView = [[UIView alloc] init];
+        bgView.backgroundColor = [UIColor clearColor];
+        self.bgView = bgView;
+    }
+    return _bgView;
+}
 @end

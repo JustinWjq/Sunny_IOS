@@ -11,6 +11,8 @@
 @interface TXTSearchMemberCell ()
 /** icon */
 @property (nonatomic, strong) UIImageView *icon;
+/** iconLabel */
+@property (nonatomic, strong) UILabel *iconLabel;
 /** nameLabel */
 @property (nonatomic, strong) UILabel *nameLabel;
 /** voiceBtn */
@@ -51,6 +53,10 @@
     self.icon.layer.cornerRadius = 30 / 2;
     self.icon.clipsToBounds = YES;
 //    self.icon.layer.masksToBounds = NO;
+    [self.icon addSubview:self.iconLabel];
+    [self.iconLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self.icon);
+    }];
     
     [self.contentView addSubview:self.nameLabel];
     [self.nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -82,7 +88,14 @@
     } else {
         self.nameLabel.text = [model.userRole isEqualToString:@"owner"] ? [NSString stringWithFormat:@"%@（主持人、我）", model.userName] : model.userName;
     }
-    [self.icon sd_setImageWithURL:[NSURL URLWithString:model.userIcon] placeholderImage:[UIImage imageNamed:@"HeadPortrait_s" inBundle:TXTSDKBundle compatibleWithTraitCollection:nil] completed:nil];
+//    [self.icon sd_setImageWithURL:[NSURL URLWithString:model.userIcon] placeholderImage:[UIImage imageNamed:@"HeadPortrait_s" inBundle:TXTSDKBundle compatibleWithTraitCollection:nil] completed:nil];
+    
+    NSString *userName = model.userName;
+    if (userName.length >= 2) {
+        self.iconLabel.text = [userName substringFromIndex:userName.length - 2];
+    } else {
+        self.iconLabel.text = userName;
+    }
     self.videoBtn.selected = model.showVideo;
     self.voiceBtn.selected = model.showAudio;
 }
@@ -105,10 +118,18 @@
 - (UIImageView *)icon {
     if (!_icon) {
         UIImageView *icon = [[UIImageView alloc] init];
-        icon.image = [UIImage imageNamed:@"" inBundle:TXTSDKBundle compatibleWithTraitCollection:nil];
+//        icon.image = [UIImage imageNamed:@"" inBundle:TXTSDKBundle compatibleWithTraitCollection:nil];
+        icon.backgroundColor = [UIColor colorWithHexString:@"E6B980"];
         self.icon = icon;
     }
     return _icon;
+}
+- (UILabel *)iconLabel {
+    if (!_iconLabel) {
+        UILabel *iconLabel = [UILabel labelWithTitle:@"" color:[UIColor colorWithHexString:@"FFFFFF"] font:[UIFont qs_regularFontWithSize:10]];
+        self.iconLabel = iconLabel;
+    }
+    return _iconLabel;
 }
 /** nameLabel */
 - (UILabel *)nameLabel {

@@ -49,7 +49,11 @@
     _userIcon = [[UIImageView alloc] init];
     _userIcon.layer.cornerRadius = 37 / 2;
     _userIcon.layer.masksToBounds = YES;
+    _userIcon.backgroundColor = [UIColor colorWithHexString:@"E6B980"];
     [self.contentView addSubview:_userIcon];
+    
+    self.iconLabel = [UILabel labelWithTitle:@"" color:[UIColor colorWithHexString:@"FFFFFF"] font:[UIFont qs_regularFontWithSize:12]];
+    [_userIcon addSubview:self.iconLabel];
     
     _contentview = [[QSIMBubbleView alloc] init];
     _contentview.backgroundColor = [UIColor clearColor];
@@ -68,6 +72,10 @@
     _textContent.font = [UIFont systemFontOfSize:14];
     _textContent.textColor = [UIColor colorWithHexString:@"2C364E"];
     _textContent.numberOfLines = 0;
+
+    self.userNameLabel = [UILabel labelWithTitle:@"" color:[UIColor colorWithHexString:@"333333"] font:[UIFont qs_regularFontWithSize:15]];
+    [self.contentView addSubview:self.userNameLabel];
+   
 }
 
 /*
@@ -124,7 +132,7 @@
     [self refreshIsRead];
    
     QSLog(@"%@- %@", messageData.message.nickName, messageData.message.faceURL);
-    [self.userIcon sd_setImageWithURL:[NSURL URLWithString:messageData.message.faceURL] placeholderImage:[UIImage imageNamed:@"HeadPortrait_s" inBundle:TXTSDKBundle compatibleWithTraitCollection:nil]];
+//    [self.userIcon sd_setImageWithURL:[NSURL URLWithString:messageData.message.faceURL] placeholderImage:[UIImage imageNamed:@"HeadPortrait_s" inBundle:TXTSDKBundle compatibleWithTraitCollection:nil]];
 //    QSIMMessageModel
 ////    JMSGTextContent *textContent = (JMSGTextContent *)messageData.message.content;
 //    self.textContent.text = textContent.text;
@@ -133,6 +141,13 @@
         NSString *jsonStr = messageData.message.textElem.text;
         NSDictionary *dict = [[TXTCommon sharedInstance] dictionaryWithJsonString:jsonStr];
         self.textContent.text = dict[@"content"];
+        NSString *userName = dict[@"userName"];
+        if (userName.length >= 2) {
+            self.iconLabel.text = [userName substringFromIndex:userName.length - 2];
+        } else {
+            self.iconLabel.text = userName;
+        }
+        self.userNameLabel.text = userName;
         self.contentview.backgroundColor = [UIColor colorWithHexString:@"FFFFFF"];
         self.messageType = 0;
     }

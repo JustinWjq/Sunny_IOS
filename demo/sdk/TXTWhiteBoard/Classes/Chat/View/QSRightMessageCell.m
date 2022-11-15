@@ -59,6 +59,9 @@
         make.height.mas_equalTo(37);
 //        make.bottom.lessThanOrEqualTo(@(-11));
     }];
+    [self.iconLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self.userIcon);
+    }];
     
     //  _contentview
     [self.contentview mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -68,8 +71,10 @@
         make.bottom.lessThanOrEqualTo(@(-10)).priorityHigh();
     }];
     
-    
-    
+    [self.userNameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(self.userIcon.mas_left).offset(-10);
+        make.centerY.equalTo(self.userIcon.mas_centerY);
+    }];
 }
 
 - (void)refreshTextLayout {
