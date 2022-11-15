@@ -75,15 +75,15 @@
     
     self.view.backgroundColor = [UIColor colorWithHexString:@"#222222"];
     
-    
+    [self joinRoom];
     [self setBottomToolsUI];
     [self addNotification];
+    [self initParams];
 }
 
 - (void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
-    [self joinRoom];
-    [self initParams];
+    
 }
 
 - (void)initParams{
@@ -97,29 +97,29 @@
     }
     self.hideBottomAndTop = NO;
     
-    TXTUserModel *model = self.renderViews[0];
-    TXTUserModel *newModel = [[TXTUserModel alloc] init];
-    newModel.render = model.render;
-    newModel.showVideo = YES;
-    newModel.showAudio = model.showAudio;
-    newModel.info = model.info;
-    newModel.userRole = @"";
-    newModel.userName = model.userName;
-    newModel.userIcon = model.userIcon;
-    
-    TXTUserModel *newModel1 = [[TXTUserModel alloc] init];
-    newModel1.render = model.render;
-    newModel1.showVideo = NO;
-    newModel1.showAudio = model.showAudio;
-    newModel1.info = model.info;
-    newModel1.userRole = @"";
-    newModel1.userName = model.userName;
-    newModel1.userIcon = model.userIcon;
-    
-    [self.renderViews addObject:newModel];
-    [self.renderViews addObject:newModel1];
-    [self.renderViews addObject:newModel1];
-    [self.renderViews addObject:newModel1];
+//    TXTUserModel *model = self.renderViews[0];
+//    TXTUserModel *newModel = [[TXTUserModel alloc] init];
+//    newModel.render = model.render;
+//    newModel.showVideo = YES;
+//    newModel.showAudio = model.showAudio;
+//    newModel.info = model.info;
+//    newModel.userRole = @"";
+//    newModel.userName = model.userName;
+//    newModel.userIcon = model.userIcon;
+//
+//    TXTUserModel *newModel1 = [[TXTUserModel alloc] init];
+//    newModel1.render = model.render;
+//    newModel1.showVideo = NO;
+//    newModel1.showAudio = model.showAudio;
+//    newModel1.info = model.info;
+//    newModel1.userRole = @"";
+//    newModel1.userName = model.userName;
+//    newModel1.userIcon = model.userIcon;
+//
+//    [self.renderViews addObject:newModel];
+//    [self.renderViews addObject:newModel1];
+//    [self.renderViews addObject:newModel1];
+//    [self.renderViews addObject:newModel1];
 }
 
 - (void)joinRoom{
@@ -136,7 +136,7 @@
     [[[TICManager sharedInstance] getTRTCCloud] startRemoteView:[TICConfig shareInstance].userId view:render];
     userModel.render = render;
     userModel.userName = TXUserDefaultsGetObjectforKey(Agent);
-    userModel.showVideo = NO;
+    userModel.showVideo = YES;
     userModel.showAudio = YES;
     userModel.userRole = [TICConfig shareInstance].role;
     
@@ -289,23 +289,6 @@
 }
 
 - (void)bottomButtonClick {
-//    TXTWhiteBoardViewController *vc = [[TXTWhiteBoardViewController alloc] init];
-//    [self.navigationController pushViewController:vc animated:YES];
-//    [self addChildViewController:vc];
-//    [self.view addSubview:vc.view];
-//    [vc.view mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.edges.equalTo(self.view);
-//    }];
-    TXTGroupMemberViewController *vc = [[TXTGroupMemberViewController alloc] init];
-    vc.manageMembersArr = self.renderViews;
-    self.groupMemberViewController = vc;
-    vc.closeBlock = ^{
-        self.groupMemberViewController = nil;
-    };
-    [self.navigationController pushViewController:vc animated:YES];
-//    TXTChatViewController *vc = [[TXTChatViewController alloc] init];
-//    [self.navigationController pushViewController:vc animated:YES];
-    return;
     [self closeVideoAction];
 }
 //文件分享
@@ -332,8 +315,12 @@
 //成员
 - (void)bottomMembersButtonClick{
     TXTGroupMemberViewController *vc = [[TXTGroupMemberViewController alloc] init];
-    [self.navigationController pushViewController:self.groupMemberViewController animated:YES];
-    return;
+    vc.manageMembersArr = self.renderViews;
+    self.groupMemberViewController = vc;
+    vc.closeBlock = ^{
+        self.groupMemberViewController = nil;
+    };
+    [self.navigationController pushViewController:vc animated:YES];
 }
 //录制
 - (void)bottomShareSceneButtonClick{
@@ -403,7 +390,11 @@
             break;
         }
     }
-    [self updateRenderViewsLayout];
+//    [self updateRenderViewsLayout];
+    TRTCVolumeInfo *info = [[TRTCVolumeInfo alloc] init];
+    info.userId = self.userId;
+    info.volume = 0;
+    [self updateRenderViewsLayoutWithIndex:0 userVolumes:@[info]];
     [[[TICManager sharedInstance] getTRTCCloud] muteLocalAudio:!self.muteState];
     [self.bottomToos changeAudioButtonStatus:self.muteState];
     self.muteState = !self.muteState;
@@ -517,9 +508,7 @@
 
 #pragma mark - render view
 //更新布局
-- (void)updateRenderViewsLayout
-{
-//    [self.renderVideoView removeFromSuperview];
+- (void)updateRenderViewsLayout{
     self.renderVideoView.renderArray = self.renderViews;
     
     NSString *direction = TXUserDefaultsGetObjectforKey(Direction);
@@ -543,23 +532,15 @@
         }];
     }
     [self.renderVideoView setVideoRenderNumber:(self.renderViews.count - 1) mode:directionInt];
-//    if (self.renderViews.count == 1) {
-//        [self.renderVideoView setVideoRenderNumber:TRTCVideoRenderNumber1 mode:directionInt];
-//    }else if (self.renderViews.count == 2){
-//
-//        [self.renderVideoView setVideoRenderNumber:TRTCVideoRenderNumber2 mode:directionInt];
-//    }else{
-////        if (directionInt == TRTCVideoRenderModePortrait) {
-////            [_renderVideoView mas_updateConstraints:^(MASConstraintMaker *make) {
-//////                make.height.mas_equalTo(Screen_Height/3.5+Screen_Width/5.3/7*9);
-////                make.height.mas_equalTo(Adapt(230)+Adapt(90));
-////            }];
-////        }
-//        [self.renderVideoView setVideoRenderNumber:(self.renderViews.count - 1) mode:directionInt];
-//    }
-    
 }
 
+//更新某一个view
+- (void)updateRenderViewsLayoutWithIndex:(NSInteger)index userVolumes:(NSArray<TRTCVolumeInfo *> *)userVolumes{
+    NSString *direction = TXUserDefaultsGetObjectforKey(Direction);
+//    NSLog(@"Direction = %@-%lu",direction,(unsigned long)self.renderViews.count);
+    NSInteger directionInt = [direction integerValue];
+    [self.renderVideoView changeViewNumber:(self.renderViews.count - 1) mode:directionInt Index:index userVolumes:userVolumes];
+}
 
 #pragma mark - TIC event listener
 -(void)onTICMemberQuit:(NSArray*)members {
@@ -589,9 +570,6 @@
         }
     }];
     [self.userIdArr addObject:userId];
-    if ([[TICConfig shareInstance].role isEqualToString:@"owner"]) {
-        self.navigationItem.rightBarButtonItem.title = @"管理成员";
-    }
     TXTUserModel *userModel = [[TXTUserModel alloc] init];
     TICRenderView *render = [[TICRenderView alloc] init];
     render.userId = userId;
@@ -621,6 +599,10 @@
                 newModel.userIcon = model.userIcon;
                 [self.renderViews replaceObjectAtIndex:i withObject:newModel];
                 //更新某一个cell
+                TRTCVolumeInfo *info = [[TRTCVolumeInfo alloc] init];
+                info.userId = userId;
+                info.volume = 0;
+                [self updateRenderViewsLayoutWithIndex:0 userVolumes:@[info]];
                 break;
             }
         }
@@ -683,6 +665,20 @@
         [self roomInfo:userModel];
     }
 }
+
+- (void)onTICUserVoiceVolume:(NSArray<TRTCVolumeInfo *> *)userVolumes totalVolume:(NSInteger)totalVolume{
+    [self updateRenderViewsLayoutWithIndex:100 userVolumes:userVolumes];
+//    NSMutableArray *arr = [NSMutableArray arrayWithArray:userVolumes];
+//    self.userVolumes = [NSMutableArray arrayWithArray:userVolumes];
+//    self.renderViewCollectionView.userVolumesArray = arr;
+//    for (TRTCVolumeInfo *info in userVolumes) {
+//        if (self.currentBigVideoModel != nil && [self.currentBigVideoModel.render.userId isEqualToString:info.userId]) {
+//            [self setAudioUI];
+//            //            self.muteImageView = [self configWithMute:info.volume subView:self.muteImageView];
+//        }
+//    }
+}
+
 
 - (void)onTICRecvMessage:(TIMMessage *)message{
     int cnt = [message elemCount];

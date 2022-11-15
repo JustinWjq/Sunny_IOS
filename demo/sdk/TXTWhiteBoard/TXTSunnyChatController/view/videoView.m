@@ -18,7 +18,7 @@
     if (self) {
 //        [self initHideUI];
 //        self.backgroundColor = [UIColor whiteColor];
-       
+        [self.userModel addObserver:self forKeyPath:@"userModel" options:NSKeyValueObservingOptionNew context:nil];
     }
     return self;
 }
@@ -69,9 +69,9 @@
         [iconImage sd_setImageWithURL:[NSURL URLWithString:self.userModel.userIcon] placeholderImage:nil];
     }
     
-    UIView *nameBackgroundView = [[UIView alloc] init];
-    [self addSubview:nameBackgroundView];
-    [nameBackgroundView mas_makeConstraints:^(MASConstraintMaker *make) {
+    self.nameBackgroundView = [[UIView alloc] init];
+    [self addSubview:self.nameBackgroundView];
+    [self.nameBackgroundView mas_makeConstraints:^(MASConstraintMaker *make) {
         if (directionLeft) {
             make.bottom.mas_equalTo(self.mas_bottom).offset(0);
         }else{
@@ -97,27 +97,28 @@
         
         make.height.mas_equalTo(nameWidth/2.5);
     }];
-    nameBackgroundView.backgroundColor = [UIColor colorWithHexString:@"#000000"];
-    nameBackgroundView.alpha = 0.7;
+    self.nameBackgroundView.backgroundColor = [UIColor colorWithHexString:@"#000000"];
+    self.nameBackgroundView.alpha = 0.7;
     
     UIImageView *voiceImage = [[UIImageView alloc] init];
-    [nameBackgroundView addSubview:voiceImage];
+    [self.nameBackgroundView addSubview:voiceImage];
     [voiceImage mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(nameBackgroundView.mas_top).offset(0);
-        make.bottom.mas_equalTo(nameBackgroundView.mas_bottom).offset(0);
-        make.left.mas_equalTo(nameBackgroundView.mas_left).offset(5);
+        make.top.mas_equalTo(self.nameBackgroundView.mas_top).offset(0);
+        make.bottom.mas_equalTo(self.nameBackgroundView.mas_bottom).offset(0);
+        make.left.mas_equalTo(self.nameBackgroundView.mas_left).offset(5);
         make.width.mas_equalTo(nameWidth/2/2);
     }];
     voiceImage.contentMode = UIViewContentModeScaleAspectFit;
     voiceImage.image = imageName(@"closeMicrophone_s");
+    voiceImage.tag = 8089;
     
     UILabel *allNameLabel = [[UILabel alloc] init];
-    [nameBackgroundView addSubview:allNameLabel];
+    [self.nameBackgroundView addSubview:allNameLabel];
     [allNameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(nameBackgroundView.mas_top).offset(0);
-        make.bottom.mas_equalTo(nameBackgroundView.mas_bottom).offset(0);
+        make.top.mas_equalTo(self.nameBackgroundView.mas_top).offset(0);
+        make.bottom.mas_equalTo(self.nameBackgroundView.mas_bottom).offset(0);
         make.left.mas_equalTo(voiceImage.mas_right).offset(2);
-        make.right.mas_equalTo(nameBackgroundView.mas_right).offset(0);
+        make.right.mas_equalTo(self.nameBackgroundView.mas_right).offset(0);
     }];
     allNameLabel.text = self.userModel.userName;
     allNameLabel.textAlignment = NSTextAlignmentLeft;
@@ -137,6 +138,56 @@
     [[[TICManager sharedInstance] getTRTCCloud] setRemoteViewFillMode:self.userModel.render.userId mode:TRTCVideoFillMode_Fill];
     [[[TICManager sharedInstance] getTRTCCloud] startRemoteView:self.userModel.render.userId view:self.userModel.render];
     [self userNameView:directionLeft];
+}
+
+- (void)changeVoiceImage:(TRTCVolumeInfo *)info{
+    for (__strong UIView *view in self.nameBackgroundView.subviews) {
+        if (view.tag == 8089) {
+            view = [self configWithMute:0 subView:(UIImageView *)view];
+            if (self.userModel.showAudio) {
+                view = [self configWithMute:info.volume subView:(UIImageView *)view];
+            }else{
+                UIImageView *imageview = (UIImageView *)view;
+                imageview.image = [UIImage imageNamed:@"mute_no@2x.png" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
+            }
+        }
+    }
+}
+
+- (UIImageView *)configWithMute:(NSInteger)voice subView:(UIImageView *)imageview{
+  
+    NSInteger level = voice/20;
+    switch (level) {
+        case 0:
+            imageview.image = [UIImage imageNamed:@"mute_0@2x.png" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
+            break;
+        case 1:
+            imageview.image = [UIImage imageNamed:@"mute_20@2x.png" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
+            break;
+        case 2:
+            imageview.image = [UIImage imageNamed:@"mute_40@2x.png" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
+            break;
+        case 3:
+            imageview.image = [UIImage imageNamed:@"mute_60@2x.png" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
+            break;
+        case 4:
+            imageview.image = [UIImage imageNamed:@"mute_80@2x.png" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
+            break;
+        case 5:
+            imageview.image = [UIImage imageNamed:@"mute_100@2x.png" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
+            break;
+            
+        default:
+            imageview.image = [UIImage imageNamed:@"mute_no@2x.png" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
+            break;
+    }
+    return imageview;
+    
+}
+
+-(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context
+{
+    NSLog(@"keyPath=%@,object=%@,change=%@,context=%@",keyPath,object,change,context);
 }
 
 

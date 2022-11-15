@@ -33,6 +33,8 @@ typedef NS_ENUM(NSInteger, TRTCVideoRenderNumber) {
 @property (strong, nonatomic) UITableView *renderViewTableView;
 
 - (void)setVideoRenderNumber:(TRTCVideoRenderNumber)number mode:(TRTCVideoRenderMode)mode;
+- (void)changeViewNumber:(TRTCVideoRenderNumber)number mode:(TRTCVideoRenderMode)mode Index:(NSInteger)index;
+- (void)changeViewNumber:(TRTCVideoRenderNumber)number mode:(TRTCVideoRenderMode)mode Index:(NSInteger)index userVolumes:(NSArray<TRTCVolumeInfo *> *)userVolumes;
 @end
 
 NS_ASSUME_NONNULL_END
