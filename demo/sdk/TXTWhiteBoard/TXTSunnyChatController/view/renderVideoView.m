@@ -466,47 +466,26 @@
             }
         }
     }
-    
-//    if (mode == TRTCVideoRenderModePortrait) {
-//        switch (number) {
-//            case TRTCVideoRenderNumber1:
-//                [self changeTRTCVideoRenderNumber1UI];
-//                break;
-//            case TRTCVideoRenderNumber2:
-////                [self changeTRTCVideoRenderNumber2UI];
-//                break;
-//            default:
-//                [self setTRTCVideoRenderUI];
-//                break;
-//        }
-//    }else{
-//        switch (number) {
-//            case TRTCVideoRenderNumber1:
-//                [self setTRTCVideoRenderNumber1UI];
-//                break;
-//            case TRTCVideoRenderNumber2:
-//                [self setTRTCVideoRenderNumber2UILandscape];
-//                break;
-//            case TRTCVideoRenderNumber3:
-//                [self setTRTCVideoRenderNumber3UILandscape];
-//                break;
-//            case TRTCVideoRenderNumber4:
-//                [self setTRTCVideoRenderNumber4UILandscape];
-//                break;
-//            default:
-//                [self setTRTCVideoRenderNumber5UILandscape];
-//                break;
-//        }
-//    }
+
 }
 
-- (void)changeTRTCVideoRenderNumber1UI{
+- (void)changeVideoViewNumber:(TRTCVideoRenderNumber)number mode:(TRTCVideoRenderMode)mode Index:(NSInteger)index{
     for (UIView *svideoView in self.subviews) {
         if ([svideoView isKindOfClass:[videoView class]]) {
+            videoView *nsvideoView = (videoView *)svideoView;
+            TXTUserModel *userModel = self.renderArray[index];
+            if ([nsvideoView.userModel.render.userId isEqualToString:userModel.render.userId]) {
+                if (userModel.showVideo) {
+                    [nsvideoView showVideoViewDirectionLeft:YES];
+                }else{
+                    [nsvideoView initHideUIDirectionLeft:NO];
+                }
+            }
             
+        }else if([svideoView isKindOfClass:[TXTVideoCollectionView class]]){
+            [self.renderViewCollectionView setUserVideoCell:index];
         }
     }
 }
-
 
 @end

@@ -778,7 +778,7 @@ static NSInteger const kInputToolBarH = 62;
                 TRTCVolumeInfo *info = [[TRTCVolumeInfo alloc] init];
                 info.userId = userId;
                 info.volume = 0;
-                [self updateRenderViewsLayoutWithIndex:0 userVolumes:@[info]];
+                [self updateRenderViewsLayoutWithIndex:i userVolumes:@[info]];
                 break;
             }
         }

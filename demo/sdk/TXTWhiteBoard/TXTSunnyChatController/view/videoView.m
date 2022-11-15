@@ -135,10 +135,11 @@
         make.right.mas_equalTo(self.mas_right).offset(0);
         make.bottom.mas_equalTo(self.mas_bottom).offset(0);
     }];
-    [[[TICManager sharedInstance] getTRTCCloud] setRemoteViewFillMode:self.userModel.render.userId mode:TRTCVideoFillMode_Fill];
+    [[[TICManager sharedInstance] getTRTCCloud] setRemoteViewFillMode:self.userModel.render.userId mode:TRTCVideoFillMode_Fit];
     [[[TICManager sharedInstance] getTRTCCloud] startRemoteView:self.userModel.render.userId view:self.userModel.render];
     [self userNameView:directionLeft];
 }
+
 
 - (void)changeVoiceImage:(TRTCVolumeInfo *)info{
     for (__strong UIView *view in self.nameBackgroundView.subviews) {

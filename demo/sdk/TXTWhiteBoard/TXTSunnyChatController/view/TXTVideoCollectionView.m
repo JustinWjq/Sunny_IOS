@@ -54,6 +54,16 @@
     }
 }
 
+- (void)setUserVideoCell:(NSInteger)index{
+    if (index<1) {
+        return;
+    }
+    TXTUserModel *model = self.renderViewsArray[index-1];
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:(index-1) inSection:0];
+    TXTVideoCollectionViewCell *cell = (TXTVideoCollectionViewCell *)[_collectionView cellForItemAtIndexPath:indexPath];
+    [cell reloadVideo:model];
+}
+
 
 - (void)config{
     if(!_collectionView) {

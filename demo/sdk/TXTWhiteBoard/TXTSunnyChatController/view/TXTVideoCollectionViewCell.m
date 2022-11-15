@@ -169,40 +169,28 @@
         if ([svideoView isKindOfClass:[videoView class]]) {
             videoView *nsvideoView = (videoView *)svideoView;
             if ([nsvideoView.userModel.render.userId isEqualToString:model.render.userId]) {
+                nsvideoView.userModel = model;
                 [nsvideoView changeVoiceImage:info];
             }
             
         }
     }
-    
-//    for (__strong UIView *view in [self subviews]) {
-//        if (view.tag == 1234) {
-//            if ([info.userId isEqualToString:model.render.userId] ) {
-////                view = [self configWithMute:info.volume subView:(UIImageView *)view];
-//                if (model.showAudio) {
-//                    view = [self configWithMute:info.volume subView:(UIImageView *)view];
-//                }else{
-////                    NSLog(@"+++++++++++++++++++1");
-//                    UIImageView *imageview = (UIImageView *)view;
-//                    imageview.image = [UIImage imageNamed:@"mute_no@2x.png" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
-//                }
-//            }else{
-//                if(info.userId == nil && [model.userRole isEqualToString:@"owner"]){
-////                    view = [self configWithMute:info.volume subView:(UIImageView *)view];
-//                    if (model.showAudio) {
-//                        view = [self configWithMute:info.volume subView:(UIImageView *)view];
-//                    }else{
-////                        NSLog(@"+++++++++++++++++++2");
-//
-//                        UIImageView *imageview = (UIImageView *)view;
-//                        imageview.image = [UIImage imageNamed:@"mute_no@2x.png" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
-//                    }
-//                }
-//
-//            }
-//
-//        }
-//    }
+}
+
+- (void)reloadVideo:(TXTUserModel *)model{
+    for (UIView *svideoView in self.subviews) {
+        if ([svideoView isKindOfClass:[videoView class]]) {
+            videoView *nsvideoView = (videoView *)svideoView;
+            if ([nsvideoView.userModel.render.userId isEqualToString:model.render.userId]) {
+                if (model.showVideo) {
+                    [nsvideoView showVideoViewDirectionLeft:YES];
+                }else{
+                    [nsvideoView initHideUIDirectionLeft:NO];
+                }
+            }
+            
+        }
+    }
 }
 
 @end
