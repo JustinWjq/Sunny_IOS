@@ -12,6 +12,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface TXTWhiteBoardViewController : UIViewController
 
+/** isShowWhiteBoard */
+@property (nonatomic, assign) BOOL isShowWhiteBoard;
+
 @property (nonatomic, copy) dispatch_block_t closeBlock;
 
 @end

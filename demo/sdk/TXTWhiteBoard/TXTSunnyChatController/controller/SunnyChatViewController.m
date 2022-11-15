@@ -47,6 +47,8 @@
 // 成员管理
 /** groupMemberViewController */
 @property (nonatomic, strong) TXTGroupMemberViewController *groupMemberViewController;
+/** isShowWhiteBoard */
+@property (nonatomic, assign) BOOL isShowWhiteBoard;
 /** whiteBoardViewController */
 @property (nonatomic, strong) TXTWhiteBoardViewController *whiteBoardViewController;
 @end
@@ -155,6 +157,7 @@
         if ([errCode intValue] == 0) {
             NSLog(@"roomInfo = %@",[response description]);
             NSDictionary *result = [response valueForKey:@"result"];
+            self.isShowWhiteBoard = [[result valueForKey:@"shareStatus"] boolValue];
             
             NSArray *userInfo = [result valueForKey:@"userInfo"];
             NSMutableArray *renderNewArr = self.renderViews;
@@ -227,34 +230,35 @@
             
             
             
-            //            if (self.otherShareStatus) {
-            //                self.isShowWhiteBoard = YES;
-            //                [self updateVideoView:@"insert" Index:1];
-            //                if (self.landscapeRoomViewController) {
-            //
-            //                }else{
-            //                    [self getWhiteBoard];
-            //                }
-            //
-            //                self.shareState = YES;
-            //
-            //                if ([self.ShareStatusUserId isEqualToString:self.userId]) {
-            //                    //                    self.pptView.hidden = YES;
-            //
-            //                }else{
-            //                    self.pptView.hidden = YES;
-            //                }
-            //                [self.shareFileButton setImage:[UIImage imageNamed:@"fileShare_select" inBundle:TXSDKBundle compatibleWithTraitCollection:nil] forState:UIControlStateNormal];
-            //                [self.drawBackView addSubview:self.brushView];
-            //                [self.drawBackView addSubview:self.changeButton];
-            //            }else{
-            //                //没有大图
-            //                if (self.currentBigVideoModel == nil) {
-            //                    [self updateVideoView:@"remove" Index:1];
-            //                }else{
-            //                    NSLog(@"直接加入房间");
-            //                }
-            //            }
+            if (self.isShowWhiteBoard) {
+                self.isShowWhiteBoard = YES;
+                [self getWhiteBoard:self.isShowWhiteBoard];
+//                [self updateVideoView:@"insert" Index:1];
+//                if (self.landscapeRoomViewController) {
+//
+//                }else{
+//                    [self getWhiteBoard];
+//                }
+//
+//                self.shareState = YES;
+//
+//                if ([self.ShareStatusUserId isEqualToString:self.userId]) {
+//                    //                    self.pptView.hidden = YES;
+//
+//                }else{
+//                    self.pptView.hidden = YES;
+//                }
+//                [self.shareFileButton setImage:[UIImage imageNamed:@"fileShare_select" inBundle:TXSDKBundle compatibleWithTraitCollection:nil] forState:UIControlStateNormal];
+//                [self.drawBackView addSubview:self.brushView];
+//                [self.drawBackView addSubview:self.changeButton];
+            } else {
+//                //没有大图
+//                if (self.currentBigVideoModel == nil) {
+//                    [self updateVideoView:@"remove" Index:1];
+//                }else{
+//                    NSLog(@"直接加入房间");
+//                }
+            }
             
             [self reloadManageMembersArray];
             [self updateRenderViewsLayout];
@@ -297,19 +301,24 @@
     shareFileAlertView.fileBlock = ^{
     };
     shareFileAlertView.whiteBoardBlock = ^{
-        TXTWhiteBoardViewController *vc = [[TXTWhiteBoardViewController alloc] init];
-        vc.closeBlock = ^{
-            [self.whiteBoardViewController.view removeFromSuperview];
-            self.whiteBoardViewController = nil;
-        };
-        [self addChildViewController:vc];
-        [self.view addSubview:vc.view];
-        self.whiteBoardViewController = vc;
-        [vc.view mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.edges.equalTo(self.view);
-        }];
+        [self getWhiteBoard:self.isShowWhiteBoard];
     };
     [shareFileAlertView show];
+}
+/// getWhiteBoard
+- (void)getWhiteBoard:(BOOL)isShowWhiteBoard {
+    self.whiteBoardViewController.isShowWhiteBoard = isShowWhiteBoard;
+    __weak __typeof(self)weakSelf = self;
+    self.whiteBoardViewController.closeBlock = ^{
+        weakSelf.isShowWhiteBoard = NO;
+        [weakSelf.whiteBoardViewController.view removeFromSuperview];
+        weakSelf.whiteBoardViewController = nil;
+    };
+    [self addChildViewController:self.whiteBoardViewController];
+    [self.view addSubview:self.whiteBoardViewController.view];
+    [self.whiteBoardViewController.view mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self.view);
+    }];
 }
 
 //成员
@@ -1098,4 +1107,12 @@
     return UIInterfaceOrientationLandscapeLeft;
 }
 
+
+- (TXTWhiteBoardViewController *)whiteBoardViewController {
+    if (!_whiteBoardViewController) {
+        TXTWhiteBoardViewController *whiteBoardViewController = [[TXTWhiteBoardViewController alloc] init];
+        self.whiteBoardViewController = whiteBoardViewController;
+    }
+    return _whiteBoardViewController;
+}
 @end

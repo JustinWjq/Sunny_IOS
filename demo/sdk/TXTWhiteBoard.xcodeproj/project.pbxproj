@@ -285,6 +285,8 @@
 		F0F63003292232A100B4C91C /* TXTWebViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = F0F62FFF292232A100B4C91C /* TXTWebViewController.h */; };
 		F0F6300629223ABA00B4C91C /* TXTShareFileAlertView.h in Headers */ = {isa = PBXBuildFile; fileRef = F0F6300429223ABA00B4C91C /* TXTShareFileAlertView.h */; };
 		F0F6300729223ABA00B4C91C /* TXTShareFileAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0F6300529223ABA00B4C91C /* TXTShareFileAlertView.m */; };
+		F0F6300A29232D0000B4C91C /* TXTMoreView.h in Headers */ = {isa = PBXBuildFile; fileRef = F0F6300829232D0000B4C91C /* TXTMoreView.h */; };
+		F0F6300B29232D0000B4C91C /* TXTMoreView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0F6300929232D0000B4C91C /* TXTMoreView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -688,6 +690,8 @@
 		F0F62FFF292232A100B4C91C /* TXTWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TXTWebViewController.h; sourceTree = "<group>"; };
 		F0F6300429223ABA00B4C91C /* TXTShareFileAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXTShareFileAlertView.h; sourceTree = "<group>"; };
 		F0F6300529223ABA00B4C91C /* TXTShareFileAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TXTShareFileAlertView.m; sourceTree = "<group>"; };
+		F0F6300829232D0000B4C91C /* TXTMoreView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXTMoreView.h; sourceTree = "<group>"; };
+		F0F6300929232D0000B4C91C /* TXTMoreView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TXTMoreView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1327,6 +1331,8 @@
 				F0E22BB5291512CC00C1E031 /* TXTEmojiCollectionViewCell.m */,
 				F0F6300429223ABA00B4C91C /* TXTShareFileAlertView.h */,
 				F0F6300529223ABA00B4C91C /* TXTShareFileAlertView.m */,
+				F0F6300829232D0000B4C91C /* TXTMoreView.h */,
+				F0F6300929232D0000B4C91C /* TXTMoreView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1717,6 +1723,7 @@
 				F06CC9CC2910E4A300CA4D6A /* MJRefreshAutoNormalFooter.h in Headers */,
 				311426FF25A300AF00AC639A /* UIView+cornerSide.h in Headers */,
 				F0E22B872913F78400C1E031 /* TXTChatInputToolBar.h in Headers */,
+				F0F6300A29232D0000B4C91C /* TXTMoreView.h in Headers */,
 				F08168E8290FC9A200C5CA29 /* Singleton.h in Headers */,
 				F06CC9FB2910EED000CA4D6A /* QSIMMessageModel.h in Headers */,
 				F0E22BAF2915011900C1E031 /* NSObject+YYModel.h in Headers */,
@@ -1908,6 +1915,7 @@
 				31B5FD632501DC58006587C0 /* AFNHTTPSessionManager.m in Sources */,
 				F06CC9C82910E4A300CA4D6A /* MJRefreshBackGifFooter.m in Sources */,
 				31F4A4C9260895B00015B75A /* UINavigationController+Revolve.m in Sources */,
+				F0F6300B29232D0000B4C91C /* TXTMoreView.m in Sources */,
 				F08168F1290FC9A200C5CA29 /* UIImageView+Indicator.m in Sources */,
 				31CA9163291BB1CE00186BB6 /* TXTNavigationController.m in Sources */,
 				F0F63002292232A100B4C91C /* TXTWebViewController.m in Sources */,

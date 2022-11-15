@@ -42,12 +42,21 @@
 }
 
 - (void)qs_initSubViews {
-    self.view.backgroundColor = [UIColor redColor];
+    self.view.backgroundColor = [UIColor clearColor];
     [self.view addSubview:self.whiteBoardView];
     [self.whiteBoardView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.view);
     }];
     
+    if (self.isShowWhiteBoard) {
+        [self showWhiteBoard];
+    } else {
+        [self getWhiteBoard];
+    }
+}
+
+/// getWhiteBoard
+- (void)getWhiteBoard {
     NSString *serviceId = TXUserDefaultsGetObjectforKey(ServiceId);
     NSDictionary *bodyDict = @{@"serviceId":serviceId,@"shareStatus":@(YES),@"userId":[TICConfig shareInstance].userId};
     NSLog(@"shareStatusoooo == %@",[bodyDict description]);
@@ -71,6 +80,7 @@
         [TXTToast toastWithTitle:@"网络连接错误" type:TXTToastTypeWarn];
     }];
 }
+
 
 /// orientationChange
 - (void)handleScreenOrientationChange:(NSNotification *)noti {
