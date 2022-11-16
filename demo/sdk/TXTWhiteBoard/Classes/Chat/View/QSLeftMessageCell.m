@@ -133,4 +133,15 @@
 //    self.contentview.layer.mask = maskLayer;
 //}
 
+- (void)drawRect:(CGRect)rect {
+  // Drawing code
+    UIRectCorner corners = UIRectCornerTopRight | UIRectCornerBottomLeft | UIRectCornerBottomRight;
+    UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:self.contentview.bounds byRoundingCorners:corners cornerRadii:CGSizeMake(6, 6)];
+    CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
+    maskLayer.frame = self.contentview.bounds;
+    maskLayer.path = maskPath.CGPath;
+    self.contentview.layer.mask = maskLayer;
+
+}
+
 @end

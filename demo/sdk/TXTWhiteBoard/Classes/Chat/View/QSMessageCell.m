@@ -62,10 +62,10 @@
     UITapGestureRecognizer *contentviewTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickContentView)];
     [_contentview addGestureRecognizer:contentviewTap];
     [self.contentView addSubview:_contentview];
-    _contentview.layer.shadowColor = [UIColor colorWithHexString:@"B9B9C0" alpha:0.16].CGColor;//shadowColor阴影颜色
-    _contentview.layer.shadowOffset = CGSizeMake(0,2);//shadowOffset阴影偏移
-    _contentview.layer.shadowOpacity = 1; //阴影透明度，默认0
-    _contentview.layer.shadowRadius = 10; //阴影半径，默认3
+//    _contentview.layer.shadowColor = [UIColor colorWithHexString:@"B9B9C0" alpha:0.16].CGColor;//shadowColor阴影颜色
+//    _contentview.layer.shadowOffset = CGSizeMake(0,2);//shadowOffset阴影偏移
+//    _contentview.layer.shadowOpacity = 1; //阴影透明度，默认0
+//    _contentview.layer.shadowRadius = 10; //阴影半径，默认3
     
     _textContent = [[UILabel alloc] init];
     _textContent.text = @"测试文案测试";
