@@ -113,6 +113,8 @@
 		F050C7912918BA1B002CA386 /* TXTCommonAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = F050C78F2918BA1B002CA386 /* TXTCommonAlertView.m */; };
 		F050C7952918E1A1002CA386 /* TXTTeleprompView.h in Headers */ = {isa = PBXBuildFile; fileRef = F050C7932918E1A1002CA386 /* TXTTeleprompView.h */; };
 		F050C7962918E1A1002CA386 /* TXTTeleprompView.m in Sources */ = {isa = PBXBuildFile; fileRef = F050C7942918E1A1002CA386 /* TXTTeleprompView.m */; };
+		F05ACDD12924B0FA00C59681 /* TXTFontBgView.h in Headers */ = {isa = PBXBuildFile; fileRef = F05ACDCF2924B0FA00C59681 /* TXTFontBgView.h */; };
+		F05ACDD22924B0FA00C59681 /* TXTFontBgView.m in Sources */ = {isa = PBXBuildFile; fileRef = F05ACDD02924B0FA00C59681 /* TXTFontBgView.m */; };
 		F06CC9B62910E4A300CA4D6A /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = F06CC9832910E4A200CA4D6A /* LICENSE */; };
 		F06CC9B72910E4A300CA4D6A /* UIScrollView+MJRefresh.m in Sources */ = {isa = PBXBuildFile; fileRef = F06CC9852910E4A200CA4D6A /* UIScrollView+MJRefresh.m */; };
 		F06CC9B82910E4A300CA4D6A /* MJRefreshConst.m in Sources */ = {isa = PBXBuildFile; fileRef = F06CC9862910E4A200CA4D6A /* MJRefreshConst.m */; };
@@ -518,6 +520,8 @@
 		F050C78F2918BA1B002CA386 /* TXTCommonAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TXTCommonAlertView.m; sourceTree = "<group>"; };
 		F050C7932918E1A1002CA386 /* TXTTeleprompView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXTTeleprompView.h; sourceTree = "<group>"; };
 		F050C7942918E1A1002CA386 /* TXTTeleprompView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TXTTeleprompView.m; sourceTree = "<group>"; };
+		F05ACDCF2924B0FA00C59681 /* TXTFontBgView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXTFontBgView.h; sourceTree = "<group>"; };
+		F05ACDD02924B0FA00C59681 /* TXTFontBgView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TXTFontBgView.m; sourceTree = "<group>"; };
 		F06CC9832910E4A200CA4D6A /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		F06CC9852910E4A200CA4D6A /* UIScrollView+MJRefresh.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+MJRefresh.m"; sourceTree = "<group>"; };
 		F06CC9862910E4A200CA4D6A /* MJRefreshConst.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJRefreshConst.m; sourceTree = "<group>"; };
@@ -1156,6 +1160,8 @@
 			children = (
 				F050C7932918E1A1002CA386 /* TXTTeleprompView.h */,
 				F050C7942918E1A1002CA386 /* TXTTeleprompView.m */,
+				F05ACDCF2924B0FA00C59681 /* TXTFontBgView.h */,
+				F05ACDD02924B0FA00C59681 /* TXTFontBgView.m */,
 			);
 			path = Teleprompter;
 			sourceTree = "<group>";
@@ -1687,6 +1693,7 @@
 				F08168CB290FC9A200C5CA29 /* UIImage+Orientation.h in Headers */,
 				31B5FC7F2501D71B006587C0 /* TXTWhiteBoard.h in Headers */,
 				F0E22B9E2915009C00C1E031 /* TXTSmallMessage.h in Headers */,
+				F05ACDD12924B0FA00C59681 /* TXTFontBgView.h in Headers */,
 				311426FE25A300AF00AC639A /* UIImage+Triangle.h in Headers */,
 				F08168F3290FC9A200C5CA29 /* NSString+QSExtension.h in Headers */,
 				F06CC9C72910E4A300CA4D6A /* MJRefreshBackNormalFooter.h in Headers */,
@@ -1896,6 +1903,7 @@
 				311426F725A300AF00AC639A /* UIView+cornerSide.m in Sources */,
 				F08168C5290FC9A200C5CA29 /* UIImage+Extension.m in Sources */,
 				31C1F0BA27228724001AA383 /* TICManager.m in Sources */,
+				F05ACDD22924B0FA00C59681 /* TXTFontBgView.m in Sources */,
 				F0F63000292232A100B4C91C /* WeakScriptMessageDelegate.m in Sources */,
 				F08168EB290FC9A200C5CA29 /* Foundation+Log.m in Sources */,
 				31D45ED72915270200765B6B /* TXTVideoCollectionViewCell.m in Sources */,

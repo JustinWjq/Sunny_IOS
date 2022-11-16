@@ -7,8 +7,9 @@
 //
 
 #import "TXTTeleprompView.h"
+#import "TXTFontBgView.h"
 
-@interface TXTTeleprompView ()
+@interface TXTTeleprompView () <TXTFontBgViewDelegate>
 /** bgView */
 @property (nonatomic, strong) UIView *bgView;
 /** nameLabel */
@@ -19,14 +20,18 @@
 @property (nonatomic, strong) UILabel *contentLabel;
 /** fontBtn */
 @property (nonatomic, strong) UIButton *fontBtn;
+
 /** fontBgView */
-@property (nonatomic, strong) UIView *fontBgView;
-/** bigFontBtn */
-@property (nonatomic, strong) UIButton *bigFontBtn;
-/** mindFontBtn */
-@property (nonatomic, strong) UIButton *midFontBtn;
-/** smallFontBtn */
-@property (nonatomic, strong) UIButton *smallFontBtn;
+@property (nonatomic, strong) TXTFontBgView *fontBgView;
+
+///** fontBgView */
+//@property (nonatomic, strong) UIView *fontBgView;
+///** bigFontBtn */
+//@property (nonatomic, strong) UIButton *bigFontBtn;
+///** mindFontBtn */
+//@property (nonatomic, strong) UIButton *midFontBtn;
+///** smallFontBtn */
+//@property (nonatomic, strong) UIButton *smallFontBtn;
 
 @end
 
@@ -83,30 +88,30 @@
         make.bottom.equalTo(self.mas_bottom).offset(-15);
     }];
     self.fontBtn.hidden = YES;
-  
-    [self addSubview:self.fontBgView];
-    [self.fontBgView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.fontBtn).offset(2);
-        make.width.mas_equalTo(112);
-        make.height.mas_equalTo(120);
-        make.top.equalTo(self.fontBtn.mas_bottom).offset(10);
-    }];
-    self.fontBgView.hidden = YES;
-    [self.fontBgView addSubview:self.bigFontBtn];
-    [self.bigFontBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.top.right.equalTo(self.fontBgView);
-        make.height.mas_equalTo(40);
-    }];
-    [self.fontBgView addSubview:self.midFontBtn];
-    [self.midFontBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.height.right.equalTo(self.bigFontBtn);
-        make.top.equalTo(self.bigFontBtn.mas_bottom);
-    }];
-    [self.fontBgView addSubview:self.smallFontBtn];
-    [self.smallFontBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.height.right.equalTo(self.bigFontBtn);
-        make.top.equalTo(self.midFontBtn.mas_bottom);
-    }];
+//
+//    [self addSubview:self.fontBgView];
+//    [self.fontBgView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.left.equalTo(self.fontBtn).offset(2);
+//        make.width.mas_equalTo(112);
+//        make.height.mas_equalTo(120);
+//        make.top.equalTo(self.fontBtn.mas_bottom).offset(10);
+//    }];
+//    self.fontBgView.hidden = YES;
+//    [self.fontBgView addSubview:self.bigFontBtn];
+//    [self.bigFontBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.left.top.right.equalTo(self.fontBgView);
+//        make.height.mas_equalTo(40);
+//    }];
+//    [self.fontBgView addSubview:self.midFontBtn];
+//    [self.midFontBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.left.height.right.equalTo(self.bigFontBtn);
+//        make.top.equalTo(self.bigFontBtn.mas_bottom);
+//    }];
+//    [self.fontBgView addSubview:self.smallFontBtn];
+//    [self.smallFontBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.left.height.right.equalTo(self.bigFontBtn);
+//        make.top.equalTo(self.midFontBtn.mas_bottom);
+//    }];
     
 //    if (![UIWindow isLandscape]) {
 //        [self updateUI:YES];
@@ -117,6 +122,7 @@
 
 /// orientationChange
 - (void)handleScreenOrientationChange:(NSNotification *)noti {
+    [self.fontBgView dismiss];
     if (![UIWindow isLandscape]) {
         [self updateUI:YES];
     } else {
@@ -125,21 +131,21 @@
 }
 
 - (void)updateUI:(BOOL)isPortrait {
-    if (isPortrait) {
-        [self.fontBgView mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.fontBtn).offset(2);
-            make.width.mas_equalTo(112);
-            make.height.mas_equalTo(120);
-            make.top.equalTo(self.fontBtn.mas_bottom).offset(10);
-        }];
-    } else {
-        [self.fontBgView mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.fontBtn).offset(2);
-            make.width.mas_equalTo(112);
-            make.height.mas_equalTo(120);
-            make.bottom.equalTo(self.fontBtn.mas_top).offset(-10);
-        }];
-    }
+//    if (isPortrait) {
+//        [self.fontBgView mas_remakeConstraints:^(MASConstraintMaker *make) {
+//            make.left.equalTo(self.fontBtn).offset(2);
+//            make.width.mas_equalTo(112);
+//            make.height.mas_equalTo(120);
+//            make.top.equalTo(self.fontBtn.mas_bottom).offset(10);
+//        }];
+//    } else {
+//        [self.fontBgView mas_remakeConstraints:^(MASConstraintMaker *make) {
+//            make.left.equalTo(self.fontBtn).offset(2);
+//            make.width.mas_equalTo(112);
+//            make.height.mas_equalTo(120);
+//            make.bottom.equalTo(self.fontBtn.mas_top).offset(-10);
+//        }];
+//    }
 //    [self layoutIfNeeded];
 }
 
@@ -171,7 +177,7 @@
 - (void)upDateUIWithSwithch:(BOOL)isOn {
     self.fontBtn.hidden = !isOn;
     self.contentLabel.hidden = !isOn;
-    self.fontBgView.hidden = YES;
+//    self.fontBgView.hidden = YES;
     if (isOn) {
         [self.switchView mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.right.equalTo(self.mas_right).offset(-13);
@@ -187,7 +193,8 @@
 
 /// fontBtnClick
 - (void)fontBtnClick {
-    self.fontBgView.hidden = !self.fontBgView.hidden;
+//    self.fontBgView.hidden = !self.fontBgView.hidden;
+    [self.fontBgView showFromView:self];
 }
 
 /// switchView
@@ -197,16 +204,20 @@
     }
 }
 
-/// fontSizeBtnClick
-- (void)fontSizeBtnClick:(UIButton *)btn {
-    if (btn == self.bigFontBtn) {
-        self.contentLabel.font = [UIFont qs_regularFontWithSize:16];
-    } else if (btn == self.midFontBtn) {
-        self.contentLabel.font = [UIFont qs_regularFontWithSize:14];
-    } else if (btn == self.smallFontBtn) {
-        self.contentLabel.font = [UIFont qs_regularFontWithSize:12];
-    }
-    self.fontBgView.hidden = YES;
+///// fontSizeBtnClick
+//- (void)fontSizeBtnClick:(UIButton *)btn {
+//    if (btn == self.bigFontBtn) {
+//        self.contentLabel.font = [UIFont qs_regularFontWithSize:16];
+//    } else if (btn == self.midFontBtn) {
+//        self.contentLabel.font = [UIFont qs_regularFontWithSize:14];
+//    } else if (btn == self.smallFontBtn) {
+//        self.contentLabel.font = [UIFont qs_regularFontWithSize:12];
+//    }
+//    self.fontBgView.hidden = YES;
+//}
+
+- (void)fontBgViewDidClickFontSize:(CGFloat)fontSize {
+    self.contentLabel.font = [UIFont qs_regularFontWithSize:fontSize];
 }
 
 
@@ -265,39 +276,50 @@
     }
     return _fontBtn;
 }
+
 /** fontBgView */
-- (UIView *)fontBgView {
+- (TXTFontBgView *)fontBgView {
     if (!_fontBgView) {
-        UIView *fontBgView = [[UIView alloc] init];
-        fontBgView.backgroundColor = [UIColor colorWithHexString:@"000000" alpha:0.74];
-        fontBgView.cornerRadius = 3;
+        TXTFontBgView *fontBgView = [[TXTFontBgView alloc] init];
+        fontBgView.delegate = self;
         self.fontBgView = fontBgView;
     }
     return _fontBgView;
 }
-/** bigFontBtn */
-- (UIButton *)bigFontBtn {
-    if (!_bigFontBtn) {
-        UIButton *bigFontBtn = [UIButton buttonWithTitle:@"大字体" titleColor:[UIColor colorWithHexString:@"FFFFFF"] font:[UIFont qs_semiFontWithSize:16] target:self action:@selector(fontSizeBtnClick:)];
-        self.bigFontBtn = bigFontBtn;
-    }
-    return _bigFontBtn;
-}
-/** midFontBtn */
-- (UIButton *)midFontBtn {
-    if (!_midFontBtn) {
-        UIButton *midFontBtn = [UIButton buttonWithTitle:@"中字体" titleColor:[UIColor colorWithHexString:@"FFFFFF"] font:[UIFont qs_semiFontWithSize:14] target:self action:@selector(fontSizeBtnClick:)];
-        self.midFontBtn = midFontBtn;
-    }
-    return _midFontBtn;
-}
-/** smallFontBtn */
-- (UIButton *)smallFontBtn {
-    if (!_smallFontBtn) {
-        UIButton *smallFontBtn = [UIButton buttonWithTitle:@"小字体" titleColor:[UIColor colorWithHexString:@"FFFFFF"] font:[UIFont qs_semiFontWithSize:12] target:self action:@selector(fontSizeBtnClick:)];
-        self.smallFontBtn = smallFontBtn;
-    }
-    return _smallFontBtn;
-}
+
+///** fontBgView */
+//- (UIView *)fontBgView {
+//    if (!_fontBgView) {
+//        UIView *fontBgView = [[UIView alloc] init];
+//        fontBgView.backgroundColor = [UIColor colorWithHexString:@"000000" alpha:0.74];
+//        fontBgView.cornerRadius = 3;
+//        self.fontBgView = fontBgView;
+//    }
+//    return _fontBgView;
+//}
+///** bigFontBtn */
+//- (UIButton *)bigFontBtn {
+//    if (!_bigFontBtn) {
+//        UIButton *bigFontBtn = [UIButton buttonWithTitle:@"大字体" titleColor:[UIColor colorWithHexString:@"FFFFFF"] font:[UIFont qs_semiFontWithSize:16] target:self action:@selector(fontSizeBtnClick:)];
+//        self.bigFontBtn = bigFontBtn;
+//    }
+//    return _bigFontBtn;
+//}
+///** midFontBtn */
+//- (UIButton *)midFontBtn {
+//    if (!_midFontBtn) {
+//        UIButton *midFontBtn = [UIButton buttonWithTitle:@"中字体" titleColor:[UIColor colorWithHexString:@"FFFFFF"] font:[UIFont qs_semiFontWithSize:14] target:self action:@selector(fontSizeBtnClick:)];
+//        self.midFontBtn = midFontBtn;
+//    }
+//    return _midFontBtn;
+//}
+///** smallFontBtn */
+//- (UIButton *)smallFontBtn {
+//    if (!_smallFontBtn) {
+//        UIButton *smallFontBtn = [UIButton buttonWithTitle:@"小字体" titleColor:[UIColor colorWithHexString:@"FFFFFF"] font:[UIFont qs_semiFontWithSize:12] target:self action:@selector(fontSizeBtnClick:)];
+//        self.smallFontBtn = smallFontBtn;
+//    }
+//    return _smallFontBtn;
+//}
 
 @end
