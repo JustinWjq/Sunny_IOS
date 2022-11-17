@@ -250,6 +250,8 @@ typedef void (^TICCallback)(TICModule module, int code, NSString *desc);
 */
 - (void)onTICUserVoiceVolume:(NSArray<TRTCVolumeInfo *> *)userVolumes totalVolume:(NSInteger)totalVolume;
 
+- (void)onAudioRouteChanged:(TRTCAudioRoute)route fromRoute:(TRTCAudioRoute)fromRoute;
+
 - (void)onTICScreenCaptureStarted;
 - (void)onTICScreenCaptureStop;
 

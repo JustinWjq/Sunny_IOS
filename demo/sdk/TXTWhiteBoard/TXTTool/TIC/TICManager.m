@@ -526,6 +526,7 @@ id makeWeakRef (id object) {
         TICBLOCK_SAFE_RUN(self->_enterCallback, TICMODULE_TRTC, errCode, errMsg);
     }
     NSLog(@"trtc delegate onError = %@",errCode);
+    //toast
 }
    
 - (void)onLog:(NSString *)log LogLevel:(TRTCLogLevel)level WhichModule:(NSString *)module{
@@ -657,6 +658,15 @@ id makeWeakRef (id object) {
     }
 }
 
+- (void)onAudioRouteChanged:(TRTCAudioRoute)route fromRoute:(TRTCAudioRoute)fromRoute{
+    for (id<TICEventListener> listener in _eventListeners) {
+         if (listener && [listener respondsToSelector:@selector(onAudioRouteChanged:fromRoute:)]) {
+             // 触发回调
+             [listener onAudioRouteChanged:route fromRoute:fromRoute];
+         }
+     }
+}
+
 #if !TARGET_OS_IPHONE
 - (void)onDevice:(NSString *)deviceId type:(TRTCMediaDeviceType)deviceType stateChanged:(NSInteger)state
 {
@@ -731,35 +741,9 @@ id makeWeakRef (id object) {
             }
             [[TRTCCloud sharedInstance] setDelegate:self];
             [self report:TIC_REPORT_ENTER_ROOM_START];
+        //TIC_CLASS_SCENE_VIDEO_CALL
             [[TRTCCloud sharedInstance] enterRoom:params appScene:(TRTCAppScene)_option.classScene];
             [[TRTCCloud sharedInstance] enableAudioVolumeEvaluation:300] ;
-//            [[TRTCCloud sharedInstance] startLocalPreview:YES view:_option.renderView];
-//            [[TRTCCloud sharedInstance] startLocalAudio];
-        
-        
-//        #if TARGET_OS_IPHONE
-//            if(_option.bOpenCamera && _option.renderView){
-//                [[TRTCCloud sharedInstance] startLocalPreview:_option.bFrontCamera view:_option.renderView];
-//            }
-//            if(_option.bOpenMic){
-//                [[TRTCCloud sharedInstance] startLocalAudio];
-//            }
-//        #else
-//            if(_option.cameraId.length != 0){
-//                [[TRTCCloud sharedInstance] setCurrentCameraDevice:_option.cameraId];
-//            }
-//            if(_option.bOpenCamera && _option.renderView){
-//                [[TRTCCloud sharedInstance] startLocalPreview:_option.renderView];
-//            }
-//            if(_option.micId.length != 0){
-//                [[TRTCCloud sharedInstance] setCurrentMicDevice:_option.micId];
-//            }
-//            if(_option.bOpenMic){
-//                [[TRTCCloud sharedInstance] startLocalAudio];
-//            }
-//        #endif
-        
-        
     }
 }
 

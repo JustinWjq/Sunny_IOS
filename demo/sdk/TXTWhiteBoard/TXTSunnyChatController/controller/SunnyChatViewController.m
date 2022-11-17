@@ -50,6 +50,8 @@ static NSInteger const kInputToolBarH = 62;
 @property (assign, nonatomic) BOOL shareScene;//投屏开关
 
 @property (assign, nonatomic) BOOL hideBottomAndTop;//是否隐藏
+@property (nonatomic, assign) NSInteger count;//隐藏tab+nav时间
+@property (nonatomic, assign) BOOL isSpeak;//是否是扬声器
 
 // 成员管理
 /** groupMemberViewController */
@@ -93,7 +95,7 @@ static NSInteger const kInputToolBarH = 62;
     UIImage *cameraImg = [UIImage imageNamed:@"camera" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
 //    TXTNavigationController *navigationController = (TXTNavigationController *)self.navigationController;
     self.navigationItem.leftBarButtonItems = @[[UIBarButtonItem itemWithTarget:self
-                                                                        action:@selector(changeAudioRoute)
+                                                                        action:@selector(changeAudioRoute:)
                                                                          image:speakerImg],
                                                [UIBarButtonItem itemWithTarget:self
                                                                         action:@selector(switchCamera)
@@ -108,12 +110,17 @@ static NSInteger const kInputToolBarH = 62;
     
     self.view.backgroundColor = [UIColor colorWithHexString:@"#222222"];
     
+    
+    
     [self joinRoom];
     [self setBottomToolsUI];
     [self addNotification];
     [self initParams];
-    
     [self setUpSmallChatUI];
+    
+    UITapGestureRecognizer *contentviewTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickContentView)];
+    [self.view addGestureRecognizer:contentviewTap];
+    [self hiddenTabAndNav];
 }
 
 /// setUpSmallChatUI
@@ -187,7 +194,7 @@ static NSInteger const kInputToolBarH = 62;
 
     }
     NSString *direction = TXUserDefaultsGetObjectforKey(Direction);
-    NSString *imageNameStr = ( [direction intValue] == 0 )? @"Landscape-Portrait" : @"Portrait-Landscape";
+    NSString *imageNameStr = ( [direction intValue] == 0 )? @"Portrait-Landscape" : @"Landscape-Portrait";
     [_crossBtn setImage:[UIImage imageNamed:imageNameStr inBundle:TXSDKBundle compatibleWithTraitCollection:nil] forState:UIControlStateNormal];
 }
 
@@ -307,6 +314,8 @@ static NSInteger const kInputToolBarH = 62;
     [[[TICManager sharedInstance] getTRTCCloud] startRemoteView:[TICConfig shareInstance].userId view:render];
     [[[TICManager sharedInstance] getTRTCCloud] startLocalPreview:YES view:render];
     [[[TICManager sharedInstance] getTRTCCloud] startLocalAudio];
+    [[[TICManager sharedInstance] getTRTCCloud] setAudioRoute:TRTCAudioModeSpeakerphone];
+    self.isSpeak = YES;
     
     [self.renderViews addObject:userModel];
     [self roomInfo:userModel];
@@ -612,8 +621,17 @@ static NSInteger const kInputToolBarH = 62;
 }
 
 ///切换扬声器
-- (void)changeAudioRoute{
-    
+- (void)changeAudioRoute:(UIButton *)button{
+    if (self.isSpeak) {
+        UIImage *speakerImg = [UIImage imageNamed:@"white_icon_shotNormal" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
+        [button setImage:[speakerImg imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] forState:UIControlStateNormal];
+        [[[TICManager sharedInstance] getTRTCCloud] setAudioRoute:TRTCAudioModeEarpiece];
+    }else{
+        UIImage *speakerImg = [UIImage imageNamed:@"speaker" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
+        [button setImage:[speakerImg imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] forState:UIControlStateNormal];
+        [[[TICManager sharedInstance] getTRTCCloud] setAudioRoute:TRTCAudioModeSpeakerphone];
+    }
+    self.isSpeak = !self.isSpeak;
 }
 
 ///同屏
@@ -1098,6 +1116,10 @@ static NSInteger const kInputToolBarH = 62;
     }
 }
 
+- (void)onAudioRouteChanged:(TRTCAudioRoute)route fromRoute:(TRTCAudioRoute)fromRoute{
+    NSLog(@"onAudioRouteChanged = %d-%d",fromRoute,route);
+}
+
 - (void)inputKeyboardWillShow:(NSNotification *)noti {
     if (![self.inputToolBar.textView isFirstResponder]) return;
     self.coverView.hidden = NO;
@@ -1228,7 +1250,7 @@ static NSInteger const kInputToolBarH = 62;
         make.height.mas_equalTo(Adapt(38));
     }];
     NSString *direction = TXUserDefaultsGetObjectforKey(Direction);
-    NSString *imageNameStr = ( [direction intValue] == 0 )? @"Landscape-Portrait" : @"Portrait-Landscape";
+    NSString *imageNameStr = ( [direction intValue] == 0 )? @"Portrait-Landscape" : @"Landscape-Portrait";
     [_crossBtn setImage:[UIImage imageNamed:imageNameStr inBundle:TXSDKBundle compatibleWithTraitCollection:nil] forState:UIControlStateNormal];
     //     _crossBtn.frame = CGRectMake(15, 0, 50, 50);
     [_crossBtn addTarget:self action:@selector(btnAction) forControlEvents:UIControlEventTouchUpInside];
@@ -1351,6 +1373,42 @@ static NSInteger const kInputToolBarH = 62;
         [ZYSuspensionManager destroyWindowForKey:@"videowindow"];
     }];
     
+}
+
+#pragma mark -- 隐藏tab+nav
+- (void)clickContentView{
+    [self hiddenTabAndNav];
+}
+
+- (void)endPolling {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [NSObject cancelPreviousPerformRequestsWithTarget:self];
+    });
+}
+
+- (void)countDown {
+    self.count -= 1;
+    if (self.count <= 0.01) {
+        //隐藏
+        [self.navigationController setNavigationBarHidden:YES animated:YES];
+        self.bottomToos.hidden = YES;
+        self.hideBottomAndTop = NO;
+        [self endPolling];
+    } else {
+        [self performSelector:@selector(countDown) withObject:nil afterDelay:1.0];
+    }
+}
+
+- (void)hiddenTabAndNav{
+    [self endPolling];
+    //显示
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
+    self.bottomToos.hidden = NO;
+    self.hideBottomAndTop = YES;
+    self.count = 3;
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self countDown];
+    });
 }
 
 - (void)reloadManageMembersArray {

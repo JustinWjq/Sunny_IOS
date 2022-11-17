@@ -29,5 +29,5 @@
 
 - (UIView *)subViewByClassString:(NSString *)classString;
 + (void)drawRoundRectangleInRect:(CGRect)rect withRadius:(CGFloat)radius;
-
+- (void)setTapActionWithBlock:(void (^)(void))block;
 @end
