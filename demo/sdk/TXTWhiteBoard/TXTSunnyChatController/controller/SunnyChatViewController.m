@@ -157,6 +157,19 @@ static NSInteger const kInputToolBarH = 62;
     }];
 //    QSTapGestureRecognizer *gesture = [[QSTapGestureRecognizer alloc] initWithTarget:self action:@selector(hideKeyBoard)];
 //    [self.view addGestureRecognizer:gesture];
+    _crossBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [self.view addSubview:_crossBtn];
+    [_crossBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.mas_equalTo(self.view.mas_safeAreaLayoutGuideRight).offset(-Adapt(15));
+        make.bottom.mas_equalTo(self.view.mas_safeAreaLayoutGuideBottom).offset(self.hideBottomAndTop ? -Adapt(15) : -(Adapt(15+60)));
+        make.width.mas_equalTo(Adapt(38));
+        make.height.mas_equalTo(Adapt(38));
+    }];
+    NSString *direction = TXUserDefaultsGetObjectforKey(Direction);
+    NSString *imageNameStr = ( [direction intValue] == 0 )? @"Portrait-Landscape" : @"Landscape-Portrait";
+    [_crossBtn setImage:[UIImage imageNamed:imageNameStr inBundle:TXSDKBundle compatibleWithTraitCollection:nil] forState:UIControlStateNormal];
+    //     _crossBtn.frame = CGRectMake(15, 0, 50, 50);
+    [_crossBtn addTarget:self action:@selector(btnAction) forControlEvents:UIControlEventTouchUpInside];
 }
 
 - (void)hideKeyBoard {
@@ -173,6 +186,9 @@ static NSInteger const kInputToolBarH = 62;
         [self updateUI:YES];
     } else {
         [self updateUI:NO];
+    }
+    if (self.isWhite) {
+        self.crossBtn.hidden = [UIWindow isLandscape];
     }
 }
 
@@ -489,6 +505,10 @@ static NSInteger const kInputToolBarH = 62;
         [weakSelf.smallChatView mas_updateConstraints:^(MASConstraintMaker *make) {
             make.bottom.equalTo(weakSelf.view.mas_safeAreaLayoutGuideBottom).offset(-75);
         }];
+        weakSelf.crossBtn.hidden = NO;
+        [weakSelf.crossBtn mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.bottom.mas_equalTo(weakSelf.view.mas_safeAreaLayoutGuideBottom).offset(weakSelf.hideBottomAndTop ? -Adapt(15) : -(Adapt(15+60)));
+        }];
     };
     [self addChildViewController:self.whiteBoardViewController];
     [self.view insertSubview:self.whiteBoardViewController.view belowSubview:self.smallChatView];
@@ -498,6 +518,10 @@ static NSInteger const kInputToolBarH = 62;
     weakSelf.isWhite = YES;
     [self.smallChatView mas_updateConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideBottom).offset(-20);
+    }];
+    self.crossBtn.hidden = [UIWindow isLandscape];
+    [self.crossBtn mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.bottom.mas_equalTo(self.view.mas_safeAreaLayoutGuideBottom).offset(-20);
     }];
 }
 
@@ -1247,19 +1271,19 @@ static NSInteger const kInputToolBarH = 62;
     _bottomToos.delegate = self;
     [self.view bringSubviewToFront:_bottomToos];
     
-    _crossBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [self.view addSubview:_crossBtn];
-    [_crossBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.mas_equalTo(self.view.mas_safeAreaLayoutGuideRight).offset(-Adapt(15));
-        make.bottom.mas_equalTo(self.view.mas_safeAreaLayoutGuideBottom).offset(self.hideBottomAndTop ? -Adapt(15) : -(Adapt(15+60)));
-        make.width.mas_equalTo(Adapt(38));
-        make.height.mas_equalTo(Adapt(38));
-    }];
-    NSString *direction = TXUserDefaultsGetObjectforKey(Direction);
-    NSString *imageNameStr = ( [direction intValue] == 0 )? @"Portrait-Landscape" : @"Landscape-Portrait";
-    [_crossBtn setImage:[UIImage imageNamed:imageNameStr inBundle:TXSDKBundle compatibleWithTraitCollection:nil] forState:UIControlStateNormal];
-    //     _crossBtn.frame = CGRectMake(15, 0, 50, 50);
-    [_crossBtn addTarget:self action:@selector(btnAction) forControlEvents:UIControlEventTouchUpInside];
+//    _crossBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+//    [self.view addSubview:_crossBtn];
+//    [_crossBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.right.mas_equalTo(self.view.mas_safeAreaLayoutGuideRight).offset(-Adapt(15));
+//        make.bottom.mas_equalTo(self.view.mas_safeAreaLayoutGuideBottom).offset(self.hideBottomAndTop ? -Adapt(15) : -(Adapt(15+60)));
+//        make.width.mas_equalTo(Adapt(38));
+//        make.height.mas_equalTo(Adapt(38));
+//    }];
+//    NSString *direction = TXUserDefaultsGetObjectforKey(Direction);
+//    NSString *imageNameStr = ( [direction intValue] == 0 )? @"Portrait-Landscape" : @"Landscape-Portrait";
+//    [_crossBtn setImage:[UIImage imageNamed:imageNameStr inBundle:TXSDKBundle compatibleWithTraitCollection:nil] forState:UIControlStateNormal];
+//    //     _crossBtn.frame = CGRectMake(15, 0, 50, 50);
+//    [_crossBtn addTarget:self action:@selector(btnAction) forControlEvents:UIControlEventTouchUpInside];
 }
 
 - (bottomButtons *)bottomToos{
