@@ -102,6 +102,10 @@
     [self.toolView mas_updateConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(self.mas_safeAreaLayoutGuideBottom).offset(bottomH);
     }];
+    CGFloat topH = isPortrait ? 0 : 20;
+    [self.endBtn mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.mas_safeAreaLayoutGuideTop).offset(topH);
+    }];
 }
 
 /// endBtnClick
