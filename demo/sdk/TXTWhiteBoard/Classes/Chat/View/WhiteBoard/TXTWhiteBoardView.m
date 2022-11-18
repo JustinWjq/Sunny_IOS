@@ -135,10 +135,11 @@
 
 /// 点击箭头
 - (void)whiteToolViewDidClickArrowBtn:(UIButton *)arrowBtn {
-    self.coverView.hidden = NO;
+//    self.coverView.hidden = NO;
+    [self layoutIfNeeded];
     [self.coverView addSubview:self.brushThinView];
     [self.brushThinView setType:TXTBrushThinViewTypeArrow];
-    [self layoutIfNeeded];
+    
     
     CGFloat bottomH = [UIWindow isLandscape] ? -61 : -124;
     [self.brushThinView mas_remakeConstraints:^(MASConstraintMaker *make) {
@@ -147,14 +148,16 @@
         make.right.equalTo(self.mas_safeAreaLayoutGuideRight).offset(-48.5);
         make.bottom.equalTo(self.mas_safeAreaLayoutGuideBottom).offset(bottomH);
     }];
+    self.coverView.hidden = NO;
 }
 
 /// 点击画笔
 - (void)whiteToolViewDidClickPaintBtn:(UIButton *)paintBtn {
     self.coverView.hidden = NO;
+//    [self layoutIfNeeded];
     [self.coverView addSubview:self.brushThinView];
     [self.brushThinView setType:TXTBrushThinViewTypePaint];
-    [self layoutIfNeeded];
+    
     CGFloat bottomH = [UIWindow isLandscape] ? -61 : -124;
     [self.brushThinView mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.width.mas_equalTo(165);
@@ -162,6 +165,7 @@
         make.right.equalTo(self.mas_safeAreaLayoutGuideRight).offset(-48.5);
         make.bottom.equalTo(self.mas_safeAreaLayoutGuideBottom).offset(bottomH);
     }];
+    self.coverView.hidden = NO;
 }
 
 - (TXTWhiteToolView *)toolView {

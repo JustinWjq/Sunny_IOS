@@ -8,6 +8,7 @@
 
 #import "TXTWhiteToolView.h"
 #import "TXTBrushThinView.h"
+#import "QSTapGestureRecognizer.h"
 
 @interface TXTWhiteToolView ()
 
@@ -51,8 +52,15 @@
         [self initUI];
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleScreenOrientationChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
+        QSTapGestureRecognizer *gesture = [[QSTapGestureRecognizer alloc] initWithTarget:self action:@selector(tipClick)];
+        [self addGestureRecognizer:gesture];
     }
     return self;
+}
+
+/// tipClick
+- (void)tipClick {
+    
 }
 
 /// initUI
