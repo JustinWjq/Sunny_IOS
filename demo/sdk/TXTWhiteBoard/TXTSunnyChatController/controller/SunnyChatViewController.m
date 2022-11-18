@@ -29,10 +29,11 @@
 #import "TXTEmojiView.h"
 #import "TXTChatInputToolBar.h"
 #import "TXTSmallMessageView.h"
+#import "QSTapGestureRecognizer.h"
 
 static NSInteger const kInputToolBarH = 62;
 
-@interface SunnyChatViewController ()<bottomButtonsDelegate, TICEventListener, TICMessageListener, TICStatusListener, UITextViewDelegate, TXTSmallChatViewDelegate, TXTEmojiViewDelegate>
+@interface SunnyChatViewController ()<bottomButtonsDelegate, TICEventListener, TICMessageListener, TICStatusListener, UITextViewDelegate, TXTSmallChatViewDelegate, TXTEmojiViewDelegate, TXTGroupMemberViewControllerDelegate>
 @property (nonatomic, strong) bottomButtons *bottomToos;//底部视图
 @property (nonatomic, strong) NSString *userId;//主持人id
 @property (strong, nonatomic) NSMutableArray *userIdArr;//房间存在人员id数组
@@ -118,7 +119,7 @@ static NSInteger const kInputToolBarH = 62;
     [self initParams];
     [self setUpSmallChatUI];
     
-    UITapGestureRecognizer *contentviewTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickContentView)];
+    QSTapGestureRecognizer *contentviewTap = [[QSTapGestureRecognizer alloc] initWithTarget:self action:@selector(clickContentView)];
     [self.view addGestureRecognizer:contentviewTap];
     [self hiddenTabAndNav];
 }
@@ -523,6 +524,11 @@ static NSInteger const kInputToolBarH = 62;
         make.edges.equalTo(self.view);
     }];
 }
+#pragma mark - TXTGroupMemberViewControllerDelegate
+- (void)memberViewControllerDidUpdateInfo:(TXTUserModel *)model {
+    
+}
+
 //录制
 - (void)bottomShareSceneButtonClick{
     if (self.renderViews.count == 1) {
@@ -1433,6 +1439,7 @@ static NSInteger const kInputToolBarH = 62;
 - (TXTGroupMemberViewController *)groupMemberViewController {
     if (!_groupMemberViewController) {
         TXTGroupMemberViewController *groupMemberViewController = [[TXTGroupMemberViewController alloc] init];
+        groupMemberViewController.delegate = self;
         self.groupMemberViewController = groupMemberViewController;
     }
     return _groupMemberViewController;
