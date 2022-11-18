@@ -83,11 +83,18 @@ static TXTMemberInfoView *_alertView = nil; //第一步：静态实例，并初�
         make.width.height.mas_equalTo(30);
         make.centerY.equalTo(topBgView.mas_centerY);
     }];
+    NSString *userName = model.userName.length >= 2 ? [model.userName substringFromIndex:model.userName.length - 2] : model.userName;
+    UILabel *iconLabel = [UILabel labelWithTitle:userName color:[UIColor colorWithHexString:@"FFFFFF"] font:[UIFont qs_regularFontWithSize:10]];
+    [icon addSubview:iconLabel];
+    [iconLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.mas_equalTo(icon);
+    }];
+    
     /** label */
     UILabel *nameLabel = [UILabel labelWithTitle:model.userName color:[UIColor colorWithHexString:@"333333"] font:[UIFont qs_mediumFontWithSize:15]];
     [topBgView addSubview:nameLabel];
     [nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(55);
+        make.left.mas_equalTo(55);
         make.centerY.equalTo(icon.mas_centerY);
     }];
     

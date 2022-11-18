@@ -166,6 +166,12 @@
     [self hide];
 }
 
+- (void)memberViewDidUpdateInfo:(TXTUserModel *)model {
+    if ([self.delegate respondsToSelector:@selector(memberViewControllerDidUpdateInfo:)]) {
+        [self.delegate memberViewControllerDidUpdateInfo:model];
+    }
+}
+
 /// 点击了switch
 - (void)teleprompViewDidClickSwitchView:(UISwitch *)switchView {
     if (switchView.isOn) {
