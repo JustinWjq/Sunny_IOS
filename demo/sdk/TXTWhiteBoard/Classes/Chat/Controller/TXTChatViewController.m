@@ -216,8 +216,8 @@
              } else {
                   // iOS16以下
                  
-                 if ( [UIApplication sharedApplication].statusBarOrientation == UIDeviceOrientationLandscapeLeft) {
-                     NSNumber *orientationPortrait = [NSNumber numberWithInt:UIInterfaceOrientationLandscapeLeft];
+                 if ( [UIApplication sharedApplication].statusBarOrientation == UIDeviceOrientationLandscapeRight) {
+                     NSNumber *orientationPortrait = [NSNumber numberWithInt:UIInterfaceOrientationLandscapeRight];
                      [[UIDevice currentDevice] setValue:orientationPortrait forKey:@"orientation"];
                  } else {
                      NSNumber *orientationPortrait = [NSNumber numberWithInt:UIInterfaceOrientationLandscapeRight];
