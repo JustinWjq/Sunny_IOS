@@ -241,6 +241,7 @@
 /// cancelBtnClick
 - (void)cancelBtnClick {
     self.keyWord = nil;
+    self.textField.text = nil;
     [self.textField resignFirstResponder];
     self.searchedArray = nil;
     [self getTableData];
