@@ -29,7 +29,7 @@
     [self.window makeKeyAndVisible];
     [TXTManage sharedInstance].manageDelegate = self;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getNotificationAction:) name:@"addFriendBtListener" object:nil];
-    
+
 //    [WXApi startLogByLevel:WXLogLevelDetail logBlock:^(NSString *log) {
 //        NSLog(@"log : %@", log);
 //    }];

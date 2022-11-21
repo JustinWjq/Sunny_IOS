@@ -149,7 +149,7 @@
                 view = [self configWithMute:info.volume subView:(UIImageView *)view];
             }else{
                 UIImageView *imageview = (UIImageView *)view;
-                imageview.image = [UIImage imageNamed:@"mute_no@2x.png" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
+                imageview.image = [UIImage imageNamed:@"volumeno" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
             }
         }
     }
@@ -160,26 +160,26 @@
     NSInteger level = voice/20;
     switch (level) {
         case 0:
-            imageview.image = [UIImage imageNamed:@"mute_0@2x.png" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
+            imageview.image = [UIImage imageNamed:@"volume0" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
             break;
         case 1:
-            imageview.image = [UIImage imageNamed:@"mute_20@2x.png" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
+            imageview.image = [UIImage imageNamed:@"volume20" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
             break;
         case 2:
-            imageview.image = [UIImage imageNamed:@"mute_40@2x.png" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
+            imageview.image = [UIImage imageNamed:@"volume40" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
             break;
         case 3:
-            imageview.image = [UIImage imageNamed:@"mute_60@2x.png" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
+            imageview.image = [UIImage imageNamed:@"volume60" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
             break;
         case 4:
-            imageview.image = [UIImage imageNamed:@"mute_80@2x.png" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
+            imageview.image = [UIImage imageNamed:@"volume80.png" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
             break;
         case 5:
-            imageview.image = [UIImage imageNamed:@"mute_100@2x.png" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
+            imageview.image = [UIImage imageNamed:@"volume100.png" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
             break;
             
         default:
-            imageview.image = [UIImage imageNamed:@"mute_no@2x.png" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
+            imageview.image = [UIImage imageNamed:@"volumeno.png" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
             break;
     }
     return imageview;

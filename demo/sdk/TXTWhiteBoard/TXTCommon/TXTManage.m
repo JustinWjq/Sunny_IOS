@@ -16,6 +16,7 @@
 #import "ZYSuspensionManager.h"
 //#import "TXTNavigationViewController.h"
 #import "TXTNavigationController.h"
+#import "TXTStatusBar.h"
 
 
 @interface TXTManage ()

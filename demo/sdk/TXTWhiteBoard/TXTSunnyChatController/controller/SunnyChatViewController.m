@@ -8,6 +8,7 @@
 
 #import "SunnyChatViewController.h"
 #import "bottomButtons.h"
+#import "TXTTopButtons.h"
 #import "UIBarButtonItem+SXCreate.h"
 #import "UINavigationSXFixSpace.h"
 #import "TXTCommon.h"
@@ -19,6 +20,7 @@
 #import "renderVideoView.h"
 #import "QFAlertView.h"
 
+#import "TXTStatusBar.h"
 #import "TXTGroupMemberViewController.h"
 #import "TXTChatViewController.h"
 #import "TXTWhiteBoardViewController.h"
@@ -33,8 +35,10 @@
 
 static NSInteger const kInputToolBarH = 62;
 
-@interface SunnyChatViewController ()<bottomButtonsDelegate, TICEventListener, TICMessageListener, TICStatusListener, UITextViewDelegate, TXTSmallChatViewDelegate, TXTEmojiViewDelegate, TXTGroupMemberViewControllerDelegate>
+@interface SunnyChatViewController ()<bottomButtonsDelegate, TXTTopButtonsDelegate, TICEventListener, TICMessageListener, TICStatusListener, UITextViewDelegate, TXTSmallChatViewDelegate, TXTEmojiViewDelegate, TXTGroupMemberViewControllerDelegate>
 @property (nonatomic, strong) bottomButtons *bottomToos;//底部视图
+@property (nonatomic, strong) TXTTopButtons *topToos;//导航栏视图
+@property (nonatomic, strong) TXTStatusBar *statusToos;//导航栏视图
 @property (nonatomic, strong) NSString *userId;//主持人id
 @property (strong, nonatomic) NSMutableArray *userIdArr;//房间存在人员id数组
 @property (nonatomic, strong) NSMutableArray *renderViews;//房间人员数组
@@ -90,39 +94,36 @@ static NSInteger const kInputToolBarH = 62;
     self.title = @"远程会议";
     
     //    //扬声器
-    UIImage *speakerImg = [UIImage imageNamed:@"speaker" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
+//    UIImage *speakerImg = [UIImage imageNamed:@"speaker" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
     
     //    //切换摄像头
-    UIImage *cameraImg = [UIImage imageNamed:@"camera" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
+//    UIImage *cameraImg = [UIImage imageNamed:@"camera" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
 //    TXTNavigationController *navigationController = (TXTNavigationController *)self.navigationController;
-    self.navigationItem.leftBarButtonItems = @[[UIBarButtonItem itemWithTarget:self
-                                                                        action:@selector(changeAudioRoute:)
-                                                                         image:speakerImg],
-                                               [UIBarButtonItem itemWithTarget:self
-                                                                        action:@selector(switchCamera)
-                                                                         image:cameraImg]];
+//    self.navigationItem.leftBarButtonItems = @[[UIBarButtonItem itemWithTarget:self
+//                                                                        action:@selector(changeAudioRoute:)
+//                                                                         image:speakerImg],
+//                                               [UIBarButtonItem itemWithTarget:self
+//                                                                        action:@selector(switchCamera)
+//                                                                         image:cameraImg]];
     //onQuitClassRoom
-    self.navigationItem.rightBarButtonItem = [UIBarButtonItem itemWithTarget:self action:@selector(onQuitClassRoom) title:@"退出" font:[UIFont qs_semiFontWithSize:15] titleColor:[UIColor colorWithHexString:@"#E19797"] highlightedColor:[UIColor colorWithHexString:@"#E19797"] titleEdgeInsets:UIEdgeInsetsMake(0, 0, -0, -0)];
+//    self.navigationItem.rightBarButtonItem = [UIBarButtonItem itemWithTarget:self action:@selector(onQuitClassRoom) title:@"退出" font:[UIFont qs_semiFontWithSize:15] titleColor:[UIColor colorWithHexString:@"#E19797"] highlightedColor:[UIColor colorWithHexString:@"#E19797"] titleEdgeInsets:UIEdgeInsetsMake(0, 0, -0, -0)];
     
 //    self.navigationController.navigationBar.translucent = NO;
-    self.navigationController.navigationBar.barTintColor = [UIColor colorWithHexString:@"#424548"];
-    [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}];
-    self.navigationController.navigationBar.barStyle = UIBarStyleBlack;
+//    self.navigationController.navigationBar.barTintColor = [UIColor colorWithHexString:@"#424548"];
+//    [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}];
+//    self.navigationController.navigationBar.barStyle = UIBarStyleBlack;
     
     self.view.backgroundColor = [UIColor colorWithHexString:@"#222222"];
     
-    
-    
     [self joinRoom];
-    [self setBottomToolsUI];
     [self addNotification];
     [self initParams];
+    [self setBottomToolsUI];
     [self setUpSmallChatUI];
     
-
     QSTapGestureRecognizer *contentviewTap = [[QSTapGestureRecognizer alloc] initWithTarget:self action:@selector(clickContentView)];
     [self.view addGestureRecognizer:contentviewTap];
-    [self hiddenTabAndNav];
+    
     
     TXTNavigationController *navigationController = (TXTNavigationController *)self.navigationController;
     //切换rootViewController的旋转方向
@@ -137,8 +138,9 @@ static NSInteger const kInputToolBarH = 62;
         [UIViewController attemptRotationToDeviceOrientation];
         [self updateRenderViewsLayout];
         [self.bottomToos updateButtons];
+
     }
-  
+
 }
 
 /// setUpSmallChatUI
@@ -197,8 +199,7 @@ static NSInteger const kInputToolBarH = 62;
 
 /// orientationChange
 - (void)handleScreenOrientationChange:(NSNotification *)noti {
-//    AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
-//    app.allowRotation = YES;
+    NSLog(@"handleScreenOrientationChange");
     if (![UIWindow isLandscape]) {
         [self updateUI:YES];
     } else {
@@ -210,26 +211,36 @@ static NSInteger const kInputToolBarH = 62;
 }
 
 - (void)updateUI:(BOOL)isPortrait {
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
     if (isPortrait) {
-
-//        [self.smallChatView mas_remakeConstraints:^(MASConstraintMaker *make) {
-//            make.left.mas_equalTo(15);
-//            make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideBottom).offset(-75);
-//            make.width.mas_equalTo(150);
-//            make.height.mas_equalTo(34);
+//        for (UIView *view in self.view.subviews) {
+//            if ([view isKindOfClass:[TXTStatusBar class]]) {
+//                [view removeFromSuperview];
+//            }
+//        }
+//        [self.topToos mas_remakeConstraints:^(MASConstraintMaker *make) {
+//            make.top.mas_equalTo(self.view.mas_safeAreaLayoutGuideTop).offset(0);
+//            make.left.mas_equalTo(self.view.mas_left).offset(0);
+//            make.right.mas_equalTo(self.view.mas_right).offset(0);
+//            make.height.mas_equalTo(Adapt(60));
 //        }];
     } else {
-//        [self.smallChatView mas_remakeConstraints:^(MASConstraintMaker *make) {
-//            make.left.mas_equalTo(30);
-//            make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideBottom).offset(-75);
-//            make.width.mas_equalTo(150 + [UIApplication sharedApplication].keyWindow.safeAreaInsets.right);
-//            make.height.mas_equalTo(34);
+//        TXTStatusBar *statusBar = [[TXTStatusBar alloc] initWithFrame:CGRectMake(0, 0, Screen_Width, 20)];
+//        [self.view addSubview:self.statusToos];
+//        [self.topToos mas_remakeConstraints:^(MASConstraintMaker *make) {
+//            make.top.mas_equalTo(self.view.mas_top).offset(20);
+//            make.left.mas_equalTo(self.view.mas_left).offset(0);
+//            make.right.mas_equalTo(self.view.mas_right).offset(0);
+//            make.height.mas_equalTo(Adapt(60));
 //        }];
+//
 
     }
-    NSString *direction = TXUserDefaultsGetObjectforKey(Direction);
-    NSString *imageNameStr = ( [direction intValue] == 0 )? @"Portrait-Landscape" : @"Landscape-Portrait";
-    [_crossBtn setImage:[UIImage imageNamed:imageNameStr inBundle:TXSDKBundle compatibleWithTraitCollection:nil] forState:UIControlStateNormal];
+    
+//    NSString *direction = TXUserDefaultsGetObjectforKey(Direction);
+//    NSString *imageNameStr = ( [direction intValue] == 0 )? @"Portrait-Landscape" : @"Landscape-Portrait";
+//    NSLog(@"updateUI direction = %@",direction);
+//    [_crossBtn setImage:[UIImage imageNamed:imageNameStr inBundle:TXSDKBundle compatibleWithTraitCollection:nil] forState:UIControlStateNormal];
 }
 
 #pragma mark - UITextViewDelegate
@@ -312,6 +323,19 @@ static NSInteger const kInputToolBarH = 62;
 
 - (void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
+    [self hiddenTabAndNav];
+//    TXTNavigationController *navigationController = (TXTNavigationController *)self.navigationController;
+//    if (navigationController.interfaceOrientation == UIInterfaceOrientationLandscapeRight) {
+//
+////        [self.view addSubview:self.statusToos];
+////        [self.topToos mas_remakeConstraints:^(MASConstraintMaker *make) {
+////                make.top.mas_equalTo(self.view.mas_top).offset(20);
+////                make.left.mas_equalTo(self.view.mas_left).offset(0);
+////                make.right.mas_equalTo(self.view.mas_right).offset(0);
+////                make.height.mas_equalTo(Adapt(60));
+////            }];
+//    }
 }
 
 - (void)initParams{
@@ -565,6 +589,28 @@ static NSInteger const kInputToolBarH = 62;
         make.edges.equalTo(self.view);
     }];
 }
+
+#pragma mark -- TXTTopButtonsDelegate
+
+- (void)txSpeakBtnClick{
+    if (self.isSpeak) {
+        [self.topToos changeSpeakBtnStatus:self.isSpeak];
+        [[[TICManager sharedInstance] getTRTCCloud] setAudioRoute:TRTCAudioModeEarpiece];
+    }else{
+        [self.topToos changeSpeakBtnStatus:self.isSpeak];
+        [[[TICManager sharedInstance] getTRTCCloud] setAudioRoute:TRTCAudioModeSpeakerphone];
+    }
+    self.isSpeak = !self.isSpeak;
+}
+
+- (void)txSwitchBtnClick{
+    [[[TICManager sharedInstance] getTRTCCloud] switchCamera];
+}
+
+- (void)txQuitBtnClick{
+    [self onQuitClassRoom];
+}
+
 #pragma mark - TXTGroupMemberViewControllerDelegate
 - (void)memberViewControllerDidUpdateInfo:(TXTUserModel *)model {
     
@@ -628,6 +674,7 @@ static NSInteger const kInputToolBarH = 62;
             break;
         }
     }
+    //更新单个视图
     [self updateRenderViewsLayout];
     [[[TICManager sharedInstance] getTRTCCloud] muteLocalVideo:!self.state];
     [self.bottomToos changeVideoButtonStatus:self.state];
@@ -663,23 +710,23 @@ static NSInteger const kInputToolBarH = 62;
 }
 
 ///翻转摄像头
-- (void)switchCamera{
-    [[[TICManager sharedInstance] getTRTCCloud] switchCamera];
-}
+//- (void)switchCamera{
+//    [[[TICManager sharedInstance] getTRTCCloud] switchCamera];
+//}
 
 ///切换扬声器
-- (void)changeAudioRoute:(UIButton *)button{
-    if (self.isSpeak) {
-        UIImage *speakerImg = [UIImage imageNamed:@"white_icon_shotNormal" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
-        [button setImage:[speakerImg imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] forState:UIControlStateNormal];
-        [[[TICManager sharedInstance] getTRTCCloud] setAudioRoute:TRTCAudioModeEarpiece];
-    }else{
-        UIImage *speakerImg = [UIImage imageNamed:@"speaker" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
-        [button setImage:[speakerImg imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] forState:UIControlStateNormal];
-        [[[TICManager sharedInstance] getTRTCCloud] setAudioRoute:TRTCAudioModeSpeakerphone];
-    }
-    self.isSpeak = !self.isSpeak;
-}
+//- (void)changeAudioRoute:(UIButton *)button{
+//    if (self.isSpeak) {
+//        UIImage *speakerImg = [UIImage imageNamed:@"white_icon_shotNormal" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
+//        [button setImage:[speakerImg imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] forState:UIControlStateNormal];
+//        [[[TICManager sharedInstance] getTRTCCloud] setAudioRoute:TRTCAudioModeEarpiece];
+//    }else{
+//        UIImage *speakerImg = [UIImage imageNamed:@"speaker" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
+//        [button setImage:[speakerImg imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] forState:UIControlStateNormal];
+//        [[[TICManager sharedInstance] getTRTCCloud] setAudioRoute:TRTCAudioModeSpeakerphone];
+//    }
+//    self.isSpeak = !self.isSpeak;
+//}
 
 ///同屏
 - (void)selfPushToWebView:(NSString *)url WebId:(nonnull NSString *)webId ActionType:(NSString *)actionType{
@@ -776,6 +823,30 @@ static NSInteger const kInputToolBarH = 62;
     [UIViewController attemptRotationToDeviceOrientation];
     [self updateRenderViewsLayout];
     [self.bottomToos updateButtons];
+    NSString *portrait = TXUserDefaultsGetObjectforKey(Direction);
+    NSString *imageNameStr = ( [portrait intValue] == 0 )? @"Portrait-Landscape" : @"Landscape-Portrait";
+    [_crossBtn setImage:[UIImage imageNamed:imageNameStr inBundle:TXSDKBundle compatibleWithTraitCollection:nil] forState:UIControlStateNormal];
+    if ([portrait intValue] == 0) {
+        for (UIView *view in self.view.subviews) {
+            if ([view isKindOfClass:[TXTStatusBar class]]) {
+                [view removeFromSuperview];
+            }
+        }
+        [self.topToos mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.top.mas_equalTo(self.view.mas_safeAreaLayoutGuideTop).offset(0);
+            make.left.mas_equalTo(self.view.mas_left).offset(0);
+            make.right.mas_equalTo(self.view.mas_right).offset(0);
+            make.height.mas_equalTo(Adapt(60));
+        }];
+    } else {
+        [self.view addSubview:self.statusToos];
+        [self.topToos mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.top.mas_equalTo(self.statusToos.mas_bottom).offset(0);
+            make.left.mas_equalTo(self.view.mas_left).offset(0);
+            make.right.mas_equalTo(self.view.mas_right).offset(0);
+            make.height.mas_equalTo(Adapt(60));
+        }];
+    }
 }
 
 
@@ -807,12 +878,18 @@ static NSInteger const kInputToolBarH = 62;
     [self.renderVideoView setVideoRenderNumber:(self.renderViews.count - 1) mode:directionInt];
 }
 
-//更新某一个view
+//更新某一个view，audio
 - (void)updateRenderViewsLayoutWithIndex:(NSInteger)index userVolumes:(NSArray<TRTCVolumeInfo *> *)userVolumes{
     NSString *direction = TXUserDefaultsGetObjectforKey(Direction);
-//    NSLog(@"Direction = %@-%lu",direction,(unsigned long)self.renderViews.count);
     NSInteger directionInt = [direction integerValue];
     [self.renderVideoView changeViewNumber:(self.renderViews.count - 1) mode:directionInt Index:index userVolumes:userVolumes];
+}
+
+//更新某一个view，video
+- (void)updateVideoRenderViewsLayoutWithIndex:(NSInteger)index{
+    NSString *direction = TXUserDefaultsGetObjectforKey(Direction);
+    NSInteger directionInt = [direction integerValue];
+    [self.renderVideoView changeVideoViewNumber:(self.renderViews.count - 1) mode:directionInt Index:index];
 }
 
 #pragma mark - TIC event listener
@@ -1310,20 +1387,6 @@ static NSInteger const kInputToolBarH = 62;
     }];
     _bottomToos.delegate = self;
     [self.view bringSubviewToFront:_bottomToos];
-    
-//    _crossBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-//    [self.view addSubview:_crossBtn];
-//    [_crossBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.right.mas_equalTo(self.view.mas_safeAreaLayoutGuideRight).offset(-Adapt(15));
-//        make.bottom.mas_equalTo(self.view.mas_safeAreaLayoutGuideBottom).offset(self.hideBottomAndTop ? -Adapt(15) : -(Adapt(15+60)));
-//        make.width.mas_equalTo(Adapt(38));
-//        make.height.mas_equalTo(Adapt(38));
-//    }];
-//    NSString *direction = TXUserDefaultsGetObjectforKey(Direction);
-//    NSString *imageNameStr = ( [direction intValue] == 0 )? @"Portrait-Landscape" : @"Landscape-Portrait";
-//    [_crossBtn setImage:[UIImage imageNamed:imageNameStr inBundle:TXSDKBundle compatibleWithTraitCollection:nil] forState:UIControlStateNormal];
-//    //     _crossBtn.frame = CGRectMake(15, 0, 50, 50);
-//    [_crossBtn addTarget:self action:@selector(btnAction) forControlEvents:UIControlEventTouchUpInside];
 }
 
 - (bottomButtons *)bottomToos{
@@ -1332,6 +1395,31 @@ static NSInteger const kInputToolBarH = 62;
         
     }
     return _bottomToos;
+}
+
+- (TXTTopButtons *)topToos{
+    if (!_topToos) {
+        _topToos = [[TXTTopButtons alloc] init];
+        [self.view addSubview:_topToos];
+        [_topToos mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.mas_equalTo(self.view.mas_top).offset(0);
+            make.left.mas_equalTo(self.view.mas_left).offset(0);
+            make.right.mas_equalTo(self.view.mas_right).offset(0);
+            make.height.mas_equalTo(Adapt(60));
+        }];
+        _topToos.delegate = self;
+        [self.view bringSubviewToFront:_topToos];
+    }
+    return _topToos;
+}
+
+- (TXTStatusBar *)statusToos{
+    if (!_statusToos) {
+        _statusToos = [[TXTStatusBar alloc] initWithFrame:CGRectMake(0, 0, Screen_Width, 20)];
+//        [self.view addSubview:_statusToos];
+        [self.view bringSubviewToFront:_statusToos];
+    }
+    return _statusToos;
 }
 
 - (NSMutableArray *)renderViews
@@ -1416,7 +1504,7 @@ static NSInteger const kInputToolBarH = 62;
             navigationController.interfaceOrientation = UIInterfaceOrientationPortrait;
             navigationController.interfaceOrientationMask = UIInterfaceOrientationMaskPortrait;
             //设置屏幕的转向为横屏
-            [[UIDevice currentDevice] setValue:@(UIDeviceOrientationLandscapeRight) forKey:@"orientation"];
+            [[UIDevice currentDevice] setValue:@(UIDeviceOrientationPortrait) forKey:@"orientation"];
             NSString *portrait = [NSString stringWithFormat:@"%ld",(long)TRTCVideoRenderModePortrait];
             TXUserDefaultsSetObjectforKey(portrait, Direction);
             //刷新
@@ -1462,7 +1550,16 @@ static NSInteger const kInputToolBarH = 62;
     self.count -= 1;
     if (self.count <= 0.01) {
         //隐藏
-        [self.navigationController setNavigationBarHidden:YES animated:YES];
+//        [self.navigationController setNavigationBarHidden:YES animated:YES];
+//        for (UIView *view in self.view.subviews) {
+//            if ([view isKindOfClass:[TXTStatusBar class]]) {
+//                view.hidden = YES;
+//            }else{
+//
+//            }
+//        }
+        [self.statusToos removeFromSuperview];
+        self.topToos.hidden = YES;
         self.bottomToos.hidden = YES;
         self.hideBottomAndTop = NO;
         [self endPolling];
@@ -1474,7 +1571,14 @@ static NSInteger const kInputToolBarH = 62;
 - (void)hiddenTabAndNav{
     [self endPolling];
     //显示
-    [self.navigationController setNavigationBarHidden:NO animated:YES];
+    [self.view addSubview:self.statusToos];
+    [self.topToos mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(self.statusToos.mas_bottom).offset(0);
+        make.left.mas_equalTo(self.view.mas_left).offset(0);
+        make.right.mas_equalTo(self.view.mas_right).offset(0);
+        make.height.mas_equalTo(Adapt(60));
+    }];
+    self.topToos.hidden = NO;
     self.bottomToos.hidden = NO;
     self.hideBottomAndTop = YES;
     self.count = 3;
@@ -1491,7 +1595,7 @@ static NSInteger const kInputToolBarH = 62;
 #pragma  mark 横屏设置
 
 - (BOOL)shouldAutorotate{
-    return YES;
+    return NO;
 }
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations{

@@ -71,6 +71,10 @@
 		31BE4841257A06E600AD1CEF /* ZYSuspensionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 31BE483F257A06E600AD1CEF /* ZYSuspensionManager.m */; };
 		31BE4842257A06E600AD1CEF /* ZYSuspensionManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 31BE4840257A06E600AD1CEF /* ZYSuspensionManager.h */; };
 		31C1F0BA27228724001AA383 /* TICManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 31C1F0B927228724001AA383 /* TICManager.m */; };
+		31C3B706292B5D140041747F /* TXTStatusBar.h in Headers */ = {isa = PBXBuildFile; fileRef = 31C3B704292B5D140041747F /* TXTStatusBar.h */; };
+		31C3B707292B5D140041747F /* TXTStatusBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 31C3B705292B5D140041747F /* TXTStatusBar.m */; };
+		31C3B70A292B6A890041747F /* TXTTopButtons.h in Headers */ = {isa = PBXBuildFile; fileRef = 31C3B708292B6A880041747F /* TXTTopButtons.h */; };
+		31C3B70B292B6A890041747F /* TXTTopButtons.m in Sources */ = {isa = PBXBuildFile; fileRef = 31C3B709292B6A880041747F /* TXTTopButtons.m */; };
 		31C8511925B832C800D9EEA5 /* TXTCommon.h in Headers */ = {isa = PBXBuildFile; fileRef = 31C8511725B832C800D9EEA5 /* TXTCommon.h */; };
 		31C8511A25B832C800D9EEA5 /* TXTCommon.m in Sources */ = {isa = PBXBuildFile; fileRef = 31C8511825B832C800D9EEA5 /* TXTCommon.m */; };
 		31CA9162291BB1CE00186BB6 /* TXTNavigationController.h in Headers */ = {isa = PBXBuildFile; fileRef = 31CA9160291BB1CD00186BB6 /* TXTNavigationController.h */; };
@@ -420,6 +424,10 @@
 		31C3180525023F180059A1C5 /* TEduBoard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TEduBoard.h; sourceTree = "<group>"; };
 		31C3180625023F180059A1C5 /* TEduBoard.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = TEduBoard.a; sourceTree = "<group>"; };
 		31C3180725023F180059A1C5 /* TEduBoardDef.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TEduBoardDef.h; sourceTree = "<group>"; };
+		31C3B704292B5D140041747F /* TXTStatusBar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXTStatusBar.h; sourceTree = "<group>"; };
+		31C3B705292B5D140041747F /* TXTStatusBar.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TXTStatusBar.m; sourceTree = "<group>"; };
+		31C3B708292B6A880041747F /* TXTTopButtons.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXTTopButtons.h; sourceTree = "<group>"; };
+		31C3B709292B6A880041747F /* TXTTopButtons.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TXTTopButtons.m; sourceTree = "<group>"; };
 		31C40AF525B01F67005CF623 /* UIImageView+WebCache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImageView+WebCache.h"; sourceTree = "<group>"; };
 		31C40AF625B01F67005CF623 /* NSData+ImageContentType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSData+ImageContentType.h"; sourceTree = "<group>"; };
 		31C40AF725B01F67005CF623 /* SDWebImageManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SDWebImageManager.m; sourceTree = "<group>"; };
@@ -1140,6 +1148,10 @@
 				31D45EC52915270100765B6B /* TXTVideoCollectionViewCell.m */,
 				31D45EC62915270100765B6B /* videoView.h */,
 				31D45EBF2915270100765B6B /* videoView.m */,
+				31C3B704292B5D140041747F /* TXTStatusBar.h */,
+				31C3B705292B5D140041747F /* TXTStatusBar.m */,
+				31C3B708292B6A880041747F /* TXTTopButtons.h */,
+				31C3B709292B6A880041747F /* TXTTopButtons.m */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -1694,6 +1706,7 @@
 				31B5FC7F2501D71B006587C0 /* TXTWhiteBoard.h in Headers */,
 				F0E22B9E2915009C00C1E031 /* TXTSmallMessage.h in Headers */,
 				F05ACDD12924B0FA00C59681 /* TXTFontBgView.h in Headers */,
+				31C3B70A292B6A890041747F /* TXTTopButtons.h in Headers */,
 				311426FE25A300AF00AC639A /* UIImage+Triangle.h in Headers */,
 				F08168F3290FC9A200C5CA29 /* NSString+QSExtension.h in Headers */,
 				F06CC9C72910E4A300CA4D6A /* MJRefreshBackNormalFooter.h in Headers */,
@@ -1783,6 +1796,7 @@
 				F06CCA172910F43A00CA4D6A /* JCHATStringUtils.h in Headers */,
 				31D45ECF2915270200765B6B /* topButtons.h in Headers */,
 				31D45ECA2915270200765B6B /* SunnyChatViewController.h in Headers */,
+				31C3B706292B5D140041747F /* TXTStatusBar.h in Headers */,
 				31B5FD602501DC58006587C0 /* UIAlertUtil.h in Headers */,
 				F0F63003292232A100B4C91C /* TXTWebViewController.h in Headers */,
 				F08158422916504B00EABBAC /* TXTSearchMemberCell.h in Headers */,
@@ -1888,6 +1902,7 @@
 				31B7434E2507650400837C37 /* TXTManage.m in Sources */,
 				F08168D8290FC9A200C5CA29 /* QSButton.m in Sources */,
 				F0E22BBA2915179E00C1E031 /* NSString+Emoji.m in Sources */,
+				31C3B707292B5D140041747F /* TXTStatusBar.m in Sources */,
 				F06CC9CE2910E4A300CA4D6A /* MJRefreshAutoStateFooter.m in Sources */,
 				F01D22E32917B8E70025F107 /* TXTMemberInfoView.m in Sources */,
 				F08168F9290FC9A200C5CA29 /* NSString+QSExtension.m in Sources */,
@@ -1982,6 +1997,7 @@
 				F08168DA290FC9A200C5CA29 /* UIButton+link.m in Sources */,
 				F017A556291CA95600BC0E10 /* TXTToast.m in Sources */,
 				F06CC9F42910E5E600CA4D6A /* TXTChatViewController.m in Sources */,
+				31C3B70B292B6A890041747F /* TXTTopButtons.m in Sources */,
 				F0E22BB7291512CC00C1E031 /* TXTEmojiCollectionViewCell.m in Sources */,
 				3100A4FB2614466200ECA26A /* TXTCustomConfig.m in Sources */,
 				31B5FD302501DC58006587C0 /* TICDevice.m in Sources */,
