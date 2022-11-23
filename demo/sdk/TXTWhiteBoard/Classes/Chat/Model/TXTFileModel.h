@@ -19,6 +19,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 /** h5Url */
 @property (nonatomic, copy) NSString *h5Url;
+/** name */
+@property (nonatomic, copy) NSString *name;
 /** cookieDict缓存字典只有h5类型才能用 */
 @property (nonatomic, strong) NSDictionary *cookieDict;
 
