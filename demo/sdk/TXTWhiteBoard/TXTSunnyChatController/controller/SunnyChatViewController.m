@@ -93,31 +93,13 @@ static NSInteger const kInputToolBarH = 62;
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor colorWithHexString:@"#222222"];
-    [self joinRoom];
-    [self addNotification];
-    [self initParams];
-    [self setBottomToolsUI];
-    [self setUpSmallChatUI];
-    
+   
     QSTapGestureRecognizer *contentviewTap = [[QSTapGestureRecognizer alloc] initWithTarget:self action:@selector(clickContentView)];
     [self.view addGestureRecognizer:contentviewTap];
     
-    
-    TXTNavigationController *navigationController = (TXTNavigationController *)self.navigationController;
-    //切换rootViewController的旋转方向
-    if (navigationController.interfaceOrientation == UIInterfaceOrientationPortrait) {
-        navigationController.interfaceOrientation = UIInterfaceOrientationLandscapeRight;
-        navigationController.interfaceOrientationMask = UIInterfaceOrientationMaskLandscapeRight;
-        //设置屏幕的转向为横屏
-        [[UIDevice currentDevice] setValue:@(UIDeviceOrientationLandscapeRight) forKey:@"orientation"];
-        NSString *portrait = [NSString stringWithFormat:@"%ld",(long)TRTCVideoRenderModeLandscape];
-        TXUserDefaultsSetObjectforKey(portrait, Direction);
-        //刷新
-        [UIViewController attemptRotationToDeviceOrientation];
-        [self updateRenderViewsLayout];
-        [self.bottomToos updateButtons];
-
-    }
+    [self joinRoom];
+    [self initParams];
+    [self setUpSmallChatUI];
 
 }
 
@@ -158,12 +140,12 @@ static NSInteger const kInputToolBarH = 62;
     [self.view addSubview:_crossBtn];
     [_crossBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.mas_equalTo(self.view.mas_safeAreaLayoutGuideRight).offset(-Adapt(15));
-        make.bottom.mas_equalTo(self.view.mas_safeAreaLayoutGuideBottom).offset(self.hideBottomAndTop ? -Adapt(15) : -(Adapt(15+60)));
+        make.bottom.mas_equalTo(self.view.mas_safeAreaLayoutGuideBottom).offset(-(Adapt(15+60)));
         make.width.mas_equalTo(Adapt(38));
         make.height.mas_equalTo(Adapt(38));
     }];
     NSString *direction = TXUserDefaultsGetObjectforKey(Direction);
-    NSString *imageNameStr = ( [direction intValue] == 0 )? @"Portrait-Landscape" : @"Landscape-Portrait";
+    NSString *imageNameStr = ( [direction intValue] == 0 )? @"Landscape-Portrait" : @"Portrait-Landscape";
     [_crossBtn setImage:[UIImage imageNamed:imageNameStr inBundle:TXSDKBundle compatibleWithTraitCollection:nil] forState:UIControlStateNormal];
     //     _crossBtn.frame = CGRectMake(15, 0, 50, 50);
     [_crossBtn addTarget:self action:@selector(btnAction) forControlEvents:UIControlEventTouchUpInside];
@@ -302,18 +284,8 @@ static NSInteger const kInputToolBarH = 62;
 - (void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
     [self.navigationController setNavigationBarHidden:YES animated:YES];
+    [self setBottomToolsUI];
     [self hiddenTabAndNav];
-//    TXTNavigationController *navigationController = (TXTNavigationController *)self.navigationController;
-//    if (navigationController.interfaceOrientation == UIInterfaceOrientationLandscapeRight) {
-//
-////        [self.view addSubview:self.statusToos];
-////        [self.topToos mas_remakeConstraints:^(MASConstraintMaker *make) {
-////                make.top.mas_equalTo(self.view.mas_top).offset(20);
-////                make.left.mas_equalTo(self.view.mas_left).offset(0);
-////                make.right.mas_equalTo(self.view.mas_right).offset(0);
-////                make.height.mas_equalTo(Adapt(60));
-////            }];
-//    }
 }
 
 - (void)initParams{
@@ -325,17 +297,29 @@ static NSInteger const kInputToolBarH = 62;
         NSString *portrait = [NSString stringWithFormat:@"%ld",(long)TRTCVideoRenderModeLandscape];
         TXUserDefaultsSetObjectforKey(portrait, Direction);
     }
-    self.hideBottomAndTop = NO;
-
+    self.hideBottomAndTop = YES;
+    //切换rootViewController的旋转方向
+    if (navigationController.interfaceOrientation == UIInterfaceOrientationPortrait) {
+        navigationController.interfaceOrientation = UIInterfaceOrientationLandscapeRight;
+        navigationController.interfaceOrientationMask = UIInterfaceOrientationMaskLandscapeRight;
+        //设置屏幕的转向为横屏
+        [[UIDevice currentDevice] setValue:@(UIDeviceOrientationLandscapeRight) forKey:@"orientation"];
+        NSString *portrait = [NSString stringWithFormat:@"%ld",(long)TRTCVideoRenderModeLandscape];
+        TXUserDefaultsSetObjectforKey(portrait, Direction);
+        //刷新
+        [UIViewController attemptRotationToDeviceOrientation];
+        [self updateRenderViewsLayout];
+        [self.bottomToos updateButtons];
+    }
 }
 
 - (void)joinRoom{
+    [self addNotification];
     //更新视频视图
     //    self.userId = TXUserDefaultsGetObjectforKey(Agent);
     self.userId = [TICConfig shareInstance].userId;
     self.userIdArr = [NSMutableArray array];
     [self.userIdArr addObject:self.userId];
-    
     TXTUserModel *userModel = [[TXTUserModel alloc] init];
     TICRenderView *render = [[TICRenderView alloc] init];
     render.userId = [TICConfig shareInstance].userId;
@@ -346,13 +330,11 @@ static NSInteger const kInputToolBarH = 62;
     userModel.showVideo = YES;
     userModel.showAudio = YES;
     userModel.userRole = [TICConfig shareInstance].role;
-    
     [[[TICManager sharedInstance] getTRTCCloud] startRemoteView:[TICConfig shareInstance].userId view:render];
     [[[TICManager sharedInstance] getTRTCCloud] startLocalPreview:YES view:render];
     [[[TICManager sharedInstance] getTRTCCloud] startLocalAudio];
     [[[TICManager sharedInstance] getTRTCCloud] setAudioRoute:TRTCAudioModeSpeakerphone];
     self.isSpeak = YES;
-    
     [self.renderViews addObject:userModel];
     [self roomInfo:userModel];
 }
@@ -626,6 +608,7 @@ static NSInteger const kInputToolBarH = 62;
         __weak __typeof(self)weakSelf = self;
         self.chatViewController.closeBlock = ^{
             [weakSelf.chatViewController.view removeFromSuperview];
+            [weakSelf.chatViewController removeFromParentViewController];
             weakSelf.chatViewController = nil;
         };
         [self addChildViewController:self.chatViewController];
@@ -801,14 +784,30 @@ static NSInteger const kInputToolBarH = 62;
         NSString *portrait = [NSString stringWithFormat:@"%ld",(long)TRTCVideoRenderModePortrait];
         TXUserDefaultsSetObjectforKey(portrait, Direction);
     }
+    [self setPortraitLandscapeUI];
+}
+
+- (void)setPortraitLandscapeUI{
     //刷新
     [UIViewController attemptRotationToDeviceOrientation];
     [self updateRenderViewsLayout];
     [self.bottomToos updateButtons];
     NSString *portrait = TXUserDefaultsGetObjectforKey(Direction);
-    NSString *imageNameStr = ( [portrait intValue] == 0 )? @"Portrait-Landscape" : @"Landscape-Portrait";
+    NSString *imageNameStr = ( [portrait intValue] == 0 ) ? @"Landscape-Portrait" : @"Portrait-Landscape";
     [_crossBtn setImage:[UIImage imageNamed:imageNameStr inBundle:TXSDKBundle compatibleWithTraitCollection:nil] forState:UIControlStateNormal];
+    //横屏
     if ([portrait intValue] == 0) {
+        self.statusToos.frame = CGRectMake(0, 0, Screen_Width, 20);
+        [self.view addSubview:self.statusToos];
+        [self.topToos mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.top.mas_equalTo(self.statusToos.mas_bottom).offset(0);
+            make.left.mas_equalTo(self.view.mas_left).offset(0);
+            make.right.mas_equalTo(self.view.mas_right).offset(0);
+            make.height.mas_equalTo(Adapt(60));
+        }];
+    }
+    //竖屏
+    else {
         for (UIView *view in self.view.subviews) {
             if ([view isKindOfClass:[TXTStatusBar class]]) {
                 [view removeFromSuperview];
@@ -816,14 +815,6 @@ static NSInteger const kInputToolBarH = 62;
         }
         [self.topToos mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.top.mas_equalTo(self.view.mas_safeAreaLayoutGuideTop).offset(0);
-            make.left.mas_equalTo(self.view.mas_left).offset(0);
-            make.right.mas_equalTo(self.view.mas_right).offset(0);
-            make.height.mas_equalTo(Adapt(60));
-        }];
-    } else {
-        [self.view addSubview:self.statusToos];
-        [self.topToos mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.top.mas_equalTo(self.statusToos.mas_bottom).offset(0);
             make.left.mas_equalTo(self.view.mas_left).offset(0);
             make.right.mas_equalTo(self.view.mas_right).offset(0);
             make.height.mas_equalTo(Adapt(60));
@@ -1374,22 +1365,23 @@ static NSInteger const kInputToolBarH = 62;
 }
 
 - (void)setBottomToolsUI{
-    //WithFrame:CGRectMake(0, Screen_Height-100, Screen_Width, 100)
-    _bottomToos = [[bottomButtons alloc] init];
-    [self.view addSubview:self.bottomToos];
-    [_bottomToos mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.mas_equalTo(self.view.mas_bottom).offset(0);
-        make.left.mas_equalTo(self.view.mas_left).offset(0);
-        make.right.mas_equalTo(self.view.mas_right).offset(0);
-        make.height.mas_equalTo(Adapt(60) + safeAreaBottom);
-    }];
-    _bottomToos.delegate = self;
-    [self.view bringSubviewToFront:_bottomToos];
+    self.bottomToos.hidden = NO;
+    self.topToos.hidden = NO;
+    self.statusToos.hidden = NO;
 }
 
 - (bottomButtons *)bottomToos{
     if (!_bottomToos) {
-        //WithFrame:CGRectMake(0, Screen_Height-80, Screen_Width, 80)
+        _bottomToos = [[bottomButtons alloc] init];
+        [self.view addSubview:self.bottomToos];
+        [_bottomToos mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.bottom.mas_equalTo(self.view.mas_bottom).offset(0);
+            make.left.mas_equalTo(self.view.mas_left).offset(0);
+            make.right.mas_equalTo(self.view.mas_right).offset(0);
+            make.height.mas_equalTo(Adapt(60) + safeAreaBottom);
+        }];
+        _bottomToos.delegate = self;
+        [self.view bringSubviewToFront:_bottomToos];
         
     }
     return _bottomToos;
@@ -1413,8 +1405,8 @@ static NSInteger const kInputToolBarH = 62;
 
 - (TXTStatusBar *)statusToos{
     if (!_statusToos) {
+        
         _statusToos = [[TXTStatusBar alloc] initWithFrame:CGRectMake(0, 0, Screen_Width, 20)];
-//        [self.view addSubview:_statusToos];
         [self.view bringSubviewToFront:_statusToos];
     }
     return _statusToos;
@@ -1551,7 +1543,8 @@ static NSInteger const kInputToolBarH = 62;
         [self.statusToos removeFromSuperview];
         self.topToos.hidden = YES;
         self.bottomToos.hidden = YES;
-        self.hideBottomAndTop = NO;
+        self.smallChatView.hidden = YES;
+        self.hideBottomAndTop = YES;
         [self endPolling];
     } else {
         [self performSelector:@selector(countDown) withObject:nil afterDelay:1.0];
@@ -1559,27 +1552,35 @@ static NSInteger const kInputToolBarH = 62;
 }
 
 - (void)hiddenTabAndNav{
-//    if (self.hideBottomAndTop) {
-//
-//    }else{
-//
-//    }
-//    self.hideBottomAndTop = !self.hideBottomAndTop;
-    //显示
-    [self endPolling];
-    [self.view addSubview:self.statusToos];
-    [self.topToos mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(self.statusToos.mas_bottom).offset(0);
-        make.left.mas_equalTo(self.view.mas_left).offset(0);
-        make.right.mas_equalTo(self.view.mas_right).offset(0);
-        make.height.mas_equalTo(Adapt(60));
-    }];
-    self.topToos.hidden = NO;
-    self.bottomToos.hidden = NO;
-    self.count = 3;
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self countDown];
-    });
+    //隐藏转显示
+    if (self.hideBottomAndTop) {
+        //显示
+        [self endPolling];
+        [self.view addSubview:self.statusToos];
+        [self.topToos mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.top.mas_equalTo(self.statusToos.mas_bottom).offset(0);
+            make.left.mas_equalTo(self.view.mas_left).offset(0);
+            make.right.mas_equalTo(self.view.mas_right).offset(0);
+            make.height.mas_equalTo(Adapt(60));
+        }];
+        self.topToos.hidden = NO;
+        self.bottomToos.hidden = NO;
+        self.smallChatView.hidden = NO;
+        self.count = 3;
+        self.hideBottomAndTop = NO;
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self countDown];
+        });
+    }
+    //显示转隐藏
+    else{
+        [self.statusToos removeFromSuperview];
+        self.topToos.hidden = YES;
+        self.bottomToos.hidden = YES;
+        self.smallChatView.hidden = YES;
+        self.hideBottomAndTop = YES;
+        [self endPolling];
+    }
 }
 
 - (void)reloadManageMembersArray {
