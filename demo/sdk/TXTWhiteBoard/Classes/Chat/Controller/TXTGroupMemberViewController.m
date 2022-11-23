@@ -63,8 +63,8 @@
 }
 
 - (void)qs_initSubViews {
-    TXTNavigationController *navigationController = (TXTNavigationController *)self.navigationController;
-    navigationController.interfaceOrientationMask = UIInterfaceOrientationMaskAll;
+//    TXTNavigationController *navigationController = (TXTNavigationController *)self.navigationController;
+//    navigationController.interfaceOrientationMask = UIInterfaceOrientationMaskAll;
     self.view.backgroundColor = [UIColor clearColor];
     [self.view addSubview:self.bgView];
     [self.bgView mas_makeConstraints:^(MASConstraintMaker *make) {

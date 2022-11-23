@@ -32,10 +32,11 @@
 #import "TXTChatInputToolBar.h"
 #import "TXTSmallMessageView.h"
 #import "QSTapGestureRecognizer.h"
+#import "showWebViewController.h"
 
 static NSInteger const kInputToolBarH = 62;
 
-@interface SunnyChatViewController ()<bottomButtonsDelegate, TXTTopButtonsDelegate, TICEventListener, TICMessageListener, TICStatusListener, UITextViewDelegate, TXTSmallChatViewDelegate, TXTEmojiViewDelegate, TXTGroupMemberViewControllerDelegate>
+@interface SunnyChatViewController ()<bottomButtonsDelegate, TXTTopButtonsDelegate, TICEventListener, TICMessageListener, TICStatusListener, UITextViewDelegate, TXTSmallChatViewDelegate, TXTEmojiViewDelegate, TXTGroupMemberViewControllerDelegate, showWebViewControllerDelegate>
 @property (nonatomic, strong) bottomButtons *bottomToos;//底部视图
 @property (nonatomic, strong) TXTTopButtons *topToos;//导航栏视图
 @property (nonatomic, strong) TXTStatusBar *statusToos;//导航栏视图
@@ -107,7 +108,7 @@ static NSInteger const kInputToolBarH = 62;
 - (void)setUpSmallChatUI {
     [self.view addSubview:self.smallChatView];
     [self.smallChatView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(15);
+        make.left.equalTo(self.view.mas_safeAreaLayoutGuideLeft).offset(15);
         make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideBottom).offset(-75);
         make.width.mas_equalTo(150);
         make.height.mas_equalTo(34);
@@ -358,28 +359,40 @@ static NSInteger const kInputToolBarH = 62;
                 
                 NSDictionary *userdic = userInfo[i];
                 NSArray *keysArr = [userdic allKeys];
-                //判断本人是同屏的发送方还是接收方
-                //                if ([userModel.render.userId isEqualToString:[TICConfig shareInstance].userId]) {
-                //                    if ([[userdic valueForKey:@"userId"] isEqualToString:[TICConfig shareInstance].userId]) {
-                //                        if ([keysArr containsObject:@"shareWebRole"]) {
-                //                            NSString *shareWebRole = [userdic valueForKey:@"shareWebRole"] ? [userdic valueForKey:@"shareWebRole"] : @"";
-                //                            //发送方
-                //                            if ([shareWebRole isEqualToString:@"fromUser"]) {
-                //                                self.webType = @"0";
-                //                                if ([keysArr containsObject:@"shareWebName"]) {
-                //                                    NSString *shareWebName = [userdic valueForKey:@"shareWebName"];
-                //                                    self.productName = shareWebName;
-                //                                }
-                //                                if ([keysArr containsObject:@"shareWebId"]) {
-                //                                    if (![[userdic valueForKey:@"shareWebId"] isEqualToString:@""]) {
-                //                                        [self selfPushToWebView:[userdic valueForKey:@"shareWebUrl"] WebId:[userdic valueForKey:@"shareWebId"] ActionType:@"1"];
-                //                                    }
-                //                                }
-                //
-                //                            }
-                //                        }
-                //                    }
-                //                }
+                // 判断本人是同屏的发送方还是接收方
+                if ([userModel.render.userId isEqualToString:[TICConfig shareInstance].userId]) {
+                    if ([[userdic valueForKey:@"userId"] isEqualToString:[TICConfig shareInstance].userId]) {
+                        if ([keysArr containsObject:@"shareWebRole"]) {
+                            NSString *shareWebRole = [userdic valueForKey:@"shareWebRole"] ? [userdic valueForKey:@"shareWebRole"] : @"";
+                            //发送方
+                            if ([shareWebRole isEqualToString:@"fromUser"]) {
+                                self.webType = @"0";
+                                if ([keysArr containsObject:@"shareWebName"]) {
+                                    NSString *shareWebName = [userdic valueForKey:@"shareWebName"];
+                                    self.productName = shareWebName;
+                                }
+                                if ([keysArr containsObject:@"shareWebId"]) {
+                                    if (![[userdic valueForKey:@"shareWebId"] isEqualToString:@""]) {
+                                        [self selfPushToWebView:[userdic valueForKey:@"shareWebUrl"] WebId:[userdic valueForKey:@"shareWebId"] ActionType:@"1"];
+                                    }
+                                }
+                            }
+                            //接收方
+                            else if ([shareWebRole isEqualToString:@"toUser"]){
+                                self.webType = [TICConfig shareInstance].userId;
+                                if ([keysArr containsObject:@"shareWebName"]) {
+                                    NSString *shareWebName = [userdic valueForKey:@"shareWebName"];
+                                    self.productName = shareWebName;
+                                }
+                                if ([keysArr containsObject:@"shareWebId"]) {
+                                    if (![[userdic valueForKey:@"shareWebId"] isEqualToString:@""]) {
+                                        [self selfPushToWebView:[userdic valueForKey:@"shareWebUrl"] WebId:[userdic valueForKey:@"shareWebId"] ActionType:@"1"];
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
                 
                 for (int j = 0; j<renderNewArr.count; j++) {
                     
@@ -492,6 +505,8 @@ static NSInteger const kInputToolBarH = 62;
 - (void)bottomShareFileButtonClick{
     TXTShareFileAlertView *shareFileAlertView = [[TXTShareFileAlertView alloc] init];
     shareFileAlertView.fileBlock = ^{
+//        [self addFile:FileTypePics fileModel:[[TXTFileModel alloc] init]];
+        [self addFile:FileTypeH5 fileModel:[[TXTFileModel alloc] init]];
     };
     shareFileAlertView.whiteBoardBlock = ^{
         [self getWhiteBoard:self.isShowWhiteBoard];
@@ -554,6 +569,202 @@ static NSInteger const kInputToolBarH = 62;
     }];
 }
 
+/**
+ *  fileType 文件类型
+ *  fileModel 文件数据
+ */
+- (void)addFile:(FileType)fileType fileModel:(TXTFileModel *)fileModel {
+    // 开始做事情
+    if (fileType == FileTypePics) {
+        
+        fileModel.pics = @[@"https://wisdom-exhibition-1301905869.cos.ap-shenzhen-fsi.myqcloud.com/testdocument/0jsoaidalsh31nr2bk4c_tiw/picture/1.jpg",
+                           @"https://wisdom-exhibition-1301905869.cos.ap-shenzhen-fsi.myqcloud.com/testdocument/0jsoaidalsh31nr2bk4c_tiw/picture/2.jpg",
+                           @"https://wisdom-exhibition-1301905869.cos.ap-shenzhen-fsi.myqcloud.com/testdocument/0jsoaidalsh31nr2bk4c_tiw/picture/3.jpg"];
+        [self showWhiteViewController:fileType fileModel:fileModel];
+    } else if (fileType == FileTypeVideo) {
+        fileModel.videoUrl = @"https://res.qcloudtiw.com/demo/tiw-vod.mp4";
+        [self showWhiteViewController:fileType fileModel:fileModel];
+    } else if (fileType == FileTypeH5) {
+//        [self showWebViewControllerWithFileModel:fileModel];
+        fileModel.h5Url = @"https:www.baidu.com";
+        NSDictionary *bodydic = @{@"serviceId":TXUserDefaultsGetObjectforKey(ServiceId),@"name":(fileModel.name.length > 0 ? fileModel.name : @""),@"url":(fileModel.h5Url.length > 0 ? fileModel.h5Url : @""), @"agent" : TXUserDefaultsGetObjectforKey(AgentId)};
+        [[AFNHTTPSessionManager shareInstance] requestURL:ShareWebs_Add RequestWay:@"POST" Header:nil Body:bodydic params:nil isFormData:NO success:^(NSError *error, id response) {
+            NSString *errCode = [response valueForKey:@"errCode"];
+            NSLog(@"%@", [response valueForKey:@"errInfo"]);
+            if ([errCode intValue] == 0) {
+                NSDictionary *resultDic = [response valueForKey:@"result"];
+                NSString *webId = [resultDic valueForKey:@"webId"];
+                if (webId.length > 0) {
+                    [self showWebViewControllerWithFileModel:fileModel webId:webId];
+                }
+            }
+        } failure:^(NSError *error, id response) {
+                
+        }];
+    }
+}
+
+/// 切换文件
+- (void)showWhiteViewController:(FileType)fileType fileModel:(TXTFileModel *)fileModel {
+    NSString *serviceId = TXUserDefaultsGetObjectforKey(ServiceId);
+    NSDictionary *bodyDict = @{@"serviceId":serviceId,@"shareStatus":@(YES),@"userId":[TICConfig shareInstance].userId};
+    NSLog(@"shareStatusoooo == %@",[bodyDict description]);
+    [[AFNHTTPSessionManager shareInstance] requestURL:ServiceRoom_ShareStatus RequestWay:@"POST" Header:nil Body:bodyDict params:nil isFormData:NO success:^(NSError *error, id response) {
+        NSString *errCode = [response valueForKey:@"errCode"];
+        if ([errCode intValue] == 0) {
+            //发送消息
+            NSDictionary *messagedict = @{@"serviceId":TXUserDefaultsGetObjectforKey(ServiceId),@"type":@"shareWhiteboard",@"shareUserId":[TICConfig shareInstance].userId};
+            NSString *str = [[TXTCommon sharedInstance] convertToJsonData:messagedict];
+            QSLog(@"切换文件 == %@",str);
+            [[TICManager sharedInstance] sendGroupTextMessage:str callback:^(TICModule module, int code, NSString *desc) {
+                QSLog(@"切换文件 == %@",desc);
+                [self getWhiteBoard:YES];
+                if (fileType == FileTypePics) {
+                    [self.whiteBoardViewController showImages:fileModel.pics];
+                } else if (fileType == FileTypeVideo) {
+                    [self.whiteBoardViewController showVideo:fileModel.videoUrl];
+                }
+            }];
+        }else{
+            [TXTToast toastWithTitle:@"他人正在操作" type:TXTToastTypeWarn];
+        }
+        NSLog(@"shareStatus == %@",[response description]);
+    } failure:^(NSError *error, id response) {
+        [TXTToast toastWithTitle:@"网络连接错误" type:TXTToastTypeWarn];
+    }];
+}
+
+/// 同屏展示webview
+- (void)showWebViewControllerWithFileModel:(TXTFileModel *)fileModel webId:(NSString *)webId {
+    NSMutableArray *membersListArr = [NSMutableArray arrayWithArray:self.renderViews];
+    for (int i = 0 ; i < membersListArr.count; i ++) {
+        TXTUserModel *model = membersListArr[i];
+        if ([model.render.userId isEqualToString:[TICConfig shareInstance].userId]) {
+            [membersListArr removeObject:model];
+        }
+    }
+    UIAlertController *actionSheet = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    if (membersListArr.count < 1) {
+        [[JMToast sharedToast] showDialogWithMsg:@"推送失败，会议内暂无其他人员"];
+        return;
+    } else if (membersListArr.count == 1){
+        for (int i = 0; i<membersListArr.count; i++) {
+            TXTUserModel *usermodel = membersListArr[i];
+            QSLog(@"%@", TXUserDefaultsGetObjectforKey(AgentName));
+            if ([usermodel.userName isEqualToString:TXUserDefaultsGetObjectforKey(AgentName)]) {
+                
+            } else {
+                [self startH5Show:usermodel.render.userId fileModel:fileModel webId:webId];
+            }
+        }
+    } else {
+        for (int i = 0; i<membersListArr.count; i++) {
+            TXTUserModel *usermodel = membersListArr[i];
+            if ([usermodel.userName isEqualToString:TXUserDefaultsGetObjectforKey(AgentName)]) {
+            } else {
+                UIAlertAction *action0 = [UIAlertAction actionWithTitle:usermodel.userName style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                    // 跳转web
+                    [self startH5Show:usermodel.render.userId fileModel:fileModel webId:webId];
+                }];
+                [actionSheet addAction:action0];
+            }
+        }
+        UIAlertAction *action3 = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        }];
+        [actionSheet addAction:action3];
+        [self presentViewController:actionSheet animated:YES completion:nil];
+    }
+}
+
+- (void)startH5Show:(NSString *)userId fileModel:(TXTFileModel *)fileModel webId:(NSString *)webId {
+    NSDictionary *bodydic = @{@"webId":webId,@"serviceId":TXUserDefaultsGetObjectforKey(ServiceId),@"fromUserId":[TICConfig shareInstance].userId,@"toUserId":userId};
+    [[AFNHTTPSessionManager shareInstance] requestURL:ShareWebs_Start RequestWay:@"POST" Header:nil Body:bodydic params:nil isFormData:NO success:^(NSError *error, id response) {
+        NSString *errCode = [response valueForKey:@"errCode"];
+        NSLog(@"%@", [response valueForKey:@"errInfo"]);
+        if ([errCode intValue] == 0) {
+            NSDictionary *resultDic = [response valueForKey:@"result"];
+         
+            NSString *clientUrl = [resultDic valueForKey:@"clientUrl"];
+            NSString *agentUrl = [resultDic valueForKey:@"agentUrl"];
+            //发消息
+            TXUserDefaultsSetObjectforKey(userId, @"miniUserId");
+            NSDictionary *messagedict = @{@"serviceId":TXUserDefaultsGetObjectforKey(ServiceId),@"type":@"wxShareWebFile",@"userId":userId,@"webId":webId,@"webUrl":clientUrl,@"fromId":[TICConfig shareInstance].userId,@"fileName":fileModel.name};
+            NSLog(@"wxShareWebFile = %@",[messagedict description]);
+            NSString *str = [[TXTCommon sharedInstance] convertToJsonData:messagedict];
+            [[TICManager sharedInstance] sendGroupTextMessage:str callback:^(TICModule module, int code, NSString *desc) {
+                NSLog(@"发消息");
+                [self pushToWebView:agentUrl WebId:webId ActionType:@"1" ProductName:fileModel.name];
+            }];
+        } else {
+            [TXTToast toastWithTitle:[response valueForKey:@"errInfo"] type:TXTToastTypeWarn];
+        }
+    } failure:^(NSError *error, id response) {
+    }];
+}
+
+- (void)pushToWebView:(NSString *)url WebId:(nonnull NSString *)webId ActionType:(NSString *)actionType ProductName:(NSString *)productName {
+    self.webId = webId;
+    NSLog(@"pushToWebView");
+//    self.shareState = YES;
+    showWebViewController *webViewVc = [[showWebViewController alloc] init];
+    webViewVc.delegate = self;
+    webViewVc.url = url;
+    webViewVc.webId = webId;
+    webViewVc.userModel = self.renderViews[0];
+    webViewVc.productName = productName;
+    webViewVc.actionType = actionType;
+    webViewVc.type = @"0";
+    [self.navigationController pushViewController:webViewVc animated:YES];
+//    [self presentViewController:self.showWebViewController animated:YES completion:nil];
+}
+- (void)selfPushToWebView:(NSString *)url WebId:(nonnull NSString *)webId ActionType:(NSString *)actionType {
+    if ([webId isEqualToString:@""] || [self.productName isEqualToString:@""]) {
+        [[JMToast sharedToast] showDialogWithMsg:@"同屏链接不存在"];
+        return;
+    }
+    UIViewController *currentvc = [[AFNHTTPSessionManager shareInstance] getCurrentVC];
+    if ([currentvc isKindOfClass:[showWebViewController class]]) {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+    self.webId = webId;
+    NSLog(@"selfPushToWebView");
+//    self.shareState = YES;
+    showWebViewController *webViewVc = [[showWebViewController alloc] init];
+//    _showWebViewController.view.frame = CGRectMake(0, 0, Screen_Width, Screen_Height);
+    webViewVc.delegate = self;
+    webViewVc.url = url;
+    webViewVc.webId = webId;
+    webViewVc.userModel = self.renderViews[0];
+    webViewVc.productName = self.productName;
+    webViewVc.actionType = actionType;
+    webViewVc.type = self.webType;
+    [self.navigationController pushViewController:webViewVc animated:YES];
+    //    [self presentViewController:self.showWebViewController animated:YES completion:nil];
+}
+
+
+- (void)hideWebViewController {
+    NSLog(@"hideWebViewController");
+    //结束共享
+    self.isShowWhiteBoard = NO;
+    //发送消息
+    NSDictionary *messagedict = @{@"serviceId":TXUserDefaultsGetObjectforKey(ServiceId),@"type":@"endWhiteboard",@"shareUserId":[TICConfig shareInstance].userId};
+    NSString *str = [[TXTCommon sharedInstance] convertToJsonData:messagedict];
+    [[TICManager sharedInstance] sendGroupTextMessage:str callback:^(TICModule module, int code, NSString *desc) {
+        [[[TICManager sharedInstance] getBoardController] reset];
+    }];
+    [self shareStatus:NO];
+}
+- (void)shareStatus:(BOOL)shareStatus {
+    NSString *serviceId = TXUserDefaultsGetObjectforKey(ServiceId);
+    NSDictionary *bodyDict = @{@"serviceId":serviceId,@"shareStatus":@(shareStatus),@"userId":[TICConfig shareInstance].userId};
+    NSLog(@"shareStatusoooo == %@",[bodyDict description]);
+    [[AFNHTTPSessionManager shareInstance] requestURL:ServiceRoom_ShareStatus RequestWay:@"POST" Header:nil Body:bodyDict params:nil isFormData:NO success:^(NSError *error, id response) {
+        NSLog(@"shareStatus == %@",[response description]);
+    } failure:^(NSError *error, id response) {
+        [[JMToast sharedToast] showDialogWithMsg:@"网络连接错误"];
+    }];
+}
 #pragma mark -- TXTTopButtonsDelegate
 
 - (void)txSpeakBtnClick{
@@ -694,12 +905,11 @@ static NSInteger const kInputToolBarH = 62;
 //}
 
 ///同屏
-- (void)selfPushToWebView:(NSString *)url WebId:(nonnull NSString *)webId ActionType:(NSString *)actionType{
-    if ([webId isEqualToString:@""] || [self.productName isEqualToString:@""]) {
-        [[JMToast sharedToast] showDialogWithMsg:@"同屏链接不存在"];
-        return;
-    }
-    
+//- (void)selfPushToWebView:(NSString *)url WebId:(nonnull NSString *)webId ActionType:(NSString *)actionType{
+//    if ([webId isEqualToString:@""] || [self.productName isEqualToString:@""]) {
+//        [[JMToast sharedToast] showDialogWithMsg:@"同屏链接不存在"];
+//        return;
+//    }
     //    UIViewController *currentvc = [[AFNHTTPSessionManager shareInstance] getCurrentVC];
     //    if ([currentvc isKindOfClass:[showWebViewController class]]) {
     //        [self.navigationController popViewControllerAnimated:YES];
@@ -720,8 +930,7 @@ static NSInteger const kInputToolBarH = 62;
     //    self.showWebViewController.type = self.webType;
     //
     //    [self.navigationController pushViewController:self.showWebViewController animated:YES];
-    
-}
+//}
 ///结束同屏
 - (void)hideshowview{
     //    self.backView.hidden = YES;
@@ -1005,7 +1214,6 @@ static NSInteger const kInputToolBarH = 62;
             }
         }
         
-        
         if ([elem isKindOfClass:[TIMTextElem class]]) {
             TIMTextElem * text_elem = (TIMTextElem * )elem;
             NSLog(@"onTICRecvMessage == %@",text_elem.text);
@@ -1037,7 +1245,7 @@ static NSInteger const kInputToolBarH = 62;
                     //弹框，点击取消按钮,结束会议
                 }
             }
-            //同屏
+            // 同屏
             if ([type isEqualToString:@"wxShareWebFile"]) {
                 NSLog(@"同屏");
                 NSString *userId = [dict valueForKey:@"userId"];
@@ -1054,8 +1262,8 @@ static NSInteger const kInputToolBarH = 62;
             //结束同屏
             if ([type isEqualToString:@"wxShareWebFileEnd"]) {
                 NSLog(@"同屏");
-                NSString *webURL = [dict valueForKey:@"webUrl"];
-                NSString *webId = [dict valueForKey:@"webId"];
+//                NSString *webURL = [dict valueForKey:@"webUrl"];
+//                NSString *webId = [dict valueForKey:@"webId"];
                 NSString *userId = [dict valueForKey:@"userId"];
                 NSString *fromUserId = [dict valueForKey:@"fromUserId"];
                 NSString *toUserId = [dict valueForKey:@"toUserId"];
@@ -1078,8 +1286,6 @@ static NSInteger const kInputToolBarH = 62;
                     [self hideshowview];
                     [[JMToast sharedToast] showDialogWithMsg:@"对方已结束同屏"];
                 }
-                
-                
             }
             
             //共享白板

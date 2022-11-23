@@ -26,5 +26,17 @@
     }];
 }
 
+- (void)drawRect:(CGRect)rect {
+  // Drawing code
+    UIRectCorner corners = UIRectCornerTopLeft | UIRectCornerBottomLeft | UIRectCornerBottomRight;
+    if (self.isLeft) {
+       corners = UIRectCornerTopRight | UIRectCornerBottomLeft | UIRectCornerBottomRight;
+    }
+    UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:self.bounds byRoundingCorners:corners cornerRadii:CGSizeMake(6, 6)];
+    CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
+    maskLayer.frame = self.bounds;
+    maskLayer.path = maskPath.CGPath;
+    self.layer.mask = maskLayer;
+}
 
 @end

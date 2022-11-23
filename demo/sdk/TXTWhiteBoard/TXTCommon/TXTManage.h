@@ -9,6 +9,13 @@
 
 #import <Foundation/Foundation.h>
 #import "TXTCustomConfig.h"
+@class TXTFileModel;
+
+typedef NS_ENUM(NSInteger, FileType) {
+    FileTypePics, // 图片
+    FileTypeVideo, // 视频
+    FileTypeH5, // h5
+};
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -17,6 +24,9 @@ typedef void (^TXTCallback)(int code, NSString *desc);
 @protocol  TXTManageDelegate <NSObject>
 
 - (void)onFriendBtListener:(NSString *)roomId AndserviceId:(NSString *)serviceId inviteAccount:(NSString *)userId;
+
+/// 点击了共享文件
+- (void)addOnFileClickListener;
 
 @end
 
@@ -77,6 +87,15 @@ typedef void (^TXTCallback)(int code, NSString *desc);
 //反初始化
 - (void)unInit;
 
+
+/**
+ *  fileType 文件类型
+ *  fileModel 文件数据
+ */
+- (void)addFileToSdk:(FileType)fileType fileModel:(TXTFileModel *)fileModel;
+
+/// 点击了共享文件
+- (void)onClickFile;
 @end
 
 NS_ASSUME_NONNULL_END

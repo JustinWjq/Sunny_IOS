@@ -22,10 +22,13 @@
 }
  
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
+    QSLog(@"%@", [touch.view class]);
     if ([touch.view isKindOfClass:NSClassFromString(@"UITableViewCellContentView")]) {
         return NO;
     } else if ([touch.view isKindOfClass:NSClassFromString(@"TXTSearchMemberCell")]) {
         return ![touch.view isKindOfClass:NSClassFromString(@"TXTSearchMemberCell")];
+    } else if ([touch.view isKindOfClass:NSClassFromString(@"UICollectionView")]) {
+        return NO;
     }
     return ![touch.view isKindOfClass:NSClassFromString(@"UITableViewCellContentView")];
 }

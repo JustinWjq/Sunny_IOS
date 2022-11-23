@@ -14,6 +14,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic,strong) UIImageView *bgImageView; // 气泡图片
 
+/** isLeft */
+@property (nonatomic, assign) BOOL isLeft;
+
 @end
 
 NS_ASSUME_NONNULL_END

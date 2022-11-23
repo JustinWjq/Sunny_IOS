@@ -66,8 +66,8 @@
 
 - (void)qs_initSubViews {
     self.view.backgroundColor = [UIColor clearColor];
-    TXTNavigationController *navigationController = (TXTNavigationController *)self.navigationController;
-    navigationController.interfaceOrientationMask = UIInterfaceOrientationMaskAll;
+//    TXTNavigationController *navigationController = (TXTNavigationController *)self.navigationController;
+//    navigationController.interfaceOrientationMask = UIInterfaceOrientationMaskAll;
     self.title = [NSString stringWithFormat:@"%@",TXUserDefaultsGetObjectforKey(RoomId)];
     
     [self.view addSubview:self.groupChatRoomView];

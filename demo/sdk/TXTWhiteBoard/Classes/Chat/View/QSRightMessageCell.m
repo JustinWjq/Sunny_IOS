@@ -64,13 +64,14 @@
     }];
     
     //  _contentview
+    self.contentview.isLeft = NO;
     [self.contentview mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.userIcon.mas_right).offset(0);
         make.top.equalTo(self.userIcon.mas_bottom).offset(5);
         make.width.lessThanOrEqualTo(@(375 - 120 - 15));
         make.bottom.lessThanOrEqualTo(@(-10)).priorityHigh();
     }];
-    
+        
     [self.userNameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.userIcon.mas_left).offset(-10);
         make.centerY.equalTo(self.userIcon.mas_centerY);
@@ -135,16 +136,16 @@
     
 }
 
-- (void)drawRect:(CGRect)rect {
-  // Drawing code
-    UIRectCorner corners = UIRectCornerTopLeft | UIRectCornerBottomLeft | UIRectCornerBottomRight;
-    UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:self.contentview.bounds byRoundingCorners:corners cornerRadii:CGSizeMake(6, 6)];
-    CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
-    maskLayer.frame = self.contentview.bounds;
-    maskLayer.path = maskPath.CGPath;
-    self.contentview.layer.mask = maskLayer;
-
-}
+//- (void)drawRect:(CGRect)rect {
+//  // Drawing code
+//    UIRectCorner corners = UIRectCornerTopLeft | UIRectCornerBottomLeft | UIRectCornerBottomRight;
+//    UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:self.contentview.bounds byRoundingCorners:corners cornerRadii:CGSizeMake(6, 6)];
+//    CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
+//    maskLayer.frame = self.contentview.bounds;
+//    maskLayer.path = maskPath.CGPath;
+//    self.contentview.layer.mask = maskLayer;
+//
+//}
 
 @end
 
