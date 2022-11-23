@@ -604,6 +604,7 @@ static NSInteger const kInputToolBarH = 62;
         [self showWhiteViewController:fileType fileModel:fileModel];
     } else if (fileType == FileTypeH5) {
 //        [self showWebViewControllerWithFileModel:fileModel];
+        fileModel.h5Url = @"https:www.baidu.com";
         NSDictionary *bodydic = @{@"serviceId":TXUserDefaultsGetObjectforKey(ServiceId),@"name":(fileModel.name.length > 0 ? fileModel.name : @""),@"url":(fileModel.h5Url.length > 0 ? fileModel.h5Url : @""), @"agent" : TXUserDefaultsGetObjectforKey(AgentId)};
         [[AFNHTTPSessionManager shareInstance] requestURL:ShareWebs_Add RequestWay:@"POST" Header:nil Body:bodydic params:nil isFormData:NO success:^(NSError *error, id response) {
             NSString *errCode = [response valueForKey:@"errCode"];
@@ -611,9 +612,7 @@ static NSInteger const kInputToolBarH = 62;
             if ([errCode intValue] == 0) {
                 NSDictionary *resultDic = [response valueForKey:@"result"];
                 NSString *webId = [resultDic valueForKey:@"webId"];
-                webId = @"610a2349f1e110587462c728";
                 if (webId.length > 0) {
-                    fileModel.h5Url = @"https:www.baidu.com";
                     [self showWebViewControllerWithFileModel:fileModel webId:webId];
                 }
             }
@@ -669,7 +668,9 @@ static NSInteger const kInputToolBarH = 62;
     } else if (membersListArr.count == 1){
         for (int i = 0; i<membersListArr.count; i++) {
             TXTUserModel *usermodel = membersListArr[i];
+            QSLog(@"%@", TXUserDefaultsGetObjectforKey(AgentName));
             if ([usermodel.userName isEqualToString:TXUserDefaultsGetObjectforKey(AgentName)]) {
+                
             } else {
                 [self startH5Show:usermodel.render.userId fileModel:fileModel webId:webId];
             }
@@ -712,6 +713,8 @@ static NSInteger const kInputToolBarH = 62;
                 NSLog(@"发消息");
                 [self pushToWebView:agentUrl WebId:webId ActionType:@"1" ProductName:fileModel.name];
             }];
+        } else {
+            [TXTToast toastWithTitle:[response valueForKey:@"errInfo"] type:TXTToastTypeWarn];
         }
     } failure:^(NSError *error, id response) {
     }];
@@ -758,7 +761,7 @@ static NSInteger const kInputToolBarH = 62;
 }
 
 
-- (void)hideWebViewController{
+- (void)hideWebViewController {
     NSLog(@"hideWebViewController");
     //结束共享
     self.isShowWhiteBoard = NO;

@@ -199,7 +199,7 @@ static TXTMemberInfoView *_alertView = nil; //第一步：静态实例，并初�
             [[[TICManager sharedInstance] getTRTCCloud] muteLocalVideo:self.model.showAudio];
             [self sureBtnClick];
         } else {
-            NSDictionary *dict = @{@"userId":self.model.render.userId,@"muteAudio":@(!self.model.showAudio)};
+            NSDictionary *dict = @{@"userId":self.model.render.userId,@"muteAudio":@(self.model.showAudio)};
             NSDictionary *messagedict = @{@"serviceId":TXUserDefaultsGetObjectforKey(ServiceId),@"type":@"muteAudio",@"agentId":TXUserDefaultsGetObjectforKey(AgentId),@"users":@[dict]};
             NSString *str = [[TXTCommon sharedInstance] convertToJsonData:messagedict];
             [[TICManager sharedInstance] sendGroupTextMessage:str callback:^(TICModule module, int code, NSString *desc) {
@@ -217,7 +217,7 @@ static TXTMemberInfoView *_alertView = nil; //第一步：静态实例，并初�
             [[[TICManager sharedInstance] getTRTCCloud] muteLocalVideo:self.model.showVideo];
             [self sureBtnClick];
         } else {
-            NSDictionary *dict = @{@"userId":self.model.render.userId,@"muteVideo":@(!self.model.showVideo)};
+            NSDictionary *dict = @{@"userId":self.model.render.userId,@"muteVideo":@(self.model.showVideo)};
             NSDictionary *messagedict = @{@"serviceId":TXUserDefaultsGetObjectforKey(ServiceId),@"type":@"muteVideo",@"agentId":TXUserDefaultsGetObjectforKey(AgentId),@"users":@[dict]};
             NSString *str = [[TXTCommon sharedInstance] convertToJsonData:messagedict];
             [[TICManager sharedInstance] sendGroupTextMessage:str callback:^(TICModule module, int code, NSString *desc) {
