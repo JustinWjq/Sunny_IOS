@@ -11,7 +11,6 @@
 #import "TXTCommon.h"
 #import "TXTCustomConfig.h"
 #import "QSChatInputToolBar.h"
-#import "MJRefresh.h"
 #import "QSIMMessageModel.h"
 #import "QSShowTimeCell.h"
 #import "QSLeftMessageCell.h"
@@ -118,9 +117,9 @@ static NSInteger const kInputToolBarH = 65;
     }];
     [self bringSubviewToFront:self.inputToolBar];
 
-    MJRefreshNormalHeader *header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(flashToLoadMessage)];
-    header.stateLabel.hidden = YES;
-    self.messageTableView.mj_header = header;
+//    MJRefreshNormalHeader *header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(flashToLoadMessage)];
+//    header.stateLabel.hidden = YES;
+//    self.messageTableView.mj_header = header;
     
     [self addNotification];
     
@@ -183,6 +182,11 @@ static NSInteger const kInputToolBarH = 65;
     [self.messageTableView reloadData];
 
     NSString *classId = [NSString stringWithFormat:@"%@",TXUserDefaultsGetObjectforKey(RoomId)];
+    
+//    - (int)getMessage:(int)count last:(TIMMessage*)last succ:(TIMGetMsgSucc)succ fail:(TIMFail)fail;
+    
+    
+//    - (TIMConversation*)getConversation:(TIMConversationType)type receiver:(NSString*)conversationId;
     [[V2TIMManager sharedInstance] getGroupHistoryMessageList:classId count:20 lastMsg:nil succ:^(NSArray<V2TIMMessage *> *msgs) {
         NSMutableArray *arrList = [[NSMutableArray alloc] init];
 //        [arrList addObjectsFromArray:msgs];
@@ -194,7 +198,6 @@ static NSInteger const kInputToolBarH = 65;
                 
                 NSDictionary *dict = [[TXTCommon sharedInstance] dictionaryWithJsonString:message.textElem.text];
                 if (![dict[@"type"] isEqualToString:@"wxIM"]) continue;
-                
                 QSIMMessageModel *model = [[QSIMMessageModel alloc] init];
                  model.message = message;
                  model.messageTime = [NSNumber numberWithLong:(long)[message.timestamp timeIntervalSince1970] * 1000];
@@ -256,7 +259,7 @@ static NSInteger const kInputToolBarH = 65;
 //                [self dataMessageShowTimeToTop:model.messageTime];// FIXME:
             }
         }
-        [self.messageTableView.mj_header endRefreshing];
+//        [self.messageTableView.mj_header endRefreshing];
 
         NSInteger newCount = self.allmessageIdArr.count;
         [self.messageTableView reloadData];
@@ -266,7 +269,7 @@ static NSInteger const kInputToolBarH = 65;
            [self.messageTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:newCount - oldCount inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
         }
     } fail:^(int code, NSString *desc) {
-        [self.messageTableView.mj_header endRefreshing];
+//        [self.messageTableView.mj_header endRefreshing];
     }];
 }
 
@@ -674,10 +677,10 @@ static NSInteger const kInputToolBarH = 65;
         } else {
             NSString *firstMsgId = [self.allmessageIdArr firstObject];
             QSIMMessageModel *firstModel = [self.allMessageDic objectForKey:firstMsgId];
-            if (message.timestamp < firstModel.message.timestamp) {
-                // 比数组中最老的消息时间都小的，无需加入界面显示，下次翻页时会加载
-                return ;
-            }
+//            if (message.timestamp < firstModel.message.timestamp) {
+//                // 比数组中最老的消息时间都小的，无需加入界面显示，下次翻页时会加载
+//                return ;
+//            }
             model = [[QSIMMessageModel alloc] init];
             model.message = v2message;
             model.messageTime = [NSNumber numberWithLong:(long)[v2message.timestamp timeIntervalSince1970] * 1000];
@@ -727,9 +730,13 @@ static NSInteger const kInputToolBarH = 65;
 - (void)layoutSubviews {
     [super layoutSubviews];
 //    UIRectCorner corners = 0;
+    [self scrollToEnd];
     if (![UIWindow isLandscape]) {
+        
         self.layer.mask = nil;
+        [self updateUI:YES];
     } else {
+        [self updateUI:NO];
         UIRectCorner corners = UIRectCornerTopLeft | UIRectCornerBottomLeft;
         UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:self.bounds byRoundingCorners:corners cornerRadii:CGSizeMake(15, 15)];
         CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];

@@ -149,13 +149,13 @@
 //    [self layoutIfNeeded];
 }
 
-- (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event {
-    BOOL inside = [super pointInside:point withEvent:event];
-    if (!inside) {
-        inside = [self.fontBgView pointInside:[self convertPoint:point toView:self.fontBgView] withEvent:event];
-    }
-    return inside;
-}
+//- (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event {
+//    BOOL inside = [super pointInside:point withEvent:event];
+//    if (!inside) {
+//        inside = [self.fontBgView pointInside:[self convertPoint:point toView:self.fontBgView] withEvent:event];
+//    }
+//    return inside;
+//}
 //- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event {
 //    CGPoint stationPoint = [self convertPoint:point toView:self.fontBgView];
 //    if (CGRectContainsPoint(self.fontBgView.bounds, stationPoint)) {

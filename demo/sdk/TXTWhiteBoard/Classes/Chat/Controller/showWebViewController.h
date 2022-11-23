@@ -10,9 +10,10 @@
 #import "TXTUserModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
+@class showWebViewController;
 @protocol  showWebViewControllerDelegate <NSObject>
 
-- (void)muteAction;
+- (void)muteAction:(showWebViewController *)showWebViewController;
 - (void)hideshowview;
 
 @end

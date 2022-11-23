@@ -26,7 +26,7 @@
     
     self.view.backgroundColor = [UIColor whiteColor];
     //初始化导航栏
-    UIBarButtonItem *lefBarItem = [[UIBarButtonItem alloc] initWithTitle:@"<" style:UIBarButtonItemStylePlain target:self action:@selector(onQuitClassRoom)];
+    UIBarButtonItem *lefBarItem = [[UIBarButtonItem alloc] initWithTitle:@" <" style:UIBarButtonItemStylePlain target:self action:@selector(onQuitClassRoom)];
     self.navigationItem.leftBarButtonItem = lefBarItem;
     
     self.navigationController.navigationBar.barTintColor = [UIColor blackColor];
@@ -57,6 +57,7 @@
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
     [self setUI];
 }
 
@@ -149,9 +150,9 @@
 }
 
 - (void)muteLocalAudio{
-    if (self.delegate && [self.delegate respondsToSelector:@selector(muteAction)]) {
+    if (self.delegate && [self.delegate respondsToSelector:@selector(muteAction:)]) {
         NSLog(@"muteLocalAudio");
-        [self.delegate muteAction];
+        [self.delegate muteAction:self];
     }
 }
 

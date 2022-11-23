@@ -10,11 +10,23 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@protocol TXTChatInputToolBarDelegate <NSObject>
+
+@optional
+
+/// 点击发送按钮
+- (void)chatInputToolBarDidClickSendBtn:(UIButton *)btn;
+@end
+
+
 @interface TXTChatInputToolBar : UIView
 
 /** textView */
 @property (nonatomic, strong) UITextView *textView;
 
+
+/** delegate */
+@property (nonatomic, weak) id<TXTChatInputToolBarDelegate> delegate;
 @end
 
 NS_ASSUME_NONNULL_END

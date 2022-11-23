@@ -14,8 +14,8 @@
 //@property (nonatomic, strong) UIView *bgView;
 ///** divider */
 //@property (nonatomic, strong) UIView *divider;
-///** sendBtn */
-//@property (nonatomic, strong) UIButton *sendBtn;
+/** sendBtn */
+@property (nonatomic, strong) UIButton *sendBtn;
 @end
 
 @implementation TXTChatInputToolBar
@@ -34,12 +34,21 @@
  */
 - (void)setupUI {
     self.backgroundColor = [UIColor colorWithHexString:@"000000" alpha:0.75];
+    
+    [self addSubview:self.sendBtn];
+    [self.sendBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(self.mas_safeAreaLayoutGuideRight).offset(-15);
+        make.width.mas_equalTo(90);
+        make.top.mas_equalTo(15);
+        make.height.mas_equalTo(32);
+    }];
+    
     [self addSubview:self.textView];
     [self.textView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(15);
         make.bottom.equalTo(self.mas_bottom).offset(-15);
         make.left.equalTo(self.mas_left).offset(15);
-        make.right.equalTo(self.mas_right).offset(-15);
+        make.right.equalTo(self.sendBtn.mas_left).offset(0);
     }];
     
 //    [self insertSubview:self.bgView belowSubview:self.textView];
@@ -57,12 +66,6 @@
 //        make.centerY.equalTo(self.bgView);
 //    }];
 //
-//    [self addSubview:self.sendBtn];
-//    [self.sendBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.left.equalTo(self.divider.mas_right);
-//        make.right.equalTo(self.bgView.mas_right);
-//        make.top.bottom.equalTo(self.textView);
-//    }];
 }
 
 #pragma mark - Public Method
@@ -71,7 +74,12 @@
 #pragma mark - Event Responce
 /// sendBtnClick
 - (void)sendBtnClick {
-    
+    if ([NSString isEmpty:self.textView.text]) {
+        return;
+    }
+    if ([self.delegate respondsToSelector:@selector(chatInputToolBarDidClickSendBtn:)]) {
+        [self.delegate chatInputToolBarDidClickSendBtn:self.sendBtn];
+    }
 }
 
 - (void)layoutSubviews {
@@ -107,13 +115,16 @@
 //    return _divider;
 //}
 //
-//- (UIButton *)sendBtn {
-//    if (!_sendBtn) {
-//        UIButton *sendBtn = [UIButton buttonWithTitle:@"发送" titleColor:[UIColor colorWithHexString:@"666666"] font:[UIFont qs_regularFontWithSize:15] target:self action:@selector(sendBtnClick)];
+- (UIButton *)sendBtn {
+    if (!_sendBtn) {
+        UIButton *sendBtn = [UIButton buttonWithTitle:@"发送" titleColor:[UIColor colorWithHexString:@"FFFFFF"] font:[UIFont qs_regularFontWithSize:15] target:self action:@selector(sendBtnClick)];
 //        [sendBtn setTitleColor:[UIColor colorWithHexString:@"E6B980"] forState:UIControlStateSelected];
-//        self.sendBtn = sendBtn;
-//    }
-//    return _sendBtn;
-//}
+        sendBtn.cornerRadius = 5;
+        sendBtn.borderColor = [UIColor colorWithHexString:@"FFFFFF"];
+        sendBtn.borderWidth = 1;
+        self.sendBtn = sendBtn;
+    }
+    return _sendBtn;
+}
 @end
 

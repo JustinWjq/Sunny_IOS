@@ -36,8 +36,10 @@
 
 static NSInteger const kInputToolBarH = 62;
 
-@interface SunnyChatViewController ()<bottomButtonsDelegate, TXTTopButtonsDelegate, TICEventListener, TICMessageListener, TICStatusListener, UITextViewDelegate, TXTSmallChatViewDelegate, TXTEmojiViewDelegate, TXTGroupMemberViewControllerDelegate, showWebViewControllerDelegate>
+@interface SunnyChatViewController ()<bottomButtonsDelegate, TXTTopButtonsDelegate, TICEventListener, TICMessageListener, TICStatusListener, UITextViewDelegate, TXTSmallChatViewDelegate, TXTEmojiViewDelegate, TXTGroupMemberViewControllerDelegate, showWebViewControllerDelegate, TXTChatInputToolBarDelegate>
 @property (nonatomic, strong) bottomButtons *bottomToos;//底部视图
+/** navView */
+@property (nonatomic, strong) UIView *navView;
 @property (nonatomic, strong) TXTTopButtons *topToos;//导航栏视图
 @property (nonatomic, strong) TXTStatusBar *statusToos;//导航栏视图
 @property (nonatomic, strong) UIImageView *bgImageView;//背景图
@@ -97,6 +99,28 @@ static NSInteger const kInputToolBarH = 62;
     [self joinRoom];
     [self addNotification];
     [self initParams];
+//    [self hiddenTabAndNav];
+    
+    [self.view addSubview:self.navView];
+    [self.navView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.top.equalTo(self.view);
+    }];
+    [self.navView addSubview:self.statusToos];
+    [self.statusToos mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.top.equalTo(self.view);
+        make.height.mas_equalTo(20);
+    }];
+    [self.navView addSubview:self.topToos];
+    [self.topToos mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(self.statusToos.mas_bottom).offset(0);
+        make.left.mas_equalTo(self.view.mas_left).offset(0);
+        make.right.mas_equalTo(self.view.mas_right).offset(0);
+        make.height.mas_equalTo(Adapt(60));
+    }];
+    [self.navView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.mas_equalTo(self.topToos.mas_bottom).offset(0);
+    }];
+    
     [self setBottomToolsUI];
     [self setUpSmallChatUI];
     
@@ -117,9 +141,7 @@ static NSInteger const kInputToolBarH = 62;
         [UIViewController attemptRotationToDeviceOrientation];
         [self updateRenderViewsLayout];
         [self.bottomToos updateButtons];
-
     }
-
 }
 
 /// setUpSmallChatUI
@@ -222,6 +244,11 @@ static NSInteger const kInputToolBarH = 62;
 //    [_crossBtn setImage:[UIImage imageNamed:imageNameStr inBundle:TXSDKBundle compatibleWithTraitCollection:nil] forState:UIControlStateNormal];
 }
 
+- (void)chatInputToolBarDidClickSendBtn:(UIButton *)btn {
+    self.inputToolBar.textView.text = [self.inputToolBar.textView.text stringByAppendingString:@"\n"];
+    [self textViewDidChange:self.inputToolBar.textView];
+}
+
 #pragma mark - UITextViewDelegate
 - (void)textViewDidChange:(UITextView *)textView {
   QSLog(@"%@", textView.text);
@@ -299,11 +326,27 @@ static NSInteger const kInputToolBarH = 62;
     }
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
+}
+
+- (void)viewWillLayoutSubviews {
+    [super viewWillLayoutSubviews];
+    if ([UIWindow isLandscape]) {
+        self.statusToos.hidden = NO;
+        if (self.isWhite) {
+            self.crossBtn.hidden = YES;
+        }
+    } else {
+        self.statusToos.hidden = YES;
+    }
+}
 
 - (void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
-    [self.navigationController setNavigationBarHidden:YES animated:YES];
-    [self hiddenTabAndNav];
+//    [self.navigationController setNavigationBarHidden:YES animated:YES];
+//    [self hiddenTabAndNav];
 //    TXTNavigationController *navigationController = (TXTNavigationController *)self.navigationController;
 //    if (navigationController.interfaceOrientation == UIInterfaceOrientationLandscapeRight) {
 //
@@ -603,8 +646,16 @@ static NSInteger const kInputToolBarH = 62;
         fileModel.videoUrl = @"https://res.qcloudtiw.com/demo/tiw-vod.mp4";
         [self showWhiteViewController:fileType fileModel:fileModel];
     } else if (fileType == FileTypeH5) {
-//        [self showWebViewControllerWithFileModel:fileModel];
-        fileModel.h5Url = @"https:www.baidu.com";
+        fileModel.h5Url = @"https://recall-sync-demo.cloud-ins.cn/mirror.html?syncid=51-cvsstest123-1&synctoken=0060490432279104e008daf9a660dfb8d2aIABaoflIqpo4-W91SrtSeG8e-QAQ5_O7_RsAQrms1PxSLJ597XwAAAAAEADKL1Dbsjd_YwEA6AOyN39j";
+        fileModel.name = @"同期Canon";
+        if (fileModel.h5Url.length <= 0) {
+            [TXTToast toastWithTitle:@"url为空" type:TXTToastTypeWarn];
+            return;
+        }
+        if (fileModel.name.length <= 0) {
+            [TXTToast toastWithTitle:@"name为空" type:TXTToastTypeWarn];
+            return;
+        }
         NSDictionary *bodydic = @{@"serviceId":TXUserDefaultsGetObjectforKey(ServiceId),@"name":(fileModel.name.length > 0 ? fileModel.name : @""),@"url":(fileModel.h5Url.length > 0 ? fileModel.h5Url : @""), @"agent" : TXUserDefaultsGetObjectforKey(AgentId)};
         [[AFNHTTPSessionManager shareInstance] requestURL:ShareWebs_Add RequestWay:@"POST" Header:nil Body:bodydic params:nil isFormData:NO success:^(NSError *error, id response) {
             NSString *errCode = [response valueForKey:@"errCode"];
@@ -612,9 +663,13 @@ static NSInteger const kInputToolBarH = 62;
             if ([errCode intValue] == 0) {
                 NSDictionary *resultDic = [response valueForKey:@"result"];
                 NSString *webId = [resultDic valueForKey:@"webId"];
-                if (webId.length > 0) {
-                    [self showWebViewControllerWithFileModel:fileModel webId:webId];
+                if (webId.length <= 0) {
+                    [TXTToast toastWithTitle:@"webId为空" type:TXTToastTypeWarn];
+                    return;
                 }
+                [self showWebViewControllerWithFileModel:fileModel webId:webId];
+            } else {
+                [TXTToast toastWithTitle:[response valueForKey:@"errInfo"] type:TXTToastTypeWarn];
             }
         } failure:^(NSError *error, id response) {
                 
@@ -783,6 +838,36 @@ static NSInteger const kInputToolBarH = 62;
         [[JMToast sharedToast] showDialogWithMsg:@"网络连接错误"];
     }];
 }
+
+- (void)muteAction:(showWebViewController *)showWebViewController {
+    [self muteAudioAction];
+//    TXTUserModel *model = [self.renderViews firstObject];
+//    TXTUserModel *newModel = [[TXTUserModel alloc] init];
+//    if(self.muteState){
+//        newModel.render = model.render;
+//        newModel.showVideo = model.showVideo;
+//        newModel.showAudio = YES;
+//        newModel.info = model.info;
+//        newModel.userName = model.userName;
+//        [self.renderViews replaceObjectAtIndex:0 withObject:newModel];
+//        [self updateRenderViewsLayout];
+//        [[[TICManager sharedInstance] getTRTCCloud] muteLocalAudio:NO];
+////        [self.muteButton setImage:[UIImage imageNamed:@"mute_unselect" inBundle:TXSDKBundle compatibleWithTraitCollection:nil] forState:UIControlStateNormal];
+//    }
+//    else{
+//        newModel.render = model.render;
+//        newModel.showVideo = model.showVideo;
+//        newModel.showAudio = NO;
+//        newModel.info = model.info;
+//        newModel.userName = model.userName;
+//        [self.renderViews replaceObjectAtIndex:0 withObject:newModel];
+//        [self updateRenderViewsLayout];
+//        [[[TICManager sharedInstance] getTRTCCloud] muteLocalAudio:YES];
+////        [self.muteButton setImage:[UIImage imageNamed:@"mute_select" inBundle:TXSDKBundle compatibleWithTraitCollection:nil] forState:UIControlStateNormal];
+//    }
+//    self.muteState = !self.muteState;
+    showWebViewController.userModel = [self.renderViews firstObject];
+}
 #pragma mark -- TXTTopButtonsDelegate
 
 - (void)txSpeakBtnClick{
@@ -837,7 +922,7 @@ static NSInteger const kInputToolBarH = 62;
         __weak __typeof(self)weakSelf = self;
         self.chatViewController.closeBlock = ^{
             [weakSelf.chatViewController.view removeFromSuperview];
-            weakSelf.chatViewController = nil;
+//            weakSelf.chatViewController = nil;
         };
         [self addChildViewController:self.chatViewController];
         [self.view addSubview:self.chatViewController.view];
@@ -1017,27 +1102,30 @@ static NSInteger const kInputToolBarH = 62;
     NSString *portrait = TXUserDefaultsGetObjectforKey(Direction);
     NSString *imageNameStr = ( [portrait intValue] == 0 )? @"Portrait-Landscape" : @"Landscape-Portrait";
     [_crossBtn setImage:[UIImage imageNamed:imageNameStr inBundle:TXSDKBundle compatibleWithTraitCollection:nil] forState:UIControlStateNormal];
-    if ([portrait intValue] == 0) {
-        for (UIView *view in self.view.subviews) {
-            if ([view isKindOfClass:[TXTStatusBar class]]) {
-                [view removeFromSuperview];
-            }
-        }
-        [self.topToos mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.top.mas_equalTo(self.view.mas_safeAreaLayoutGuideTop).offset(0);
-            make.left.mas_equalTo(self.view.mas_left).offset(0);
-            make.right.mas_equalTo(self.view.mas_right).offset(0);
-            make.height.mas_equalTo(Adapt(60));
-        }];
-    } else {
-        [self.view addSubview:self.statusToos];
-        [self.topToos mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.top.mas_equalTo(self.statusToos.mas_bottom).offset(0);
-            make.left.mas_equalTo(self.view.mas_left).offset(0);
-            make.right.mas_equalTo(self.view.mas_right).offset(0);
-            make.height.mas_equalTo(Adapt(60));
-        }];
-    }
+//    self.crossBtn.hidden = self.isWhite ? YES : NO;
+//    if ([portrait intValue] == 0) {
+//        self.statusToos.hidden = NO;
+////        for (UIView *view in self.view.subviews) {
+////            if ([view isKindOfClass:[TXTStatusBar class]]) {
+////                [view removeFromSuperview];
+////            }
+////        }
+////        [self.topToos mas_remakeConstraints:^(MASConstraintMaker *make) {
+////            make.top.mas_equalTo(self.view.mas_safeAreaLayoutGuideTop).offset(0);
+////            make.left.mas_equalTo(self.view.mas_left).offset(0);
+////            make.right.mas_equalTo(self.view.mas_right).offset(0);
+////            make.height.mas_equalTo(Adapt(60));
+////        }];
+//    } else {
+//        self.statusToos.hidden = YES;
+//////        [self.view addSubview:self.statusToos];
+////        [self.topToos mas_remakeConstraints:^(MASConstraintMaker *make) {
+////            make.top.mas_equalTo(self.statusToos.mas_bottom).offset(0);
+////            make.left.mas_equalTo(self.view.mas_left).offset(0);
+////            make.right.mas_equalTo(self.view.mas_right).offset(0);
+////            make.height.mas_equalTo(Adapt(60));
+////        }];
+//    }
 }
 
 
@@ -1604,30 +1692,31 @@ static NSInteger const kInputToolBarH = 62;
 - (TXTTopButtons *)topToos{
     if (!_topToos) {
         _topToos = [[TXTTopButtons alloc] init];
-        [self.view addSubview:_topToos];
-        [_topToos mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.mas_equalTo(self.view.mas_top).offset(0);
-            make.left.mas_equalTo(self.view.mas_left).offset(0);
-            make.right.mas_equalTo(self.view.mas_right).offset(0);
-            make.height.mas_equalTo(Adapt(60));
-        }];
         _topToos.delegate = self;
-        [self.view bringSubviewToFront:_topToos];
     }
     return _topToos;
 }
 
 - (TXTStatusBar *)statusToos{
     if (!_statusToos) {
-        _statusToos = [[TXTStatusBar alloc] initWithFrame:CGRectMake(0, 0, Screen_Width, 20)];
+        _statusToos = [[TXTStatusBar alloc] initWithFrame:CGRectMake(0, 0, Screen_Height, 20)];
 //        [self.view addSubview:_statusToos];
-        [self.view bringSubviewToFront:_statusToos];
+//        [self.view bringSubviewToFront:_statusToos];
     }
     return _statusToos;
 }
 
-- (NSMutableArray *)renderViews
-{
+- (UIView *)navView {
+    if (!_navView) {
+        UIView *navView = [[UIView alloc] init];
+        navView.backgroundColor = [UIColor colorWithHexString:@"424548"];
+        self.navView = navView;
+    }
+    return _navView;
+}
+
+
+- (NSMutableArray *)renderViews {
     if(!_renderViews){
         _renderViews = [NSMutableArray array];
     }
@@ -1754,8 +1843,9 @@ static NSInteger const kInputToolBarH = 62;
 - (void)countDown {
     self.count -= 1;
     if (self.count <= 0.01) {
-        [self.statusToos removeFromSuperview];
-        self.topToos.hidden = YES;
+//        self.statusToos.hidden = YES;
+//        self.topToos.hidden = YES;
+        self.navView.hidden = YES;
         self.bottomToos.hidden = YES;
         self.hideBottomAndTop = NO;
         [self endPolling];
@@ -1773,20 +1863,17 @@ static NSInteger const kInputToolBarH = 62;
 //    self.hideBottomAndTop = !self.hideBottomAndTop;
     //显示
     [self endPolling];
-    [self.view addSubview:self.statusToos];
-    [self.topToos mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(self.statusToos.mas_bottom).offset(0);
-        make.left.mas_equalTo(self.view.mas_left).offset(0);
-        make.right.mas_equalTo(self.view.mas_right).offset(0);
-        make.height.mas_equalTo(Adapt(60));
-    }];
-    self.topToos.hidden = NO;
+//    self.statusToos.hidden = NO;
+//    self.topToos.hidden = NO;
+    self.navView.hidden = NO;
     self.bottomToos.hidden = NO;
     self.count = 3;
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self countDown];
     });
 }
+
+
 
 - (void)reloadManageMembersArray {
     self.groupMemberViewController.manageMembersArr = self.renderViews;
@@ -1863,6 +1950,7 @@ static NSInteger const kInputToolBarH = 62;
         TXTChatInputToolBar *inputToolBar = [[TXTChatInputToolBar alloc] init];
         inputToolBar.hidden = YES;
         inputToolBar.textView.delegate = self;
+        inputToolBar.delegate = self;
         self.inputToolBar = inputToolBar;
     }
     return _inputToolBar;

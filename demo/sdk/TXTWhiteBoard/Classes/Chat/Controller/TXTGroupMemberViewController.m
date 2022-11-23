@@ -8,18 +8,14 @@
 
 #import "TXTGroupMemberViewController.h"
 #import "TXTMemberView.h"
-#import "TXTTeleprompView.h"
 #import "TXTNavigationController.h"
 #import "QSTapGestureRecognizer.h"
 
-@interface TXTGroupMemberViewController () <TXTMemberViewDelegate, TXTTeleprompViewDelegate>
+@interface TXTGroupMemberViewController () <TXTMemberViewDelegate>
 /** bgView */
 @property (nonatomic, strong) UIView *bgView;
 /** memberView */
 @property (nonatomic, strong) TXTMemberView *memberView;
-
-/** teleprompView */
-@property (nonatomic, strong) TXTTeleprompView *teleprompView;
 
 @end
 
@@ -48,11 +44,9 @@
     if (![UIWindow isLandscape]) {
         [self updateUI:YES];
         [self.memberView updateUI:YES];
-        [self.teleprompView updateUI:YES];
     } else {
         [self updateUI:NO];
         [self.memberView updateUI:NO];
-        [self.teleprompView updateUI:NO];
     }
 }
 
@@ -75,15 +69,6 @@
     [self.memberView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.view.mas_top).offset([UIApplication sharedApplication].statusBarFrame.size.height);
         make.left.right.bottom.equalTo(self.view);
-    }];
-    
-    [self.view addSubview:self.teleprompView];
-    [self.teleprompView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(10);
-        make.top.mas_equalTo(200);
-//        make.right.equalTo(self.view.mas_right).offset(-10);
-        make.height.mas_equalTo(36);
-        make.width.mas_equalTo(122);
     }];
 //    [self.view layoutIfNeeded];
     
@@ -125,7 +110,6 @@
         [self updateUI:NO];
         [self.memberView updateUI:NO];
     }
-    [self teleprompViewDidClickSwitchView:self.teleprompView.switchView];
     [self.view layoutIfNeeded];
 }
 
@@ -172,46 +156,6 @@
     }
 }
 
-/// 点击了switch
-- (void)teleprompViewDidClickSwitchView:(UISwitch *)switchView {
-    if (switchView.isOn) {
-        if (![UIWindow isLandscape]) {
-            [self.teleprompView mas_remakeConstraints:^(MASConstraintMaker *make) {
-                make.left.mas_equalTo(10);
-                make.top.mas_equalTo(200);
-                make.right.equalTo(self.view.mas_safeAreaLayoutGuideRight).offset(-10);
-                make.height.mas_equalTo(150).priorityHigh();
-            }];
-        } else {
-            [self.teleprompView mas_remakeConstraints:^(MASConstraintMaker *make) {
-                make.right.equalTo(self.view.mas_safeAreaLayoutGuideRight).offset(-10);
-                make.height.mas_equalTo(225).priorityHigh();
-                make.width.mas_equalTo(180);
-                make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideBottom).offset(-20);
-            }];
-        }
-        [self.teleprompView upDateUIWithSwithch:YES];
-    } else {
-        if (![UIWindow isLandscape]) {
-            [self.teleprompView mas_remakeConstraints:^(MASConstraintMaker *make) {
-                make.left.mas_equalTo(10);
-                make.top.mas_equalTo(200);
-        //        make.right.equalTo(self.view.mas_right).offset(-10);
-                make.height.mas_equalTo(36);
-                make.width.mas_equalTo(122);
-            }];
-        } else {
-            [self.teleprompView mas_remakeConstraints:^(MASConstraintMaker *make) {
-                make.right.equalTo(self.view.mas_safeAreaLayoutGuideRight).offset(-10);
-                make.top.mas_equalTo(200);
-                make.height.mas_equalTo(36);
-                make.width.mas_equalTo(122);
-            }];
-        }
-        [self.teleprompView upDateUIWithSwithch:NO];
-    }
-    [self.view layoutIfNeeded];
-}
 #pragma mark - ☎️notification
 
 #pragma mark - 🎬event response
@@ -229,14 +173,6 @@
     return _memberView;
 }
 
-- (TXTTeleprompView *)teleprompView {
-    if (!_teleprompView) {
-        TXTTeleprompView *teleprompView = [[TXTTeleprompView alloc] init];
-        teleprompView.delegate = self;
-        self.teleprompView = teleprompView;
-    }
-    return _teleprompView;
-}
 - (UIView *)bgView {
     if (!_bgView) {
         UIView *bgView = [[UIView alloc] init];

@@ -340,9 +340,9 @@
             [JMLoadingHUD show];
             TICClassroomOption *option = [[TICClassroomOption alloc] init];
             option.classId = [classId intValue];
-//            TXUserDefaultsSetObjectforKey(@"88381628",GroupId);
-//            TXUserDefaultsSetObjectforKey(@"88381628",RoomId);
-//            option.classId = 88381628;
+//            TXUserDefaultsSetObjectforKey(@"32258903",GroupId);
+//            TXUserDefaultsSetObjectforKey(@"32258903",RoomId);
+//            option.classId = 32258903;
 
             
             __weak typeof(self) ws = self;

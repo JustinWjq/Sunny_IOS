@@ -121,7 +121,7 @@ static TXTMemberInfoView *_alertView = nil; //第一步：静态实例，并初�
     UIView *lastView = nil;
     NSString *voiceStr = model.showAudio ? @"静音" : @"解除静音";
     NSString *videoStr = model.showVideo ? @"关闭摄像头" : @"打开摄像头";
-    NSArray *btnsTitleArray = @[voiceStr, videoStr, @"移交主持人", @"移除会议室"];
+    NSArray *btnsTitleArray = @[voiceStr, videoStr, @"移除会议室"];
     for (int i=0; i<btnsTitleArray.count; i++) {
         UIButton *btn = [UIButton buttonWithTitle:btnsTitleArray[i] titleColor:[UIColor colorWithHexString:@"333333"] font:[UIFont qs_regularFontWithSize:15] target:_alertView action:@selector(btnClick:)];
         btn.tag = i + kBtnTag;
@@ -228,7 +228,7 @@ static TXTMemberInfoView *_alertView = nil; //第一步：静态实例，并初�
                 }
             }];
         }
-    } else if (tag == 3) {
+    } else if (tag == 2) {
         if ([self.model.userRole isEqualToString:@"owner"]) {
 //            [TXTToast toastWithTitle:@"自己不能移除自己"];
             return;
