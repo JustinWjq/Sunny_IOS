@@ -93,7 +93,7 @@
 
 - (void)changeSpeakBtnStatus:(BOOL)status{
     if (status) {
-        UIImage *speakerImg = [UIImage imageNamed:@"white_icon_shotNormal" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
+        UIImage *speakerImg = [UIImage imageNamed:@"receiver" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
         [self.speakBtn setImage:[speakerImg imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] forState:UIControlStateNormal];
     }else{
         UIImage *speakerImg = [UIImage imageNamed:@"speaker" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
