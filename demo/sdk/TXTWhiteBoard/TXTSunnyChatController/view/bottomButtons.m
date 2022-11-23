@@ -111,56 +111,46 @@
 }
 
 - (void)updateButtons{
-    CGFloat btnwidth = Screen_Width/6;
     [self.txVideoButton mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.mas_top).offset(0);
         make.left.equalTo(self.mas_left).offset(0);
-//        make.width.mas_equalTo(btnwidth);
         make.width.equalTo(self.mas_width).dividedBy(6.0);
         make.bottom.mas_equalTo(self.mas_safeAreaLayoutGuideBottom).offset(0);
     }];
     [self.txMuteButton mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(self.mas_top).offset(0);
-//        make.left.mas_equalTo(self.mas_left).offset(btnwidth);
         make.left.mas_equalTo(self.txVideoButton.mas_right).offset(0);
-//        make.width.mas_equalTo(btnwidth);
         make.width.equalTo(self.mas_width).dividedBy(6.0);
-//        make.height.mas_equalTo(30);
         make.bottom.mas_equalTo(self.mas_safeAreaLayoutGuideBottom).offset(0);
     }];
     [self.txShareFileButton mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(self.mas_top).offset(0);
-        make.left.mas_equalTo(self.mas_left).offset(2*btnwidth);
-        make.width.mas_equalTo(btnwidth);
-//        make.height.mas_equalTo(30);
+        make.left.mas_equalTo(self.txMuteButton.mas_right).offset(0);
+        make.width.equalTo(self.mas_width).dividedBy(6.0);
         make.bottom.mas_equalTo(self.mas_safeAreaLayoutGuideBottom).offset(0);
     }];
     [self.txMembersButton mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(self.mas_top).offset(0);
-        make.left.mas_equalTo(self.mas_left).offset(3*btnwidth);
-        make.width.mas_equalTo(btnwidth);
-//        make.height.mas_equalTo(30);
+        make.left.mas_equalTo(self.txShareFileButton.mas_right).offset(0);
+        make.width.equalTo(self.mas_width).dividedBy(6.0);
         make.bottom.mas_equalTo(self.mas_safeAreaLayoutGuideBottom).offset(0);
     }];
     [self.txShareSceneButton mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(self.mas_top).offset(0);
-        make.left.mas_equalTo(self.mas_left).offset(4*btnwidth);
-        make.width.mas_equalTo(btnwidth);
-//        make.height.mas_equalTo(30);
+        make.left.mas_equalTo(self.txMembersButton.mas_right).offset(0);
+        make.width.equalTo(self.mas_width).dividedBy(6.0);
         make.bottom.mas_equalTo(self.mas_safeAreaLayoutGuideBottom).offset(0);
     }];
     [self.txMoreActionButton mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(self.mas_top).offset(0);
-        make.left.mas_equalTo(self.mas_left).offset(5*btnwidth);
-        make.width.mas_equalTo(btnwidth);
-//        make.height.mas_equalTo(30);
+        make.left.mas_equalTo(self.txShareSceneButton.mas_right).offset(0);
+        make.width.equalTo(self.mas_width).dividedBy(6.0);
         make.bottom.mas_equalTo(self.mas_safeAreaLayoutGuideBottom).offset(0);
     }];
 }
 
 - (void)customButtonUI:(UIButton *)button  ImageName:(NSString *)imageName ButtonName:(NSString *)title{
     UIImage *btnImage = imageName(imageName);
-    
     [button setImage:btnImage forState:UIControlStateNormal];
     button.imageView.contentMode = UIViewContentModeScaleAspectFit;
     NSLog(@"button = %@",button);
@@ -169,8 +159,6 @@
     [self addSubview:label];
     [label mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(self.txVideoButton.mas_bottom).offset(-16);
-//        make.bottom.mas_equalTo(self.mas_safeAreaLayoutGuideBottom).offset(-8);
-//        make.left.equalTo(self.mas_left).offset(0);
         make.width.equalTo(self.mas_width).dividedBy(6.0);
         make.centerX.mas_equalTo(button.mas_centerX).offset(0);
         make.height.mas_equalTo(15);
@@ -179,15 +167,6 @@
     label.textAlignment = NSTextAlignmentCenter;
     label.text = title;
     label.textColor = [UIColor whiteColor];
-//
-//    [button setTitle:title forState:UIControlStateNormal];
-//    button.titleLabel.font = [UIFont systemFontOfSize:12.0];
-//    CGSize imageSize = button.imageView.frame.size;
-//    CGSize titleSize = button.titleLabel.intrinsicContentSize;
-//    CGFloat margin = 10;
-//    button.titleEdgeInsets = UIEdgeInsetsMake(0, -imageSize.width,  -imageSize.height - 5,  0);
-//    button.imageEdgeInsets = UIEdgeInsetsMake( -titleSize.height - 5,  0,  0,  -titleSize.width);
-    
 }
 
 - (void)txButtonClick{

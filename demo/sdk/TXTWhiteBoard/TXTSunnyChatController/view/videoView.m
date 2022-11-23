@@ -81,7 +81,7 @@
         if ([userRole isEqualToString:@"owner"]) {
             make.left.mas_equalTo(self.mas_left).offset(nameWidth/2.5);
             if (directionLeft) {
-                make.width.mas_equalTo(nameWidth+8);
+                make.width.mas_equalTo(nameWidth+12);
             }else{
                 make.right.mas_equalTo(self.mas_right).offset(0);
             }
@@ -92,7 +92,7 @@
             }else{
                 make.centerX.mas_equalTo(self.mas_centerX).offset(0);
             }
-            make.width.mas_equalTo(nameWidth+8);
+            make.width.mas_equalTo(nameWidth+12);
         }
         
         make.height.mas_equalTo(nameWidth/2.5);

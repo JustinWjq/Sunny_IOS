@@ -39,6 +39,8 @@ static NSInteger const kInputToolBarH = 62;
 @property (nonatomic, strong) bottomButtons *bottomToos;//底部视图
 @property (nonatomic, strong) TXTTopButtons *topToos;//导航栏视图
 @property (nonatomic, strong) TXTStatusBar *statusToos;//导航栏视图
+@property (nonatomic, strong) UIImageView *bgImageView;//背景图
+
 @property (nonatomic, strong) NSString *userId;//主持人id
 @property (strong, nonatomic) NSMutableArray *userIdArr;//房间存在人员id数组
 @property (nonatomic, strong) NSMutableArray *renderViews;//房间人员数组
@@ -90,31 +92,7 @@ static NSInteger const kInputToolBarH = 62;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    self.title = @"远程会议";
-    
-    //    //扬声器
-//    UIImage *speakerImg = [UIImage imageNamed:@"speaker" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
-    
-    //    //切换摄像头
-//    UIImage *cameraImg = [UIImage imageNamed:@"camera" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
-//    TXTNavigationController *navigationController = (TXTNavigationController *)self.navigationController;
-//    self.navigationItem.leftBarButtonItems = @[[UIBarButtonItem itemWithTarget:self
-//                                                                        action:@selector(changeAudioRoute:)
-//                                                                         image:speakerImg],
-//                                               [UIBarButtonItem itemWithTarget:self
-//                                                                        action:@selector(switchCamera)
-//                                                                         image:cameraImg]];
-    //onQuitClassRoom
-//    self.navigationItem.rightBarButtonItem = [UIBarButtonItem itemWithTarget:self action:@selector(onQuitClassRoom) title:@"退出" font:[UIFont qs_semiFontWithSize:15] titleColor:[UIColor colorWithHexString:@"#E19797"] highlightedColor:[UIColor colorWithHexString:@"#E19797"] titleEdgeInsets:UIEdgeInsetsMake(0, 0, -0, -0)];
-    
-//    self.navigationController.navigationBar.translucent = NO;
-//    self.navigationController.navigationBar.barTintColor = [UIColor colorWithHexString:@"#424548"];
-//    [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}];
-//    self.navigationController.navigationBar.barStyle = UIBarStyleBlack;
-    
     self.view.backgroundColor = [UIColor colorWithHexString:@"#222222"];
-    
     [self joinRoom];
     [self addNotification];
     [self initParams];
@@ -386,6 +364,10 @@ static NSInteger const kInputToolBarH = 62;
         if ([errCode intValue] == 0) {
             NSLog(@"roomInfo = %@",[response description]);
             NSDictionary *result = [response valueForKey:@"result"];
+            NSDictionary *roomInfoDic = [result valueForKey:@"roomInfo"];
+            NSString *bgImageStr = [roomInfoDic valueForKey:@"bgImage"];
+            [self.bgImageView sd_setImageWithURL:[NSURL URLWithString:bgImageStr] placeholderImage:nil];
+//            [self.view insertSubview:self.bgImageView belowSubview:self.renderVideoView];
             self.isShowWhiteBoard = [[result valueForKey:@"shareStatus"] boolValue];
             
             NSArray *userInfo = [result valueForKey:@"userInfo"];
@@ -865,7 +847,7 @@ static NSInteger const kInputToolBarH = 62;
             make.top.mas_equalTo(self.view.mas_safeAreaLayoutGuideTop).offset(0);
             make.left.mas_equalTo(self.view.mas_safeAreaLayoutGuideLeft).offset(0);
             make.right.mas_equalTo(self.view.mas_safeAreaLayoutGuideRight).offset(0);
-            make.bottom.mas_equalTo(self.view.mas_safeAreaLayoutGuideBottom).offset(0);
+            make.bottom.mas_equalTo(self.view.mas_bottom).offset(0);
         }];
     }else{
         [_renderVideoView mas_remakeConstraints:^(MASConstraintMaker *make) {
@@ -990,12 +972,12 @@ static NSInteger const kInputToolBarH = 62;
                 newModel.userIcon = model.userIcon;
                 [self.renderViews replaceObjectAtIndex:i withObject:newModel];
                 //更新单个视频UI
-                
+                [self updateVideoRenderViewsLayoutWithIndex:i];
                 break;
             }
         }
         [self reloadManageMembersArray];
-        [self updateRenderViewsLayout];
+//        [self updateRenderViewsLayout];
     }else{
         [self.userIdArr addObject:userId];
         TXTUserModel *userModel = [[TXTUserModel alloc] init];
@@ -1375,6 +1357,22 @@ static NSInteger const kInputToolBarH = 62;
 
 #pragma  mark --懒加载
 
+- (UIImageView *)bgImageView{
+    if (!_bgImageView) {
+        _bgImageView = [[UIImageView alloc] init];
+        [self.view addSubview:_bgImageView];
+        [_bgImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.mas_equalTo(self.view.mas_top).offset(0);
+            make.bottom.mas_equalTo(self.view.mas_bottom).offset(0);
+            make.left.mas_equalTo(self.view.mas_left).offset(0);
+            make.right.mas_equalTo(self.view.mas_right).offset(0);
+        }];
+        _bgImageView.contentMode = UIViewContentModeScaleAspectFit;
+        [self.view sendSubviewToBack:_bgImageView];
+    }
+    return _bgImageView;
+}
+
 - (void)setBottomToolsUI{
     //WithFrame:CGRectMake(0, Screen_Height-100, Screen_Width, 100)
     _bottomToos = [[bottomButtons alloc] init];
@@ -1440,7 +1438,8 @@ static NSInteger const kInputToolBarH = 62;
             make.right.mas_equalTo(self.view.mas_safeAreaLayoutGuideRight).offset(0);
             make.height.mas_equalTo(Adapt(230)+Adapt(90));//Screen_Height/3.5
         }];
-        [self.view sendSubviewToBack:_renderVideoView];
+//        [self.view sendSubviewToBack:_renderVideoView];
+        [self.view insertSubview:_renderVideoView aboveSubview:self.bgImageView];
     }
     return _renderVideoView;
 }
@@ -1549,15 +1548,6 @@ static NSInteger const kInputToolBarH = 62;
 - (void)countDown {
     self.count -= 1;
     if (self.count <= 0.01) {
-        //隐藏
-//        [self.navigationController setNavigationBarHidden:YES animated:YES];
-//        for (UIView *view in self.view.subviews) {
-//            if ([view isKindOfClass:[TXTStatusBar class]]) {
-//                view.hidden = YES;
-//            }else{
-//
-//            }
-//        }
         [self.statusToos removeFromSuperview];
         self.topToos.hidden = YES;
         self.bottomToos.hidden = YES;
@@ -1569,8 +1559,14 @@ static NSInteger const kInputToolBarH = 62;
 }
 
 - (void)hiddenTabAndNav{
-    [self endPolling];
+//    if (self.hideBottomAndTop) {
+//
+//    }else{
+//
+//    }
+//    self.hideBottomAndTop = !self.hideBottomAndTop;
     //显示
+    [self endPolling];
     [self.view addSubview:self.statusToos];
     [self.topToos mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(self.statusToos.mas_bottom).offset(0);
@@ -1580,7 +1576,6 @@ static NSInteger const kInputToolBarH = 62;
     }];
     self.topToos.hidden = NO;
     self.bottomToos.hidden = NO;
-    self.hideBottomAndTop = YES;
     self.count = 3;
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self countDown];
