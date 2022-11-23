@@ -528,6 +528,8 @@ static NSInteger const kInputToolBarH = 62;
 - (void)bottomShareFileButtonClick{
     TXTShareFileAlertView *shareFileAlertView = [[TXTShareFileAlertView alloc] init];
     shareFileAlertView.fileBlock = ^{
+//        [self addFile:FileTypePics fileModel:[[TXTFileModel alloc] init]];
+        [self addFile:FileTypeVideo fileModel:[[TXTFileModel alloc] init]];
     };
     shareFileAlertView.whiteBoardBlock = ^{
         [self getWhiteBoard:self.isShowWhiteBoard];
@@ -588,6 +590,61 @@ static NSInteger const kInputToolBarH = 62;
     [self.groupMemberViewController.view mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.view);
     }];
+}
+
+/**
+ *  fileType 文件类型
+ *  fileModel 文件数据
+ */
+- (void)addFile:(FileType)fileType fileModel:(TXTFileModel *)fileModel {
+    // 开始做事情
+    if (fileType == FileTypePics) {
+        
+        fileModel.pics = @[@"https://wisdom-exhibition-1301905869.cos.ap-shenzhen-fsi.myqcloud.com/testdocument/0jsoaidalsh31nr2bk4c_tiw/picture/1.jpg",
+                           @"https://wisdom-exhibition-1301905869.cos.ap-shenzhen-fsi.myqcloud.com/testdocument/0jsoaidalsh31nr2bk4c_tiw/picture/2.jpg",
+                           @"https://wisdom-exhibition-1301905869.cos.ap-shenzhen-fsi.myqcloud.com/testdocument/0jsoaidalsh31nr2bk4c_tiw/picture/3.jpg"];
+        [self showWhiteViewController:fileType fileModel:fileModel];
+    } else if (fileType == FileTypeVideo) {
+        fileModel.videoUrl = @"https://res.qcloudtiw.com/demo/tiw-vod.mp4";
+        [self showWhiteViewController:fileType fileModel:fileModel];
+    } else if (fileType == FileTypeH5) {
+        [self showWebViewControllerWithFileModel:fileModel];
+    }
+}
+
+/// 切换文件
+- (void)showWhiteViewController:(FileType)fileType fileModel:(TXTFileModel *)fileModel {
+    NSString *serviceId = TXUserDefaultsGetObjectforKey(ServiceId);
+    NSDictionary *bodyDict = @{@"serviceId":serviceId,@"shareStatus":@(YES),@"userId":[TICConfig shareInstance].userId};
+    NSLog(@"shareStatusoooo == %@",[bodyDict description]);
+    [[AFNHTTPSessionManager shareInstance] requestURL:ServiceRoom_ShareStatus RequestWay:@"POST" Header:nil Body:bodyDict params:nil isFormData:NO success:^(NSError *error, id response) {
+        NSString *errCode = [response valueForKey:@"errCode"];
+        if ([errCode intValue] == 0) {
+            //发送消息
+            NSDictionary *messagedict = @{@"serviceId":TXUserDefaultsGetObjectforKey(ServiceId),@"type":@"shareWhiteboard",@"shareUserId":[TICConfig shareInstance].userId};
+            NSString *str = [[TXTCommon sharedInstance] convertToJsonData:messagedict];
+            QSLog(@"切换文件 == %@",str);
+            [[TICManager sharedInstance] sendGroupTextMessage:str callback:^(TICModule module, int code, NSString *desc) {
+                QSLog(@"切换文件 == %@",desc);
+                [self getWhiteBoard:YES];
+                if (fileType == FileTypePics) {
+                    [self.whiteBoardViewController showImages:fileModel.pics];
+                } else if (fileType == FileTypeVideo) {
+                    [self.whiteBoardViewController showVideo:fileModel.videoUrl];
+                }
+            }];
+        }else{
+            [TXTToast toastWithTitle:@"他人正在操作" type:TXTToastTypeWarn];
+        }
+        NSLog(@"shareStatus == %@",[response description]);
+    } failure:^(NSError *error, id response) {
+        [TXTToast toastWithTitle:@"网络连接错误" type:TXTToastTypeWarn];
+    }];
+}
+
+/// 同屏展示webview
+- (void)showWebViewControllerWithFileModel:(TXTFileModel *)fileModel {
+    
 }
 
 #pragma mark -- TXTTopButtonsDelegate

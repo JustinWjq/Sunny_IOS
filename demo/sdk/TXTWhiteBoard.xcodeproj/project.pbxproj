@@ -111,6 +111,12 @@
 		F01D22E32917B8E70025F107 /* TXTMemberInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = F01D22E12917B8E70025F107 /* TXTMemberInfoView.m */; };
 		F01D22E62917FB700025F107 /* QSTapGestureRecognizer.h in Headers */ = {isa = PBXBuildFile; fileRef = F01D22E42917FB700025F107 /* QSTapGestureRecognizer.h */; };
 		F01D22E72917FB700025F107 /* QSTapGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = F01D22E52917FB700025F107 /* QSTapGestureRecognizer.m */; };
+		F0241D68292CA58000E3AE6D /* TXTFileModel.h in Headers */ = {isa = PBXBuildFile; fileRef = F0241D66292CA58000E3AE6D /* TXTFileModel.h */; };
+		F0241D69292CA58000E3AE6D /* TXTFileModel.m in Sources */ = {isa = PBXBuildFile; fileRef = F0241D67292CA58000E3AE6D /* TXTFileModel.m */; };
+		F0241D6E292CC63300E3AE6D /* ImagesPPTCollectionViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = F0241D6A292CC63200E3AE6D /* ImagesPPTCollectionViewCell.h */; };
+		F0241D6F292CC63300E3AE6D /* ImagesPPTCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0241D6B292CC63300E3AE6D /* ImagesPPTCollectionView.m */; };
+		F0241D70292CC63300E3AE6D /* ImagesPPTCollectionView.h in Headers */ = {isa = PBXBuildFile; fileRef = F0241D6C292CC63300E3AE6D /* ImagesPPTCollectionView.h */; };
+		F0241D71292CC63300E3AE6D /* ImagesPPTCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F0241D6D292CC63300E3AE6D /* ImagesPPTCollectionViewCell.m */; };
 		F050C78B2918B186002CA386 /* TXTAlertShareView.h in Headers */ = {isa = PBXBuildFile; fileRef = F050C7892918B186002CA386 /* TXTAlertShareView.h */; };
 		F050C78C2918B186002CA386 /* TXTAlertShareView.m in Sources */ = {isa = PBXBuildFile; fileRef = F050C78A2918B186002CA386 /* TXTAlertShareView.m */; };
 		F050C7902918BA1B002CA386 /* TXTCommonAlertView.h in Headers */ = {isa = PBXBuildFile; fileRef = F050C78E2918BA1B002CA386 /* TXTCommonAlertView.h */; };
@@ -522,6 +528,12 @@
 		F01D22E12917B8E70025F107 /* TXTMemberInfoView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TXTMemberInfoView.m; sourceTree = "<group>"; };
 		F01D22E42917FB700025F107 /* QSTapGestureRecognizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QSTapGestureRecognizer.h; sourceTree = "<group>"; };
 		F01D22E52917FB700025F107 /* QSTapGestureRecognizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QSTapGestureRecognizer.m; sourceTree = "<group>"; };
+		F0241D66292CA58000E3AE6D /* TXTFileModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXTFileModel.h; sourceTree = "<group>"; };
+		F0241D67292CA58000E3AE6D /* TXTFileModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TXTFileModel.m; sourceTree = "<group>"; };
+		F0241D6A292CC63200E3AE6D /* ImagesPPTCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImagesPPTCollectionViewCell.h; sourceTree = "<group>"; };
+		F0241D6B292CC63300E3AE6D /* ImagesPPTCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImagesPPTCollectionView.m; sourceTree = "<group>"; };
+		F0241D6C292CC63300E3AE6D /* ImagesPPTCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImagesPPTCollectionView.h; sourceTree = "<group>"; };
+		F0241D6D292CC63300E3AE6D /* ImagesPPTCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImagesPPTCollectionViewCell.m; sourceTree = "<group>"; };
 		F050C7892918B186002CA386 /* TXTAlertShareView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXTAlertShareView.h; sourceTree = "<group>"; };
 		F050C78A2918B186002CA386 /* TXTAlertShareView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TXTAlertShareView.m; sourceTree = "<group>"; };
 		F050C78E2918BA1B002CA386 /* TXTCommonAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXTCommonAlertView.h; sourceTree = "<group>"; };
@@ -1311,6 +1323,8 @@
 				F06CC9FA2910EED000CA4D6A /* QSIMMessageModel.m */,
 				F0E22B9C2915009C00C1E031 /* TXTSmallMessage.h */,
 				F0E22B9D2915009C00C1E031 /* TXTSmallMessage.m */,
+				F0241D66292CA58000E3AE6D /* TXTFileModel.h */,
+				F0241D67292CA58000E3AE6D /* TXTFileModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1653,6 +1667,10 @@
 		F0F3EFCC2919E86F00FC0940 /* WhiteBoard */ = {
 			isa = PBXGroup;
 			children = (
+				F0241D6C292CC63300E3AE6D /* ImagesPPTCollectionView.h */,
+				F0241D6B292CC63300E3AE6D /* ImagesPPTCollectionView.m */,
+				F0241D6A292CC63200E3AE6D /* ImagesPPTCollectionViewCell.h */,
+				F0241D6D292CC63300E3AE6D /* ImagesPPTCollectionViewCell.m */,
 				F0F3EFD12919F93F00FC0940 /* TXTWhiteBoardView.h */,
 				F0F3EFD22919F93F00FC0940 /* TXTWhiteBoardView.m */,
 				F0F3EFD5291A1AFE00FC0940 /* TXTWhiteToolView.h */,
@@ -1701,6 +1719,7 @@
 				31D45ED02915270200765B6B /* TXTVideoCollectionViewCell.h in Headers */,
 				31D45ECD2915270200765B6B /* TXTUserModel.h in Headers */,
 				31B5FD262501DC58006587C0 /* NSDate+NetworkClock.h in Headers */,
+				F0241D68292CA58000E3AE6D /* TXTFileModel.h in Headers */,
 				F06CC9DA2910E4A300CA4D6A /* MJRefreshAutoFooter.h in Headers */,
 				F08168CB290FC9A200C5CA29 /* UIImage+Orientation.h in Headers */,
 				31B5FC7F2501D71B006587C0 /* TXTWhiteBoard.h in Headers */,
@@ -1735,11 +1754,13 @@
 				F0E22BB22915109D00C1E031 /* TXTEmojiView.h in Headers */,
 				F06CC9DF2910E4A300CA4D6A /* MJRefreshFooter.h in Headers */,
 				F0E22BAC2915011900C1E031 /* YYModel.h in Headers */,
+				F0241D6E292CC63300E3AE6D /* ImagesPPTCollectionViewCell.h in Headers */,
 				31B5FD682501DC58006587C0 /* TXTMBProgressHUD.h in Headers */,
 				F08168D0290FC9A200C5CA29 /* UILabel+currency.h in Headers */,
 				F06CC9CD2910E4A300CA4D6A /* MJRefreshAutoGifFooter.h in Headers */,
 				31B5FD172501DC58006587C0 /* TICKeychainWrapper.h in Headers */,
 				F0816909290FC9A200C5CA29 /* UITextField+placeholderColor.h in Headers */,
+				F0241D70292CC63300E3AE6D /* ImagesPPTCollectionView.h in Headers */,
 				F06CC9CC2910E4A300CA4D6A /* MJRefreshAutoNormalFooter.h in Headers */,
 				311426FF25A300AF00AC639A /* UIView+cornerSide.h in Headers */,
 				F0E22B872913F78400C1E031 /* TXTChatInputToolBar.h in Headers */,
@@ -1936,6 +1957,7 @@
 				F0E22B9F2915009C00C1E031 /* TXTSmallMessage.m in Sources */,
 				F08168FC290FC9A200C5CA29 /* NSString+Frame.m in Sources */,
 				31B5FD632501DC58006587C0 /* AFNHTTPSessionManager.m in Sources */,
+				F0241D69292CA58000E3AE6D /* TXTFileModel.m in Sources */,
 				F06CC9C82910E4A300CA4D6A /* MJRefreshBackGifFooter.m in Sources */,
 				31F4A4C9260895B00015B75A /* UINavigationController+Revolve.m in Sources */,
 				F0F6300B29232D0000B4C91C /* TXTMoreView.m in Sources */,
@@ -1980,6 +2002,7 @@
 				31BE4841257A06E600AD1CEF /* ZYSuspensionManager.m in Sources */,
 				311426FC25A300AF00AC639A /* QFAlertView.m in Sources */,
 				31B5FD1A2501DC58006587C0 /* TICWeakProxy.m in Sources */,
+				F0241D71292CC63300E3AE6D /* ImagesPPTCollectionViewCell.m in Sources */,
 				31D45EE12915271700765B6B /* UIBarButtonItem+SXCreate.m in Sources */,
 				31B5FD642501DC58006587C0 /* UIAlertUtil.m in Sources */,
 				F06CC9DC2910E4A300CA4D6A /* MJRefreshAutoFooter.m in Sources */,
@@ -2025,6 +2048,7 @@
 				F081690E290FC9A200C5CA29 /* NSDate+Extension.m in Sources */,
 				F0F3EFD8291A1AFF00FC0940 /* TXTWhiteToolView.m in Sources */,
 				F06CCA182910F43A00CA4D6A /* JCHATStringUtils.m in Sources */,
+				F0241D6F292CC63300E3AE6D /* ImagesPPTCollectionView.m in Sources */,
 				F0816903290FC9A200C5CA29 /* NSArray+crash.m in Sources */,
 				31D45EE02915271700765B6B /* UINavigationSXFixSpace.m in Sources */,
 				31C8511A25B832C800D9EEA5 /* TXTCommon.m in Sources */,

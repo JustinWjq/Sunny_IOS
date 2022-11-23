@@ -480,4 +480,22 @@
 }
 
 
+/**
+ *  fileType 文件类型
+ *  fileModel 文件数据
+ */
+- (void)addFileToSdk:(FileType)fileType fileModel:(TXTFileModel *)fileModel {
+    UIWindow *window = [ZYSuspensionManager valueForKey:@"videowindow"];
+    TXTNavigationController *nav = (TXTNavigationController *)window.rootViewController;
+    SunnyChatViewController *classRoom = (SunnyChatViewController *)nav.viewControllers[0];
+    [classRoom addFile:fileType fileModel:fileModel];
+}
+
+/// 点击了共享文件
+- (void)onClickFile {
+    if ([self.manageDelegate respondsToSelector:@selector(addOnFileClickListener)]) {
+        [self.manageDelegate addOnFileClickListener];
+    }
+}
+
 @end

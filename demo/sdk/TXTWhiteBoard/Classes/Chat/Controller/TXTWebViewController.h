@@ -15,14 +15,14 @@ NS_ASSUME_NONNULL_BEGIN
 @interface TXTWebViewController : UIViewController
 
 /**
- h5链接
+ * h5链接
  */
 @property (nonatomic , copy) NSString *urlStr;
 
 /**
- 参数arr
+ * 参数cookieDict
  */
-@property (nonatomic , copy) NSString *paramsArr;//范 参数数组字符串
+@property (nonatomic , copy) NSDictionary *cookieDict;
 
 
 /**

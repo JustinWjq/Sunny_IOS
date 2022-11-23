@@ -11,10 +11,19 @@
 #import "TICManager.h"
 #import "TXTToast.h"
 #import "TXTNavigationController.h"
+#import "ImagesPPTCollectionView.h"
 
-@interface TXTWhiteBoardViewController () <TEduBoardDelegate, TXTWhiteBoardViewDelegate>
+@interface TXTWhiteBoardViewController () <TEduBoardDelegate, TXTWhiteBoardViewDelegate, ImagesPPTCollectionViewDelegate>
 /** whiteBoardView */
 @property (nonatomic, strong) TXTWhiteBoardView *whiteBoardView;
+
+/** collectionView */
+@property (nonatomic, strong) ImagesPPTCollectionView *collectionView;
+
+/** imagesArray */
+@property (nonatomic, strong) NSArray *imagesArray;
+
+@property (strong, nonatomic) NSArray *imageIds;
 @end
 
 @implementation TXTWhiteBoardViewController
@@ -43,13 +52,21 @@
 }
 
 - (void)qs_initSubViews {
-    TXTNavigationController *navigationController = (TXTNavigationController *)self.navigationController;
-    navigationController.interfaceOrientationMask = UIInterfaceOrientationMaskAll;
+//    TXTNavigationController *navigationController = (TXTNavigationController *)self.navigationController;
+//    navigationController.interfaceOrientationMask = UIInterfaceOrientationMaskAll;
     self.view.backgroundColor = [UIColor clearColor];
     [self.view addSubview:self.whiteBoardView];
     [self.whiteBoardView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.view);
     }];
+    
+    [self.view addSubview:self.collectionView];
+    [self.collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.equalTo(self.view);
+        make.height.mas_equalTo(90);
+        make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideBottom).offset(-100);
+    }];
+    self.collectionView.hidden = YES;
     
     if (self.isShowWhiteBoard) {
         [self showWhiteBoard];
@@ -84,6 +101,37 @@
     }];
 }
 
+/// 展示ppt选图片
+- (void)showImages:(NSArray *)imagesArray {
+    [[[TICManager sharedInstance] getBoardController] addImagesFile:imagesArray];
+    if (imagesArray.count > 1) {
+        self.collectionView.hidden = NO;
+        self.collectionView.imagesArray = imagesArray;
+    }else{
+        self.collectionView.hidden = YES;
+        if (imagesArray.count == 1) {
+        } else {
+            [TXTToast toastWithTitle:@"转码失败" type:TXTToastTypeWarn];
+        }
+    }
+}
+
+- (void)showVideo:(NSString *)videoUrl {
+    [[[TICManager sharedInstance] getBoardController] addVideoFile:videoUrl];
+}
+
+- (void)selectImage:(NSInteger)index {
+    [[[TICManager sharedInstance] getBoardController] gotoBoard:self.imageIds[index] resetStep:YES];
+}
+
+- (void)onTEBAddBoard:(NSArray *)boardIds fileId:(NSString *)fileId{
+    NSLog(@"onTEBAddBoard = %@",[boardIds description]);
+    self.imageIds = boardIds;
+}
+
+- (void)onTEBVideoStatusChanged:(NSString *)fileId status:(TEduBoardVideoStatus)status progress:(CGFloat)progress duration:(CGFloat)duration {
+    NSLog(@"video progress = %.f", progress);
+}
 
 /// orientationChange
 - (void)handleScreenOrientationChange:(NSNotification *)noti {
@@ -173,6 +221,15 @@
         self.whiteBoardView = whiteBoardView;
     }
     return _whiteBoardView;
+}
+
+- (ImagesPPTCollectionView *)collectionView {
+    if (!_collectionView) {
+        ImagesPPTCollectionView *collectionView = [[ImagesPPTCollectionView alloc] init];
+        collectionView.delegate = self;
+        self.collectionView = collectionView;
+    }
+    return _collectionView;
 }
 
 @end
