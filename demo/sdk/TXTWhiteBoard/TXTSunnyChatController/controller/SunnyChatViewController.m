@@ -112,9 +112,9 @@ static NSInteger const kInputToolBarH = 62;
     }];
     [self.navView addSubview:self.topToos];
     [self.topToos mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(self.statusToos.mas_bottom).offset(0);
-        make.left.mas_equalTo(self.view.mas_left).offset(0);
-        make.right.mas_equalTo(self.view.mas_right).offset(0);
+        make.top.mas_equalTo(20);
+        make.left.equalTo(self.view.mas_left).offset(0);
+        make.right.equalTo(self.view.mas_right).offset(0);
         make.height.mas_equalTo(Adapt(60));
     }];
     [self.navView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -346,7 +346,7 @@ static NSInteger const kInputToolBarH = 62;
 - (void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
 //    [self.navigationController setNavigationBarHidden:YES animated:YES];
-//    [self hiddenTabAndNav];
+    [self hiddenTabAndNav];
 //    TXTNavigationController *navigationController = (TXTNavigationController *)self.navigationController;
 //    if (navigationController.interfaceOrientation == UIInterfaceOrientationLandscapeRight) {
 //
@@ -1687,6 +1687,7 @@ static NSInteger const kInputToolBarH = 62;
     self.bottomToos.hidden = NO;
 //    self.topToos.hidden = NO;
 //    self.statusToos.hidden = NO;
+    [self.navView addSubview:self.statusToos];
     self.navView.hidden = NO;
 }
 
@@ -1717,7 +1718,8 @@ static NSInteger const kInputToolBarH = 62;
 
 - (TXTStatusBar *)statusToos{
     if (!_statusToos) {
-        _statusToos = [[TXTStatusBar alloc] initWithFrame:CGRectMake(0, 0, Screen_Height, 20)];
+        CGFloat width = MAX(Screen_Height, Screen_Width);
+        _statusToos = [[TXTStatusBar alloc] initWithFrame:CGRectMake(0, 0, width, 20)];
 //        [self.view addSubview:_statusToos];
 //        [self.view bringSubviewToFront:_statusToos];
     }
@@ -1861,7 +1863,8 @@ static NSInteger const kInputToolBarH = 62;
 - (void)countDown {
     self.count -= 1;
     if (self.count <= 0.01) {
-//        self.statusToos.hidden = YES;
+        [self.statusToos removeFromSuperview];
+        self.statusToos = nil;
 //        self.topToos.hidden = YES;
         self.navView.hidden = YES;
         self.bottomToos.hidden = YES;
@@ -1896,6 +1899,7 @@ static NSInteger const kInputToolBarH = 62;
         [self endPolling];
     //    self.statusToos.hidden = NO;
     //    self.topToos.hidden = NO;
+        [self.navView addSubview:self.statusToos];
         self.navView.hidden = NO;
         self.bottomToos.hidden = NO;
         self.count = 3;
@@ -1905,6 +1909,8 @@ static NSInteger const kInputToolBarH = 62;
     }
     //显示转隐藏
     else{
+        [self.statusToos removeFromSuperview];
+        self.statusToos = nil;
         self.navView.hidden = YES;
 //        [self.statusToos removeFromSuperview];
 //        self.topToos.hidden = YES;
