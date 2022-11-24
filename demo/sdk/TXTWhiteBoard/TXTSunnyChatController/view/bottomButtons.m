@@ -158,7 +158,7 @@
     UILabel *label = [[UILabel alloc] init];
     [self addSubview:label];
     [label mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(self.txVideoButton.mas_bottom).offset(-16);
+        make.top.mas_equalTo(self.txVideoButton.mas_bottom).offset(-14);
         make.width.equalTo(self.mas_width).dividedBy(6.0);
         make.centerX.mas_equalTo(button.mas_centerX).offset(0);
         make.height.mas_equalTo(15);

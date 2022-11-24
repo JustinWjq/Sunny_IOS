@@ -128,20 +128,20 @@ static NSInteger const kInputToolBarH = 62;
     [self.view addGestureRecognizer:contentviewTap];
     
     
-    TXTNavigationController *navigationController = (TXTNavigationController *)self.navigationController;
-    //切换rootViewController的旋转方向
-    if (navigationController.interfaceOrientation == UIInterfaceOrientationPortrait) {
-        navigationController.interfaceOrientation = UIInterfaceOrientationLandscapeRight;
-        navigationController.interfaceOrientationMask = UIInterfaceOrientationMaskLandscapeRight;
-        //设置屏幕的转向为横屏
-        [[UIDevice currentDevice] setValue:@(UIDeviceOrientationLandscapeRight) forKey:@"orientation"];
-        NSString *portrait = [NSString stringWithFormat:@"%ld",(long)TRTCVideoRenderModeLandscape];
-        TXUserDefaultsSetObjectforKey(portrait, Direction);
-        //刷新
-        [UIViewController attemptRotationToDeviceOrientation];
-        [self updateRenderViewsLayout];
-        [self.bottomToos updateButtons];
-    }
+//    TXTNavigationController *navigationController = (TXTNavigationController *)self.navigationController;
+//    //切换rootViewController的旋转方向
+//    if (navigationController.interfaceOrientation == UIInterfaceOrientationPortrait) {
+//        navigationController.interfaceOrientation = UIInterfaceOrientationLandscapeRight;
+//        navigationController.interfaceOrientationMask = UIInterfaceOrientationMaskLandscapeRight;
+//        //设置屏幕的转向为横屏
+//        [[UIDevice currentDevice] setValue:@(UIDeviceOrientationLandscapeRight) forKey:@"orientation"];
+//        NSString *portrait = [NSString stringWithFormat:@"%ld",(long)TRTCVideoRenderModeLandscape];
+//        TXUserDefaultsSetObjectforKey(portrait, Direction);
+//        //刷新
+//        [UIViewController attemptRotationToDeviceOrientation];
+//        [self updateRenderViewsLayout];
+//        [self.bottomToos updateButtons];
+//    }
 }
 
 /// setUpSmallChatUI
@@ -388,7 +388,7 @@ static NSInteger const kInputToolBarH = 62;
 }
 
 - (void)joinRoom{
-    [self addNotification];
+//    [self addNotification];
     //更新视频视图
     //    self.userId = TXUserDefaultsGetObjectforKey(Agent);
     self.userId = [TICConfig shareInstance].userId;
@@ -1902,6 +1902,7 @@ static NSInteger const kInputToolBarH = 62;
         [self.navView addSubview:self.statusToos];
         self.navView.hidden = NO;
         self.bottomToos.hidden = NO;
+        self.hideBottomAndTop = NO;
         self.count = 3;
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [self countDown];
