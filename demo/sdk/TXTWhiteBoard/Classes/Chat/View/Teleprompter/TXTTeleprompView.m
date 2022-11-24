@@ -24,6 +24,11 @@
 /** fontBgView */
 @property (nonatomic, strong) TXTFontBgView *fontBgView;
 
+/** scrollView */
+@property (nonatomic, strong) UIScrollView *scrollView;
+/** containerView */
+@property (nonatomic, strong) UIView *containerView;
+
 ///** fontBgView */
 //@property (nonatomic, strong) UIView *fontBgView;
 ///** bigFontBtn */
@@ -72,12 +77,32 @@
         make.centerY.equalTo(self.nameLabel.mas_centerY);
     }];
     
-    [self addSubview:self.contentLabel];
-    [self.contentLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+    
+    [self addSubview:self.scrollView];
+    [self.scrollView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(13);
         make.right.equalTo(self.mas_right).offset(-7);
         make.top.mas_equalTo(34);
         make.bottom.equalTo(self.mas_bottom).offset(-55);
+    }];
+    [self.scrollView addSubview:self.containerView];
+    // 设置scrollView的容器视图的约束
+    [self.containerView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self.scrollView);
+        make.width.equalTo(self.scrollView);
+    }];
+    
+    [self.containerView addSubview:self.contentLabel];
+    [self.contentLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.left.mas_equalTo(13);
+//        make.right.equalTo(self.mas_right).offset(-7);
+//        make.top.mas_equalTo(34);
+//        make.bottom.equalTo(self.mas_bottom).offset(-55);
+        make.left.right.top.bottom.equalTo(self.containerView);
+    }];
+    [self.containerView mas_makeConstraints:^(MASConstraintMaker *make) {
+        // 设置容器视图的底部与要显示的子控件的底部相同，不然scrollView不能滚动
+        make.bottom.equalTo(self.contentLabel.mas_bottom).offset(0);
     }];
     
     [self addSubview:self.fontBtn];
@@ -118,6 +143,11 @@
 //    } else {
 //        [self updateUI:NO];
 //    }
+}
+
+- (void)setTeleprompStr:(NSString *)teleprompStr {
+    _teleprompStr = [teleprompStr copy];
+    self.contentLabel.text = teleprompStr;
 }
 
 /// orientationChange
@@ -254,6 +284,29 @@
         self.switchView = switchView;
     }
     return _switchView;
+}
+
+- (UIScrollView *)scrollView {
+    if (!_scrollView) {
+        UIScrollView *scrollView = [[UIScrollView alloc] init];
+        scrollView.showsVerticalScrollIndicator = NO;
+        scrollView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
+        if (@available(iOS 11.0, *)) {
+            scrollView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+        } else {
+        }
+        self.scrollView = scrollView;
+    }
+    return _scrollView;
+}
+
+- (UIView *)containerView {
+    if (!_containerView) {
+        UIView *containerView = [[UIView alloc] init];
+        containerView.backgroundColor = [UIColor clearColor];
+        self.containerView = containerView;
+    }
+    return _containerView;
 }
 
 /** contentLabel */

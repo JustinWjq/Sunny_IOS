@@ -18,7 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) dispatch_block_t closeBlock;
 
 /// 展示ppt选图片
-- (void)showImages:(NSArray *)imagesArray;
+- (void)showImages:(NSArray *)imagesArray contentArray:(NSArray *)contentArray;
 
 - (void)showVideo:(NSString *)videoUrl;
 

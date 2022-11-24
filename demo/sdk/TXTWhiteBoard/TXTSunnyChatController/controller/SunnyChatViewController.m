@@ -656,6 +656,7 @@ static NSInteger const kInputToolBarH = 62;
         fileModel.pics = @[@"https://wisdom-exhibition-1301905869.cos.ap-shenzhen-fsi.myqcloud.com/testdocument/0jsoaidalsh31nr2bk4c_tiw/picture/1.jpg",
                            @"https://wisdom-exhibition-1301905869.cos.ap-shenzhen-fsi.myqcloud.com/testdocument/0jsoaidalsh31nr2bk4c_tiw/picture/2.jpg",
                            @"https://wisdom-exhibition-1301905869.cos.ap-shenzhen-fsi.myqcloud.com/testdocument/0jsoaidalsh31nr2bk4c_tiw/picture/3.jpg"];
+        fileModel.contents = @[@"你是哈回电话阿萨德发生的", @"adfajsdfhjahshhh噶恒大华府阿德发斯蒂芬阿迪斯发斯蒂芬阿萨德发生的发斯蒂芬dfjhasdfhjhasdhfasdhfahsdfasdfasdfasdfasdfa",@"dfa"];
         [self showWhiteViewController:fileType fileModel:fileModel];
     } else if (fileType == FileTypeVideo) {
         fileModel.videoUrl = @"https://res.qcloudtiw.com/demo/tiw-vod.mp4";
@@ -708,7 +709,7 @@ static NSInteger const kInputToolBarH = 62;
                 QSLog(@"切换文件 == %@",desc);
                 [self getWhiteBoard:YES];
                 if (fileType == FileTypePics) {
-                    [self.whiteBoardViewController showImages:fileModel.pics];
+                    [self.whiteBoardViewController showImages:fileModel.pics contentArray:fileModel.contents];
                 } else if (fileType == FileTypeVideo) {
                     [self.whiteBoardViewController showVideo:fileModel.videoUrl];
                 }

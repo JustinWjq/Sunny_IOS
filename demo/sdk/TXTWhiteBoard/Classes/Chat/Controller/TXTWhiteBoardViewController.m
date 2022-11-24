@@ -23,6 +23,9 @@
 /** imagesArray */
 @property (nonatomic, strong) NSArray *imagesArray;
 
+/** contentArray */
+@property (nonatomic, strong) NSArray *contentArray;
+
 @property (strong, nonatomic) NSArray *imageIds;
 @end
 
@@ -102,12 +105,14 @@
 }
 
 /// 展示ppt选图片
-- (void)showImages:(NSArray *)imagesArray {
+- (void)showImages:(NSArray *)imagesArray contentArray:(NSArray *)contentArray {
     [[[TICManager sharedInstance] getBoardController] addImagesFile:imagesArray];
+    self.contentArray = contentArray;
+    self.whiteBoardView.isTelepromp = YES;
     if (imagesArray.count > 1) {
         self.collectionView.hidden = NO;
         self.collectionView.imagesArray = imagesArray;
-    }else{
+    } else {
         self.collectionView.hidden = YES;
         if (imagesArray.count == 1) {
         } else {
@@ -122,6 +127,9 @@
 
 - (void)selectImage:(NSInteger)index {
     [[[TICManager sharedInstance] getBoardController] gotoBoard:self.imageIds[index] resetStep:YES];
+    if (index < self.contentArray.count) {
+        self.whiteBoardView.teleprompStr = self.contentArray[index];
+    }
 }
 
 - (void)onTEBAddBoard:(NSArray *)boardIds fileId:(NSString *)fileId{

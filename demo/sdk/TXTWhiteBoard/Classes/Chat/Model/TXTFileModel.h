@@ -14,6 +14,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /** pics 图片数组 */
 @property (nonatomic, strong) NSArray *pics;
+/** contents 图片对应的提词器 */
+@property (nonatomic, strong) NSArray *contents;
+
 /** videoUrl */
 @property (nonatomic, copy) NSString *videoUrl;
 
