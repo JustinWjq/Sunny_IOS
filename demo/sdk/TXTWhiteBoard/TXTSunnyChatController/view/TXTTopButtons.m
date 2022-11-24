@@ -40,7 +40,13 @@
         make.width.mas_equalTo(30);
         make.centerY.mas_equalTo(self.centerY).offset(0);
     }];
-    [self.speakBtn setImage:imageName(@"speaker") forState:UIControlStateNormal];
+    NSString *currentRoute = [self getCurrentAudioRoute];
+    if ([currentRoute isEqualToString:@"扬声器"]) {
+        [self.speakBtn setImage:imageName(@"speaker") forState:UIControlStateNormal];
+    }else{
+        [self.speakBtn setImage:imageName(@"receiver") forState:UIControlStateNormal];
+    }
+    
     self.speakBtn.imageView.contentMode = UIViewContentModeScaleAspectFit;
     [self.speakBtn addTarget:self action:@selector(txSpeakClick) forControlEvents:UIControlEventTouchDown];
     
@@ -93,12 +99,27 @@
 
 - (void)changeSpeakBtnStatus:(BOOL)status{
     if (status) {
-        UIImage *speakerImg = [UIImage imageNamed:@"receiver" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
-        [self.speakBtn setImage:[speakerImg imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] forState:UIControlStateNormal];
-    }else{
         UIImage *speakerImg = [UIImage imageNamed:@"speaker" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
         [self.speakBtn setImage:[speakerImg imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] forState:UIControlStateNormal];
+    }else{
+        UIImage *speakerImg = [UIImage imageNamed:@"receiver" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
+        [self.speakBtn setImage:[speakerImg imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] forState:UIControlStateNormal];
     }
+}
+
+- (NSString *)getCurrentAudioRoute{
+    AVAudioSession* myAudioSession = [AVAudioSession sharedInstance];
+    NSArray *currentOutputs = myAudioSession.currentRoute.outputs;
+    NSString *str = nil;
+    for( AVAudioSessionPortDescription *port in currentOutputs ){
+        //扬声器-Speaker
+        //李小龙的AirPods Pro - Find My-BluetoothA2DPOutput
+        //耳机-Headphones
+        str = [NSString stringWithFormat:@"%@", port.portName];
+        NSLog(@"getCurrentAudioRoute = %@-%@", port.portName,port.portType);
+     
+    }
+    return str;
 }
 
 @end

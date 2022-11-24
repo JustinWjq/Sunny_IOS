@@ -25,6 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) UIButton *quitBtn;
 
 - (void)changeSpeakBtnStatus:(BOOL)status;
+- (NSString *)getCurrentAudioRoute;
 @end
 
 NS_ASSUME_NONNULL_END

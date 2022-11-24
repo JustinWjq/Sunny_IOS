@@ -407,8 +407,16 @@ static NSInteger const kInputToolBarH = 62;
     [[[TICManager sharedInstance] getTRTCCloud] startRemoteView:[TICConfig shareInstance].userId view:render];
     [[[TICManager sharedInstance] getTRTCCloud] startLocalPreview:YES view:render];
     [[[TICManager sharedInstance] getTRTCCloud] startLocalAudio];
-    [[[TICManager sharedInstance] getTRTCCloud] setAudioRoute:TRTCAudioModeSpeakerphone];
-    self.isSpeak = YES;
+    NSString *currentRoute = [self.topToos getCurrentAudioRoute];
+    if ([currentRoute isEqualToString:@"扬声器"]) {
+        self.isSpeak = YES;
+        [[[TICManager sharedInstance] getTRTCCloud] setAudioRoute:TRTCAudioModeSpeakerphone];
+    }else{
+        self.isSpeak = NO;
+        [[[TICManager sharedInstance] getTRTCCloud] setAudioRoute:TRTCAudioModeEarpiece];
+    }
+    
+   
     [self.renderViews addObject:userModel];
     [self roomInfo:userModel];
 }
@@ -887,14 +895,19 @@ static NSInteger const kInputToolBarH = 62;
 #pragma mark -- TXTTopButtonsDelegate
 
 - (void)txSpeakBtnClick{
-    if (self.isSpeak) {
-        [self.topToos changeSpeakBtnStatus:self.isSpeak];
-        [[[TICManager sharedInstance] getTRTCCloud] setAudioRoute:TRTCAudioModeEarpiece];
+    NSString *currentRoute = [self.topToos getCurrentAudioRoute];
+    if ([currentRoute isEqualToString:@"扬声器"]) {
+        self.isSpeak = !self.isSpeak;
+        if (self.isSpeak) {
+            [self.topToos changeSpeakBtnStatus:self.isSpeak];
+            [[[TICManager sharedInstance] getTRTCCloud] setAudioRoute:TRTCAudioModeSpeakerphone];
+        }else{
+            [self.topToos changeSpeakBtnStatus:self.isSpeak];
+            [[[TICManager sharedInstance] getTRTCCloud] setAudioRoute:TRTCAudioModeEarpiece];
+        }
     }else{
-        [self.topToos changeSpeakBtnStatus:self.isSpeak];
-        [[[TICManager sharedInstance] getTRTCCloud] setAudioRoute:TRTCAudioModeSpeakerphone];
+        [[JMToast sharedToast] showDialogWithMsg:@"无法切换外放设备"];
     }
-    self.isSpeak = !self.isSpeak;
 }
 
 - (void)txSwitchBtnClick{
@@ -1560,7 +1573,21 @@ static NSInteger const kInputToolBarH = 62;
 }
 
 - (void)onAudioRouteChanged:(TRTCAudioRoute)route fromRoute:(TRTCAudioRoute)fromRoute{
+  //  * @param route     当前音频路由
+  //  * @param fromRoute 变更前的音频路由
+  //  TRTCAudioModeSpeakerphone  =   0,   ///< 扬声器
+  //  TRTCAudioModeEarpiece      =   1,   ///< 听筒
     NSLog(@"onAudioRouteChanged = %d-%d",fromRoute,route);
+    if (route == TRTCAudioModeSpeakerphone) {
+        self.isSpeak = YES;
+        [self.topToos changeSpeakBtnStatus:self.isSpeak];
+        [[[TICManager sharedInstance] getTRTCCloud] setAudioRoute:TRTCAudioModeSpeakerphone];
+    }else{
+        self.isSpeak = NO;
+        [self.topToos changeSpeakBtnStatus:self.isSpeak];
+        [[[TICManager sharedInstance] getTRTCCloud] setAudioRoute:TRTCAudioModeEarpiece];
+    }
+  
 }
 
 - (void)inputKeyboardWillShow:(NSNotification *)noti {
@@ -2022,5 +2049,196 @@ static NSInteger const kInputToolBarH = 62;
     }
     return _smallMessageView;
 }
+
+- (NSString *) demonstrateInputSelection
+{
+    NSError* theError = nil;
+    BOOL result = YES;
+    NSMutableString *info = [[NSMutableString alloc] init];
+    [info appendString: @"     Device Audio Input Hardware\n"];
+
+    NSString *str = nil;
+
+    AVAudioSession* myAudioSession = [AVAudioSession sharedInstance];
+
+    result = [myAudioSession setCategory:AVAudioSessionCategoryPlayAndRecord error:&theError];
+    if (!result)
+    {
+        NSLog(@"setCategory failed");
+    }
+
+    result = [myAudioSession setActive:YES error:&theError];
+    if (!result)
+    {
+        NSLog(@"setActive failed");
+    }
+
+    // Get the set of available inputs. If there are no audio accessories attached, there will be
+    // only one available input -- the built in microphone.
+    NSArray* inputs = [myAudioSession availableInputs];
+    str = [NSString stringWithFormat:@"\n--- Ports available on %@: %d ---", [UIDevice currentDevice].name , [inputs count]];
+    NSLog(@"%@",str);
+    [info appendFormat:@"%@\n",str];
+
+    // Locate the Port corresponding to the built-in microphone.
+    AVAudioSessionPortDescription* builtInMicPort = nil;
+    AVAudioSessionDataSourceDescription* frontDataSource = nil;
+
+    for (AVAudioSessionPortDescription* port in inputs)
+    {
+        // Print out a description of the data sources for the built-in microphone
+        str = @"\n**********";
+        NSLog(@"%@",str);
+        [info appendFormat:@"%@\n",str];
+        str = [NSString stringWithFormat:@"Port :\"%@\": UID:%@", port.portName, port.UID ];
+        NSLog(@"%@",str);
+        [info appendFormat:@"%@\n",str];
+        if( [port.dataSources count] ){
+            str = [NSString stringWithFormat:@"Port has %d data sources",(unsigned)[port.dataSources count] ];
+            NSLog(@"%@",str);
+            [info appendFormat:@"%@\n",str];
+        }
+
+        str = [NSString stringWithFormat:@">%@", port.dataSources];
+        NSLog(@"%@",str);
+   //     [info appendFormat:@"%@\n",str];
+
+        if( [port.portType isEqualToString:AVAudioSessionPortLineIn] ){
+            str = @"Line Input found";
+            NSLog(@"%@",str);
+            [info appendFormat:@"%@\n",str];
+        }
+        else if( [port.portType isEqualToString:AVAudioSessionPortUSBAudio] ){
+            str = @"USB Audio found";
+            NSLog(@"%@",str);
+            [info appendFormat:@"%@\n",str];
+        }
+        else if ([port.portType isEqualToString:AVAudioSessionPortBuiltInMic]){
+            builtInMicPort = port;
+            str = @"Built-in Mic found";
+            NSLog(@"%@",str);
+            [info appendFormat:@"%@\n",str];
+        }
+        else if ([port.portType isEqualToString:AVAudioSessionPortHeadsetMic]){
+            builtInMicPort = port;
+            str = @"Headset Mic found";
+            NSLog(@"%@",str);
+            [info appendFormat:@"%@\n",str];
+        }
+        else{
+            str = @"Other input source found";
+            NSLog(@"%@",str);
+            [info appendFormat:@"%@\n",str];
+        }
+
+        // loop over the built-in mic's data sources and attempt to locate the front microphone
+        for (AVAudioSessionDataSourceDescription* source in port.dataSources)
+        {
+            str = [NSString stringWithFormat:@"\nName:%@ (%d) \nPolar:%@ \nType:%@ \nPatterns:%@", source.dataSourceName, [source.dataSourceID intValue], source.selectedPolarPattern, port.portType, source.supportedPolarPatterns];
+            NSLog(@"%@",str);
+            [info appendFormat:@"%@\n",str];
+
+            //           if ([source.orientation isEqual:AVAudioSessionOrientationFront])
+            //           {
+            //               frontDataSource = source;
+            //               break;
+            //           }
+        } // end data source iteration
+
+    }
+
+    str = @"\n----  Current Selected Ports ----\n";
+    NSLog(@"%@",str);
+    [info appendFormat:@"%@",str];
+
+    NSArray *currentInputs = myAudioSession.currentRoute.inputs;
+//    str = [NSString stringWithFormat:@"\n%d current input ports", [currentInputs count]];
+//    NSLog(@"%@",str);
+//    [info appendFormat:@"%@\n",str];
+    for( AVAudioSessionPortDescription *port in currentInputs ){
+        str = [NSString stringWithFormat:@"\nInput Port :\"%@\":", port.portName ];
+        NSLog(@"%@",str);
+        [info appendFormat:@"%@\n",str];
+        if( [port.dataSources count] ){
+            str = [NSString stringWithFormat:@"Port has %d data sources",(unsigned)[port.dataSources count] ];
+            NSLog(@"%@",str);
+            [info appendFormat:@"%@\n",str];
+
+            str = [NSString stringWithFormat:@"Selected data source:%@",  port.selectedDataSource.dataSourceName];
+            NSLog(@"%@",str);
+            [info appendFormat:@"%@\n",str];
+
+            if( [port.selectedDataSource.supportedPolarPatterns count] > 0 ){
+                str = [NSString stringWithFormat:@"Selected polar pattern:%@", port.selectedDataSource.selectedPolarPattern];
+                NSLog(@"%@",str);
+                [info appendFormat:@"%@\n",str];
+            }
+        }
+    }
+
+    NSArray *currentOutputs = myAudioSession.currentRoute.outputs;
+//    str = [NSString stringWithFormat:@"\n%d current output ports", [currentOutputs count]];
+//    NSLog(@"%@",str);
+//    [info appendFormat:@"%@\n",str];
+    for( AVAudioSessionPortDescription *port in currentOutputs ){
+        str = [NSString stringWithFormat:@"\nOutput Port :\"%@\":", port.portName ];
+        NSLog(@"%@",str);
+        [info appendFormat:@"%@\n",str];
+        if( [port.dataSources count] ){
+            str = [NSString stringWithFormat:@"Port has %d data sources",(unsigned)[port.dataSources count] ];
+            NSLog(@"%@",str);
+            [info appendFormat:@"%@\n",str];
+
+            str = [NSString stringWithFormat:@"Selected data source:%@",  port.selectedDataSource.dataSourceName];
+            NSLog(@"%@",str);
+            [info appendFormat:@"%@\n",str];
+        }
+
+    }
+
+//    str = [NSString stringWithFormat:@"\Current Route: %@ Source:%@\n", myAudioSession.currentRoute.portName, myAudioSession.preferredInput.selectedDataSource.dataSourceName];
+//    NSLog(@"%@",str);
+//    [info appendFormat:@"%@\n",str];
+
+
+    if( myAudioSession.preferredInput.portName ){
+        str = [NSString stringWithFormat:@"\nPreferred Port: %@ Source:%@\n", myAudioSession.preferredInput.portName, myAudioSession.preferredInput.selectedDataSource.dataSourceName];
+    } else {
+        str = @"\nNo Preferred Port set";
+    }
+    NSLog(@"%@",str);
+    [info appendFormat:@"%@\n",str];
+
+    return info;
+
+    if (frontDataSource)
+    {
+        NSLog(@"Currently selected source is \"%@\" for port \"%@\"", builtInMicPort.selectedDataSource.dataSourceName, builtInMicPort.portName);
+        NSLog(@"Attempting to select source \"%@\" on port \"%@\"", frontDataSource, builtInMicPort.portName);
+
+        // Set a preference for the front data source.
+        theError = nil;
+        result = [builtInMicPort setPreferredDataSource:frontDataSource error:&theError];
+        if (!result)
+        {
+            // an error occurred. Handle it!
+            NSLog(@"setPreferredDataSource failed");
+        }
+    }
+
+    // Make sure the built-in mic is selected for input. This will be a no-op if the built-in mic is
+    // already the current input Port.
+    theError = nil;
+    result = [myAudioSession setPreferredInput:builtInMicPort error:&theError];
+    if (!result)
+    {
+        // an error occurred. Handle it!
+        NSLog(@"setPreferredInput failed");
+    }
+
+    return info;
+}
+
+
 
 @end
