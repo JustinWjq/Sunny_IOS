@@ -33,7 +33,7 @@ static NSInteger const kThinTag = 12500;
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        self.backgroundColor = [UIColor whiteColor];
+        self.backgroundColor = [UIColor clearColor];
         [self initUI];
     }
     return self;
