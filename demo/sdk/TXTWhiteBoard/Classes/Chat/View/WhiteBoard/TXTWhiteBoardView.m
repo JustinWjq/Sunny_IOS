@@ -73,6 +73,7 @@
         make.height.mas_equalTo(36);
         make.width.mas_equalTo(122);
     }];
+    self.teleprompView.hidden = YES;
     
     [self addSubview:self.coverView];
     [self.coverView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -103,6 +104,17 @@
         [self updateUI:NO];
     }
 }
+
+- (void)setIsTelepromp:(BOOL)isTelepromp {
+    _isTelepromp = isTelepromp;
+    self.teleprompView.hidden = !self.isTelepromp;
+}
+
+- (void)setTeleprompStr:(NSString *)teleprompStr {
+    _teleprompStr = [teleprompStr copy];
+    self.teleprompView.teleprompStr = teleprompStr;
+}
+
 
 /// hideCover
 - (void)hideCover {
@@ -206,7 +218,7 @@
         } else {
             [self.teleprompView mas_remakeConstraints:^(MASConstraintMaker *make) {
                 make.right.equalTo(self.mas_safeAreaLayoutGuideRight).offset(-10);
-                make.height.mas_equalTo(225).priorityHigh();
+                make.height.mas_equalTo(Adapt(225)).priorityHigh();
                 make.width.mas_equalTo(180);
                 make.bottom.equalTo(self.mas_safeAreaLayoutGuideBottom).offset(-70);
             }];
