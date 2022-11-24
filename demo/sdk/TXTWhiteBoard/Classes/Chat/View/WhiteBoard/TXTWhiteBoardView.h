@@ -28,6 +28,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, weak) id<TXTWhiteBoardViewDelegate> delegate;
 
 
+/** isTelepromp */
+@property (nonatomic, assign) BOOL isTelepromp;
+/** teleprompStr */
+@property (nonatomic, copy) NSString *teleprompStr;
+
 @end
 
 NS_ASSUME_NONNULL_END

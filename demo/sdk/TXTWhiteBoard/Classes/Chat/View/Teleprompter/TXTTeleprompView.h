@@ -28,6 +28,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)upDateUIWithSwithch:(BOOL)isOn;
 /// 是否横竖屏
 - (void)updateUI:(BOOL)isPortrait;
+
+/** teleprompStr */
+@property (nonatomic, copy) NSString *teleprompStr;
 @end
 
 NS_ASSUME_NONNULL_END

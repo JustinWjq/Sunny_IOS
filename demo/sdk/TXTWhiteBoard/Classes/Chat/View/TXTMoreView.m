@@ -38,10 +38,10 @@
 - (void)setupUI {
     [self addSubview:self.contenView];
     [self.contenView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(self.mas_right).offset(-90);
+        make.right.equalTo(self.mas_safeAreaLayoutGuideRight).offset(-70);
         make.width.mas_equalTo(60);
         make.height.mas_equalTo(60);
-        make.bottom.equalTo(self.mas_safeAreaLayoutGuideBottom).offset(-62);
+        make.bottom.equalTo(self.mas_safeAreaLayoutGuideBottom).offset(- Adapt(60 + 15));
     }];
     self.contenView.cornerRadius = 10;
     [self.contenView addSubview:self.chatBtn];

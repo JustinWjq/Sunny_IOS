@@ -54,7 +54,7 @@
 - (void)qs_initSubViews {
 //    TXTNavigationController *navigationController = (TXTNavigationController *)self.navigationController;
 //    navigationController.interfaceOrientationMask = UIInterfaceOrientationMaskAll;
-    self.view.backgroundColor = [UIColor clearColor];
+    self.view.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:self.whiteBoardView];
     [self.whiteBoardView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.view);

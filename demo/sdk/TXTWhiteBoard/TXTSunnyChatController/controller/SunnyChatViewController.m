@@ -149,7 +149,7 @@ static NSInteger const kInputToolBarH = 62;
     [self.view addSubview:self.smallChatView];
     [self.smallChatView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.view.mas_safeAreaLayoutGuideLeft).offset(15);
-        make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideBottom).offset(-75);
+        make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideBottom).offset(-(Adapt(15+60)));
         make.width.mas_equalTo(150);
         make.height.mas_equalTo(34);
     }];
@@ -596,11 +596,13 @@ static NSInteger const kInputToolBarH = 62;
         [weakSelf.whiteBoardViewController.view removeFromSuperview];
         weakSelf.whiteBoardViewController = nil;
         [weakSelf.smallChatView mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.bottom.equalTo(weakSelf.view.mas_safeAreaLayoutGuideBottom).offset(-75);
+            make.bottom.equalTo(weakSelf.view.mas_safeAreaLayoutGuideBottom).offset(-(Adapt(15+60)));
         }];
         weakSelf.crossBtn.hidden = NO;
+        weakSelf.smallChatView.hidden = YES;
         [weakSelf.crossBtn mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.bottom.mas_equalTo(weakSelf.view.mas_safeAreaLayoutGuideBottom).offset(weakSelf.hideBottomAndTop ? -Adapt(15) : -(Adapt(15+60)));
+//            make.bottom.mas_equalTo(weakSelf.view.mas_safeAreaLayoutGuideBottom).offset(weakSelf.hideBottomAndTop ? -Adapt(15) : -(Adapt(15+60)));
+            make.bottom.mas_equalTo(weakSelf.view.mas_safeAreaLayoutGuideBottom).offset(-(Adapt(15+60)));
         }];
     };
     [self addChildViewController:self.whiteBoardViewController];
@@ -612,6 +614,7 @@ static NSInteger const kInputToolBarH = 62;
     [self.smallChatView mas_updateConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideBottom).offset(-20);
     }];
+    self.smallChatView.hidden = NO;
     self.crossBtn.hidden = [UIWindow isLandscape];
     [self.crossBtn mas_updateConstraints:^(MASConstraintMaker *make) {
         make.bottom.mas_equalTo(self.view.mas_safeAreaLayoutGuideBottom).offset(-20);
@@ -1868,7 +1871,9 @@ static NSInteger const kInputToolBarH = 62;
 //        self.topToos.hidden = YES;
         self.navView.hidden = YES;
         self.bottomToos.hidden = YES;
-        self.smallChatView.hidden = YES;
+        if (!self.isWhite) {
+            self.smallChatView.hidden = YES;
+        }
         self.hideBottomAndTop = YES;
         [self endPolling];
     } else {
@@ -1902,6 +1907,7 @@ static NSInteger const kInputToolBarH = 62;
         [self.navView addSubview:self.statusToos];
         self.navView.hidden = NO;
         self.bottomToos.hidden = NO;
+        self.smallChatView.hidden = NO;
         self.count = 3;
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [self countDown];
@@ -1915,7 +1921,9 @@ static NSInteger const kInputToolBarH = 62;
 //        [self.statusToos removeFromSuperview];
 //        self.topToos.hidden = YES;
         self.bottomToos.hidden = YES;
-        self.smallChatView.hidden = YES;
+        if (!self.isWhite) {
+            self.smallChatView.hidden = YES;
+        }
         self.hideBottomAndTop = YES;
         [self endPolling];
     }
