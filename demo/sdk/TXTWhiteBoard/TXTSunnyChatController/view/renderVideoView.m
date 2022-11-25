@@ -440,7 +440,7 @@
     }
 }
 
-- (void)changeViewNumber:(TRTCVideoRenderNumber)number mode:(TRTCVideoRenderMode)mode Index:(NSInteger)index userVolumes:(NSArray<TRTCVolumeInfo *> *)userVolumes{
+- (void)changeViewNumber:(TRTCVideoRenderNumber)number mode:(TRTCVideoRenderMode)mode Index:(NSInteger)index userVolumes:(NSArray<TRTCVolumeInfo *> *)userVolumes RenderArray:(NSArray *)array{
     if (index > self.renderArray.count) {
         for (UIView *svideoView in self.subviews) {
             if ([svideoView isKindOfClass:[videoView class]]) {
@@ -451,7 +451,10 @@
                     }
                 }
             }else if([svideoView isKindOfClass:[TXTVideoCollectionView class]]){
-                self.renderViewCollectionView.userVolumesArray = userVolumes;
+//                NSMutableArray *newrenderArr = [NSMutableArray arrayWithArray:self.renderArray];
+//                [newrenderArr removeObjectAtIndex:0];
+//                self.renderViewCollectionView.renderViewsArray = newrenderArr;
+                [self.renderViewCollectionView setUserVolumesArray:userVolumes renderArray:array];
             }
         }
     }else{
@@ -470,18 +473,24 @@
                 }
                 
             }else if([svideoView isKindOfClass:[TXTVideoCollectionView class]]){
-                self.renderViewCollectionView.userVolumesArray = userVolumes;
+//                NSMutableArray *newrenderArr = [NSMutableArray arrayWithArray:self.renderArray];
+//                [newrenderArr removeObjectAtIndex:0];
+//                self.renderViewCollectionView.renderViewsArray = newrenderArr;
+                [self.renderViewCollectionView setUserVolumesArray:userVolumes renderArray:array];
             }
         }
     }
     
 }
 
-- (void)changeVideoViewNumber:(TRTCVideoRenderNumber)number mode:(TRTCVideoRenderMode)mode Index:(NSInteger)index{
+- (void)changeVideoViewNumber:(TRTCVideoRenderNumber)number mode:(TRTCVideoRenderMode)mode Index:(NSInteger)index RenderArray:(NSArray *)array{
     for (UIView *svideoView in self.subviews) {
         if (mode == TRTCVideoRenderModePortrait) {
             if([svideoView isKindOfClass:[TXTVideoCollectionView class]]){
-                [self.renderViewCollectionView setUserVideoCell:index];
+//                NSMutableArray *newrenderArr = [NSMutableArray arrayWithArray:self.renderArray];
+//                [newrenderArr removeObjectAtIndex:0];
+//                self.renderViewCollectionView.renderViewsArray = newrenderArr;
+                [self.renderViewCollectionView setUserVideoCell:index renderArray:array];
             }
         }else{
             if ([svideoView isKindOfClass:[videoView class]]) {
@@ -595,7 +604,10 @@
                                 }];
                                 [nsvideoView showVideoViewDirectionLeft:YES];
                             }else{
-                                [self.renderViewCollectionView setUserVideoCell:index];
+//                                NSMutableArray *newrenderArr = [NSMutableArray arrayWithArray:self.renderArray];
+//                                [newrenderArr removeObjectAtIndex:0];
+//                                self.renderViewCollectionView.renderViewsArray = newrenderArr;
+                                [self.renderViewCollectionView setUserVideoCell:index renderArray:array];
                             }
                         }
                         
@@ -705,7 +717,10 @@
                                 }];
                                 [nsvideoView initHideUIDirectionLeft:NO];
                             }else{
-                                [self.renderViewCollectionView setUserVideoCell:index];
+//                                NSMutableArray *newrenderArr = [NSMutableArray arrayWithArray:self.renderArray];
+//                                [newrenderArr removeObjectAtIndex:0];
+//                                self.renderViewCollectionView.renderViewsArray = newrenderArr;
+                                [self.renderViewCollectionView setUserVideoCell:index renderArray:array];
                             }
                         }
                         
@@ -713,7 +728,10 @@
                 }
                 
             }else if([svideoView isKindOfClass:[TXTVideoCollectionView class]]){
-                [self.renderViewCollectionView setUserVideoCell:index];
+//                NSMutableArray *newrenderArr = [NSMutableArray arrayWithArray:self.renderArray];
+//                [newrenderArr removeObjectAtIndex:0];
+//                self.renderViewCollectionView.renderViewsArray = newrenderArr;
+                [self.renderViewCollectionView setUserVideoCell:index renderArray:array];
             }
         }
        

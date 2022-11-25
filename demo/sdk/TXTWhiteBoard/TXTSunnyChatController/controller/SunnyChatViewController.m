@@ -1194,14 +1194,18 @@ static NSInteger const kInputToolBarH = 62;
 - (void)updateRenderViewsLayoutWithIndex:(NSInteger)index userVolumes:(NSArray<TRTCVolumeInfo *> *)userVolumes{
     NSString *direction = TXUserDefaultsGetObjectforKey(Direction);
     NSInteger directionInt = [direction integerValue];
-    [self.renderVideoView changeViewNumber:(self.renderViews.count - 1) mode:directionInt Index:index userVolumes:userVolumes];
+    NSMutableArray *newrenderArr = [NSMutableArray arrayWithArray:self.renderViews];
+    [newrenderArr removeObjectAtIndex:0];
+    [self.renderVideoView changeViewNumber:(self.renderViews.count - 1) mode:directionInt Index:index userVolumes:userVolumes RenderArray:newrenderArr];
 }
 
 //更新某一个view，video
 - (void)updateVideoRenderViewsLayoutWithIndex:(NSInteger)index{
     NSString *direction = TXUserDefaultsGetObjectforKey(Direction);
     NSInteger directionInt = [direction integerValue];
-    [self.renderVideoView changeVideoViewNumber:(self.renderViews.count - 1) mode:directionInt Index:index];
+    NSMutableArray *newrenderArr = [NSMutableArray arrayWithArray:self.renderViews];
+    [newrenderArr removeObjectAtIndex:0];
+    [self.renderVideoView changeVideoViewNumber:(self.renderViews.count - 1) mode:directionInt Index:index RenderArray:newrenderArr];
 }
 
 #pragma mark - TIC event listener

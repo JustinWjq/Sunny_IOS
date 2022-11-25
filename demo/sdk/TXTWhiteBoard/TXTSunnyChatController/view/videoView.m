@@ -129,7 +129,7 @@
 - (void)showVideoViewDirectionLeft:(BOOL)directionLeft{
 //    self = self.userModel.render;
     [self addSubview:self.userModel.render];
-    [self.userModel.render mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self.userModel.render mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(self.mas_top).offset(0);
         make.left.mas_equalTo(self.mas_left).offset(0);
         make.right.mas_equalTo(self.mas_right).offset(0);

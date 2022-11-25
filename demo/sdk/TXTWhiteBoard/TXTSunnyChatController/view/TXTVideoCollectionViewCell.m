@@ -182,6 +182,16 @@
         if ([svideoView isKindOfClass:[videoView class]]) {
             videoView *nsvideoView = (videoView *)svideoView;
             if ([nsvideoView.userModel.render.userId isEqualToString:model.render.userId]) {
+                for (UIView *view in nsvideoView.subviews) {
+                    [view removeFromSuperview];
+                }
+                [nsvideoView mas_remakeConstraints:^(MASConstraintMaker *make) {
+                    make.top.mas_equalTo(self.mas_top).offset(0);
+                    make.left.mas_equalTo(self.mas_left).offset(0);
+                    make.right.mas_equalTo(self.mas_right).offset(0);
+                    make.bottom.mas_equalTo(self.mas_bottom).offset(0);
+                }];
+                nsvideoView.userModel = model;
                 if (model.showVideo) {
                     [nsvideoView showVideoViewDirectionLeft:YES];
                 }else{

@@ -22,7 +22,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UICollectionView *collectionView;
 @property (strong, nonatomic) NSArray *userVolumesArray;
 @property (assign, nonatomic) BOOL isHorizontal;//是否水平
-- (void)setUserVideoCell:(NSInteger)index;
+- (void)setUserVideoCell:(NSInteger)index renderArray:(NSArray *)array;
+- (void)setUserVolumesArray:(NSArray *)userVolumesArray renderArray:(NSArray *)array;
+
 @end
 
 NS_ASSUME_NONNULL_END

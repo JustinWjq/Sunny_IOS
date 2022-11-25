@@ -34,12 +34,12 @@
     [_collectionView reloadData];
 }
 
-- (void)setUserVolumesArray:(NSArray *)userVolumesArray{
-//    NSLog(@"setUserVolumesArray");
+- (void)setUserVolumesArray:(NSArray *)userVolumesArray renderArray:(NSArray *)array{
+//    self.renderViewsArray = array;
     _userVolumesArray = userVolumesArray;
     for (TRTCVolumeInfo *info in _userVolumesArray) {
-        for (int i = 0; i < self.renderViewsArray.count; i++) {
-            TXTUserModel *model = self.renderViewsArray[i];
+        for (int i = 0; i < array.count; i++) {
+            TXTUserModel *model = array[i];
             TICRenderView *render = model.render;
            if ([info.userId isEqualToString:render.userId]) {
                 NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:0];
@@ -54,11 +54,12 @@
     }
 }
 
-- (void)setUserVideoCell:(NSInteger)index{
+- (void)setUserVideoCell:(NSInteger)index renderArray:(NSArray *)array{
     if (index<1) {
         return;
     }
-    TXTUserModel *model = self.renderViewsArray[index-1];
+//    self.renderViewsArray = array;
+    TXTUserModel *model = array[index-1];
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:(index-1) inSection:0];
     TXTVideoCollectionViewCell *cell = (TXTVideoCollectionViewCell *)[_collectionView cellForItemAtIndexPath:indexPath];
     [cell reloadVideo:model];

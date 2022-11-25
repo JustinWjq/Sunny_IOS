@@ -34,8 +34,8 @@ typedef NS_ENUM(NSInteger, TRTCVideoRenderNumber) {
 
 - (void)setVideoRenderNumber:(TRTCVideoRenderNumber)number mode:(TRTCVideoRenderMode)mode;
 //- (void)changeViewNumber:(TRTCVideoRenderNumber)number mode:(TRTCVideoRenderMode)mode Index:(NSInteger)index;
-- (void)changeViewNumber:(TRTCVideoRenderNumber)number mode:(TRTCVideoRenderMode)mode Index:(NSInteger)index userVolumes:(NSArray<TRTCVolumeInfo *> *)userVolumes;
-- (void)changeVideoViewNumber:(TRTCVideoRenderNumber)number mode:(TRTCVideoRenderMode)mode Index:(NSInteger)index;
+- (void)changeViewNumber:(TRTCVideoRenderNumber)number mode:(TRTCVideoRenderMode)mode Index:(NSInteger)index userVolumes:(NSArray<TRTCVolumeInfo *> *)userVolumes RenderArray:(NSArray *)array;
+- (void)changeVideoViewNumber:(TRTCVideoRenderNumber)number mode:(TRTCVideoRenderMode)mode Index:(NSInteger)index RenderArray:(NSArray *)array;
 @end
 
 NS_ASSUME_NONNULL_END
