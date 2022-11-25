@@ -578,8 +578,7 @@ static NSInteger const kInputToolBarH = 62;
 - (void)bottomShareFileButtonClick{
     TXTShareFileAlertView *shareFileAlertView = [[TXTShareFileAlertView alloc] init];
     shareFileAlertView.fileBlock = ^{
-//        [self addFile:FileTypePics fileModel:[[TXTFileModel alloc] init]];
-        [self addFile:FileTypeH5 fileModel:[[TXTFileModel alloc] init]];
+        [[TXTManage sharedInstance] onClickFile];
     };
     shareFileAlertView.whiteBoardBlock = ^{
         [self getWhiteBoard:self.isShowWhiteBoard];
@@ -652,18 +651,17 @@ static NSInteger const kInputToolBarH = 62;
 - (void)addFile:(FileType)fileType fileModel:(TXTFileModel *)fileModel {
     // 开始做事情
     if (fileType == FileTypePics) {
-        
-        fileModel.pics = @[@"https://wisdom-exhibition-1301905869.cos.ap-shenzhen-fsi.myqcloud.com/testdocument/0jsoaidalsh31nr2bk4c_tiw/picture/1.jpg",
-                           @"https://wisdom-exhibition-1301905869.cos.ap-shenzhen-fsi.myqcloud.com/testdocument/0jsoaidalsh31nr2bk4c_tiw/picture/2.jpg",
-                           @"https://wisdom-exhibition-1301905869.cos.ap-shenzhen-fsi.myqcloud.com/testdocument/0jsoaidalsh31nr2bk4c_tiw/picture/3.jpg"];
-        fileModel.contents = @[@"你是哈回电话阿萨德发生的", @"adfajsdfhjahshhh噶恒大华府阿德发斯蒂芬阿迪斯发斯蒂芬阿萨德发生的发斯蒂芬dfjhasdfhjhasdhfasdhfahsdfasdfasdfasdfasdfa",@"dfa"];
+//        fileModel.pics = @[@"https://wisdom-exhibition-1301905869.cos.ap-shenzhen-fsi.myqcloud.com/testdocument/0jsoaidalsh31nr2bk4c_tiw/picture/1.jpg",
+//                           @"https://wisdom-exhibition-1301905869.cos.ap-shenzhen-fsi.myqcloud.com/testdocument/0jsoaidalsh31nr2bk4c_tiw/picture/2.jpg",
+//                           @"https://wisdom-exhibition-1301905869.cos.ap-shenzhen-fsi.myqcloud.com/testdocument/0jsoaidalsh31nr2bk4c_tiw/picture/3.jpg"];
+//        fileModel.contents = @[@"你是哈回电话阿萨德发生的", @"adfajsdfhjahshhh噶恒大华府阿德发斯蒂芬阿迪斯发斯蒂芬阿萨德发生的发斯蒂芬dfjhasdfhjhasdhfasdhfahsdfasdfasdfasdfasdfa",@"dfa"];
         [self showWhiteViewController:fileType fileModel:fileModel];
     } else if (fileType == FileTypeVideo) {
-        fileModel.videoUrl = @"https://res.qcloudtiw.com/demo/tiw-vod.mp4";
+//        fileModel.videoUrl = @"https://res.qcloudtiw.com/demo/tiw-vod.mp4";
         [self showWhiteViewController:fileType fileModel:fileModel];
     } else if (fileType == FileTypeH5) {
-        fileModel.h5Url = @"https://recall-sync-demo.cloud-ins.cn/mirror.html?syncid=51-cvsstest123-1&synctoken=0060490432279104e008daf9a660dfb8d2aIABaoflIqpo4-W91SrtSeG8e-QAQ5_O7_RsAQrms1PxSLJ597XwAAAAAEADKL1Dbsjd_YwEA6AOyN39j";
-        fileModel.name = @"同期Canon";
+//        fileModel.h5Url = @"https://recall-sync-demo.cloud-ins.cn/mirror.html?syncid=51-cvsstest123-1&synctoken=0060490432279104e008daf9a660dfb8d2aIABaoflIqpo4-W91SrtSeG8e-QAQ5_O7_RsAQrms1PxSLJ597XwAAAAAEADKL1Dbsjd_YwEA6AOyN39j";
+//        fileModel.name = @"同期Canon";
         if (fileModel.h5Url.length <= 0) {
             [TXTToast toastWithTitle:@"url为空" type:TXTToastTypeWarn];
             return;
