@@ -207,7 +207,7 @@ static NSInteger const kInputToolBarH = 62;
         [self updateUI:NO];
     }
     if (self.isWhite) {
-        self.crossBtn.hidden = [UIWindow isLandscape];
+//        self.crossBtn.hidden = [UIWindow isLandscape];
     }
 }
 
@@ -587,6 +587,7 @@ static NSInteger const kInputToolBarH = 62;
     TXTShareFileAlertView *shareFileAlertView = [[TXTShareFileAlertView alloc] init];
     shareFileAlertView.fileBlock = ^{
         [[TXTManage sharedInstance] onClickFile];
+//        [self addFile:FileTypePics fileModel:[[TXTFileModel alloc] init]];
     };
     shareFileAlertView.whiteBoardBlock = ^{
         [self getWhiteBoard:self.isShowWhiteBoard];
@@ -661,8 +662,10 @@ static NSInteger const kInputToolBarH = 62;
     if (fileType == FileTypePics) {
 //        fileModel.pics = @[@"https://wisdom-exhibition-1301905869.cos.ap-shenzhen-fsi.myqcloud.com/testdocument/0jsoaidalsh31nr2bk4c_tiw/picture/1.jpg",
 //                           @"https://wisdom-exhibition-1301905869.cos.ap-shenzhen-fsi.myqcloud.com/testdocument/0jsoaidalsh31nr2bk4c_tiw/picture/2.jpg",
-//                           @"https://wisdom-exhibition-1301905869.cos.ap-shenzhen-fsi.myqcloud.com/testdocument/0jsoaidalsh31nr2bk4c_tiw/picture/3.jpg"];
-//        fileModel.contents = @[@"你是哈回电话阿萨德发生的", @"adfajsdfhjahshhh噶恒大华府阿德发斯蒂芬阿迪斯发斯蒂芬阿萨德发生的发斯蒂芬dfjhasdfhjhasdhfasdhfahsdfasdfasdfasdfasdfa",@"dfa"];
+//                           @"https://wisdom-exhibition-1301905869.cos.ap-shenzhen-fsi.myqcloud.com/testdocument/0jsoaidalsh31nr2bk4c_tiw/picture/3.jpg",@"https://wisdom-exhibition-1301905869.cos.ap-shenzhen-fsi.myqcloud.com/testdocument/0jsoaidalsh31nr2bk4c_tiw/picture/1.jpg",
+//                           @"https://wisdom-exhibition-1301905869.cos.ap-shenzhen-fsi.myqcloud.com/testdocument/0jsoaidalsh31nr2bk4c_tiw/picture/2.jpg",
+//                           @"https://wisdom-exhibition-1301905869.cos.ap-shenzhen-fsi.myqcloud.com/testdocument/0jsoaidalsh31nr2bk4c_tiw/picture/3.jpg", @"https://wisdom-exhibition-1301905869.cos.ap-shenzhen-fsi.myqcloud.com/testdocument/0jsoaidalsh31nr2bk4c_tiw/picture/1.jpg",@"https://wisdom-exhibition-1301905869.cos.ap-shenzhen-fsi.myqcloud.com/testdocument/0jsoaidalsh31nr2bk4c_tiw/picture/1.jpg"];
+//        fileModel.contents = @[@"你是哈回电话阿萨德发生的",@"",@"", @"adfajsdfhjahshhh噶恒大华府阿德发斯蒂芬阿迪斯发斯蒂芬阿萨德发生的发斯蒂芬dfjhasdfhjhasdhfasdhfahsdfasdfasdfasdfasdfa"];
         [self showWhiteViewController:fileType fileModel:fileModel];
     } else if (fileType == FileTypeVideo) {
 //        fileModel.videoUrl = @"https://res.qcloudtiw.com/demo/tiw-vod.mp4";
@@ -1122,6 +1125,7 @@ static NSInteger const kInputToolBarH = 62;
         NSString *portrait = [NSString stringWithFormat:@"%ld",(long)TRTCVideoRenderModePortrait];
         TXUserDefaultsSetObjectforKey(portrait, Direction);
     }
+    [self.whiteBoardViewController updateUI:(navigationController.interfaceOrientation == UIInterfaceOrientationPortrait)];
     [self setPortraitLandscapeUI];
 }
 

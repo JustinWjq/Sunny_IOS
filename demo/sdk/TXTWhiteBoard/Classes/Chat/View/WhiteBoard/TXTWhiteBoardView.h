@@ -27,6 +27,8 @@ NS_ASSUME_NONNULL_BEGIN
 /** delegate */
 @property (nonatomic, weak) id<TXTWhiteBoardViewDelegate> delegate;
 
+/// 是否横竖屏
+- (void)updateUI:(BOOL)isPortrait;
 
 /** isTelepromp */
 @property (nonatomic, assign) BOOL isTelepromp;

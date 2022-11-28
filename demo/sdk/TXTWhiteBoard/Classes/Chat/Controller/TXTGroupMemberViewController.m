@@ -91,26 +91,26 @@
 }
 /// orientationChange
 - (void)handleScreenOrientationChange:(NSNotification *)noti {
-//    AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
-//    app.allowRotation = YES;
-//    if ([UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationPortrait || [UIApplication sharedApplication].statusBarOrientation == UIDeviceOrientationPortraitUpsideDown) {
-    if (![UIWindow isLandscape]) {
-//        [self.memberView mas_remakeConstraints:^(MASConstraintMaker *make) {
-//            make.top.equalTo(self.view.mas_top).offset([UIApplication sharedApplication].statusBarFrame.size.height);
-//            make.left.right.bottom.equalTo(self.view);
-//        }];
-        [self updateUI:YES];
-        [self.memberView updateUI:YES];
-    } else {
-//        [self.memberView mas_remakeConstraints:^(MASConstraintMaker *make) {
-//            make.top.equalTo(self.view.mas_top);
-//            make.right.bottom.equalTo(self.view);
-//            make.width.mas_equalTo(330);
-//        }];
-        [self updateUI:NO];
-        [self.memberView updateUI:NO];
-    }
-    [self.view layoutIfNeeded];
+////    AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
+////    app.allowRotation = YES;
+////    if ([UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationPortrait || [UIApplication sharedApplication].statusBarOrientation == UIDeviceOrientationPortraitUpsideDown) {
+//    if (![UIWindow isLandscape]) {
+////        [self.memberView mas_remakeConstraints:^(MASConstraintMaker *make) {
+////            make.top.equalTo(self.view.mas_top).offset([UIApplication sharedApplication].statusBarFrame.size.height);
+////            make.left.right.bottom.equalTo(self.view);
+////        }];
+//        [self updateUI:YES];
+//        [self.memberView updateUI:YES];
+//    } else {
+////        [self.memberView mas_remakeConstraints:^(MASConstraintMaker *make) {
+////            make.top.equalTo(self.view.mas_top);
+////            make.right.bottom.equalTo(self.view);
+////            make.width.mas_equalTo(330);
+////        }];
+//        [self updateUI:NO];
+//        [self.memberView updateUI:NO];
+//    }
+//    [self.view layoutIfNeeded];
 }
 
 - (void)updateUI:(BOOL)isPortrait {

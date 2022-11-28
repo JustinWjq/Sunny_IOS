@@ -83,48 +83,48 @@
 }
 /// orientationChange
 - (void)handleScreenOrientationChange:(NSNotification *)noti {
-//    AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
-//    app.allowRotation = YES;
-    
-    if (![UIWindow isLandscape]) {
-//        [self leftAction];
-//        // 竖屏
-//        [self.groupChatRoomView mas_remakeConstraints:^(MASConstraintMaker *make) {
-//            make.top.equalTo(self.view.mas_safeAreaLayoutGuideTop);
-//            make.right.equalTo(self.view.mas_safeAreaLayoutGuideRight);
-//            make.left.equalTo(self.view.mas_safeAreaLayoutGuideLeft);
-//            make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideBottom);
-//        }];
-//        [self.smallChatView mas_remakeConstraints:^(MASConstraintMaker *make) {
-//            make.left.mas_equalTo(15);
-//            make.bottom.equalTo(self.groupChatRoomView.mas_bottom).offset(-75);
-//            make.width.mas_equalTo(150);
-//            make.height.mas_equalTo(34);
-//        }];
-        [self updateUI:YES];
-        [self.groupChatRoomView updateUI:YES];
-        
-//        [self.emojiView updateUI];
-        
-    } else {
-//        [self rightAction];
-//        // 横屏
-//        [self.groupChatRoomView mas_remakeConstraints:^(MASConstraintMaker *make) {
-//            make.top.equalTo(self.view.mas_safeAreaLayoutGuideTop);
-//            make.width.mas_equalTo(330);
-//            make.right.equalTo(self.view.mas_safeAreaLayoutGuideRight);
-//            make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideBottom);
-//        }];
-//        [self.smallChatView mas_remakeConstraints:^(MASConstraintMaker *make) {
-//            make.left.mas_equalTo(30);
-//            make.bottom.equalTo(self.groupChatRoomView.mas_bottom).offset(-75);
-//            make.width.mas_equalTo(150);
-//            make.height.mas_equalTo(34);
-//        }];
-        [self updateUI:NO];
-        [self.groupChatRoomView updateUI:NO];
-//        [self.emojiView updateUI];
-    }
+////    AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
+////    app.allowRotation = YES;
+//    
+//    if (![UIWindow isLandscape]) {
+////        [self leftAction];
+////        // 竖屏
+////        [self.groupChatRoomView mas_remakeConstraints:^(MASConstraintMaker *make) {
+////            make.top.equalTo(self.view.mas_safeAreaLayoutGuideTop);
+////            make.right.equalTo(self.view.mas_safeAreaLayoutGuideRight);
+////            make.left.equalTo(self.view.mas_safeAreaLayoutGuideLeft);
+////            make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideBottom);
+////        }];
+////        [self.smallChatView mas_remakeConstraints:^(MASConstraintMaker *make) {
+////            make.left.mas_equalTo(15);
+////            make.bottom.equalTo(self.groupChatRoomView.mas_bottom).offset(-75);
+////            make.width.mas_equalTo(150);
+////            make.height.mas_equalTo(34);
+////        }];
+//        [self updateUI:YES];
+//        [self.groupChatRoomView updateUI:YES];
+//        
+////        [self.emojiView updateUI];
+//        
+//    } else {
+////        [self rightAction];
+////        // 横屏
+////        [self.groupChatRoomView mas_remakeConstraints:^(MASConstraintMaker *make) {
+////            make.top.equalTo(self.view.mas_safeAreaLayoutGuideTop);
+////            make.width.mas_equalTo(330);
+////            make.right.equalTo(self.view.mas_safeAreaLayoutGuideRight);
+////            make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideBottom);
+////        }];
+////        [self.smallChatView mas_remakeConstraints:^(MASConstraintMaker *make) {
+////            make.left.mas_equalTo(30);
+////            make.bottom.equalTo(self.groupChatRoomView.mas_bottom).offset(-75);
+////            make.width.mas_equalTo(150);
+////            make.height.mas_equalTo(34);
+////        }];
+//        [self updateUI:NO];
+//        [self.groupChatRoomView updateUI:NO];
+////        [self.emojiView updateUI];
+//    }
 }
 
 - (void)updateUI:(BOOL)isPortrait {

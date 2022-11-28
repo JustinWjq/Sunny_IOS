@@ -12,8 +12,16 @@
 @interface TXTTeleprompView () <TXTFontBgViewDelegate>
 /** bgView */
 @property (nonatomic, strong) UIView *bgView;
+
+/** criticalBtn */
+@property (nonatomic, strong) UIButton *criticalBtn;
+/** contentView */
+@property (nonatomic, strong) UIView *contentView;
+
 /** nameLabel */
 @property (nonatomic, strong) UILabel *nameLabel;
+/** switchBtn */
+@property (nonatomic, strong) UIButton *switchBtn;
 ///** switchView */
 //@property (nonatomic, strong) UISwitch *switchView;
 /** contentLabel */
@@ -37,6 +45,9 @@
 //@property (nonatomic, strong) UIButton *midFontBtn;
 ///** smallFontBtn */
 //@property (nonatomic, strong) UIButton *smallFontBtn;
+
+///** isOpen */
+//@property (nonatomic, assign) BOOL isOpen;
 
 @end
 
@@ -64,26 +75,45 @@
         make.edges.equalTo(self);
     }];
     
-    [self addSubview:self.nameLabel];
+    [self.bgView addSubview:self.criticalBtn];
+    [self.criticalBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.top.bottom.equalTo(self.bgView);
+    }];
+    
+    [self.bgView addSubview:self.contentView];
+    [self.contentView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self.bgView);
+    }];
+    self.contentView.hidden = YES;
+    
+    [self.contentView addSubview:self.nameLabel];
     [self.nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(13);
+        make.left.mas_equalTo(10);
         make.top.mas_equalTo(10);
         make.height.mas_equalTo(16);
     }];
     
-    [self addSubview:self.switchView];
-    [self.switchView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(self.mas_right).offset(-13);
-        make.centerY.equalTo(self.nameLabel.mas_centerY);
+//    [self.contentView addSubview:self.switchView];
+//    [self.switchView mas_makeConstraints:^(MASConstraintMaker *make) {
+////        make.right.equalTo(self.mas_right).offset(-13);
+////        make.centerY.equalTo(self.nameLabel.mas_centerY);
+//        make.right.equalTo(self.mas_right).offset(-13);
+//        make.bottom.equalTo(self.mas_bottom).offset(-15);
+//    }];
+    [self.contentView addSubview:self.switchBtn];
+    [self.switchBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(self.mas_right).offset(-14);
+        make.bottom.equalTo(self.mas_bottom).offset(-11);
+        make.width.mas_equalTo(40);
+        make.height.mas_equalTo(22);
     }];
     
-    
-    [self addSubview:self.scrollView];
+    [self.contentView addSubview:self.scrollView];
     [self.scrollView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(13);
+        make.left.mas_equalTo(10);
         make.right.equalTo(self.mas_right).offset(-7);
-        make.top.mas_equalTo(34);
-        make.bottom.equalTo(self.mas_bottom).offset(-55);
+        make.top.mas_equalTo(30);
+        make.bottom.equalTo(self.mas_bottom).offset(-45);
     }];
     [self.scrollView addSubview:self.containerView];
     // 设置scrollView的容器视图的约束
@@ -105,14 +135,14 @@
         make.bottom.equalTo(self.contentLabel.mas_bottom).offset(0);
     }];
     
-    [self addSubview:self.fontBtn];
+    [self.contentView addSubview:self.fontBtn];
     [self.fontBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(14);
         make.width.mas_equalTo(44);
         make.height.mas_equalTo(22);
-        make.bottom.equalTo(self.mas_bottom).offset(-15);
+        make.bottom.equalTo(self.mas_bottom).offset(-11);
     }];
-    self.fontBtn.hidden = YES;
+//    self.fontBtn.hidden = YES;
 //
 //    [self addSubview:self.fontBgView];
 //    [self.fontBgView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -148,19 +178,62 @@
 - (void)setTeleprompStr:(NSString *)teleprompStr {
     _teleprompStr = [teleprompStr copy];
     self.contentLabel.text = teleprompStr;
+    self.criticalBtn.enabled = teleprompStr.length > 0 ? YES : NO;
+    
+    if (teleprompStr.length > 0) {
+        if (self.isOpen) {
+            [self criticalBtnClick];
+        }
+    } else {
+        if (self.isOpen) {
+            [self closeClick];
+//            if ([self.delegate respondsToSelector:@selector(teleprompViewDidClickOpen)]) {
+//                [self.delegate teleprompViewDidClickClose];
+//            }
+        }
+    }
+    
+    
+//    if (self.isOpen) {
+//        if ([self.delegate respondsToSelector:@selector(teleprompViewDidClickOpen)]) {
+//            [self.delegate teleprompViewDidClickOpen];
+//        }
+//    } else {
+//        if ([self.delegate respondsToSelector:@selector(teleprompViewDidClickClose)]) {
+//            [self.delegate teleprompViewDidClickClose];
+//        }
+//    }
 }
 
 /// orientationChange
 - (void)handleScreenOrientationChange:(NSNotification *)noti {
     [self.fontBgView dismiss];
-    if (![UIWindow isLandscape]) {
-        [self updateUI:YES];
-    } else {
-        [self updateUI:NO];
-    }
+//    if (![UIWindow isLandscape]) {
+//        [self updateUI:YES];
+//    } else {
+//        [self updateUI:NO];
+//    }
 }
 
 - (void)updateUI:(BOOL)isPortrait {
+    [self layoutIfNeeded];
+    if ([UIWindow isLandscape]) {
+        UIRectCorner corners = UIRectCornerTopLeft | UIRectCornerBottomLeft;
+        UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:self.contentView.bounds byRoundingCorners:corners cornerRadii:CGSizeMake(10, 10)];
+        CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
+        maskLayer.frame = self.contentView.bounds;
+        maskLayer.path = maskPath.CGPath;
+        self.contentView.layer.mask = maskLayer;
+    } else {
+        UIRectCorner corners = UIRectCornerTopLeft | UIRectCornerBottomLeft | UIRectCornerBottomRight | UIRectCornerTopRight;
+        UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:self.contentView.bounds byRoundingCorners:corners cornerRadii:CGSizeMake(10, 10)];
+        CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
+        maskLayer.frame = self.contentView.bounds;
+        maskLayer.path = maskPath.CGPath;
+        self.contentView.layer.mask = maskLayer;
+    }
+    
+    
 //    if (isPortrait) {
 //        [self.fontBgView mas_remakeConstraints:^(MASConstraintMaker *make) {
 //            make.left.equalTo(self.fontBtn).offset(2);
@@ -205,20 +278,20 @@
 
 // 更新界面
 - (void)upDateUIWithSwithch:(BOOL)isOn {
-    self.fontBtn.hidden = !isOn;
-    self.contentLabel.hidden = !isOn;
+//    self.fontBtn.hidden = !isOn;
+//    self.contentLabel.hidden = !isOn;
 //    self.fontBgView.hidden = YES;
-    if (isOn) {
-        [self.switchView mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.right.equalTo(self.mas_right).offset(-13);
-            make.bottom.equalTo(self.mas_bottom).offset(-15);
-        }];
-    } else {
-        [self.switchView mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.right.equalTo(self.mas_right).offset(-13);
-            make.centerY.equalTo(self.nameLabel);
-        }];
-    }
+//    if (isOn) {
+//        [self.switchView mas_remakeConstraints:^(MASConstraintMaker *make) {
+//            make.right.equalTo(self.mas_right).offset(-13);
+//            make.bottom.equalTo(self.mas_bottom).offset(-15);
+//        }];
+//    } else {
+//        [self.switchView mas_remakeConstraints:^(MASConstraintMaker *make) {
+//            make.right.equalTo(self.mas_right).offset(-13);
+//            make.centerY.equalTo(self.nameLabel);
+//        }];
+//    }
 }
 
 /// fontBtnClick
@@ -227,10 +300,75 @@
     [self.fontBgView showFromView:self];
 }
 
+/// criticalBtnClick
+- (void)criticalBtnClick {
+    self.isOpen = YES;
+    
+    self.criticalBtn.hidden = YES;
+    self.contentView.hidden = NO;
+    
+    if ([self.delegate respondsToSelector:@selector(teleprompViewDidClickOpen)]) {
+        [self.delegate teleprompViewDidClickOpen];
+    }
+    
+    [self layoutIfNeeded];
+    if ([UIWindow isLandscape]) {
+        UIRectCorner corners = UIRectCornerTopLeft | UIRectCornerBottomLeft;
+        UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:self.contentView.bounds byRoundingCorners:corners cornerRadii:CGSizeMake(10, 10)];
+        CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
+        maskLayer.frame = self.contentView.bounds;
+        maskLayer.path = maskPath.CGPath;
+        self.contentView.layer.mask = maskLayer;
+    } else {
+        UIRectCorner corners = UIRectCornerTopLeft | UIRectCornerBottomLeft | UIRectCornerBottomRight | UIRectCornerTopRight;
+        UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:self.contentView.bounds byRoundingCorners:corners cornerRadii:CGSizeMake(10, 10)];
+        CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
+        maskLayer.frame = self.contentView.bounds;
+        maskLayer.path = maskPath.CGPath;
+        self.contentView.layer.mask = maskLayer;
+    }
+}
+
+/// 是否是用户点击导致关闭
+- (void)closeClick {
+    self.criticalBtn.hidden = NO;
+    self.contentView.hidden = YES;
+    if ([self.delegate respondsToSelector:@selector(teleprompViewDidClickClose)]) {
+        [self.delegate teleprompViewDidClickClose];
+    }
+}
+
+/// switchBtnClick
+- (void)switchBtnClick {
+    self.isOpen = NO;
+//    self.criticalBtn.hidden = NO;
+//    self.contentView.hidden = YES;
+//    if ([self.delegate respondsToSelector:@selector(teleprompViewDidClickClose)]) {
+//        [self.delegate teleprompViewDidClickClose];
+//    }
+    [self closeClick];
+}
+
 /// switchView
 - (void)swtichValueChange:(UISwitch *)switchView {
-    if ([self.delegate respondsToSelector:@selector(teleprompViewDidClickSwitchView:)]) {
-        [self.delegate teleprompViewDidClickSwitchView:switchView];
+//    if ([self.delegate respondsToSelector:@selector(teleprompViewDidClickSwitchView:)]) {
+//        [self.delegate teleprompViewDidClickSwitchView:switchView];
+//    }
+//    self.isOpen = NO;
+//    self.criticalBtn.hidden = NO;
+//    self.contentView.hidden = YES;
+//    if ([self.delegate respondsToSelector:@selector(teleprompViewDidClickClose)]) {
+//        [self.delegate teleprompViewDidClickClose];
+//    }
+}
+
+- (void)setCanSelected:(BOOL)canSelected {
+    _canSelected = canSelected;
+    
+    if (self.isOpen) {
+        
+    } else {
+        
     }
 }
 
@@ -255,36 +393,65 @@
 - (UIView *)bgView {
     if (!_bgView) {
         UIView *bgView = [[UIView alloc] init];
-        bgView.backgroundColor = [UIColor colorWithHexString:@"000000" alpha:0.3];
-        bgView.cornerRadius = 8;
+//        bgView.backgroundColor = [UIColor colorWithHexString:@"000000" alpha:0.3];
+//        bgView.cornerRadius = 8;
         self.bgView = bgView;
     }
     return _bgView;
 }
 
+- (UIButton *)criticalBtn {
+    if (!_criticalBtn) {
+        UIButton *criticalBtn = [UIButton buttonWithTitle:@"" titleColor:[UIColor colorWithHexString:@"D70110"] font:[UIFont qs_regularFontWithSize:15] target:self action:@selector(criticalBtnClick)];
+        [criticalBtn setBackgroundImage:[UIImage imageNamed:@"white_icon_keyWordNormal" inBundle:TXTSDKBundle compatibleWithTraitCollection:nil] forState:UIControlStateNormal];
+        [criticalBtn setBackgroundImage:[UIImage imageNamed:@"white_icon_keyWordDisable" inBundle:TXTSDKBundle compatibleWithTraitCollection:nil] forState:UIControlStateDisabled];
+        self.criticalBtn = criticalBtn;
+    }
+    return _criticalBtn;
+}
+- (UIView *)contentView {
+    if (!_contentView) {
+        UIView *contentView = [[UIView alloc] init];
+        contentView.backgroundColor = [UIColor colorWithHexString:@"000000" alpha:0.7];
+//        contentView.cornerRadius = 8;
+        self.contentView = contentView;
+    }
+    return _contentView;
+}
+
 /** nameLabel */
 - (UILabel *)nameLabel {
     if (!_nameLabel) {
-        UILabel *nameLabel = [UILabel labelWithTitle:@"提词器" color:[UIColor colorWithHexString:@"DADADA"] font:[UIFont qs_regularFontWithSize:12]];
+        UILabel *nameLabel = [UILabel labelWithTitle:@"关键话术" color:[UIColor colorWithHexString:@"FF6666"] font:[UIFont qs_regularFontWithSize:12]];
         self.nameLabel = nameLabel;
     }
     return _nameLabel;
 }
 
-/** switchView */
-- (UISwitch *)switchView {
-    if (!_switchView) {
-        //X,Y可以改变，但是高度和宽度无法修改
-        UISwitch *switchView = [[UISwitch alloc] init];
-        switchView.on = NO;
-        //设置UISwitch的颜色，非常的有意思，大家可以实际运行一下看看
-        [switchView setOnTintColor:[UIColor colorWithHexString:@"E6B980"]];
-        //添加事件
-        [switchView addTarget:self action:@selector(swtichValueChange:) forControlEvents:UIControlEventValueChanged];
-        self.switchView = switchView;
+- (UIButton *)switchBtn {
+    if (!_switchBtn) {
+        UIButton *switchBtn = [UIButton buttonWithTitle:@"" titleColor:[UIColor colorWithHexString:@"D70110"] font:[UIFont qs_regularFontWithSize:15] target:self action:@selector(switchBtnClick)];
+        [switchBtn setBackgroundImage:[UIImage imageNamed:@"white_icon_switchBtn" inBundle:TXTSDKBundle compatibleWithTraitCollection:nil] forState:UIControlStateNormal];
+        self.switchBtn = switchBtn;
     }
-    return _switchView;
+    return _switchBtn;
 }
+
+///** switchView */
+//- (UISwitch *)switchView {
+//    if (!_switchView) {
+//        //X,Y可以改变，但是高度和宽度无法修改
+//        UISwitch *switchView = [[UISwitch alloc] init];
+//        switchView.on = YES;
+//        //设置UISwitch的颜色，非常的有意思，大家可以实际运行一下看看
+//        [switchView setOnTintColor:[UIColor colorWithHexString:@"E6B980"]];
+//        //添加事件
+////        [switchView addTarget:self action:@selector(swtichValueChange:) forControlEvents:UIControlEventValueChanged];
+////        [switchView addTarget:self action:@selector(swtichValueChange:) forControlEvents:UIControlEventTouchUpInside];
+//        self.switchView = switchView;
+//    }
+//    return _switchView;
+//}
 
 - (UIScrollView *)scrollView {
     if (!_scrollView) {
