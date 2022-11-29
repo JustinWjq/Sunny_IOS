@@ -11,6 +11,7 @@
 #import "AFNHTTPSessionManager.h"
 #import "TICConfig.h"
 #import "TXTCommon.h"
+#import "txAuthorizationStatus.h"
 
 #import "SunnyChatViewController.h"
 #import "ZYSuspensionManager.h"
@@ -220,7 +221,7 @@
 
 
 
-- (void)startVideo:(NSString *)agentName OrgName:(NSString *)orgName SignOrgName:(NSString *)signOrgName EnableVideo:(BOOL)enableVideo UserHead:(NSString *)userHead BusinessData:(NSDictionary *)businessData CallBack:(TXTCallback)callback{
+- (void)startVideo:(NSString *)agentName OrgName:(NSString *)orgName SignOrgName:(NSString *)signOrgName UserHead:(NSString *)userHead BusinessData:(NSDictionary *)businessData CallBack:(TXTCallback)callback{
     NSString *isfirstEnter = TXUserDefaultsGetObjectforKey(VideoStatus);
     //判读房间是否存在
     if ([isfirstEnter isEqualToString:@"hide"]) {
@@ -291,7 +292,8 @@
                [TICConfig shareInstance].userSig = [result valueForKey:@"agentSig"];
                [TICConfig shareInstance].role = @"owner";
 
-               [TICConfig shareInstance].enableVideo = enableVideo;
+               //入会默认关闭摄像头
+               [TICConfig shareInstance].enableVideo = NO;
 
                int sdkAppid = [[TICConfig shareInstance].sdkAppId intValue];
                [[TICManager sharedInstance] init:sdkAppid callback:^(TICModule module, int code, NSString *desc) {
@@ -497,5 +499,68 @@
         [self.manageDelegate addOnFileClickListener];
     }
 }
+
+//#param mark -- 权限获取
+- (void)otherAuthorization{
+    [[txAuthorizationStatus shareInstance] getPhotoAuthorization:^(BOOL result) {
+        if (result) {
+            [[txAuthorizationStatus shareInstance] getAudio:^(BOOL audio) {
+                if (audio) {
+                    [[txAuthorizationStatus shareInstance] getVideo:^(BOOL video) {
+                        if (video) {
+//                            [self networking];
+                        }else{
+                            dispatch_async(dispatch_get_main_queue(), ^{
+                                [UIAlertUtil showAlertWithPersentViewController:self alertCallBack:^(NSInteger index) {
+                                    if (index == 1) {
+                                        NSURL * url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
+                                            if ([[UIApplication sharedApplication] canOpenURL:url]) {
+                                                if (@available(iOS 10.0, *)) {
+                                                    [[UIApplication sharedApplication] openURL:url options:@{} completionHandler:^(BOOL success) {
+                                                    }];
+                                                }
+                                            }
+                                    }
+                                } title:@"" message:@"您没有给予相机权限，所以不支持视频操作" cancelButtonTitle:@"取消" otherButtonTitles:@"去设置"];
+                            });
+                            
+                        }
+                    }];
+                }else{
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [UIAlertUtil showAlertWithPersentViewController:self alertCallBack:^(NSInteger index) {
+                            if (index == 1) {
+                                NSURL * url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
+                                    if ([[UIApplication sharedApplication] canOpenURL:url]) {
+                                        if (@available(iOS 10.0, *)) {
+                                            [[UIApplication sharedApplication] openURL:url options:@{} completionHandler:^(BOOL success) {
+                                            }];
+                                        }
+                                    }
+                            }
+                        } title:@"" message:@"您没有给予麦克风权限，所以不支持视频操作" cancelButtonTitle:@"取消" otherButtonTitles:@"去设置"];
+                    });
+                    
+                }
+            }];
+        }else{
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [UIAlertUtil showAlertWithPersentViewController:self alertCallBack:^(NSInteger index) {
+                    if (index == 1) {
+                        NSURL * url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
+                            if ([[UIApplication sharedApplication] canOpenURL:url]) {
+                                if (@available(iOS 10.0, *)) {
+                                    [[UIApplication sharedApplication] openURL:url options:@{} completionHandler:^(BOOL success) {
+                                    }];
+                                }
+                            }
+                    }
+                } title:@"" message:@"您没有给予相册权限，所以不支持录屏操作" cancelButtonTitle:@"取消" otherButtonTitles:@"去设置"];
+            });
+            
+        }
+    }];
+}
+
 
 @end

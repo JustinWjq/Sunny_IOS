@@ -134,7 +134,7 @@
         }];
     }else{
         
-        [[TXTManage sharedInstance] startVideo:agentName OrgName:orgName SignOrgName:sign EnableVideo:self.config.enableVideo UserHead:@"" BusinessData:nil CallBack:^(int code, NSString * _Nonnull desc) {
+        [[TXTManage sharedInstance] startVideo:agentName OrgName:orgName SignOrgName:sign UserHead:@"" BusinessData:nil CallBack:^(int code, NSString * _Nonnull desc) {
             if (code == 0) {
             }else if(code == 111111111){
                 

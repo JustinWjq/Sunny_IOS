@@ -85,7 +85,7 @@
 }
 
 //进行urlEncode编码
-- (NSString *)URLEncodedString
+- (NSString *)TXTURLEncodedString
 {
     NSString *encodedString = (NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault,
                                                                                                     (CFStringRef)self,

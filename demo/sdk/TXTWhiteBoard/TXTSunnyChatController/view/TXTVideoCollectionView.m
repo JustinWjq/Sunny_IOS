@@ -77,7 +77,7 @@
             _collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, Screen_Width, imageHeight) collectionViewLayout:layout];
         }else{
             layout.scrollDirection = UICollectionViewScrollDirectionVertical;
-            _collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, Adapt(132), Screen_Height-kTopHeight) collectionViewLayout:layout];
+            _collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, Adapt(132), Screen_Height) collectionViewLayout:layout];
         }
         [self addSubview:_collectionView];
         _collectionView.backgroundColor = [UIColor colorWithHexString:@"#222222"];

@@ -236,6 +236,22 @@
         UIImage *btnImage = imageName(@"startRecord");
         [self.txShareSceneButton setImage:btnImage forState:UIControlStateNormal];
     }
+    for (UIView *view in self.subviews) {
+        if ([view isKindOfClass:[UILabel class]]) {
+            UILabel *lab = (UILabel *)view;
+            if ([lab.text isEqualToString:@"开始录制"]) {
+                if (open) {
+                    lab.text = @"结束录制";
+                    lab.textColor = [UIColor colorWithHexStr:@"#FF6666"];
+                }
+            }else if ([lab.text isEqualToString:@"结束录制"]){
+                if (!open) {
+                    lab.text = @"开始录制";
+                    lab.textColor = [UIColor whiteColor];
+                }
+            }
+        }
+    }
 }
 
 
