@@ -26,6 +26,10 @@ static NSInteger const kThinTag = 12500;
 
 @property (nonatomic, strong) NSMutableArray *thinsArr;
 
+/** selectedSamllColorBtn */
+@property (nonatomic, strong) UIButton *selectedSamllColorBtn;
+/** selectedThinBtn */
+@property (nonatomic, strong) UIButton *selectedThinBtn;
 @end
 
 @implementation TXTBrushThinView
@@ -82,6 +86,7 @@ static NSInteger const kThinTag = 12500;
         samllColorBtn.cornerRadius = 2;
         if (i == 0) {
             samllColorBtn.selected = YES;
+            self.selectedSamllColorBtn = samllColorBtn;
         }
     }
     CGFloat thinBtnW = 30;
@@ -99,6 +104,7 @@ static NSInteger const kThinTag = 12500;
         }];
         if (i == 0) {
             thinBtn.selected = YES;
+            self.selectedThinBtn = thinBtn;
         }
     }
     
@@ -133,12 +139,27 @@ static NSInteger const kThinTag = 12500;
     [[[TICManager sharedInstance] getBoardController] setBrushColor:self.colorsArr[btn.tag - kColorTag]];
 }
 
+- (BOOL)compareRGBAColor1:(UIColor *)color1 color2:(UIColor *)color2 {
+    CGFloat red1,red2,green1,green2,blue1,blue2,alpha1,alpha2;
+    //取出color1的背景颜色的RGBA值
+    [color1 getRed:&red1 green:&green1 blue:&blue1 alpha:&alpha1];
+    //取出color2的背景颜色的RGBA值
+    [color2 getRed:&red2 green:&green2 blue:&blue2 alpha:&alpha2];
+    if ((fabs(red1 - red2) < 0.00001)&&(fabs(green1 - green2) < 0.00001)&&(fabs(blue1 - blue2) < 0.00001)&&(fabs(alpha1 - alpha2) < 0.00001)) {
+        return YES;
+    } else {
+        return NO;
+    }
+}
+
 - (void)setType:(TXTBrushThinViewType)type {
 //    if (type == TXTBrushThinViewTypeArrow) {
     UIColor *arrowColor = [[[TICManager sharedInstance] getBoardController] getBrushColor];
     for (int i=0; i<self.colorsArr.count; i++) {
         UIColor *color =  self.colorsArr[i];
-        if (CGColorEqualToColor(arrowColor.CGColor, color.CGColor)) {
+//        if (CGColorEqualToColor(arrowColor.CGColor, color.CGColor)) {
+        if ([self compareRGBAColor1:arrowColor color2:color]) {
+            self.selectedSamllColorBtn.selected = NO;
             UIButton *findBtn = [self viewWithTag:i + 2 * kColorTag];
             findBtn.selected = YES;
             break;
@@ -149,6 +170,9 @@ static NSInteger const kThinTag = 12500;
     for (int j=0; j<self.thinsArr.count; j++) {
         NSString *thinStr = self.thinsArr[j];
         if (thin == [thinStr intValue]) {
+            self.selectedThinBtn.selected = NO;
+            UIButton *findBtn = [self viewWithTag:j + kThinTag];
+            findBtn.selected = YES;
             break;
         }
     }
@@ -193,7 +217,7 @@ static NSInteger const kThinTag = 12500;
 }
 - (NSMutableArray *)colorsArr {
     if (!_colorsArr) {
-        self.colorsArr = [NSMutableArray arrayWithArray:@[[UIColor colorWithHexString:@"333333"],[UIColor colorWithHexString:@"FF4848"],[UIColor colorWithHexString:@"1AD27C"],[UIColor colorWithHexString:@"FDC126"],[UIColor colorWithHexString:@"9F2DFF"],[UIColor colorWithHexString:@"4085FF"]]];
+        self.colorsArr = [NSMutableArray arrayWithArray:@[[UIColor colorWithHexString:@"#333333"],[UIColor colorWithHexString:@"#FF4848"],[UIColor colorWithHexString:@"#1AD27C"],[UIColor colorWithHexString:@"#FDC126"],[UIColor colorWithHexString:@"#9F2DFF"],[UIColor colorWithHexString:@"#4085FF"]]];
     }
     return _colorsArr;
 }

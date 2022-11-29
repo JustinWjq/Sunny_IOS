@@ -88,7 +88,10 @@ static NSInteger const kInputToolBarH = 62;
 @property (nonatomic, assign) CGFloat contentOffsetY;
 /** smallMessageView */
 @property (nonatomic, strong) TXTSmallMessageView *smallMessageView;
-
+/** shareFileAlertView */
+@property (nonatomic, strong) TXTShareFileAlertView *shareFileAlertView;
+/** moreView */
+@property (nonatomic, strong) TXTMoreView *moreView;
 @end
 
 @implementation SunnyChatViewController
@@ -207,7 +210,7 @@ static NSInteger const kInputToolBarH = 62;
         [self updateUI:NO];
     }
     if (self.isWhite) {
-        self.crossBtn.hidden = [UIWindow isLandscape];
+//        self.crossBtn.hidden = [UIWindow isLandscape];
     }
 }
 
@@ -596,11 +599,14 @@ static NSInteger const kInputToolBarH = 62;
     TXTShareFileAlertView *shareFileAlertView = [[TXTShareFileAlertView alloc] init];
     shareFileAlertView.fileBlock = ^{
         [[TXTManage sharedInstance] onClickFile];
+//        [self addFile:FileTypePics fileModel:[[TXTFileModel alloc] init]];
     };
+    __weak typeof(self) weakSelf = self;
     shareFileAlertView.whiteBoardBlock = ^{
-        [self getWhiteBoard:self.isShowWhiteBoard];
+        [weakSelf getWhiteBoard:weakSelf.isShowWhiteBoard];
     };
     [shareFileAlertView show];
+    self.shareFileAlertView = shareFileAlertView;
 }
 /// getWhiteBoard
 - (void)getWhiteBoard:(BOOL)isShowWhiteBoard {
@@ -670,8 +676,10 @@ static NSInteger const kInputToolBarH = 62;
     if (fileType == FileTypePics) {
 //        fileModel.pics = @[@"https://wisdom-exhibition-1301905869.cos.ap-shenzhen-fsi.myqcloud.com/testdocument/0jsoaidalsh31nr2bk4c_tiw/picture/1.jpg",
 //                           @"https://wisdom-exhibition-1301905869.cos.ap-shenzhen-fsi.myqcloud.com/testdocument/0jsoaidalsh31nr2bk4c_tiw/picture/2.jpg",
-//                           @"https://wisdom-exhibition-1301905869.cos.ap-shenzhen-fsi.myqcloud.com/testdocument/0jsoaidalsh31nr2bk4c_tiw/picture/3.jpg"];
-//        fileModel.contents = @[@"你是哈回电话阿萨德发生的", @"adfajsdfhjahshhh噶恒大华府阿德发斯蒂芬阿迪斯发斯蒂芬阿萨德发生的发斯蒂芬dfjhasdfhjhasdhfasdhfahsdfasdfasdfasdfasdfa",@"dfa"];
+//                           @"https://wisdom-exhibition-1301905869.cos.ap-shenzhen-fsi.myqcloud.com/testdocument/0jsoaidalsh31nr2bk4c_tiw/picture/3.jpg",@"https://wisdom-exhibition-1301905869.cos.ap-shenzhen-fsi.myqcloud.com/testdocument/0jsoaidalsh31nr2bk4c_tiw/picture/1.jpg",
+//                           @"https://wisdom-exhibition-1301905869.cos.ap-shenzhen-fsi.myqcloud.com/testdocument/0jsoaidalsh31nr2bk4c_tiw/picture/2.jpg",
+//                           @"https://wisdom-exhibition-1301905869.cos.ap-shenzhen-fsi.myqcloud.com/testdocument/0jsoaidalsh31nr2bk4c_tiw/picture/3.jpg", @"https://wisdom-exhibition-1301905869.cos.ap-shenzhen-fsi.myqcloud.com/testdocument/0jsoaidalsh31nr2bk4c_tiw/picture/1.jpg",@"https://wisdom-exhibition-1301905869.cos.ap-shenzhen-fsi.myqcloud.com/testdocument/0jsoaidalsh31nr2bk4c_tiw/picture/1.jpg"];
+//        fileModel.contents = @[@"你是哈回电话阿萨德发生的",@"",@"", @"adfajsdfhjahshhh噶恒大华府阿德发斯蒂芬阿迪斯发斯蒂芬阿萨德发生的发斯蒂芬dfjhasdfhjhasdhfasdhfahsdfasdfasdfasdfasdfa"];
         [self showWhiteViewController:fileType fileModel:fileModel];
     } else if (fileType == FileTypeVideo) {
 //        fileModel.videoUrl = @"https://res.qcloudtiw.com/demo/tiw-vod.mp4";
@@ -975,21 +983,22 @@ static NSInteger const kInputToolBarH = 62;
 //更多
 - (void)bottomMoreActionButtonClick {
     TXTMoreView *moreView = [[TXTMoreView alloc] init];
+    __weak __typeof(self)weakSelf = self;
     moreView.chatBlock = ^{
         // 添加聊天页面
-        __weak __typeof(self)weakSelf = self;
-        self.chatViewController.closeBlock = ^{
+        weakSelf.chatViewController.closeBlock = ^{
             [weakSelf.chatViewController.view removeFromSuperview];
 //            weakSelf.chatViewController = nil;
         };
-        [self addChildViewController:self.chatViewController];
-        [self.view addSubview:self.chatViewController.view];
+        [weakSelf addChildViewController:weakSelf.chatViewController];
+        [weakSelf.view addSubview:weakSelf.chatViewController.view];
 //        [self.view insertSubview:self.chatViewController.view belowSubview:self.smallChatView];
-        [self.chatViewController.view mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.edges.equalTo(self.view);
+        [weakSelf.chatViewController.view mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(weakSelf.view);
         }];
     };
     [moreView show];
+    self.moreView = moreView;
 }
 
 #pragma mark - action
@@ -1153,6 +1162,7 @@ static NSInteger const kInputToolBarH = 62;
         NSString *portrait = [NSString stringWithFormat:@"%ld",(long)TRTCVideoRenderModePortrait];
         TXUserDefaultsSetObjectforKey(portrait, Direction);
     }
+    [self.whiteBoardViewController updateUI:(navigationController.interfaceOrientation == UIInterfaceOrientationPortrait)];
     [self setPortraitLandscapeUI];
 }
 
@@ -1952,6 +1962,9 @@ static NSInteger const kInputToolBarH = 62;
         }
         self.hideBottomAndTop = YES;
         [self endPolling];
+        [self.shareFileAlertView dismiss];
+        [self.moreView dismiss];
+        [self.emojiView dismiss];
     } else {
         [self performSelector:@selector(countDown) withObject:nil afterDelay:1.0];
     }
@@ -2003,6 +2016,9 @@ static NSInteger const kInputToolBarH = 62;
         }
         self.hideBottomAndTop = YES;
         [self endPolling];
+        [self.shareFileAlertView dismiss];
+        [self.moreView dismiss];
+        [self.emojiView dismiss];
     }
 }
 

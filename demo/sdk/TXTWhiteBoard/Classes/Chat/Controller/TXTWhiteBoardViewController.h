@@ -22,6 +22,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)showVideo:(NSString *)videoUrl;
 
+/// 是否横竖屏
+- (void)updateUI:(BOOL)isPortrait;
+
 @end
 
 NS_ASSUME_NONNULL_END

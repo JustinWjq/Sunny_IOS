@@ -63,11 +63,11 @@
         make.edges.equalTo(self.view);
     }];
     
-    [self.view addSubview:self.collectionView];
+    [self.whiteBoardView insertSubview:self.collectionView atIndex:0];
     [self.collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.right.equalTo(self.view);
+        make.left.right.equalTo(self.whiteBoardView);
         make.height.mas_equalTo(90);
-        make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideBottom).offset(-100);
+        make.bottom.equalTo(self.whiteBoardView.mas_safeAreaLayoutGuideBottom).offset(-100);
     }];
     self.collectionView.hidden = YES;
     
@@ -112,6 +112,7 @@
     if (imagesArray.count > 1) {
         self.collectionView.hidden = NO;
         self.collectionView.imagesArray = imagesArray;
+        self.whiteBoardView.teleprompStr = self.contentArray[0];
     } else {
         self.collectionView.hidden = YES;
         if (imagesArray.count == 1) {
@@ -129,6 +130,8 @@
     [[[TICManager sharedInstance] getBoardController] gotoBoard:self.imageIds[index] resetStep:YES];
     if (index < self.contentArray.count) {
         self.whiteBoardView.teleprompStr = self.contentArray[index];
+    } else {
+        self.whiteBoardView.teleprompStr = @"";
     }
 }
 
@@ -152,6 +155,10 @@
     }
 }
 
+/// 是否横竖屏
+- (void)updateUI:(BOOL)isPortrait {
+    [self.whiteBoardView updateUI:isPortrait];
+}
 
 /// backClick
 - (void)backClick {

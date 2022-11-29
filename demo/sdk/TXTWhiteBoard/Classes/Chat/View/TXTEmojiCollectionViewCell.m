@@ -44,7 +44,7 @@
 
 - (UILabel *)titleLabel {
     if (!_titleLabel) {
-        UILabel *titleLabel = [UILabel labelWithTitle:@"" color:[UIColor colorWithHexString:@"1D2333"] font:[UIFont qs_semiFontWithSize:22]];
+        UILabel *titleLabel = [UILabel labelWithTitle:@"" color:[UIColor colorWithHexString:@"1D2333"] font:[UIFont qs_semiFontWithSize:24]];
         self.titleLabel = titleLabel;
     }
     return _titleLabel;

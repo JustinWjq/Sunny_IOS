@@ -14,13 +14,20 @@ NS_ASSUME_NONNULL_BEGIN
 
 @optional
 
-/// 点击字体
-- (void)teleprompViewDidClickSwitchView:(UISwitch *)switchView;
+/// 点击开关
+//- (void)teleprompViewDidClickSwitchView:(UISwitch *)switchView;
+- (void)teleprompViewDidClickSwitchView;
+
+/// 关闭
+- (void)teleprompViewDidClickClose;
+
+/// 展开
+- (void)teleprompViewDidClickOpen;
 @end
 
 @interface TXTTeleprompView : UIView
-/** switchView */
-@property (nonatomic, strong) UISwitch *switchView;
+///** switchView */
+//@property (nonatomic, strong) UISwitch *switchView;
 /** delegate */
 @property (nonatomic, weak) id<TXTTeleprompViewDelegate> delegate;
 
@@ -31,6 +38,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 /** teleprompStr */
 @property (nonatomic, copy) NSString *teleprompStr;
+
+/** canSelected */
+@property (nonatomic, assign) BOOL canSelected;
+
+/** isOpen */
+@property (nonatomic, assign) BOOL isOpen;
 @end
 
 NS_ASSUME_NONNULL_END

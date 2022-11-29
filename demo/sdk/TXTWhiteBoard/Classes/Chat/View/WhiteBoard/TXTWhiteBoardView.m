@@ -68,10 +68,10 @@
     
     [self addSubview:self.teleprompView];
     [self.teleprompView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.mas_safeAreaLayoutGuideLeft).offset(10);
-        make.top.mas_equalTo(200);
-        make.height.mas_equalTo(36);
-        make.width.mas_equalTo(122);
+        make.right.equalTo(self.mas_safeAreaLayoutGuideRight).offset(0);
+        make.top.mas_equalTo(100);
+        make.height.mas_equalTo(40);
+        make.width.mas_equalTo(99);
     }];
     self.teleprompView.hidden = YES;
     
@@ -84,17 +84,22 @@
     
     if (![UIWindow isLandscape]) {
         [self.teleprompView mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.mas_safeAreaLayoutGuideLeft).offset(10);
+//            make.left.equalTo(self.mas_safeAreaLayoutGuideLeft).offset(10);
             make.top.equalTo(self.mas_safeAreaLayoutGuideTop).offset(54);
-            make.height.mas_equalTo(36);
-            make.width.mas_equalTo(122);
+//            make.height.mas_equalTo(36);
+//            make.width.mas_equalTo(122);
+            make.right.equalTo(self.mas_safeAreaLayoutGuideRight).offset(0);
+//            make.top.equalTo(self.mas_safeAreaLayoutGuideTop).offset(80);
+            make.height.mas_equalTo(40);
+            make.width.mas_equalTo(99);
         }];
     } else {
         [self.teleprompView mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.right.equalTo(self.mas_safeAreaLayoutGuideRight).offset(-10);
-            make.bottom.equalTo(self.mas_safeAreaLayoutGuideBottom).offset(-70);
-            make.height.mas_equalTo(36);
-            make.width.mas_equalTo(122);
+            make.right.equalTo(self.mas_safeAreaLayoutGuideRight).offset(0);
+            make.top.equalTo(self.mas_safeAreaLayoutGuideTop).offset(80);
+//            make.bottom.equalTo(self.mas_safeAreaLayoutGuideBottom).offset(-70);
+            make.height.mas_equalTo(40);
+            make.width.mas_equalTo(99);
         }];
     }
     
@@ -125,12 +130,12 @@
 /// orientationChange
 - (void)handleScreenOrientationChange:(NSNotification *)noti {
     [self hideCover];
-    if (![UIWindow isLandscape]) {
-        [self updateUI:YES];
-    } else {
-        [self updateUI:NO];
-    }
-    [self teleprompViewDidClickSwitchView:self.teleprompView.switchView];
+//    if (![UIWindow isLandscape]) {
+//        [self updateUI:YES];
+//    } else {
+//        [self updateUI:NO];
+//    }
+//    [self teleprompViewDidClickSwitchView];
 }
 
 - (void)updateUI:(BOOL)isPortrait {
@@ -143,6 +148,17 @@
     [self.endBtn mas_updateConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.mas_safeAreaLayoutGuideTop).offset(topH);
     }];
+    
+    
+    if (self.teleprompView.isOpen) {
+        [self teleprompViewDidClickOpen];
+    } else {
+        CGFloat teleprompViewTopH = isPortrait ? 54 : 80;
+        [self.teleprompView mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.mas_safeAreaLayoutGuideTop).offset(teleprompViewTopH);
+        }];
+    }
+    [self.teleprompView updateUI:isPortrait];
 }
 
 /// endBtnClick
@@ -172,8 +188,6 @@
 
 /// 点击箭头
 - (void)whiteToolViewDidClickArrowBtn:(UIButton *)arrowBtn {
-//    self.coverView.hidden = NO;
-    [self layoutIfNeeded];
     [self.coverView addSubview:self.brushThinView];
     [self.brushThinView setType:TXTBrushThinViewTypeArrow];
     
@@ -185,13 +199,12 @@
         make.right.equalTo(self.mas_safeAreaLayoutGuideRight).offset(-48.5);
         make.bottom.equalTo(self.mas_safeAreaLayoutGuideBottom).offset(bottomH);
     }];
+    [self.coverView layoutIfNeeded];
     self.coverView.hidden = NO;
 }
 
 /// 点击画笔
 - (void)whiteToolViewDidClickPaintBtn:(UIButton *)paintBtn {
-    self.coverView.hidden = NO;
-//    [self layoutIfNeeded];
     [self.coverView addSubview:self.brushThinView];
     [self.brushThinView setType:TXTBrushThinViewTypePaint];
     
@@ -202,12 +215,61 @@
         make.right.equalTo(self.mas_safeAreaLayoutGuideRight).offset(-48.5);
         make.bottom.equalTo(self.mas_safeAreaLayoutGuideBottom).offset(bottomH);
     }];
+    [self.coverView layoutIfNeeded];
     self.coverView.hidden = NO;
 }
 
+/// 关闭
+- (void)teleprompViewDidClickClose {
+    if (![UIWindow isLandscape]) {
+        [self.teleprompView mas_remakeConstraints:^(MASConstraintMaker *make) {
+//            make.left.equalTo(self.mas_safeAreaLayoutGuideLeft).offset(10);
+//            make.top.equalTo(self.mas_safeAreaLayoutGuideTop).offset(54);
+//    //        make.right.equalTo(self.view.mas_right).offset(-10);
+//            make.height.mas_equalTo(36);
+//            make.width.mas_equalTo(122);
+            make.right.equalTo(self.mas_safeAreaLayoutGuideRight).offset(0);
+            make.top.equalTo(self.mas_safeAreaLayoutGuideTop).offset(54);
+//            make.top.equalTo(self.mas_safeAreaLayoutGuideTop).offset(80);
+            make.height.mas_equalTo(40);
+            make.width.mas_equalTo(99);
+        }];
+    } else {
+        [self.teleprompView mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.right.equalTo(self.mas_safeAreaLayoutGuideRight).offset(0);
+//            make.bottom.equalTo(self.mas_safeAreaLayoutGuideBottom).offset(-70);
+            make.top.equalTo(self.mas_safeAreaLayoutGuideTop).offset(80);
+            make.height.mas_equalTo(40);
+            make.width.mas_equalTo(99);
+        }];
+    }
+}
+
+/// 展开
+- (void)teleprompViewDidClickOpen {
+    if (![UIWindow isLandscape]) {
+        [self.teleprompView mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self.mas_safeAreaLayoutGuideLeft).offset(10);
+            make.top.equalTo(self.mas_safeAreaLayoutGuideTop).offset(54);
+//            make.top.equalTo(self.mas_safeAreaLayoutGuideTop).offset(80);
+            make.right.equalTo(self.mas_safeAreaLayoutGuideRight).offset(-10);
+            make.height.mas_equalTo(150).priorityHigh();
+        }];
+    } else {
+        [self.teleprompView mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.right.equalTo(self.mas_safeAreaLayoutGuideRight).offset(0);
+            make.top.equalTo(self.mas_safeAreaLayoutGuideTop).offset(80);
+            make.height.mas_equalTo(Adapt(225)).priorityHigh();
+            make.width.mas_equalTo(180);
+//            make.bottom.equalTo(self.mas_safeAreaLayoutGuideBottom).offset(-70);
+        }];
+    }
+}
+
 /// 点击了switch
-- (void)teleprompViewDidClickSwitchView:(UISwitch *)switchView {
-    if (switchView.isOn) {
+//- (void)teleprompViewDidClickSwitchView:(UISwitch *)switchView {
+- (void)teleprompViewDidClickSwitchView {
+    if (self.teleprompView.isOpen) {
         if (![UIWindow isLandscape]) {
             [self.teleprompView mas_remakeConstraints:^(MASConstraintMaker *make) {
                 make.left.equalTo(self.mas_safeAreaLayoutGuideLeft).offset(10);
@@ -217,43 +279,47 @@
             }];
         } else {
             [self.teleprompView mas_remakeConstraints:^(MASConstraintMaker *make) {
-                make.right.equalTo(self.mas_safeAreaLayoutGuideRight).offset(-10);
+                make.right.equalTo(self.mas_safeAreaLayoutGuideRight).offset(0);
                 make.height.mas_equalTo(Adapt(225)).priorityHigh();
                 make.width.mas_equalTo(180);
-                make.bottom.equalTo(self.mas_safeAreaLayoutGuideBottom).offset(-70);
+//                make.bottom.equalTo(self.mas_safeAreaLayoutGuideBottom).offset(-70);
+                make.top.equalTo(self.mas_safeAreaLayoutGuideTop).offset(80);
             }];
         }
-        [self.teleprompView upDateUIWithSwithch:YES];
+//        [self.teleprompView upDateUIWithSwithch:YES];
     } else {
         if (![UIWindow isLandscape]) {
             [self.teleprompView mas_remakeConstraints:^(MASConstraintMaker *make) {
-                make.left.equalTo(self.mas_safeAreaLayoutGuideLeft).offset(10);
+                make.right.equalTo(self.mas_safeAreaLayoutGuideRight).offset(0);
                 make.top.equalTo(self.mas_safeAreaLayoutGuideTop).offset(54);
         //        make.right.equalTo(self.view.mas_right).offset(-10);
-                make.height.mas_equalTo(36);
-                make.width.mas_equalTo(122);
+//                make.height.mas_equalTo(36);
+//                make.width.mas_equalTo(122);
+                make.height.mas_equalTo(40);
+                make.width.mas_equalTo(99);
             }];
         } else {
             [self.teleprompView mas_remakeConstraints:^(MASConstraintMaker *make) {
-                make.right.equalTo(self.mas_safeAreaLayoutGuideRight).offset(-10);
-                make.bottom.equalTo(self.mas_safeAreaLayoutGuideBottom).offset(-70);
-                make.height.mas_equalTo(36);
-                make.width.mas_equalTo(122);
+                make.right.equalTo(self.mas_safeAreaLayoutGuideRight).offset(0);
+//                make.bottom.equalTo(self.mas_safeAreaLayoutGuideBottom).offset(-70);
+                make.top.equalTo(self.mas_safeAreaLayoutGuideTop).offset(80);
+                make.height.mas_equalTo(40);
+                make.width.mas_equalTo(99);
             }];
         }
-        [self.teleprompView upDateUIWithSwithch:NO];
+//        [self.teleprompView upDateUIWithSwithch:NO];
     }
 //    [self layoutIfNeeded];
 }
 
 - (void)layoutSubviews {
     [super layoutSubviews];
-    if (![UIWindow isLandscape]) {
-        [self updateUI:YES];
-    } else {
-        [self updateUI:NO];
-    }
-    [self teleprompViewDidClickSwitchView:self.teleprompView.switchView];
+//    if (![UIWindow isLandscape]) {
+//        [self updateUI:YES];
+//    } else {
+//        [self updateUI:NO];
+//    }
+//    [self teleprompViewDidClickSwitchView];
 }
 
 
