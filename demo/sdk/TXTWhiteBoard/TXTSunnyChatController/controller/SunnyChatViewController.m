@@ -162,13 +162,13 @@ static NSInteger const kInputToolBarH = 62;
 //        navigationController.interfaceOrientationMask = UIInterfaceOrientationMaskLandscapeRight;
         //设置屏幕的转向为横屏
         if (@available(iOS 16.0, *)) {
-////             iOS16新API，让控制器刷新方向，新方向为上面设置的orientations
+//             iOS16新API，让控制器刷新方向，新方向为上面设置的orientations
 //    #if defined(__IPHONE_16_0)
 //            [self setNeedsUpdateOfSupportedInterfaceOrientations];
 //            NSArray *array = [[[UIApplication sharedApplication] connectedScenes] allObjects];
 //            UIWindowScene *scene = [array firstObject];
 //            // 屏幕方向
-//            UIInterfaceOrientationMask orientation = UIInterfaceOrientationMaskLandscapeLeft;
+//            UIInterfaceOrientationMask orientation = UIInterfaceOrientationMaskLandscapeRight;
 //            UIWindowSceneGeometryPreferencesIOS *geometryPreferencesIOS = [[UIWindowSceneGeometryPreferencesIOS alloc] initWithInterfaceOrientations:orientation];
 //            // 开始切换
 //            [scene requestGeometryUpdateWithPreferences:geometryPreferencesIOS errorHandler:^(NSError * _Nonnull error) {

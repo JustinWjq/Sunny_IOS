@@ -33,6 +33,12 @@ static TXTAlertShareView *_alertView = nil; //第一步：静态实例，并初�
     QSCover *cover = [QSCover show];
     cover.alpha = 0.3;
     cover.frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height);
+    if ([UIWindow isLandscape]) {
+        if ([UIScreen mainScreen].bounds.size.width < [UIScreen mainScreen].bounds.size.height) {
+            cover.frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.height, [UIScreen mainScreen].bounds.size.width);
+        }
+    }
+    
     [TXTAlertShareView alertView];
     _alertView.frame = cover.frame;
         
