@@ -492,9 +492,11 @@ static NSInteger const kInputToolBarH = 62;
     userModel.showAudio = YES;
     userModel.userRole = [TICConfig shareInstance].role;
     [[[TICManager sharedInstance] getTRTCCloud] startRemoteView:[TICConfig shareInstance].userId view:render];
-    [[[TICManager sharedInstance] getTRTCCloud] setLocalViewFillMode:TRTCVideoFillMode_Fit];
     [[[TICManager sharedInstance] getTRTCCloud] setVideoEncoderRotation:TRTCVideoRotation_180];
+    [[[TICManager sharedInstance] getTRTCCloud] setLocalViewRotation:TRTCVideoRotation_180];
     [[[TICManager sharedInstance] getTRTCCloud] startLocalPreview:YES view:render];
+    [[[TICManager sharedInstance] getTRTCCloud] setLocalViewFillMode:TRTCVideoFillMode_Fit];
+    [[[TICManager sharedInstance] getTRTCCloud] setVideoEncoderMirror:YES];
     [[[TICManager sharedInstance] getTRTCCloud] startLocalAudio];
     NSString *currentRoute = [self.topToos getCurrentAudioRoute];
     if ([currentRoute isEqualToString:@"扬声器"]) {
