@@ -495,8 +495,9 @@
 
 /// 点击了共享文件
 - (void)onClickFile {
-    if ([self.manageDelegate respondsToSelector:@selector(addOnFileClickListener)]) {
-        [self.manageDelegate addOnFileClickListener];
+    if ([self.manageDelegate respondsToSelector:@selector(addOnFileClickListenerRoomId:)]) {
+        NSString *classId = [NSString stringWithFormat:@"%@",TXUserDefaultsGetObjectforKey(RoomId)];
+        [self.manageDelegate addOnFileClickListenerRoomId:[classId integerValue]];
     }
 }
 

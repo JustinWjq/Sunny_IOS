@@ -27,6 +27,14 @@
     [super viewDidLoad];
     [self qs_initData];
     [self qs_initSubViews];
+    
+    if (![UIWindow isLandscape]) {
+        [self updateUI:YES];
+        [self.memberView updateUI:YES];
+    } else {
+        [self updateUI:NO];
+        [self.memberView updateUI:NO];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -41,13 +49,7 @@
 
 - (void)viewWillLayoutSubviews {
     [super viewWillLayoutSubviews];
-    if (![UIWindow isLandscape]) {
-        [self updateUI:YES];
-        [self.memberView updateUI:YES];
-    } else {
-        [self updateUI:NO];
-        [self.memberView updateUI:NO];
-    }
+    
 }
 
 #pragma mark - 🔒private

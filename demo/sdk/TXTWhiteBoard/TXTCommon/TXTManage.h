@@ -26,7 +26,7 @@ typedef void (^TXTCallback)(int code, NSString *desc);
 - (void)onFriendBtListener:(NSString *)roomId AndserviceId:(NSString *)serviceId inviteAccount:(NSString *)userId;
 
 /// 点击了共享文件
-- (void)addOnFileClickListener;
+- (void)addOnFileClickListenerRoomId:(NSInteger)roomId;
 
 @end
 

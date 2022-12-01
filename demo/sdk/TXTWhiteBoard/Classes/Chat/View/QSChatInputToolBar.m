@@ -91,8 +91,8 @@
         textView.returnKeyType = UIReturnKeySend;
         [textView setContentInset:UIEdgeInsetsMake(-0.5, 0, -4.5, 0)];
         textView.cornerRadius = 5;
-        textView.placeholder = @"快来说一说";
-        textView.placeholderColor = [UIColor colorWithHexString:@"999999"];
+        textView.txt_placeholder = @"快来说一说";
+        textView.txt_placeholderColor = [UIColor colorWithHexString:@"999999"];
         textView.backgroundColor = [UIColor clearColor];
         self.textView = textView;
     }

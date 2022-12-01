@@ -131,6 +131,9 @@ static NSInteger const kInputToolBarH = 62;
     [self.view addGestureRecognizer:contentviewTap];
     
     
+    //进入后台UIApplicationDidEnterBackgroundNotification
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
+    
 //    TXTNavigationController *navigationController = (TXTNavigationController *)self.navigationController;
 //    //切换rootViewController的旋转方向
 //    if (navigationController.interfaceOrientation == UIInterfaceOrientationPortrait) {
@@ -145,6 +148,63 @@ static NSInteger const kInputToolBarH = 62;
 //        [self updateRenderViewsLayout];
 //        [self.bottomToos updateButtons];
 //    }
+}
+
+/// didBecomeActive
+- (void)didBecomeActive {
+    if ([UIWindow isLandscape]) {
+//        NSString *portrait = [NSString stringWithFormat:@"%ld",(long)TRTCVideoRenderModePortrait];
+//        TXUserDefaultsSetObjectforKey(portrait, Direction);
+//        [self btnAction];
+//        TXTNavigationController *navigationController = (TXTNavigationController *)self.navigationController;
+//        navigationController.interfaceOrientation = UIInterfaceOrientationLandscapeRight;
+//        navigationController.interfaceOrientationMask = UIInterfaceOrientationMaskLandscapeRight;
+        //设置屏幕的转向为横屏
+        if (@available(iOS 16.0, *)) {
+////             iOS16新API，让控制器刷新方向，新方向为上面设置的orientations
+//    #if defined(__IPHONE_16_0)
+//            [self setNeedsUpdateOfSupportedInterfaceOrientations];
+//            NSArray *array = [[[UIApplication sharedApplication] connectedScenes] allObjects];
+//            UIWindowScene *scene = [array firstObject];
+//            // 屏幕方向
+//            UIInterfaceOrientationMask orientation = UIInterfaceOrientationMaskLandscapeLeft;
+//            UIWindowSceneGeometryPreferencesIOS *geometryPreferencesIOS = [[UIWindowSceneGeometryPreferencesIOS alloc] initWithInterfaceOrientations:orientation];
+//            // 开始切换
+//            [scene requestGeometryUpdateWithPreferences:geometryPreferencesIOS errorHandler:^(NSError * _Nonnull error) {
+//                NSLog(@"强制%@错误:%@", @"横屏", error);
+//            }];
+//    #endif
+        }else{
+            TXTNavigationController *navigationController = (TXTNavigationController *)self.navigationController;
+            navigationController.interfaceOrientation = UIInterfaceOrientationLandscapeRight;
+            navigationController.interfaceOrientationMask = UIInterfaceOrientationMaskLandscapeRight;
+
+            [[UIDevice currentDevice] setValue:@(UIDeviceOrientationLandscapeLeft) forKey:@"orientation"];
+            
+            NSString *portrait = [NSString stringWithFormat:@"%ld",(long)TRTCVideoRenderModeLandscape];
+            TXUserDefaultsSetObjectforKey(portrait, Direction);
+            [self.whiteBoardViewController updateUI:(navigationController.interfaceOrientation == UIInterfaceOrientationPortrait)];
+    //        [self setPortraitLandscapeUI];
+            //刷新
+            [UIViewController attemptRotationToDeviceOrientation];
+            [self updateRenderViewsLayout];
+            [self.bottomToos updateButtons];
+    //        NSString *portrait = TXUserDefaultsGetObjectforKey(Direction);
+            NSString *imageNameStr = ( [portrait intValue] == 0 ) ? @"Landscape-Portrait" : @"Portrait-Landscape";
+            [_crossBtn setImage:[UIImage imageNamed:imageNameStr inBundle:TXSDKBundle compatibleWithTraitCollection:nil] forState:UIControlStateNormal];
+        }
+//        NSString *portrait = [NSString stringWithFormat:@"%ld",(long)TRTCVideoRenderModeLandscape];
+//        TXUserDefaultsSetObjectforKey(portrait, Direction);
+//        [self.whiteBoardViewController updateUI:(navigationController.interfaceOrientation == UIInterfaceOrientationPortrait)];
+////        [self setPortraitLandscapeUI];
+//        //刷新
+//        [UIViewController attemptRotationToDeviceOrientation];
+////        [self updateRenderViewsLayout];
+//        [self.bottomToos updateButtons];
+////        NSString *portrait = TXUserDefaultsGetObjectforKey(Direction);
+//        NSString *imageNameStr = ( [portrait intValue] == 0 ) ? @"Landscape-Portrait" : @"Portrait-Landscape";
+//        [_crossBtn setImage:[UIImage imageNamed:imageNameStr inBundle:TXSDKBundle compatibleWithTraitCollection:nil] forState:UIControlStateNormal];
+    }
 }
 
 /// setUpSmallChatUI
@@ -365,22 +425,38 @@ static NSInteger const kInputToolBarH = 62;
     [self setBottomToolsUI];
 }
 
+///// isLandscape
+//- (BOOL)isLandscape {
+//    if (@available(iOS 13.0, *)) {
+//        UIWindow *firstWindow = [[[UIApplication sharedApplication] windows] firstObject];
+//        if (firstWindow == nil) { return NO; }
+//
+//        UIWindowScene *windowScene = firstWindow.windowScene;
+//        if (windowScene == nil){ return NO; }
+//
+//        return UIInterfaceOrientationIsLandscape(windowScene.interfaceOrientation);
+//    } else {
+//        return (UIInterfaceOrientationIsLandscape(UIApplication.sharedApplication.statusBarOrientation));
+//    }
+//}
+
 - (void)initParams{
     TXTNavigationController *navigationController = (TXTNavigationController *)self.navigationController;
-    if (navigationController.interfaceOrientation == UIInterfaceOrientationPortrait) {
-        NSString *portrait = [NSString stringWithFormat:@"%ld",(long)TRTCVideoRenderModePortrait];
-        TXUserDefaultsSetObjectforKey(portrait, Direction);
-    }else{
-        NSString *portrait = [NSString stringWithFormat:@"%ld",(long)TRTCVideoRenderModeLandscape];
-        TXUserDefaultsSetObjectforKey(portrait, Direction);
-    }
+//    if ([self isLandscape]) {
+//        NSString *portrait = [NSString stringWithFormat:@"%ld",(long)TRTCVideoRenderModePortrait];
+//        TXUserDefaultsSetObjectforKey(portrait, Direction);
+//    }else{
+//        NSString *portrait = [NSString stringWithFormat:@"%ld",(long)TRTCVideoRenderModeLandscape];
+//        TXUserDefaultsSetObjectforKey(portrait, Direction);
+//    }
     self.hideBottomAndTop = YES;
     self.openStartRecord = NO;
     self.state = [TICConfig shareInstance].enableVideo;
     self.muteState = YES;
     
     //切换rootViewController的旋转方向
-    if (navigationController.interfaceOrientation == UIInterfaceOrientationPortrait) {
+//    if (![UIWindow isLandscape]) {
+//        [self btnAction];
         navigationController.interfaceOrientation = UIInterfaceOrientationLandscapeRight;
         navigationController.interfaceOrientationMask = UIInterfaceOrientationMaskLandscapeRight;
         //设置屏幕的转向为横屏
@@ -391,10 +467,16 @@ static NSInteger const kInputToolBarH = 62;
         [UIViewController attemptRotationToDeviceOrientation];
         [self updateRenderViewsLayout];
         [self.bottomToos updateButtons];
-    }
+//    }
+    
+    TRTCVideoEncParam *param = [TRTCVideoEncParam new];
+    param.resMode = TRTCVideoResolutionModeLandscape;
+    [[[TICManager sharedInstance] getTRTCCloud] setVideoEncoderParam:param];
+//        [[[TICManager sharedInstance] getTRTCCloud] setVideoEncoderRotation:TRTCVideoRotation_90];
 }
 
 - (void)joinRoom{
+    QSLog(@"%@ ----xxx", [TRTCCloud getSDKVersion]);
 //    [self addNotification];
     //更新视频视图
     //    self.userId = TXUserDefaultsGetObjectforKey(Agent);
@@ -1116,7 +1198,7 @@ static NSInteger const kInputToolBarH = 62;
 - (void)btnAction{
     TXTNavigationController *navigationController = (TXTNavigationController *)self.navigationController;
     //切换rootViewController的旋转方向
-    if (navigationController.interfaceOrientation == UIInterfaceOrientationPortrait) {
+    if (![UIWindow isLandscape]) {
         navigationController.interfaceOrientation = UIInterfaceOrientationLandscapeRight;
         navigationController.interfaceOrientationMask = UIInterfaceOrientationMaskLandscapeRight;
         //设置屏幕的转向为横屏
@@ -1163,7 +1245,12 @@ static NSInteger const kInputToolBarH = 62;
         }
         NSString *portrait = [NSString stringWithFormat:@"%ld",(long)TRTCVideoRenderModePortrait];
         TXUserDefaultsSetObjectforKey(portrait, Direction);
+//        TRTCVideoEncParam *param = [TRTCVideoEncParam new];
+//        param.resMode = TRTCVideoResolutionModePortrait;
+//        [[[TICManager sharedInstance] getTRTCCloud] setVideoEncoderParam:param];
+        //        [[[TICManager sharedInstance] getTRTCCloud] setVideoEncoderRotation:TRTCVideoRotation_0];
     }
+//    [[[TICManager sharedInstance] getTRTCCloud] setGSensorMode:TRTCGSensorMode_UIAutoLayout];
     [self.whiteBoardViewController updateUI:(navigationController.interfaceOrientation == UIInterfaceOrientationPortrait)];
     [self setPortraitLandscapeUI];
 }
@@ -1811,6 +1898,7 @@ static NSInteger const kInputToolBarH = 62;
     if (!_statusToos) {
         CGFloat width = MAX(Screen_Height, Screen_Width);
         _statusToos = [[TXTStatusBar alloc] initWithFrame:CGRectMake(0, 0, width, 20)];
+        _statusToos.hidden = ![UIWindow isLandscape];
 //        [self.view addSubview:_statusToos];
 //        [self.view bringSubviewToFront:_statusToos];
     }

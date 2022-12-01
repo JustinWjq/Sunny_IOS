@@ -126,12 +126,12 @@
 
 #pragma mark `placeholder`
 
-- (NSString *)placeholder {
+- (NSString *)txt_placeholder {
     return self.placeholderTextView.text;
 }
 
-- (void)setPlaceholder:(NSString *)placeholder {
-    self.placeholderTextView.text = placeholder;
+- (void)setTxt_placeholder:(NSString *)txt_placeholder {
+    self.placeholderTextView.text = txt_placeholder;
     [self updatePlaceholderTextView];
 }
 
@@ -146,12 +146,13 @@
 
 #pragma mark `placeholderColor`
 
-- (UIColor *)placeholderColor {
+- (UIColor *)txt_placeholderColor {
     return self.placeholderTextView.textColor;
 }
 
-- (void)setPlaceholderColor:(UIColor *)placeholderColor {
-    self.placeholderTextView.textColor = placeholderColor;
+
+- (void)setTxt_placeholderColor:(UIColor *)txt_placeholderColor {
+    self.placeholderTextView.textColor = txt_placeholderColor;
 }
 
 
@@ -187,7 +188,7 @@
         self.accessibilityValue = self.text;
     } else {
         [self insertSubview:self.placeholderTextView atIndex:0];
-        self.accessibilityValue = self.placeholder;
+        self.accessibilityValue = self.txt_placeholder;
     }
 
     if (self.needsUpdateFont) {
