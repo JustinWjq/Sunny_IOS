@@ -215,8 +215,27 @@
 //    }
 }
 
-- (void)updateUI:(BOOL)isPortrait {
-    [self layoutIfNeeded];
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    [self setNeedsDisplay];
+//    if ([UIWindow isLandscape]) {
+//        UIRectCorner corners = UIRectCornerTopLeft | UIRectCornerBottomLeft;
+//        UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:self.contentView.bounds byRoundingCorners:corners cornerRadii:CGSizeMake(10, 10)];
+//        CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
+//        maskLayer.frame = self.contentView.bounds;
+//        maskLayer.path = maskPath.CGPath;
+//        self.contentView.layer.mask = maskLayer;
+//    } else {
+//        UIRectCorner corners = UIRectCornerAllCorners;
+//        UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:self.contentView.bounds byRoundingCorners:corners cornerRadii:CGSizeMake(10, 10)];
+//        CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
+//        maskLayer.frame = self.contentView.bounds;
+//        maskLayer.path = maskPath.CGPath;
+//        self.contentView.layer.mask = maskLayer;
+//    }
+}
+
+- (void)drawRect:(CGRect)rect {
     if ([UIWindow isLandscape]) {
         UIRectCorner corners = UIRectCornerTopLeft | UIRectCornerBottomLeft;
         UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:self.contentView.bounds byRoundingCorners:corners cornerRadii:CGSizeMake(10, 10)];
@@ -225,13 +244,32 @@
         maskLayer.path = maskPath.CGPath;
         self.contentView.layer.mask = maskLayer;
     } else {
-        UIRectCorner corners = UIRectCornerTopLeft | UIRectCornerBottomLeft | UIRectCornerBottomRight | UIRectCornerTopRight;
+        UIRectCorner corners = UIRectCornerAllCorners;
         UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:self.contentView.bounds byRoundingCorners:corners cornerRadii:CGSizeMake(10, 10)];
         CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
         maskLayer.frame = self.contentView.bounds;
         maskLayer.path = maskPath.CGPath;
         self.contentView.layer.mask = maskLayer;
     }
+}
+
+- (void)updateUI:(BOOL)isPortrait {
+    [self layoutIfNeeded];
+//    if ([UIWindow isLandscape]) {
+//        UIRectCorner corners = UIRectCornerTopLeft | UIRectCornerBottomLeft;
+//        UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:self.contentView.bounds byRoundingCorners:corners cornerRadii:CGSizeMake(10, 10)];
+//        CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
+//        maskLayer.frame = self.contentView.bounds;
+//        maskLayer.path = maskPath.CGPath;
+//        self.contentView.layer.mask = maskLayer;
+//    } else {
+//        UIRectCorner corners = UIRectCornerAllCorners;
+//        UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:self.contentView.bounds byRoundingCorners:corners cornerRadii:CGSizeMake(10, 10)];
+//        CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
+//        maskLayer.frame = self.contentView.bounds;
+//        maskLayer.path = maskPath.CGPath;
+//        self.contentView.layer.mask = maskLayer;
+//    }
     
     
 //    if (isPortrait) {

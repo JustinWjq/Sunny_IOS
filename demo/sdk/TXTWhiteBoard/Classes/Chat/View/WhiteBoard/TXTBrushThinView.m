@@ -183,6 +183,67 @@ static NSInteger const kThinTag = 12500;
 }
 
 
+///**
+// *  显示
+// */
+//- (void)showFromView:(UIView *)fromView {
+////    self.fromView = fromView;
+//    // 1获得最上面的窗口
+//    UIWindow *window = [UIWindow getKeyWindow];
+//    // 2添加自己到窗口上去
+//    [window addSubview:self];
+//    [self mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.edges.equalTo(window);
+//    }];
+//    self.backgroundColor = [UIColor clearColor];
+//    QSLog(@"%@", NSStringFromCGRect(fromView.frame));
+//    // 转换坐标系
+//    CGRect newFrame = [fromView convertRect:fromView.bounds toView:window];
+////    CGRect newFrame = [fromView.superview convertRect:fromView.frame toView:window];
+//    QSLog(@"%@", NSStringFromCGRect(newFrame));
+//    
+//    
+//    CGFloat bottomH = [UIWindow isLandscape] ? -61 : -124;
+//    if (self.isTelepromp) {
+//        bottomH = bottomH - 90;
+//    }
+//    CGRect newFrame = [self.toolView convertRect:self.toolView.bounds toView:self.coverView];
+//    CGFloat centerX = newFrame.size.width / 2 + newFrame.origin.x;
+//    [self.brushThinView mas_remakeConstraints:^(MASConstraintMaker *make) {
+//        make.width.mas_equalTo(165);
+//        make.height.mas_equalTo(97);
+//        make.centerX.equalTo(self.mas_left).offset(centerX);
+//        make.bottom.equalTo(self.mas_safeAreaLayoutGuideBottom).offset(bottomH);
+//    }];
+//    [self.coverView layoutIfNeeded];
+//    self.coverView.hidden = NO;
+//    
+//    
+//    
+//    if ([UIWindow isLandscape]) {
+//        [self.fontBgView mas_remakeConstraints:^(MASConstraintMaker *make) {
+//            make.right.equalTo(self.mas_right).offset(CGRectGetMinX(newFrame) - 10 - window.width);
+//            make.width.mas_equalTo(112);
+//            make.height.mas_equalTo(120);
+//            make.bottom.equalTo(self.mas_bottom).offset(CGRectGetMaxY(newFrame) - 40 - window.height);
+//        }];
+//    } else {
+//        [self.fontBgView mas_remakeConstraints:^(MASConstraintMaker *make) {
+//            make.left.mas_equalTo(26);
+//            make.width.mas_equalTo(112);
+//            make.height.mas_equalTo(120);
+//            make.top.mas_equalTo(CGRectGetMaxY(newFrame) - 5);
+//        }];
+//    }
+//}
+//
+///**
+// *  销毁
+// */
+//- (void)dismiss {
+//    [self removeFromSuperview];
+//}
+
 
 - (UIImageView *)iconView {
     if (!_iconView) {

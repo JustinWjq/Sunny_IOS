@@ -133,6 +133,7 @@ static NSInteger const kInputToolBarH = 62;
     
     //进入后台UIApplicationDidEnterBackgroundNotification
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(teleprompStatus:) name:@"kTeleprompStatus" object:nil];
     
 //    TXTNavigationController *navigationController = (TXTNavigationController *)self.navigationController;
 //    //切换rootViewController的旋转方向
@@ -269,9 +270,6 @@ static NSInteger const kInputToolBarH = 62;
     } else {
         [self updateUI:NO];
     }
-    if (self.isWhite) {
-//        self.crossBtn.hidden = [UIWindow isLandscape];
-    }
 }
 
 - (void)updateUI:(BOOL)isPortrait {
@@ -398,9 +396,9 @@ static NSInteger const kInputToolBarH = 62;
     [super viewWillLayoutSubviews];
     if ([UIWindow isLandscape]) {
         self.statusToos.hidden = NO;
-        if (self.isWhite) {
-            self.crossBtn.hidden = YES;
-        }
+//        if (self.isWhite) {
+//            self.crossBtn.hidden = YES;
+//        }
     } else {
         self.statusToos.hidden = YES;
     }
@@ -680,8 +678,8 @@ static NSInteger const kInputToolBarH = 62;
 - (void)bottomShareFileButtonClick{
     TXTShareFileAlertView *shareFileAlertView = [[TXTShareFileAlertView alloc] init];
     shareFileAlertView.fileBlock = ^{
-        [[TXTManage sharedInstance] onClickFile];
-//        [self addFile:FileTypePics fileModel:[[TXTFileModel alloc] init]];
+//        [[TXTManage sharedInstance] onClickFile];
+        [self addFile:FileTypePics fileModel:[[TXTFileModel alloc] init]];
     };
     __weak typeof(self) weakSelf = self;
     shareFileAlertView.whiteBoardBlock = ^{
@@ -695,6 +693,7 @@ static NSInteger const kInputToolBarH = 62;
     self.whiteBoardViewController.isShowWhiteBoard = isShowWhiteBoard;
     __weak __typeof(self)weakSelf = self;
     self.whiteBoardViewController.closeBlock = ^{
+        weakSelf.whiteBoardViewController.isTelepromp = NO;
         weakSelf.isShowWhiteBoard = NO;
         weakSelf.isWhite = NO;
         [weakSelf.whiteBoardViewController.view removeFromSuperview];
@@ -702,10 +701,11 @@ static NSInteger const kInputToolBarH = 62;
         [weakSelf.smallChatView mas_updateConstraints:^(MASConstraintMaker *make) {
             make.bottom.equalTo(weakSelf.view.mas_safeAreaLayoutGuideBottom).offset(-(Adapt(15+60)));
         }];
-        weakSelf.crossBtn.hidden = NO;
+//        weakSelf.crossBtn.hidden = NO;
         weakSelf.smallChatView.hidden = YES;
         [weakSelf.crossBtn mas_updateConstraints:^(MASConstraintMaker *make) {
 //            make.bottom.mas_equalTo(weakSelf.view.mas_safeAreaLayoutGuideBottom).offset(weakSelf.hideBottomAndTop ? -Adapt(15) : -(Adapt(15+60)));
+            make.right.mas_equalTo(weakSelf.view.mas_safeAreaLayoutGuideRight).offset(-Adapt(15));
             make.bottom.mas_equalTo(weakSelf.view.mas_safeAreaLayoutGuideBottom).offset(-(Adapt(15+60)));
         }];
     };
@@ -714,14 +714,27 @@ static NSInteger const kInputToolBarH = 62;
     [self.whiteBoardViewController.view mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.view);
     }];
-    weakSelf.isWhite = YES;
+    self.isWhite = YES;
+    
+    CGFloat bottomH = self.whiteBoardViewController.isTelepromp ? -110 : -20;
     [self.smallChatView mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideBottom).offset(-20);
+        make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideBottom).offset(bottomH);
     }];
     self.smallChatView.hidden = NO;
-    self.crossBtn.hidden = [UIWindow isLandscape];
+//    self.crossBtn.hidden = [UIWindow isLandscape];
+//    CGFloat rightMargin = self.whiteBoardViewController.isTelepromp ? -110 : -20;
     [self.crossBtn mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.bottom.mas_equalTo(self.view.mas_safeAreaLayoutGuideBottom).offset(-20);
+        make.bottom.mas_equalTo(self.view.mas_safeAreaLayoutGuideBottom).offset(bottomH);
+    }];
+}
+
+/// 更新旋转按钮约束
+- (void)teleprompStatus:(NSNotification *)notification {
+    NSDictionary *dict = [notification userInfo];
+    NSString *teleprompStatus = dict[@"kTeleprompStatus"];
+    CGFloat rightMargin = [teleprompStatus isEqualToString:@"open"] ? (-Adapt(15) - 180) : -Adapt(15);
+    [self.crossBtn mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.right.mas_equalTo(self.view.mas_safeAreaLayoutGuideRight).offset(rightMargin);
     }];
 }
 
@@ -756,12 +769,12 @@ static NSInteger const kInputToolBarH = 62;
 - (void)addFile:(FileType)fileType fileModel:(TXTFileModel *)fileModel {
     // 开始做事情
     if (fileType == FileTypePics) {
-//        fileModel.pics = @[@"https://wisdom-exhibition-1301905869.cos.ap-shenzhen-fsi.myqcloud.com/testdocument/0jsoaidalsh31nr2bk4c_tiw/picture/1.jpg",
-//                           @"https://wisdom-exhibition-1301905869.cos.ap-shenzhen-fsi.myqcloud.com/testdocument/0jsoaidalsh31nr2bk4c_tiw/picture/2.jpg",
-//                           @"https://wisdom-exhibition-1301905869.cos.ap-shenzhen-fsi.myqcloud.com/testdocument/0jsoaidalsh31nr2bk4c_tiw/picture/3.jpg",@"https://wisdom-exhibition-1301905869.cos.ap-shenzhen-fsi.myqcloud.com/testdocument/0jsoaidalsh31nr2bk4c_tiw/picture/1.jpg",
-//                           @"https://wisdom-exhibition-1301905869.cos.ap-shenzhen-fsi.myqcloud.com/testdocument/0jsoaidalsh31nr2bk4c_tiw/picture/2.jpg",
-//                           @"https://wisdom-exhibition-1301905869.cos.ap-shenzhen-fsi.myqcloud.com/testdocument/0jsoaidalsh31nr2bk4c_tiw/picture/3.jpg", @"https://wisdom-exhibition-1301905869.cos.ap-shenzhen-fsi.myqcloud.com/testdocument/0jsoaidalsh31nr2bk4c_tiw/picture/1.jpg",@"https://wisdom-exhibition-1301905869.cos.ap-shenzhen-fsi.myqcloud.com/testdocument/0jsoaidalsh31nr2bk4c_tiw/picture/1.jpg"];
-//        fileModel.contents = @[@"你是哈回电话阿萨德发生的",@"",@"", @"adfajsdfhjahshhh噶恒大华府阿德发斯蒂芬阿迪斯发斯蒂芬阿萨德发生的发斯蒂芬dfjhasdfhjhasdhfasdhfahsdfasdfasdfasdfasdfa"];
+        fileModel.pics = @[@"https://wisdom-exhibition-1301905869.cos.ap-shenzhen-fsi.myqcloud.com/testdocument/0jsoaidalsh31nr2bk4c_tiw/picture/1.jpg",
+                           @"https://wisdom-exhibition-1301905869.cos.ap-shenzhen-fsi.myqcloud.com/testdocument/0jsoaidalsh31nr2bk4c_tiw/picture/2.jpg",
+                           @"https://wisdom-exhibition-1301905869.cos.ap-shenzhen-fsi.myqcloud.com/testdocument/0jsoaidalsh31nr2bk4c_tiw/picture/3.jpg",@"https://wisdom-exhibition-1301905869.cos.ap-shenzhen-fsi.myqcloud.com/testdocument/0jsoaidalsh31nr2bk4c_tiw/picture/1.jpg",
+                           @"https://wisdom-exhibition-1301905869.cos.ap-shenzhen-fsi.myqcloud.com/testdocument/0jsoaidalsh31nr2bk4c_tiw/picture/2.jpg",
+                           @"https://wisdom-exhibition-1301905869.cos.ap-shenzhen-fsi.myqcloud.com/testdocument/0jsoaidalsh31nr2bk4c_tiw/picture/3.jpg", @"https://wisdom-exhibition-1301905869.cos.ap-shenzhen-fsi.myqcloud.com/testdocument/0jsoaidalsh31nr2bk4c_tiw/picture/1.jpg",@"https://wisdom-exhibition-1301905869.cos.ap-shenzhen-fsi.myqcloud.com/testdocument/0jsoaidalsh31nr2bk4c_tiw/picture/1.jpg"];
+        fileModel.contents = @[@"你是哈回电话阿萨德发生的",@"",@"", @"adfajsdfhjahshhh噶恒大华府阿德发斯蒂芬阿迪斯发斯蒂芬阿萨德发生的发斯蒂芬dfjhasdfhjhasdhfasdhfahsdfasdfasdfasdfasdfa"];
         [self showWhiteViewController:fileType fileModel:fileModel];
     } else if (fileType == FileTypeVideo) {
 //        fileModel.videoUrl = @"https://res.qcloudtiw.com/demo/tiw-vod.mp4";
@@ -812,6 +825,9 @@ static NSInteger const kInputToolBarH = 62;
             QSLog(@"切换文件 == %@",str);
             [[TICManager sharedInstance] sendGroupTextMessage:str callback:^(TICModule module, int code, NSString *desc) {
                 QSLog(@"切换文件 == %@",desc);
+                if (fileType == FileTypePics) {
+                    self.whiteBoardViewController.isTelepromp = YES;
+                }
                 [self getWhiteBoard:YES];
                 if (fileType == FileTypePics) {
                     [self.whiteBoardViewController showImages:fileModel.pics contentArray:fileModel.contents];

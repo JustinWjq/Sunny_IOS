@@ -20,6 +20,17 @@ NS_ASSUME_NONNULL_BEGIN
 /** type */
 @property (nonatomic, assign) TXTBrushThinViewType type;
 
+
+///**
+// *  显示
+// */
+//- (void)showFromView:(UIView *)fromView;
+//
+//
+///**
+// *  销毁
+// */
+//- (void)dismiss;
 @end
 
 NS_ASSUME_NONNULL_END

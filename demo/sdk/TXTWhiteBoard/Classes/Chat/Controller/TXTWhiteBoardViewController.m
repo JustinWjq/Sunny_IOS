@@ -65,9 +65,11 @@
     
     [self.whiteBoardView insertSubview:self.collectionView atIndex:0];
     [self.collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.right.equalTo(self.whiteBoardView);
+//        make.left.right.equalTo(self.whiteBoardView);
+        make.left.equalTo(self.whiteBoardView.mas_safeAreaLayoutGuideLeft);
+        make.right.equalTo(self.whiteBoardView.mas_safeAreaLayoutGuideRight);
         make.height.mas_equalTo(90);
-        make.bottom.equalTo(self.whiteBoardView.mas_safeAreaLayoutGuideBottom).offset(-100);
+        make.bottom.equalTo(self.whiteBoardView.mas_safeAreaLayoutGuideBottom).offset(0);
     }];
     self.collectionView.hidden = YES;
     

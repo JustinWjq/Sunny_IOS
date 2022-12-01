@@ -17,6 +17,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, copy) dispatch_block_t closeBlock;
 
+/** isTelepromp */
+@property (nonatomic, assign) BOOL isTelepromp;
 /// 展示ppt选图片
 - (void)showImages:(NSArray *)imagesArray contentArray:(NSArray *)contentArray;
 

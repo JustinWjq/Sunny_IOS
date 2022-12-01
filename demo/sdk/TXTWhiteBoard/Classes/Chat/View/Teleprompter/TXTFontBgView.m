@@ -103,7 +103,7 @@
             make.right.equalTo(self.mas_right).offset(CGRectGetMinX(newFrame) - 10 - window.width);
             make.width.mas_equalTo(112);
             make.height.mas_equalTo(120);
-            make.bottom.equalTo(self.mas_bottom).offset(CGRectGetMaxY(newFrame) - 2 - window.height);
+            make.bottom.equalTo(self.mas_bottom).offset(CGRectGetMaxY(newFrame) - 40 - window.height);
         }];
     } else {
         [self.fontBgView mas_remakeConstraints:^(MASConstraintMaker *make) {
