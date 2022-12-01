@@ -252,7 +252,7 @@
         [self.toolView mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.right.equalTo(self.mas_safeAreaLayoutGuideRight).offset(rightMargin);
             make.height.mas_equalTo(40);
-            make.width.mas_equalTo(232);
+            make.width.mas_equalTo(232 - 44);
             make.bottom.equalTo(self.mas_safeAreaLayoutGuideBottom).offset(bottomH);
         }];
     } else {

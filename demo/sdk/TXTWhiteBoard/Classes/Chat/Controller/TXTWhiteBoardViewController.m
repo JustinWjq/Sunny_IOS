@@ -204,7 +204,7 @@
     [boardView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.whiteBoardView);
     }];
-    
+    [[[TICManager sharedInstance] getBoardController] setBrushColor:[UIColor colorWithHexString:@"#333333"]];
 //    [[[TICManager sharedInstance] getBoardController] addH5File:@"https://slupweb.sinosig.com/H5/qnbProjectV3/index.html#/rayVisitFile"];
 //https://upload-images.jianshu.io/upload_images/3096441-6c7b84a6c44c4ba2.png?imageMogr2/auto-orient/strip|imageView2/2/w/1200
 //    - (NSString *)addH5File:(NSString *)url
