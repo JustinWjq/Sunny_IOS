@@ -55,7 +55,7 @@ static NSInteger const kInputToolBarH = 62;
 
 @property (assign, nonatomic) BOOL state;//打开摄像头
 @property (assign, nonatomic) BOOL muteState;//麦克风开关
-//@property (assign, nonatomic) BOOL switchCamera;//反转镜头开关
+@property (assign, nonatomic) BOOL openStartRecord;//开始录制
 @property (assign, nonatomic) BOOL shareState;//共享开关
 @property (assign, nonatomic) BOOL shareScene;//投屏开关
 
@@ -450,6 +450,10 @@ static NSInteger const kInputToolBarH = 62;
 //        TXUserDefaultsSetObjectforKey(portrait, Direction);
 //    }
     self.hideBottomAndTop = YES;
+    self.openStartRecord = NO;
+    self.state = [TICConfig shareInstance].enableVideo;
+    self.muteState = YES;
+    
     //切换rootViewController的旋转方向
 //    if (![UIWindow isLandscape]) {
 //        [self btnAction];
@@ -483,13 +487,15 @@ static NSInteger const kInputToolBarH = 62;
     TICRenderView *render = [[TICRenderView alloc] init];
     render.userId = [TICConfig shareInstance].userId;
     render.streamType = TICStreamType_Main;
-    [[[TICManager sharedInstance] getTRTCCloud] startRemoteView:[TICConfig shareInstance].userId view:render];
+//    [[[TICManager sharedInstance] getTRTCCloud] startRemoteView:[TICConfig shareInstance].userId view:render];
     userModel.render = render;
     userModel.userName = TXUserDefaultsGetObjectforKey(Agent);
-    userModel.showVideo = YES;
+    userModel.showVideo = [TICConfig shareInstance].enableVideo;
     userModel.showAudio = YES;
     userModel.userRole = [TICConfig shareInstance].role;
     [[[TICManager sharedInstance] getTRTCCloud] startRemoteView:[TICConfig shareInstance].userId view:render];
+    [[[TICManager sharedInstance] getTRTCCloud] setLocalViewFillMode:TRTCVideoFillMode_Fit];
+    [[[TICManager sharedInstance] getTRTCCloud] setVideoEncoderRotation:TRTCVideoRotation_180];
     [[[TICManager sharedInstance] getTRTCCloud] startLocalPreview:YES view:render];
     [[[TICManager sharedInstance] getTRTCCloud] startLocalAudio];
     NSString *currentRoute = [self.topToos getCurrentAudioRoute];
@@ -516,7 +522,10 @@ static NSInteger const kInputToolBarH = 62;
             NSDictionary *roomInfoDic = [result valueForKey:@"roomInfo"];
             NSString *bgImageStr = [roomInfoDic valueForKey:@"bgImage"];
             [self.bgImageView sd_setImageWithURL:[NSURL URLWithString:bgImageStr] placeholderImage:nil];
-//            [self.view insertSubview:self.bgImageView belowSubview:self.renderVideoView];
+            if ([userModel.render.userId isEqualToString:[TICConfig shareInstance].userId]) {
+                userModel.showVideo = [[roomInfoDic valueForKey:@"enableVideo"] boolValue];
+            }
+
             self.isShowWhiteBoard = [[result valueForKey:@"shareStatus"] boolValue];
             
             NSArray *userInfo = [result valueForKey:@"userInfo"];
@@ -984,7 +993,7 @@ static NSInteger const kInputToolBarH = 62;
 
 - (void)txSpeakBtnClick{
     NSString *currentRoute = [self.topToos getCurrentAudioRoute];
-    if ([currentRoute isEqualToString:@"扬声器"]) {
+    if ([currentRoute isEqualToString:@"扬声器"] || [currentRoute isEqualToString:@"接收器"]) {
         self.isSpeak = !self.isSpeak;
         if (self.isSpeak) {
             [self.topToos changeSpeakBtnStatus:self.isSpeak];
@@ -1013,23 +1022,45 @@ static NSInteger const kInputToolBarH = 62;
 
 //录制
 - (void)bottomShareSceneButtonClick{
-    if (self.renderViews.count == 1) {
-        NSDictionary *messagedict = @{@"serviceId":TXUserDefaultsGetObjectforKey(ServiceId),@"type":MMAgreeStartRecord,@"userId":self.userId};
-        NSString *str = [[TXTCommon sharedInstance] convertToJsonData:messagedict];
-        [[TICManager sharedInstance] sendGroupTextMessage:str callback:^(TICModule module, int code, NSString *desc) {
-            NSLog(@"发消息");
-        }];
+    if (self.openStartRecord) {
+        NSDictionary *bodydic = @{@"agentId":TXUserDefaultsGetObjectforKey(AgentId)};
+        [ [AFNHTTPSessionManager shareInstance] requestURL:ServiceRoom_EndRecordAudio RequestWay:@"POST" Header:nil Body:bodydic params:nil isFormData:NO success:^(NSError *error, id response) {
+            self.openStartRecord = NO;
+            [self.bottomToos changeShareSceneStatus:NO];
+         } failure:^(NSError *error, id response) {
+             [[JMToast sharedToast] showDialogWithMsg:@"网络请求超时"];
+         }];
     }else{
-        TXTCommonAlertView *alert = [TXTCommonAlertView alertWithTitle:@"本次录制需获得全部参会人员授权确认后可进行录制，请您确认"  titleColor:nil titleFont:nil leftBtnStr:@"取消" rightBtnStr:@"确定" leftColor:nil rightColor:nil];
-        alert.sureBlock = ^{
-            [TXTCommonAlertView hide];
-            NSDictionary *messagedict = @{@"serviceId":TXUserDefaultsGetObjectforKey(ServiceId),@"type":MMStartRecordFromHost,@"userId":self.userId};
-            NSString *str = [[TXTCommon sharedInstance] convertToJsonData:messagedict];
-            [[TICManager sharedInstance] sendGroupTextMessage:str callback:^(TICModule module, int code, NSString *desc) {
-                NSLog(@"发消息");
+        if (self.renderViews.count == 1) {
+            NSDictionary *bodydic = @{@"agentId":TXUserDefaultsGetObjectforKey(AgentId),@"serviceId":TXUserDefaultsGetObjectforKey(ServiceId),@"userId":self.userId,@"type":@"1"};
+           [ [AFNHTTPSessionManager shareInstance] requestURL:ServiceRoom_RecordAudio RequestWay:@"POST" Header:nil Body:bodydic params:nil isFormData:NO success:^(NSError *error, id response) {
+               self.openStartRecord = YES;
+            } failure:^(NSError *error, id response) {
+                [[JMToast sharedToast] showDialogWithMsg:@"网络请求超时"];
             }];
-        };
+        }else{
+            TXTCommonAlertView *alert = [TXTCommonAlertView alertWithTitle:@"本次录制需获得全部参会人员授权确认后可进行录制，请您确认"  titleColor:nil titleFont:nil leftBtnStr:@"取消" rightBtnStr:@"确定" leftColor:nil rightColor:nil];
+            alert.sureBlock = ^{
+                [TXTCommonAlertView hide];
+                NSDictionary *bodydic = @{@"agentId":TXUserDefaultsGetObjectforKey(AgentId),@"serviceId":TXUserDefaultsGetObjectforKey(ServiceId),@"userId":self.userId,@"type":@"1"};
+               [ [AFNHTTPSessionManager shareInstance] requestURL:ServiceRoom_RecordAudio RequestWay:@"POST" Header:nil Body:bodydic params:nil isFormData:NO success:^(NSError *error, id response) {
+                    
+                } failure:^(NSError *error, id response) {
+                    [[JMToast sharedToast] showDialogWithMsg:@"网络请求超时"];
+                }];
+            };
+            alert.cancleBlock = ^{
+                NSDictionary *bodydic = @{@"agentId":TXUserDefaultsGetObjectforKey(AgentId)};
+                [ [AFNHTTPSessionManager shareInstance] requestURL:ServiceRoom_EndRecordAudio RequestWay:@"POST" Header:nil Body:bodydic params:nil isFormData:NO success:^(NSError *error, id response) {
+                    self.openStartRecord = NO;
+                    [self.bottomToos changeShareSceneStatus:NO];
+                 } failure:^(NSError *error, id response) {
+                     [[JMToast sharedToast] showDialogWithMsg:@"网络请求超时"];
+                 }];
+            };
+        }
     }
+   
 }
 //更多
 - (void)bottomMoreActionButtonClick {
@@ -1326,7 +1357,9 @@ static NSInteger const kInputToolBarH = 62;
     NSLog(@"onTICMemberJoin === %@",userId);
     [self.renderViews enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         TXTUserModel *model = obj;
-        if ([model.render.userId isEqualToString:userId]) {
+        //小程序加入去重
+        NSString *weichatId = [NSString stringWithFormat:@"%@%@",model.render.userId,@"extra"];
+        if ([model.render.userId isEqualToString:userId] || [weichatId isEqualToString:userId]) {
             return;
         }
     }];
@@ -1459,19 +1492,32 @@ static NSInteger const kInputToolBarH = 62;
                 }
             }
             //参会人点击同意录制按钮
-            if ([type isEqualToString:MMAgreeStartRecord]) {
+            if ([type isEqualToString:@"startRecord"]) {
                 NSLog(@"参会人点击同意录制按钮");
                 NSString *userId = [dict valueForKey:@"userId"];
                 if ([userId isEqualToString:[TICConfig shareInstance].userId]) {
-                    //同意录制按钮变色
+                    
                 }
+                //同意录制按钮变色
+                self.openStartRecord = YES;
+                [self.bottomToos changeShareSceneStatus:YES];
             }
             //参会人点击取消按钮
-            if ([type isEqualToString:MMRefuseStartRecord]) {
+            if ([type isEqualToString:@"refuseRecord"]) {
                 NSLog(@"参会人点击取消按钮");
                 NSString *userId = [dict valueForKey:@"userId"];
                 if ([userId isEqualToString:[TICConfig shareInstance].userId]) {
                     //弹框，点击取消按钮,结束会议
+                    TXTCommonAlertView *alert = [TXTCommonAlertView alertWithTitle:@"本次录制需获得全部参会人员授权确认后可进行录制，请您确认"  titleColor:nil titleFont:nil leftBtnStr:@"取消" rightBtnStr:@"确定" leftColor:nil rightColor:nil];
+                    alert.sureBlock = ^{
+                       //会议正常进行且不进行录制
+                        self.openStartRecord = NO;
+                    };
+                    alert.cancleBlock = ^{
+                        //展示退出会议选项
+                        self.openStartRecord = NO;
+                        [self onQuitClassRoom];
+                    };
                 }
             }
             // 同屏

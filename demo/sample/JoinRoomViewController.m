@@ -280,7 +280,7 @@
     self.serviceId = serviceId;
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"" message:@"确认转发" preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *action2 = [UIAlertAction actionWithTitle:@"确认" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        [[TXTManage sharedInstance] startVideo:@"" OrgName:@"" SignOrgName:@"" EnableVideo:NO UserHead:@"" BusinessData:@{@"test":@"2"} CallBack:^(int code, NSString * _Nonnull desc) {
+        [[TXTManage sharedInstance] startVideo:@"" OrgName:@"" SignOrgName:@"" UserHead:@"" BusinessData:@{@"test":@"2"} CallBack:^(int code, NSString * _Nonnull desc) {
             if (code == 0) {
             }else{
 
@@ -290,7 +290,7 @@
     }];
     UIAlertAction *action3 = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         //确认处理
-        [[TXTManage sharedInstance] startVideo:@"" OrgName:@"" SignOrgName:@"" EnableVideo:NO UserHead:@"" BusinessData:@{@"test":@"2"} CallBack:^(int code, NSString * _Nonnull desc) {
+        [[TXTManage sharedInstance] startVideo:@"" OrgName:@"" SignOrgName:@"" UserHead:@"" BusinessData:@{@"test":@"2"} CallBack:^(int code, NSString * _Nonnull desc) {
             if (code == 0) {
             }else{
 

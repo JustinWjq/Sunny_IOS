@@ -23,6 +23,8 @@
 		311426FF25A300AF00AC639A /* UIView+cornerSide.h in Headers */ = {isa = PBXBuildFile; fileRef = 311426F125A300AE00AC639A /* UIView+cornerSide.h */; };
 		311B596325F9B8630016CD59 /* UIColor+ColorHex.h in Headers */ = {isa = PBXBuildFile; fileRef = 311B596125F9B8630016CD59 /* UIColor+ColorHex.h */; };
 		311B596425F9B8630016CD59 /* UIColor+ColorHex.m in Sources */ = {isa = PBXBuildFile; fileRef = 311B596225F9B8630016CD59 /* UIColor+ColorHex.m */; };
+		313FFA0E29348EE300B7CB77 /* txAuthorizationStatus.h in Headers */ = {isa = PBXBuildFile; fileRef = 313FFA0C29348EE300B7CB77 /* txAuthorizationStatus.h */; };
+		313FFA0F29348EE300B7CB77 /* txAuthorizationStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = 313FFA0D29348EE300B7CB77 /* txAuthorizationStatus.m */; };
 		31B5FC7F2501D71B006587C0 /* TXTWhiteBoard.h in Headers */ = {isa = PBXBuildFile; fileRef = 31B5FC7D2501D71B006587C0 /* TXTWhiteBoard.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		31B5FD162501DC58006587C0 /* TICConfig.h in Headers */ = {isa = PBXBuildFile; fileRef = 31B5FCB42501DC58006587C0 /* TICConfig.h */; };
 		31B5FD172501DC58006587C0 /* TICKeychainWrapper.h in Headers */ = {isa = PBXBuildFile; fileRef = 31B5FCB62501DC58006587C0 /* TICKeychainWrapper.h */; };
@@ -315,6 +317,8 @@
 		311426F125A300AE00AC639A /* UIView+cornerSide.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+cornerSide.h"; sourceTree = "<group>"; };
 		311B596125F9B8630016CD59 /* UIColor+ColorHex.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIColor+ColorHex.h"; sourceTree = "<group>"; };
 		311B596225F9B8630016CD59 /* UIColor+ColorHex.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIColor+ColorHex.m"; sourceTree = "<group>"; };
+		313FFA0C29348EE300B7CB77 /* txAuthorizationStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = txAuthorizationStatus.h; sourceTree = "<group>"; };
+		313FFA0D29348EE300B7CB77 /* txAuthorizationStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = txAuthorizationStatus.m; sourceTree = "<group>"; };
 		3177FC3A290F79D900F1250C /* TXLiteAVSDK_TRTC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TXLiteAVSDK_TRTC.framework; sourceTree = "<group>"; };
 		31B043C82907E7420088C1C4 /* txtBundle.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = txtBundle.bundle; sourceTree = "<group>"; };
 		31B5FC7A2501D71B006587C0 /* TXTWhiteBoard.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TXTWhiteBoard.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1052,6 +1056,8 @@
 		31D45EB82915270100765B6B /* model */ = {
 			isa = PBXGroup;
 			children = (
+				313FFA0C29348EE300B7CB77 /* txAuthorizationStatus.h */,
+				313FFA0D29348EE300B7CB77 /* txAuthorizationStatus.m */,
 				31D45EB92915270100765B6B /* TXTUserModel.m */,
 				31D45EBA2915270100765B6B /* TXTUserModel.h */,
 			);
@@ -1566,6 +1572,7 @@
 				F0E22BAF2915011900C1E031 /* NSObject+YYModel.h in Headers */,
 				31B5FD622501DC58006587C0 /* JMLoadingHUD.h in Headers */,
 				F08168E7290FC9A200C5CA29 /* UIView+IBExtension.h in Headers */,
+				313FFA0E29348EE300B7CB77 /* txAuthorizationStatus.h in Headers */,
 				311426F925A300AF00AC639A /* UIButton+Extension.h in Headers */,
 				F0F3EFE3291A2AB400FC0940 /* TXTWhiteBoardViewController.h in Headers */,
 				F0816900290FC9A200C5CA29 /* UIViewController+Extension.h in Headers */,
@@ -1733,6 +1740,7 @@
 				31B5FD222501DC58006587C0 /* NSDate+NetworkClock.m in Sources */,
 				F0F3EFE0291A1B7500FC0940 /* TXTBrushThinView.m in Sources */,
 				F081690A290FC9A200C5CA29 /* UITextField+placeholderColor.m in Sources */,
+				313FFA0F29348EE300B7CB77 /* txAuthorizationStatus.m in Sources */,
 				F08168E6290FC9A200C5CA29 /* UIView+Extension.m in Sources */,
 				F08168D1290FC9A200C5CA29 /* UILabel+Extension.m in Sources */,
 				F0E22B9F2915009C00C1E031 /* TXTSmallMessage.m in Sources */,

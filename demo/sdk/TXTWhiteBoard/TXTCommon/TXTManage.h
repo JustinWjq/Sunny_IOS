@@ -61,7 +61,7 @@ typedef void (^TXTCallback)(int code, NSString *desc);
  enableVideo: 是否打开摄像头
  userHead: 用户头像URL
  */
-- (void)startVideo:(NSString *)agentName OrgName:(NSString *)orgName SignOrgName:(NSString *)signOrgName EnableVideo:(BOOL)enableVideo UserHead:(NSString *)userHead BusinessData:(NSDictionary *)businessData CallBack:(TXTCallback)callback;
+- (void)startVideo:(NSString *)agentName OrgName:(NSString *)orgName SignOrgName:(NSString *)signOrgName UserHead:(NSString *)userHead BusinessData:(NSDictionary *)businessData CallBack:(TXTCallback)callback;
 
 //获取参会人和房间信息
 /**

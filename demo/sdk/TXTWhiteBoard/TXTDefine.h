@@ -200,5 +200,10 @@ return _ ## className; \
 //推送H5分享服务接口
 #define ShareWebs_Push  @"/api/shareWeb/push"
 
+//录制音频
+#define ServiceRoom_RecordAudio  @"/api/serviceRoom/recordAudio"
+//结束录制
+#define ServiceRoom_EndRecordAudio  @"/api/serviceRoom/endRecordAudio"
+
 
 #endif /* TXTDefine_h */

@@ -46,7 +46,7 @@
 + (NSString *)getSessionDomin:(NSString *)tempStr;
 
 //进行urlEncode编码
-- (NSString *)URLEncodedString;
+- (NSString *)TXTURLEncodedString;
 
 //过滤转义字符
 - (NSString *)clearString:(NSString *)jsonString;
