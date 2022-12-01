@@ -9,7 +9,8 @@
 #import "TXTNavigationController.h"
 
 @interface TXTNavigationController ()
-
+/** isGoBackgroud */
+@property (nonatomic, assign) BOOL isGoBackgroud;
 @end
 
 @implementation TXTNavigationController
@@ -21,10 +22,28 @@
     self.navigationBar.barTintColor = [UIColor colorWithHexString:@"#424548"];
     [self.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}];
     self.navigationBar.barStyle = UIBarStyleBlack;
+    
+    
+    //进入后台UIApplicationDidEnterBackgroundNotification
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
+    //进入后台UIApplicationDidEnterBackgroundNotification
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
+    self.isGoBackgroud = NO;
+}
+
+/// didBecomeActive
+- (void)didBecomeActive {
+    self.isGoBackgroud = NO;
+}
+
+/// didEnterBackground
+- (void)didEnterBackground {
+    self.isGoBackgroud = YES;
 }
 
 //是否自动旋转,返回YES可以自动旋转
 - (BOOL)shouldAutorotate {
+    if (self.isGoBackgroud) return NO;
     return YES;
 }
 //返回支持的方向
