@@ -8,6 +8,7 @@
 @property (strong, nonatomic) NSString *userSig;    //用于用户鉴权，生成方法https://cloud.tencent.com/document/product/647/17275 （可由业务后台自己管理）
 @property (strong, nonatomic) NSString *role;     // //owner主持人/partner参会人
 @property (assign, nonatomic) BOOL enableVideo; //能否视频
+@property (assign, nonatomic) BOOL enableAudio; //能否音频
 
 + (TICConfig *)shareInstance;
 

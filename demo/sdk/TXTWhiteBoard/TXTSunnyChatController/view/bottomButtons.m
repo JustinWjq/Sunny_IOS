@@ -32,9 +32,13 @@
         make.width.equalTo(self.mas_width).dividedBy(6.0);
         make.bottom.mas_equalTo(self.mas_safeAreaLayoutGuideBottom).offset(0);
     }];
-    [self customButtonUI:self.txVideoButton ImageName:@"openCamera" ButtonName:@"摄像头"];
+    if ([TICConfig shareInstance].enableVideo) {
+        [self customButtonUI:self.txVideoButton ImageName:@"openCamera" ButtonName:@"摄像头"];
+    }else{
+        [self customButtonUI:self.txVideoButton ImageName:@"closeCamera" ButtonName:@"摄像头"];
+    }
+    
     [self.txVideoButton addTarget:self action:@selector(txButtonClick) forControlEvents:UIControlEventTouchDown];
-//    [self.txVideoButton setBackgroundColor:[UIColor whiteColor]];
   
 
     self.txMuteButton = [[UIButton alloc] init];

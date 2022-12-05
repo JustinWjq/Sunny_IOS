@@ -312,11 +312,18 @@
         if ([[TXTCustomConfig sharedInstance].miniProgramPath isEqualToString:@""] || [TXTCustomConfig sharedInstance].miniProgramPath == nil) {
             [TXTCustomConfig sharedInstance].miniProgramPath = @"pages/index/index";
         }
-        NSString *path = [NSString stringWithFormat:@"%@?serviceId=%@&agentId=%@&inviteNumber=%@&shareConfig=%@",[TXTCustomConfig sharedInstance].miniProgramPath,TXUserDefaultsGetObjectforKey(ServiceId),TXUserDefaultsGetObjectforKey(AgentId),TXUserDefaultsGetObjectforKey(InviteNumber),[[TXTCommon sharedInstance] convertToJsonData:shareConfig]];
+        NSString *path = [NSString stringWithFormat:@"%@?serviceId=%@&agentId=%@&inviteNumber=%@&shareConfig=%@&userCode=%@&userName=%@",[TXTCustomConfig sharedInstance].miniProgramPath,TXUserDefaultsGetObjectforKey(ServiceId),TXUserDefaultsGetObjectforKey(AgentId),TXUserDefaultsGetObjectforKey(InviteNumber),[[TXTCommon sharedInstance] convertToJsonData:shareConfig],TXUserDefaultsGetObjectforKey(AgentId),TXUserDefaultsGetObjectforKey(AgentName)];
         NSLog(@"chooseWeChat = %@",path);
         object.path = path;
-        UIImage *logoimg = [UIImage imageNamed:@"smallLogo" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
-        object.hdImageData = UIImagePNGRepresentation(logoimg);
+       
+        NSData *imgData ;
+        if ([[TXTCustomConfig sharedInstance].miniprogramCardURL isEqualToString:@""]) {
+           imgData = [NSData dataWithContentsOfURL:[NSURL URLWithString:@"https://l106.oss-cn-szfinance.aliyuncs.com/0activityV3/shareExprien/newMiniShare.png"]];
+        }else{
+            imgData = [NSData dataWithContentsOfURL:[NSURL URLWithString:[TXTCustomConfig sharedInstance].miniprogramCardURL]];
+        }
+        UIImage *logoimg = [[UIImage alloc]initWithData:imgData];
+        object.hdImageData = UIImageJPEGRepresentation(logoimg, 0.5);
         object.withShareTicket = NO;
         NSString *environment = TXUserDefaultsGetObjectforKey(MiniEnvironment);
         if ([environment isEqualToString:@"1"]) {
@@ -330,8 +337,8 @@
         }
         
         WXMediaMessage *message = [WXMediaMessage message];
-        message.title = @"智慧展业-足不出户，随时联系您的顾问";
-        message.description = @"智慧展业-足不出户，随时联系您的顾问";
+        message.title = [NSString stringWithFormat:@"%@",[TXTCustomConfig sharedInstance].miniprogramTitle];
+        message.description = [NSString stringWithFormat:@"%@",[TXTCustomConfig sharedInstance].miniprogramCard];
         message.thumbData = nil;  //兼容旧版本节点的图片，小于32KB，新版本优先
                                   //使用WXMiniProgramObject的hdImageData属性
         message.mediaObject = object;
