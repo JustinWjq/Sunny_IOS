@@ -1225,7 +1225,6 @@
 				F081688F290FC9A100C5CA29 /* Singleton.h */,
 				F0816890290FC9A100C5CA29 /* UIFont */,
 				F0816893290FC9A100C5CA29 /* Foundation */,
-				F0816898290FC9A100C5CA29 /* UIBarButtonItem */,
 				F081689B290FC9A100C5CA29 /* UIImageView */,
 				F081689E290FC9A100C5CA29 /* NSString */,
 				F08168AB290FC9A100C5CA29 /* UIViewController */,
@@ -1342,13 +1341,6 @@
 				F0816894290FC9A100C5CA29 /* Foundation+Log.m */,
 			);
 			path = Foundation;
-			sourceTree = "<group>";
-		};
-		F0816898290FC9A100C5CA29 /* UIBarButtonItem */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = UIBarButtonItem;
 			sourceTree = "<group>";
 		};
 		F081689B290FC9A100C5CA29 /* UIImageView */ = {
