@@ -221,7 +221,7 @@
 
 
 
-- (void)startVideo:(NSString *)agentName OrgName:(NSString *)orgName SignOrgName:(NSString *)signOrgName UserHead:(NSString *)userHead BusinessData:(NSDictionary *)businessData CallBack:(TXTCallback)callback{
+- (void)startVideo:(NSString *)agentName UserName:(NSString *)userName OrgName:(NSString *)orgName SignOrgName:(NSString *)signOrgName CallBack:(TXTCallback)callback{
     NSString *isfirstEnter = TXUserDefaultsGetObjectforKey(VideoStatus);
     //判读房间是否存在
     if ([isfirstEnter isEqualToString:@"hide"]) {
@@ -233,18 +233,7 @@
             return;
         }
     }
-    
     NSLog(@"startVideo");
-//    self.nnwindow =[[UIWindow alloc]initWithFrame:CGRectMake(0, 0, Screen_Width, Screen_Height)];
-//    self.nnwindow.windowLevel=UIWindowLevelAlert;
-//    SunnyChatViewController *classRoom = [[SunnyChatViewController alloc] init];
-//    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:classRoom];
-//    [nav.navigationBar setShadowImage:[[UIImage alloc] init]];
-//    self.nnwindow.rootViewController = nav;
-//    [ZYSuspensionManager saveWindow:self.nnwindow forKey:@"videowindow"];
-//    [self.nnwindow makeKeyAndVisible];
-    
-    
     if ([agentName isEqualToString:@""] || agentName == nil) {
         [[JMToast sharedToast] showDialogWithMsg:@"请输入坐席名"];
         return;
@@ -252,16 +241,11 @@
         TXUserDefaultsSetObjectforKey(agentName, Agent);
     }
     [JMLoadingHUD show];
-    NSMutableDictionary *bodyDic;
-    if (businessData == nil) {
-        bodyDic = [NSMutableDictionary dictionary];
-    }else{
-        bodyDic = [NSMutableDictionary dictionaryWithDictionary:businessData];
-    }
+    NSMutableDictionary *bodyDic = [NSMutableDictionary dictionary];
     [bodyDic setValue:agentName forKey:@"agent"];
     [bodyDic setValue:orgName forKey:@"orgAccount"];
     [bodyDic setValue:signOrgName forKey:@"sign"];
-    [bodyDic setValue:userHead forKey:@"userHead"];
+    [bodyDic setValue:userName forKey:@"userName"];
     NSLog(@"bodyDic == %@", [bodyDic description]);
 //    NSDictionary *bodyDic = @{@"agent":agentName,@"orgAccount":orgName,@"sign":signOrgName};
        [[AFNHTTPSessionManager shareInstance] requestURL:ServiceRoom_StartAgent RequestWay:@"POST" Header:nil Body:bodyDic params:nil isFormData:NO success:^(NSError *error, id response) {
@@ -308,7 +292,6 @@
                        TICBLOCK_SAFE_RUN(callback,code,desc);
                    }
                }];
-
            }else{
                 [JMLoadingHUD hide];
 //               [[JMToast sharedToast] showDialogWithMsg:[response valueForKey:@"errInfo"]];

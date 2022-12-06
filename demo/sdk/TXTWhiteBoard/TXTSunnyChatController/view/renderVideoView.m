@@ -55,35 +55,37 @@
     }
     [self initUI];
     if (mode == TRTCVideoRenderModePortrait) {
-        switch (number) {
-            case TRTCVideoRenderNumber1:
-                [self setTRTCVideoRenderNumber1UI];
-                break;
-            case TRTCVideoRenderNumber2:
-                [self setTRTCVideoRenderNumber2UI];
-                break;
-            default:
-                [self setTRTCVideoRenderUI];
-                break;
-        }
+//        switch (number) {
+//            case TRTCVideoRenderNumber1:
+//                [self setTRTCVideoRenderNumber1UI];
+//                break;
+//            case TRTCVideoRenderNumber2:
+//                [self setTRTCVideoRenderNumber2UI];
+//                break;
+//            default:
+//                [self setTRTCVideoRenderUI];
+//                break;
+//        }
+        [self setTRTCVideoRenderUI];
     }else{
-        switch (number) {
-            case TRTCVideoRenderNumber1:
-                [self setTRTCVideoRenderNumber1UI];
-                break;
-            case TRTCVideoRenderNumber2:
-                [self setTRTCVideoRenderNumber2UILandscape];
-                break;
-            case TRTCVideoRenderNumber3:
-                [self setTRTCVideoRenderNumber3UILandscape];
-                break;
-            case TRTCVideoRenderNumber4:
-                [self setTRTCVideoRenderNumber4UILandscape];
-                break;
-            default:
-                [self setTRTCVideoRenderNumber5UILandscape];
-                break;
-        }
+//        switch (number) {
+//            case TRTCVideoRenderNumber1:
+//                [self setTRTCVideoRenderNumber1UI];
+//                break;
+//            case TRTCVideoRenderNumber2:
+//                [self setTRTCVideoRenderNumber2UILandscape];
+//                break;
+//            case TRTCVideoRenderNumber3:
+//                [self setTRTCVideoRenderNumber3UILandscape];
+//                break;
+//            case TRTCVideoRenderNumber4:
+//                [self setTRTCVideoRenderNumber4UILandscape];
+//                break;
+//            default:
+//                [self setTRTCVideoRenderNumber5UILandscape];
+//                break;
+//        }
+        [self setTRTCVideoRenderNumber5UILandscape];
     }
     
 }
@@ -156,34 +158,35 @@
         make.height.mas_equalTo(PortraitVideoSHeight);
     }];
     self.renderViewCollectionView.delegate = self;
-    NSMutableArray *newrenderArr = [NSMutableArray arrayWithArray:self.renderArray];
-    [newrenderArr removeObjectAtIndex:0];
-    self.renderViewCollectionView.renderViewsArray = newrenderArr;
+//    NSMutableArray *newrenderArr = [NSMutableArray arrayWithArray:self.renderArray];
+//    [newrenderArr removeObjectAtIndex:0];
+//    self.renderViewCollectionView.renderViewsArray = newrenderArr;
+    self.renderViewCollectionView.renderViewsArray = self.renderArray;
     
-    TXTUserModel *model1 = self.renderArray[0];
-    videoView *videoview = [[videoView alloc] init];
-    [self addSubview:videoview];
-    if (model1.showVideo) {
-        [videoview mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.top.mas_equalTo(self.mas_top).offset(0);
-            make.left.mas_equalTo(self.mas_left).offset(0);
-            make.right.mas_equalTo(self.mas_right).offset(0);
-            //-self.frame.size.height/2.5
-            make.bottom.mas_equalTo(self.renderViewCollectionView.mas_top).offset(0);
-        }];
-        videoview.userModel = model1;
-        [videoview showVideoViewDirectionLeft:YES];
-    }else{
-        [videoview mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.centerX.mas_equalTo(self.mas_centerX).offset(0);
-            //            make.centerY.mas_equalTo(self.mas_centerY).offset(-(viewHeigth/3.5+Screen_Width/5.3/7*9)/5);
-            make.top.mas_equalTo(self.mas_top).offset(Adapt(72));
-            make.width.mas_equalTo(Screen_Width/4);
-            make.height.mas_equalTo(Screen_Width/4);
-        }];
-        videoview.userModel = model1;
-        [videoview initHideUIDirectionLeft:NO];
-    }
+//    TXTUserModel *model1 = self.renderArray[0];
+//    videoView *videoview = [[videoView alloc] init];
+//    [self addSubview:videoview];
+//    if (model1.showVideo) {
+//        [videoview mas_remakeConstraints:^(MASConstraintMaker *make) {
+//            make.top.mas_equalTo(self.mas_top).offset(0);
+//            make.left.mas_equalTo(self.mas_left).offset(0);
+//            make.right.mas_equalTo(self.mas_right).offset(0);
+//            //-self.frame.size.height/2.5
+//            make.bottom.mas_equalTo(self.renderViewCollectionView.mas_top).offset(0);
+//        }];
+//        videoview.userModel = model1;
+//        [videoview showVideoViewDirectionLeft:YES];
+//    }else{
+//        [videoview mas_remakeConstraints:^(MASConstraintMaker *make) {
+//            make.centerX.mas_equalTo(self.mas_centerX).offset(0);
+//            //            make.centerY.mas_equalTo(self.mas_centerY).offset(-(viewHeigth/3.5+Screen_Width/5.3/7*9)/5);
+//            make.top.mas_equalTo(self.mas_top).offset(Adapt(72));
+//            make.width.mas_equalTo(Screen_Width/4);
+//            make.height.mas_equalTo(Screen_Width/4);
+//        }];
+//        videoview.userModel = model1;
+//        [videoview initHideUIDirectionLeft:NO];
+//    }
 }
 
 - (void)setTRTCVideoRenderNumber2UILandscape{
@@ -412,32 +415,33 @@
         make.width.mas_equalTo(Adapt(132));
     }];
     self.renderViewCollectionView.delegate = self;
-    NSMutableArray *newrenderArr = [NSMutableArray arrayWithArray:self.renderArray];
-    [newrenderArr removeObjectAtIndex:0];
-    self.renderViewCollectionView.renderViewsArray = newrenderArr;
+//    NSMutableArray *newrenderArr = [NSMutableArray arrayWithArray:self.renderArray];
+//    [newrenderArr removeObjectAtIndex:0];
+//    self.renderViewCollectionView.renderViewsArray = newrenderArr;
+    self.renderViewCollectionView.renderViewsArray = self.renderArray;
     
-    TXTUserModel *model1 = self.renderArray[0];
-    videoView *videoview = [[videoView alloc] init];
-    [self addSubview:videoview];
-    if (model1.showVideo) {
-        [videoview mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.mas_equalTo(self.mas_safeAreaLayoutGuideTop).offset(0);
-            make.left.mas_equalTo(self.mas_safeAreaLayoutGuideLeft).offset(0);
-            make.right.mas_equalTo(self.renderViewCollectionView.mas_left).offset(0);
-            make.bottom.mas_equalTo(self.mas_safeAreaLayoutGuideBottom).offset(0);
-        }];
-        videoview.userModel = model1;
-        [videoview showVideoViewDirectionLeft:YES];
-    }else{
-        [videoview mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.mas_equalTo(self.mas_safeAreaLayoutGuideLeft).offset((Screen_Width-kTopHeight- Adapt(132))/2-Adapt(100)/2);
-            make.top.mas_equalTo(self.mas_safeAreaLayoutGuideTop).offset((Screen_Height-Adapt(60)-Adapt(60))/2-Adapt(100)/2);
-            make.width.mas_equalTo(Adapt(100));
-            make.height.mas_equalTo(Adapt(100));
-        }];
-        videoview.userModel = model1;
-        [videoview initHideUIDirectionLeft:NO];
-    }
+//    TXTUserModel *model1 = self.renderArray[0];
+//    videoView *videoview = [[videoView alloc] init];
+//    [self addSubview:videoview];
+//    if (model1.showVideo) {
+//        [videoview mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.top.mas_equalTo(self.mas_safeAreaLayoutGuideTop).offset(0);
+//            make.left.mas_equalTo(self.mas_safeAreaLayoutGuideLeft).offset(0);
+//            make.right.mas_equalTo(self.renderViewCollectionView.mas_left).offset(0);
+//            make.bottom.mas_equalTo(self.mas_safeAreaLayoutGuideBottom).offset(0);
+//        }];
+//        videoview.userModel = model1;
+//        [videoview showVideoViewDirectionLeft:YES];
+//    }else{
+//        [videoview mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.left.mas_equalTo(self.mas_safeAreaLayoutGuideLeft).offset((Screen_Width-kTopHeight- Adapt(132))/2-Adapt(100)/2);
+//            make.top.mas_equalTo(self.mas_safeAreaLayoutGuideTop).offset((Screen_Height-Adapt(60)-Adapt(60))/2-Adapt(100)/2);
+//            make.width.mas_equalTo(Adapt(100));
+//            make.height.mas_equalTo(Adapt(100));
+//        }];
+//        videoview.userModel = model1;
+//        [videoview initHideUIDirectionLeft:NO];
+//    }
 }
 
 - (void)changeViewNumber:(TRTCVideoRenderNumber)number mode:(TRTCVideoRenderMode)mode Index:(NSInteger)index userVolumes:(NSArray<TRTCVolumeInfo *> *)userVolumes RenderArray:(NSArray *)array{
@@ -487,252 +491,253 @@
     for (UIView *svideoView in self.subviews) {
         if (mode == TRTCVideoRenderModePortrait) {
             if([svideoView isKindOfClass:[TXTVideoCollectionView class]]){
-//                NSMutableArray *newrenderArr = [NSMutableArray arrayWithArray:self.renderArray];
-//                [newrenderArr removeObjectAtIndex:0];
-//                self.renderViewCollectionView.renderViewsArray = newrenderArr;
                 [self.renderViewCollectionView setUserVideoCell:index renderArray:array];
             }
-        }else{
-            if ([svideoView isKindOfClass:[videoView class]]) {
-                videoView *nsvideoView = (videoView *)svideoView;
-                TXTUserModel *userModel = self.renderArray[index];
-                if ([nsvideoView.userModel.render.userId isEqualToString:userModel.render.userId]) {
-                    for (UIView *view in nsvideoView.subviews) {
-                        [view removeFromSuperview];
-                    }
-                    if (userModel.showVideo) {
-                        //判断是几个人
-                        if (number == TRTCVideoRenderNumber1) {
-                            [nsvideoView mas_remakeConstraints:^(MASConstraintMaker *make) {
-                                make.top.mas_equalTo(self.mas_top).offset(0);
-                                make.left.mas_equalTo(self.mas_left).offset(0);
-                                make.right.mas_equalTo(self.mas_right).offset(0);
-                                make.bottom.mas_equalTo(self.mas_bottom).offset(0);
-                            }];
-                            [nsvideoView showVideoViewDirectionLeft:YES];
-                        }
-                        else if(number == TRTCVideoRenderNumber2){
-                            if (index == 0) {
-                                [nsvideoView mas_remakeConstraints:^(MASConstraintMaker *make) {
-                                    make.centerX.mas_equalTo(self.mas_centerX).offset(-Screen_Width/4);
-                                    make.centerY.mas_equalTo(self.mas_centerY).offset(0);
-                                    make.width.mas_equalTo(Screen_Width/2);
-                                    make.height.mas_equalTo(Screen_Height);
-                                }];
-                                
-                            }else if(index == 1){
-                                
-                                [nsvideoView mas_remakeConstraints:^(MASConstraintMaker *make) {
-                                    make.centerX.mas_equalTo(self.mas_centerX).offset(Screen_Width/4);
-                                    make.centerY.mas_equalTo(self.mas_centerY).offset(0);
-                                    make.width.mas_equalTo(Screen_Width/2);
-                                    make.height.mas_equalTo(Screen_Height);
-                                }];
-                            }
-                            [nsvideoView showVideoViewDirectionLeft:YES];
-                        }
-                        else if(number == TRTCVideoRenderNumber3){
-                            if (index == 0) {
-                                [nsvideoView mas_remakeConstraints:^(MASConstraintMaker *make) {
-                                    make.centerX.mas_equalTo(self.mas_centerX).offset(-Screen_Width/4);
-                                    make.centerY.mas_equalTo(self.mas_centerY).offset(0);
-                                    make.width.mas_equalTo(Screen_Width/2);
-                                    make.height.mas_equalTo(Screen_Height);
-                                }];
-                                
-                            }else if(index == 1){
-                                
-                                [nsvideoView mas_remakeConstraints:^(MASConstraintMaker *make) {
-                                    make.centerX.mas_equalTo(self.mas_centerX).offset(Screen_Width/4);
-                                    make.top.mas_equalTo(self.mas_top).offset(0);
-                                    make.width.mas_equalTo(Screen_Width/2);
-                                    make.height.mas_equalTo(Screen_Height/2);
-                                }];
-                            }else if(index == 2){
-                                [nsvideoView mas_remakeConstraints:^(MASConstraintMaker *make) {
-                                    make.centerX.mas_equalTo(self.mas_centerX).offset(Screen_Width/4);
-                                    make.top.mas_equalTo(self.mas_top).offset(Screen_Height/2);
-                                    make.width.mas_equalTo(Screen_Width/2);
-                                    make.height.mas_equalTo(Screen_Height/2);
-                                }];
-                            }
-                            [nsvideoView showVideoViewDirectionLeft:YES];
-                        }
-                        else if(number >= TRTCVideoRenderNumber4){
-                            if (index == 0) {
-                                [nsvideoView mas_remakeConstraints:^(MASConstraintMaker *make) {
-                                    make.centerX.mas_equalTo(self.mas_centerX).offset(-Screen_Width/4);
-                                    make.top.mas_equalTo(self.mas_top).offset(0);
-                                    make.width.mas_equalTo(Screen_Width/2);
-                                    make.height.mas_equalTo(Screen_Height/2);
-                                }];
-                                
-                            }else if(index == 1){
-                                
-                                [nsvideoView mas_remakeConstraints:^(MASConstraintMaker *make) {
-                                    make.centerX.mas_equalTo(self.mas_centerX).offset(Screen_Width/4);
-                                    make.top.mas_equalTo(self.mas_top).offset(0);
-                                    make.width.mas_equalTo(Screen_Width/2);
-                                    make.height.mas_equalTo(Screen_Height/2);
-                                }];
-                            }else if(index == 2){
-                                
-                                [nsvideoView mas_remakeConstraints:^(MASConstraintMaker *make) {
-                                    make.centerX.mas_equalTo(self.mas_centerX).offset(-Screen_Width/4);
-                                    make.top.mas_equalTo(self.mas_top).offset(Screen_Height/2);
-                                    make.width.mas_equalTo(Screen_Width/2);
-                                    make.height.mas_equalTo(Screen_Height/2);
-                                }];
-                            }else if(index == 3){
-                                
-                                [nsvideoView mas_remakeConstraints:^(MASConstraintMaker *make) {
-                                    make.centerX.mas_equalTo(self.mas_centerX).offset(Screen_Width/4);
-                                    make.top.mas_equalTo(self.mas_top).offset(Screen_Height/2);
-                                    make.width.mas_equalTo(Screen_Width/2);
-                                    make.height.mas_equalTo(Screen_Height/2);
-                                }];
-                            }
-                            [nsvideoView showVideoViewDirectionLeft:YES];
-                        }
-                        else if(number > TRTCVideoRenderNumber4){
-                            if (index == 0) {
-                                [nsvideoView mas_remakeConstraints:^(MASConstraintMaker *make) {
-                                    make.top.mas_equalTo(self.mas_safeAreaLayoutGuideTop).offset(0);
-                                    make.left.mas_equalTo(self.mas_safeAreaLayoutGuideLeft).offset(0);
-                                    make.right.mas_equalTo(self.renderViewCollectionView.mas_left).offset(0);
-                                    make.bottom.mas_equalTo(self.mas_safeAreaLayoutGuideBottom).offset(0);
-                                }];
-                                [nsvideoView showVideoViewDirectionLeft:YES];
-                            }else{
-//                                NSMutableArray *newrenderArr = [NSMutableArray arrayWithArray:self.renderArray];
-//                                [newrenderArr removeObjectAtIndex:0];
-//                                self.renderViewCollectionView.renderViewsArray = newrenderArr;
-                                [self.renderViewCollectionView setUserVideoCell:index renderArray:array];
-                            }
-                        }
-                        
-                       
-                    }else{
-                        //判断是几个人
-                        if (number == TRTCVideoRenderNumber1) {
-                            [nsvideoView mas_remakeConstraints:^(MASConstraintMaker *make) {
-                                make.centerX.mas_equalTo(self.mas_centerX).offset(0);
-                                make.centerY.mas_equalTo(self.mas_centerY).offset(0);
-                                make.width.mas_equalTo(Adapt(100));
-                                make.height.mas_equalTo(Adapt(100));
-                            }];
-                            [nsvideoView initHideUIDirectionLeft:NO];
-                        }
-                        else if(number == TRTCVideoRenderNumber2){
-                            if (index == 0) {
-                                [nsvideoView mas_remakeConstraints:^(MASConstraintMaker *make) {
-                                    make.centerX.mas_equalTo(self.mas_centerX).offset(-Screen_Width/4);
-                                    make.centerY.mas_equalTo(self.mas_centerY).offset(0);
-                                    make.width.mas_equalTo(Adapt(100));
-                                    make.height.mas_equalTo(Adapt(100));
-                                }];
-                                
-                            }else if(index == 1){
-                                
-                                [nsvideoView mas_remakeConstraints:^(MASConstraintMaker *make) {
-                                    make.centerX.mas_equalTo(self.mas_centerX).offset(Screen_Width/4);
-                                    make.centerY.mas_equalTo(self.mas_centerY).offset(0);
-                                    make.width.mas_equalTo(Adapt(100));
-                                    make.height.mas_equalTo(Adapt(100));
-                                }];
-                            }
-                            [nsvideoView initHideUIDirectionLeft:NO];
-                        }
-                        else if(number == TRTCVideoRenderNumber3){
-                            if (index == 0) {
-                                [nsvideoView mas_remakeConstraints:^(MASConstraintMaker *make) {
-                                    make.centerX.mas_equalTo(self.mas_centerX).offset(-Screen_Width/4);
-                                    make.centerY.mas_equalTo(self.mas_centerY).offset(-Adapt(15));
-                                    make.width.mas_equalTo(Adapt(100));
-                                    make.height.mas_equalTo(Adapt(100));
-                                }];
-                                
-                            }else if(index == 1){
-                                
-                                [nsvideoView mas_remakeConstraints:^(MASConstraintMaker *make) {
-                                    make.centerX.mas_equalTo(self.mas_centerX).offset(Screen_Width/4);
-                                    make.top.mas_equalTo(self.mas_top).offset((Screen_Height/2-Adapt(100))/2);
-                                    make.width.mas_equalTo(Adapt(100));
-                                    make.height.mas_equalTo(Adapt(100));
-                                }];
-                            }else if(index == 2){
-                                
-                                [nsvideoView mas_remakeConstraints:^(MASConstraintMaker *make) {
-                                    make.centerX.mas_equalTo(self.mas_centerX).offset(Screen_Width/4);
-                                    make.top.mas_equalTo(self.mas_top).offset(Screen_Height/2+Adapt(50));
-                                    make.width.mas_equalTo(Adapt(100));
-                                    make.height.mas_equalTo(Adapt(100));
-                                }];
-                            }
-                            [nsvideoView initHideUIDirectionLeft:NO];
-                        }
-                        else if(number == TRTCVideoRenderNumber4){
-                            if (index == 0) {
-                                [nsvideoView mas_remakeConstraints:^(MASConstraintMaker *make) {
-                                    make.centerX.mas_equalTo(self.mas_centerX).offset(-Screen_Width/4);
-                                    make.top.mas_equalTo(self.mas_top).offset((Screen_Height/2-Adapt(100))/2);
-                                    make.width.mas_equalTo(Adapt(100));
-                                    make.height.mas_equalTo(Adapt(100));
-                                }];
-                                
-                            }else if(index == 1){
-                                
-                                [nsvideoView mas_remakeConstraints:^(MASConstraintMaker *make) {
-                                    make.centerX.mas_equalTo(self.mas_centerX).offset(Screen_Width/4);
-                                    //            make.centerY.mas_equalTo(self.mas_centerY).offset(-(Screen_Height-Adapt(60))/4);
-                                    make.top.mas_equalTo(self.mas_top).offset((Screen_Height/2-Adapt(100))/2);
-                                    make.width.mas_equalTo(Adapt(100));
-                                    make.height.mas_equalTo(Adapt(100));
-                                }];
-                            }else if(index == 2){
-                                
-                                [nsvideoView mas_remakeConstraints:^(MASConstraintMaker *make) {
-                                    make.centerX.mas_equalTo(self.mas_centerX).offset(-Screen_Width/4);
-                                    make.top.mas_equalTo(self.mas_top).offset(Screen_Height/2+Adapt(50));
-                                    make.width.mas_equalTo(Adapt(100));
-                                    make.height.mas_equalTo(Adapt(100));
-                                }];
-                            }else if(index == 3){
-                                
-                                [nsvideoView mas_remakeConstraints:^(MASConstraintMaker *make) {
-                                    make.centerX.mas_equalTo(self.mas_centerX).offset(Screen_Width/4);
-                                    make.top.mas_equalTo(self.mas_top).offset(Screen_Height/2+Adapt(50));
-                                    make.width.mas_equalTo(Adapt(100));
-                                    make.height.mas_equalTo(Adapt(100));
-                                }];
-                            }
-                            [nsvideoView initHideUIDirectionLeft:NO];
-                        } else if(number > TRTCVideoRenderNumber4){
-                            if (index == 0) {
-                                [nsvideoView mas_remakeConstraints:^(MASConstraintMaker *make) {
-                                    make.left.mas_equalTo(self.mas_safeAreaLayoutGuideLeft).offset((Screen_Width-kTopHeight- Adapt(132))/2-Adapt(100)/2);
-                                    make.top.mas_equalTo(self.mas_safeAreaLayoutGuideTop).offset((Screen_Height-Adapt(60)-Adapt(60))/2-Adapt(100)/2);
-                                    make.width.mas_equalTo(Adapt(100));
-                                    make.height.mas_equalTo(Adapt(100));
-                                }];
-                                [nsvideoView initHideUIDirectionLeft:NO];
-                            }else{
-//                                NSMutableArray *newrenderArr = [NSMutableArray arrayWithArray:self.renderArray];
-//                                [newrenderArr removeObjectAtIndex:0];
-//                                self.renderViewCollectionView.renderViewsArray = newrenderArr;
-                                [self.renderViewCollectionView setUserVideoCell:index renderArray:array];
-                            }
-                        }
-                        
-                    }
-                }
-                
-            }else if([svideoView isKindOfClass:[TXTVideoCollectionView class]]){
-//                NSMutableArray *newrenderArr = [NSMutableArray arrayWithArray:self.renderArray];
-//                [newrenderArr removeObjectAtIndex:0];
-//                self.renderViewCollectionView.renderViewsArray = newrenderArr;
+        }
+        else{
+            if([svideoView isKindOfClass:[TXTVideoCollectionView class]]){
                 [self.renderViewCollectionView setUserVideoCell:index renderArray:array];
             }
+//            if ([svideoView isKindOfClass:[videoView class]]) {
+//                videoView *nsvideoView = (videoView *)svideoView;
+//                TXTUserModel *userModel = self.renderArray[index];
+//                if ([nsvideoView.userModel.render.userId isEqualToString:userModel.render.userId]) {
+//                    for (UIView *view in nsvideoView.subviews) {
+//                        [view removeFromSuperview];
+//                    }
+//                    if (userModel.showVideo) {
+//                        //判断是几个人
+//                        if (number == TRTCVideoRenderNumber1) {
+//                            [nsvideoView mas_remakeConstraints:^(MASConstraintMaker *make) {
+//                                make.top.mas_equalTo(self.mas_top).offset(0);
+//                                make.left.mas_equalTo(self.mas_left).offset(0);
+//                                make.right.mas_equalTo(self.mas_right).offset(0);
+//                                make.bottom.mas_equalTo(self.mas_bottom).offset(0);
+//                            }];
+//                            [nsvideoView showVideoViewDirectionLeft:YES];
+//                        }
+//                        else if(number == TRTCVideoRenderNumber2){
+//                            if (index == 0) {
+//                                [nsvideoView mas_remakeConstraints:^(MASConstraintMaker *make) {
+//                                    make.centerX.mas_equalTo(self.mas_centerX).offset(-Screen_Width/4);
+//                                    make.centerY.mas_equalTo(self.mas_centerY).offset(0);
+//                                    make.width.mas_equalTo(Screen_Width/2);
+//                                    make.height.mas_equalTo(Screen_Height);
+//                                }];
+//
+//                            }else if(index == 1){
+//
+//                                [nsvideoView mas_remakeConstraints:^(MASConstraintMaker *make) {
+//                                    make.centerX.mas_equalTo(self.mas_centerX).offset(Screen_Width/4);
+//                                    make.centerY.mas_equalTo(self.mas_centerY).offset(0);
+//                                    make.width.mas_equalTo(Screen_Width/2);
+//                                    make.height.mas_equalTo(Screen_Height);
+//                                }];
+//                            }
+//                            [nsvideoView showVideoViewDirectionLeft:YES];
+//                        }
+//                        else if(number == TRTCVideoRenderNumber3){
+//                            if (index == 0) {
+//                                [nsvideoView mas_remakeConstraints:^(MASConstraintMaker *make) {
+//                                    make.centerX.mas_equalTo(self.mas_centerX).offset(-Screen_Width/4);
+//                                    make.centerY.mas_equalTo(self.mas_centerY).offset(0);
+//                                    make.width.mas_equalTo(Screen_Width/2);
+//                                    make.height.mas_equalTo(Screen_Height);
+//                                }];
+//
+//                            }else if(index == 1){
+//
+//                                [nsvideoView mas_remakeConstraints:^(MASConstraintMaker *make) {
+//                                    make.centerX.mas_equalTo(self.mas_centerX).offset(Screen_Width/4);
+//                                    make.top.mas_equalTo(self.mas_top).offset(0);
+//                                    make.width.mas_equalTo(Screen_Width/2);
+//                                    make.height.mas_equalTo(Screen_Height/2);
+//                                }];
+//                            }else if(index == 2){
+//                                [nsvideoView mas_remakeConstraints:^(MASConstraintMaker *make) {
+//                                    make.centerX.mas_equalTo(self.mas_centerX).offset(Screen_Width/4);
+//                                    make.top.mas_equalTo(self.mas_top).offset(Screen_Height/2);
+//                                    make.width.mas_equalTo(Screen_Width/2);
+//                                    make.height.mas_equalTo(Screen_Height/2);
+//                                }];
+//                            }
+//                            [nsvideoView showVideoViewDirectionLeft:YES];
+//                        }
+//                        else if(number >= TRTCVideoRenderNumber4){
+//                            if (index == 0) {
+//                                [nsvideoView mas_remakeConstraints:^(MASConstraintMaker *make) {
+//                                    make.centerX.mas_equalTo(self.mas_centerX).offset(-Screen_Width/4);
+//                                    make.top.mas_equalTo(self.mas_top).offset(0);
+//                                    make.width.mas_equalTo(Screen_Width/2);
+//                                    make.height.mas_equalTo(Screen_Height/2);
+//                                }];
+//
+//                            }else if(index == 1){
+//
+//                                [nsvideoView mas_remakeConstraints:^(MASConstraintMaker *make) {
+//                                    make.centerX.mas_equalTo(self.mas_centerX).offset(Screen_Width/4);
+//                                    make.top.mas_equalTo(self.mas_top).offset(0);
+//                                    make.width.mas_equalTo(Screen_Width/2);
+//                                    make.height.mas_equalTo(Screen_Height/2);
+//                                }];
+//                            }else if(index == 2){
+//
+//                                [nsvideoView mas_remakeConstraints:^(MASConstraintMaker *make) {
+//                                    make.centerX.mas_equalTo(self.mas_centerX).offset(-Screen_Width/4);
+//                                    make.top.mas_equalTo(self.mas_top).offset(Screen_Height/2);
+//                                    make.width.mas_equalTo(Screen_Width/2);
+//                                    make.height.mas_equalTo(Screen_Height/2);
+//                                }];
+//                            }else if(index == 3){
+//
+//                                [nsvideoView mas_remakeConstraints:^(MASConstraintMaker *make) {
+//                                    make.centerX.mas_equalTo(self.mas_centerX).offset(Screen_Width/4);
+//                                    make.top.mas_equalTo(self.mas_top).offset(Screen_Height/2);
+//                                    make.width.mas_equalTo(Screen_Width/2);
+//                                    make.height.mas_equalTo(Screen_Height/2);
+//                                }];
+//                            }
+//                            [nsvideoView showVideoViewDirectionLeft:YES];
+//                        }
+//                        else if(number > TRTCVideoRenderNumber4){
+//                            if (index == 0) {
+//                                [nsvideoView mas_remakeConstraints:^(MASConstraintMaker *make) {
+//                                    make.top.mas_equalTo(self.mas_safeAreaLayoutGuideTop).offset(0);
+//                                    make.left.mas_equalTo(self.mas_safeAreaLayoutGuideLeft).offset(0);
+//                                    make.right.mas_equalTo(self.renderViewCollectionView.mas_left).offset(0);
+//                                    make.bottom.mas_equalTo(self.mas_safeAreaLayoutGuideBottom).offset(0);
+//                                }];
+//                                [nsvideoView showVideoViewDirectionLeft:YES];
+//                            }else{
+////                                NSMutableArray *newrenderArr = [NSMutableArray arrayWithArray:self.renderArray];
+////                                [newrenderArr removeObjectAtIndex:0];
+////                                self.renderViewCollectionView.renderViewsArray = newrenderArr;
+//                                [self.renderViewCollectionView setUserVideoCell:index renderArray:array];
+//                            }
+//                        }
+//
+//
+//                    }else{
+//                        //判断是几个人
+//                        if (number == TRTCVideoRenderNumber1) {
+//                            [nsvideoView mas_remakeConstraints:^(MASConstraintMaker *make) {
+//                                make.centerX.mas_equalTo(self.mas_centerX).offset(0);
+//                                make.centerY.mas_equalTo(self.mas_centerY).offset(0);
+//                                make.width.mas_equalTo(Adapt(100));
+//                                make.height.mas_equalTo(Adapt(100));
+//                            }];
+//                            [nsvideoView initHideUIDirectionLeft:NO];
+//                        }
+//                        else if(number == TRTCVideoRenderNumber2){
+//                            if (index == 0) {
+//                                [nsvideoView mas_remakeConstraints:^(MASConstraintMaker *make) {
+//                                    make.centerX.mas_equalTo(self.mas_centerX).offset(-Screen_Width/4);
+//                                    make.centerY.mas_equalTo(self.mas_centerY).offset(0);
+//                                    make.width.mas_equalTo(Adapt(100));
+//                                    make.height.mas_equalTo(Adapt(100));
+//                                }];
+//
+//                            }else if(index == 1){
+//
+//                                [nsvideoView mas_remakeConstraints:^(MASConstraintMaker *make) {
+//                                    make.centerX.mas_equalTo(self.mas_centerX).offset(Screen_Width/4);
+//                                    make.centerY.mas_equalTo(self.mas_centerY).offset(0);
+//                                    make.width.mas_equalTo(Adapt(100));
+//                                    make.height.mas_equalTo(Adapt(100));
+//                                }];
+//                            }
+//                            [nsvideoView initHideUIDirectionLeft:NO];
+//                        }
+//                        else if(number == TRTCVideoRenderNumber3){
+//                            if (index == 0) {
+//                                [nsvideoView mas_remakeConstraints:^(MASConstraintMaker *make) {
+//                                    make.centerX.mas_equalTo(self.mas_centerX).offset(-Screen_Width/4);
+//                                    make.centerY.mas_equalTo(self.mas_centerY).offset(-Adapt(15));
+//                                    make.width.mas_equalTo(Adapt(100));
+//                                    make.height.mas_equalTo(Adapt(100));
+//                                }];
+//
+//                            }else if(index == 1){
+//
+//                                [nsvideoView mas_remakeConstraints:^(MASConstraintMaker *make) {
+//                                    make.centerX.mas_equalTo(self.mas_centerX).offset(Screen_Width/4);
+//                                    make.top.mas_equalTo(self.mas_top).offset((Screen_Height/2-Adapt(100))/2);
+//                                    make.width.mas_equalTo(Adapt(100));
+//                                    make.height.mas_equalTo(Adapt(100));
+//                                }];
+//                            }else if(index == 2){
+//
+//                                [nsvideoView mas_remakeConstraints:^(MASConstraintMaker *make) {
+//                                    make.centerX.mas_equalTo(self.mas_centerX).offset(Screen_Width/4);
+//                                    make.top.mas_equalTo(self.mas_top).offset(Screen_Height/2+Adapt(50));
+//                                    make.width.mas_equalTo(Adapt(100));
+//                                    make.height.mas_equalTo(Adapt(100));
+//                                }];
+//                            }
+//                            [nsvideoView initHideUIDirectionLeft:NO];
+//                        }
+//                        else if(number == TRTCVideoRenderNumber4){
+//                            if (index == 0) {
+//                                [nsvideoView mas_remakeConstraints:^(MASConstraintMaker *make) {
+//                                    make.centerX.mas_equalTo(self.mas_centerX).offset(-Screen_Width/4);
+//                                    make.top.mas_equalTo(self.mas_top).offset((Screen_Height/2-Adapt(100))/2);
+//                                    make.width.mas_equalTo(Adapt(100));
+//                                    make.height.mas_equalTo(Adapt(100));
+//                                }];
+//
+//                            }else if(index == 1){
+//
+//                                [nsvideoView mas_remakeConstraints:^(MASConstraintMaker *make) {
+//                                    make.centerX.mas_equalTo(self.mas_centerX).offset(Screen_Width/4);
+//                                    //            make.centerY.mas_equalTo(self.mas_centerY).offset(-(Screen_Height-Adapt(60))/4);
+//                                    make.top.mas_equalTo(self.mas_top).offset((Screen_Height/2-Adapt(100))/2);
+//                                    make.width.mas_equalTo(Adapt(100));
+//                                    make.height.mas_equalTo(Adapt(100));
+//                                }];
+//                            }else if(index == 2){
+//
+//                                [nsvideoView mas_remakeConstraints:^(MASConstraintMaker *make) {
+//                                    make.centerX.mas_equalTo(self.mas_centerX).offset(-Screen_Width/4);
+//                                    make.top.mas_equalTo(self.mas_top).offset(Screen_Height/2+Adapt(50));
+//                                    make.width.mas_equalTo(Adapt(100));
+//                                    make.height.mas_equalTo(Adapt(100));
+//                                }];
+//                            }else if(index == 3){
+//
+//                                [nsvideoView mas_remakeConstraints:^(MASConstraintMaker *make) {
+//                                    make.centerX.mas_equalTo(self.mas_centerX).offset(Screen_Width/4);
+//                                    make.top.mas_equalTo(self.mas_top).offset(Screen_Height/2+Adapt(50));
+//                                    make.width.mas_equalTo(Adapt(100));
+//                                    make.height.mas_equalTo(Adapt(100));
+//                                }];
+//                            }
+//                            [nsvideoView initHideUIDirectionLeft:NO];
+//                        } else if(number > TRTCVideoRenderNumber4){
+//                            if (index == 0) {
+//                                [nsvideoView mas_remakeConstraints:^(MASConstraintMaker *make) {
+//                                    make.left.mas_equalTo(self.mas_safeAreaLayoutGuideLeft).offset((Screen_Width-kTopHeight- Adapt(132))/2-Adapt(100)/2);
+//                                    make.top.mas_equalTo(self.mas_safeAreaLayoutGuideTop).offset((Screen_Height-Adapt(60)-Adapt(60))/2-Adapt(100)/2);
+//                                    make.width.mas_equalTo(Adapt(100));
+//                                    make.height.mas_equalTo(Adapt(100));
+//                                }];
+//                                [nsvideoView initHideUIDirectionLeft:NO];
+//                            }else{
+////                                NSMutableArray *newrenderArr = [NSMutableArray arrayWithArray:self.renderArray];
+////                                [newrenderArr removeObjectAtIndex:0];
+////                                self.renderViewCollectionView.renderViewsArray = newrenderArr;
+//                                [self.renderViewCollectionView setUserVideoCell:index renderArray:array];
+//                            }
+//                        }
+//
+//                    }
+//                }
+//
+//            }else if([svideoView isKindOfClass:[TXTVideoCollectionView class]]){
+////                NSMutableArray *newrenderArr = [NSMutableArray arrayWithArray:self.renderArray];
+////                [newrenderArr removeObjectAtIndex:0];
+////                self.renderViewCollectionView.renderViewsArray = newrenderArr;
+//                [self.renderViewCollectionView setUserVideoCell:index renderArray:array];
+//            }
         }
        
     }

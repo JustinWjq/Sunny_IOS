@@ -449,7 +449,7 @@ static NSInteger const kInputToolBarH = 62;
 //    }
     self.hideBottomAndTop = YES;
     self.openStartRecord = NO;
-    self.state = [TICConfig shareInstance].enableVideo;
+    self.state = ![TICConfig shareInstance].enableVideo;
     self.muteState = YES;
     
     //切换rootViewController的旋转方向
@@ -506,8 +506,6 @@ static NSInteger const kInputToolBarH = 62;
         self.isSpeak = NO;
         [[[TICManager sharedInstance] getTRTCCloud] setAudioRoute:TRTCAudioModeEarpiece];
     }
-    
-   
     [self.renderViews addObject:userModel];
     [self roomInfo:userModel];
 }
@@ -523,7 +521,10 @@ static NSInteger const kInputToolBarH = 62;
             NSString *bgImageStr = [roomInfoDic valueForKey:@"bgImage"];
             [self.bgImageView sd_setImageWithURL:[NSURL URLWithString:bgImageStr] placeholderImage:nil];
             if ([userModel.render.userId isEqualToString:[TICConfig shareInstance].userId]) {
-                userModel.showVideo = [[roomInfoDic valueForKey:@"enableVideo"] boolValue];
+                userModel.showVideo = ![[roomInfoDic valueForKey:@"defaultBlind"] boolValue];
+                userModel.showAudio = ![[roomInfoDic valueForKey:@"defaultMute"] boolValue];
+                [TICConfig shareInstance].enableVideo = ![[roomInfoDic valueForKey:@"defaultBlind"] boolValue];
+                [TICConfig shareInstance].enableAudio = ![[roomInfoDic valueForKey:@"defaultMute"] boolValue];
             }
 
             self.isShowWhiteBoard = [[result valueForKey:@"shareStatus"] boolValue];
@@ -1347,9 +1348,9 @@ static NSInteger const kInputToolBarH = 62;
 - (void)updateVideoRenderViewsLayoutWithIndex:(NSInteger)index{
     NSString *direction = TXUserDefaultsGetObjectforKey(Direction);
     NSInteger directionInt = [direction integerValue];
-    NSMutableArray *newrenderArr = [NSMutableArray arrayWithArray:self.renderViews];
-    [newrenderArr removeObjectAtIndex:0];
-    [self.renderVideoView changeVideoViewNumber:(self.renderViews.count - 1) mode:directionInt Index:index RenderArray:newrenderArr];
+//    NSMutableArray *newrenderArr = [NSMutableArray arrayWithArray:self.renderViews];
+//    [newrenderArr removeObjectAtIndex:0];
+    [self.renderVideoView changeVideoViewNumber:(self.renderViews.count - 1) mode:directionInt Index:index RenderArray:self.renderViews];
 }
 
 #pragma mark - TIC event listener

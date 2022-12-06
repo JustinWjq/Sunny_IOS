@@ -55,13 +55,12 @@ typedef void (^TXTCallback)(int code, NSString *desc);
 - (void)joinRoom:(NSString *)inviteNumber UserId:(NSString *)userid UserName:(NSString *)userName OrgName:(NSString *)orgName SignOrgName:(NSString *)signOrgName EnableVideo:(BOOL)enableVideo UserHead:(NSString *)userHead BusinessData:(NSDictionary *)businessData CallBack:(TXTCallback)callback;
 //直接会议
 /**
- agentName: 用户名
+ agentName: 对应阳光系统userCode
+ userName: 对应阳光系统userName
+ orgName: 机构
  signOrgName：加密后的机构名
- businessData: 地理位置相关参数
- enableVideo: 是否打开摄像头
- userHead: 用户头像URL
  */
-- (void)startVideo:(NSString *)agentName OrgName:(NSString *)orgName SignOrgName:(NSString *)signOrgName UserHead:(NSString *)userHead BusinessData:(NSDictionary *)businessData CallBack:(TXTCallback)callback;
+- (void)startVideo:(NSString *)agentName UserName:(NSString *)userName OrgName:(NSString *)orgName SignOrgName:(NSString *)signOrgName CallBack:(TXTCallback)callback;
 
 //获取参会人和房间信息
 /**

@@ -19,6 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic,assign) BOOL isShowInviteButton;  //是否展示邀请按钮 (BOOL类型)
 @property(nonatomic,strong) NSString *miniprogramTitle;  //小程序的导航栏标题
 @property(nonatomic,strong) NSString *miniprogramCard;  //分享的小程序卡片文字
+@property(nonatomic,strong) NSString *miniprogramCardURL;  //分享的小程序卡片路径
 @property(nonatomic,assign) BOOL isShowTemporaryButton; //是否展示暂时离开按钮
 @property(nonatomic,strong) NSString *miniProgramPath;  //小程序路径
 @property(nonatomic,assign) BOOL enableVideo; //是否打开摄像头

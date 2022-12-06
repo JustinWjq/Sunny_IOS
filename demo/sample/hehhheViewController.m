@@ -54,6 +54,7 @@
     self.config.userName = @"gh_c7b7987a7660";//gh_534ca5cd3ab2
     self.config.miniprogramTitle = @"智慧展业-足不出户，随时联系您的顾问";
     self.config.miniprogramCard = @"智慧展业-足不出户，随时联系您的顾问";
+    self.config.miniprogramCardURL = @"";
     self.config.isShowInviteButton = YES;
     self.config.isShowTemporaryButton = YES;
     self.config.miniProgramPath = @"/pages/index/index";
@@ -134,7 +135,20 @@
         }];
     }else{
         
-        [[TXTManage sharedInstance] startVideo:agentName OrgName:orgName SignOrgName:sign UserHead:@"" BusinessData:nil CallBack:^(int code, NSString * _Nonnull desc) {
+//        [[TXTManage sharedInstance] startVideo:agentName OrgName:orgName SignOrgName:sign UserHead:@"" BusinessData:nil CallBack:^(int code, NSString * _Nonnull desc) {
+//            if (code == 0) {
+//            }else if(code == 111111111){
+//
+//            }else{
+//                UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"" message:desc preferredStyle:UIAlertControllerStyleAlert];
+//                UIAlertAction *action2 = [UIAlertAction actionWithTitle:@"确认" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+//                    //确认处理
+//                }];
+//                [alert addAction:action2];
+//                [self.navigationController presentViewController:alert animated:YES completion:nil];
+//            }
+//        }];
+        [[TXTManage sharedInstance] startVideo:agentName UserName:@"测试" OrgName:orgName SignOrgName:sign CallBack:^(int code, NSString * _Nonnull desc) {
             if (code == 0) {
             }else if(code == 111111111){
                 
