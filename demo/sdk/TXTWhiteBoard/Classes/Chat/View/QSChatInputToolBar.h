@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "TXTTextView.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -23,7 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 /** delegate */
 @property (nonatomic, weak) id<QSChatInputToolBarDelegate> delegate;
 /** textView */
-@property (nonatomic, strong) UITextView *textView;
+@property (nonatomic, strong) TXTTextView *textView;
 
 /** sendBtn */
 @property (nonatomic, strong) UIButton *sendBtn;

@@ -28,16 +28,14 @@
 #import "UIImage+Extension.h"
 
 // UILabel
-#import "UILabel+currency.h"
 #import "UILabel+Extension.h"
 
 // UIButton
 #import "UIButton+Extension.h"
 #import "QSButton.h"
-#import "UIButton+link.h"
 
-// UITextField
-#import "UITextField+placeholderColor.h"
+//// UITextField
+//#import "UITextField+placeholderColor.h"
 
 // UIScrollView
 
@@ -50,8 +48,6 @@
 // UIScreen
 #import "UIScreen+Extension.h"
 
-// UIViewController
-#import "UIViewController+Extension.h"
 
 // UINavigationController
 //#import "UINavigationController+NavigationLock.h"
