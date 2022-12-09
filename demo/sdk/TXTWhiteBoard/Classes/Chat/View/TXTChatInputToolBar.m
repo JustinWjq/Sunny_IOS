@@ -7,7 +7,6 @@
 //
 
 #import "TXTChatInputToolBar.h"
-#import "UITextView+Placeholder.h"
 
 @interface  TXTChatInputToolBar () <UITextViewDelegate>
 ///** bgView */

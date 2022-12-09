@@ -7,7 +7,6 @@
 //
 
 #import "QSChatInputToolBar.h"
-#import "UITextView+Placeholder.h"
 
 @interface  QSChatInputToolBar () <UITextViewDelegate>
 /** bgView */
@@ -81,9 +80,9 @@
 }
 
 #pragma mark - LazyLoad
-- (UITextView *)textView {
+- (TXTTextView *)textView {
     if (!_textView) {
-        UITextView *textView = [[UITextView alloc] init];
+        TXTTextView *textView = [[TXTTextView alloc] init];
         textView.delegate = self;
         textView.font = [UIFont qs_regularFontWithSize:15];
 //        textView.tintColor = [UIColor colorWithHexString:@"4F6DB8"];
@@ -91,8 +90,8 @@
         textView.returnKeyType = UIReturnKeySend;
         [textView setContentInset:UIEdgeInsetsMake(-0.5, 0, -4.5, 0)];
         textView.cornerRadius = 5;
-        textView.txt_placeholder = @"快来说一说";
-        textView.txt_placeholderColor = [UIColor colorWithHexString:@"999999"];
+        textView.txt_placehoder = @"快来说一说";
+        textView.txt_placehoderColor = [UIColor colorWithHexString:@"999999"];
         textView.backgroundColor = [UIColor clearColor];
         self.textView = textView;
     }
