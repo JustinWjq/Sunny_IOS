@@ -54,7 +54,7 @@
     self.config.userName = @"gh_c7b7987a7660";//gh_534ca5cd3ab2
     self.config.miniprogramTitle = @"智慧展业-足不出户，随时联系您的顾问";
     self.config.miniprogramCard = @"智慧展业-足不出户，随时联系您的顾问";
-    self.config.miniprogramCardURL = @"";
+    self.config.miniprogramCardURL = @"https://l106.oss-cn-szfinance.aliyuncs.com/0activityV3/shareExprien/newMiniShare.png";
     self.config.isShowInviteButton = YES;
     self.config.isShowTemporaryButton = YES;
     self.config.miniProgramPath = @"/pages/index/index";
