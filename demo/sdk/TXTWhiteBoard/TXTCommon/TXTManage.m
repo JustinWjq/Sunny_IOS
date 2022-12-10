@@ -470,7 +470,7 @@
  *  fileModel 文件数据
  */
 - (void)addFileToSdk:(FileType)fileType fileModel:(TXTFileModel *)fileModel {
-    UIWindow *window = [ZYSuspensionManager valueForKey:@"videowindow"];
+    UIWindow *window = [ZYSuspensionManager windowForKey:@"videowindow"];
     TXTNavigationController *nav = (TXTNavigationController *)window.rootViewController;
     SunnyChatViewController *classRoom = (SunnyChatViewController *)nav.viewControllers[0];
     [classRoom addFile:fileType fileModel:fileModel];
