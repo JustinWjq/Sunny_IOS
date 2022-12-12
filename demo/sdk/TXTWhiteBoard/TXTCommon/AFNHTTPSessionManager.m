@@ -57,13 +57,7 @@
      [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
      
      if (header && ![header isEqualToString:@""]) {
- //        if(isFormData){
- //             [request setValue:header forHTTPHeaderField:@"Authorization"];
- //        }else{
- //             [request setValue:header forHTTPHeaderField:@"access-token"];
- //        }
           [request setValue:header forHTTPHeaderField:@"access-token"];
-        
      }
      
      if ([way isEqualToString:@"POST"] || [way isEqualToString:@"PUT"]|| [way isEqualToString:@"DELETE"])
@@ -72,28 +66,6 @@
          NSString *jsonstr = [[NSString alloc] initWithData:data1 encoding:NSUTF8StringEncoding];
          [request setHTTPBody:[jsonstr dataUsingEncoding:NSUTF8StringEncoding]];
      }
-
- //    if(isFormData){
- //        [instance.requestSerializer setValue:header forHTTPHeaderField:@"Authorization"];
- //        NSDictionary *appidDic = @{@"appid":@"1255357306"};
- //        //字典转json
- //        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:appidDic options:NSJSONWritingPrettyPrinted error:nil];
- //        NSData *bodyJsonData = [NSJSONSerialization dataWithJSONObject:body options:NSJSONWritingPrettyPrinted error:nil];
- //        [instance POST:url parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
- //            //当提交一张图片或一个文件的时候 name 可以随便设置，服务端直接能拿到，如果服务端需要根据name去取不同文件的时候，则appendPartWithFileData 方法中的 name 需要根据form的中的name一一对应
- //            [formData appendPartWithFormData:jsonData name:@"appid"];
- //            [formData appendPartWithFormData:bodyJsonData name:@"image"];
- //        } progress:^(NSProgress * _Nonnull uploadProgress) {
- //
- //        } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
- //
- //           [self parseResponse:responseObject error:nil success:success failure:failure];
- //
- //        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
- //            failure(error,nil);
- //        }];
- //    }
- //    else{
          [[instance dataTaskWithRequest:request completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
              
              if (!error) {
@@ -107,7 +79,6 @@
                  failure(error,responseObject);
              }
          }] resume];
- //    }
  }
 
 

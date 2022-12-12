@@ -1044,8 +1044,12 @@ static NSInteger const kInputToolBarH = 62;
     if (self.openStartRecord) {
         NSDictionary *bodydic = @{@"agentId":TXUserDefaultsGetObjectforKey(AgentId)};
         [ [AFNHTTPSessionManager shareInstance] requestURL:ServiceRoom_EndRecordAudio RequestWay:@"POST" Header:nil Body:bodydic params:nil isFormData:NO success:^(NSError *error, id response) {
-            self.openStartRecord = NO;
-            [self.bottomToos changeShareSceneStatus:NO];
+            NSString *errCode = [response valueForKey:@"errCode"];
+            if ([errCode intValue] == 0) {
+                self.openStartRecord = NO;
+                [self.bottomToos changeShareSceneStatus:NO];
+            }
+           
          } failure:^(NSError *error, id response) {
              [[JMToast sharedToast] showDialogWithMsg:@"网络请求超时"];
          }];
@@ -1053,7 +1057,11 @@ static NSInteger const kInputToolBarH = 62;
         if (self.renderViews.count == 1) {
             NSDictionary *bodydic = @{@"agentId":TXUserDefaultsGetObjectforKey(AgentId),@"serviceId":TXUserDefaultsGetObjectforKey(ServiceId),@"userId":self.userId,@"type":@"1"};
            [ [AFNHTTPSessionManager shareInstance] requestURL:ServiceRoom_RecordAudio RequestWay:@"POST" Header:nil Body:bodydic params:nil isFormData:NO success:^(NSError *error, id response) {
-               self.openStartRecord = YES;
+               NSString *errCode = [response valueForKey:@"errCode"];
+               if ([errCode intValue] == 0) {
+                   self.openStartRecord = YES;
+               }
+               
             } failure:^(NSError *error, id response) {
                 [[JMToast sharedToast] showDialogWithMsg:@"网络请求超时"];
             }];
@@ -1063,7 +1071,10 @@ static NSInteger const kInputToolBarH = 62;
                 [TXTCommonAlertView hide];
                 NSDictionary *bodydic = @{@"agentId":TXUserDefaultsGetObjectforKey(AgentId),@"serviceId":TXUserDefaultsGetObjectforKey(ServiceId),@"userId":self.userId,@"type":@"1"};
                [ [AFNHTTPSessionManager shareInstance] requestURL:ServiceRoom_RecordAudio RequestWay:@"POST" Header:nil Body:bodydic params:nil isFormData:NO success:^(NSError *error, id response) {
-                    
+                   NSString *errCode = [response valueForKey:@"errCode"];
+                   if ([errCode intValue] == 0) {
+                      
+                   }
                 } failure:^(NSError *error, id response) {
                     [[JMToast sharedToast] showDialogWithMsg:@"网络请求超时"];
                 }];
@@ -1071,8 +1082,12 @@ static NSInteger const kInputToolBarH = 62;
             alert.cancleBlock = ^{
                 NSDictionary *bodydic = @{@"agentId":TXUserDefaultsGetObjectforKey(AgentId)};
                 [ [AFNHTTPSessionManager shareInstance] requestURL:ServiceRoom_EndRecordAudio RequestWay:@"POST" Header:nil Body:bodydic params:nil isFormData:NO success:^(NSError *error, id response) {
-                    self.openStartRecord = NO;
-                    [self.bottomToos changeShareSceneStatus:NO];
+                    NSString *errCode = [response valueForKey:@"errCode"];
+                    if ([errCode intValue] == 0) {
+                        self.openStartRecord = NO;
+                        [self.bottomToos changeShareSceneStatus:NO];
+                    }
+                   
                  } failure:^(NSError *error, id response) {
                      [[JMToast sharedToast] showDialogWithMsg:@"网络请求超时"];
                  }];
@@ -1117,11 +1132,13 @@ static NSInteger const kInputToolBarH = 62;
             newModel.userName = model.userName;
             newModel.userIcon = model.userIcon;
             [self.renderViews replaceObjectAtIndex:i withObject:newModel];
+            [self updateVideoRenderViewsLayoutWithIndex:i];
             break;
         }
     }
     //更新单个视图
-    [self updateRenderViewsLayout];
+//    [self updateRenderViewsLayout];
+   
     [[[TICManager sharedInstance] getTRTCCloud] muteLocalVideo:!self.state];
     [self.bottomToos changeVideoButtonStatus:self.state];
     self.state = !self.state;
@@ -1339,9 +1356,9 @@ static NSInteger const kInputToolBarH = 62;
 - (void)updateRenderViewsLayoutWithIndex:(NSInteger)index userVolumes:(NSArray<TRTCVolumeInfo *> *)userVolumes{
     NSString *direction = TXUserDefaultsGetObjectforKey(Direction);
     NSInteger directionInt = [direction integerValue];
-    NSMutableArray *newrenderArr = [NSMutableArray arrayWithArray:self.renderViews];
-    [newrenderArr removeObjectAtIndex:0];
-    [self.renderVideoView changeViewNumber:(self.renderViews.count - 1) mode:directionInt Index:index userVolumes:userVolumes RenderArray:newrenderArr];
+//    NSMutableArray *newrenderArr = [NSMutableArray arrayWithArray:self.renderViews];
+//    [newrenderArr removeObjectAtIndex:0];
+    [self.renderVideoView changeViewNumber:(self.renderViews.count - 1) mode:directionInt Index:index userVolumes:userVolumes RenderArray:self.renderViews];
 }
 
 //更新某一个view，video
@@ -2037,7 +2054,8 @@ static NSInteger const kInputToolBarH = 62;
     NSDictionary *dict = @{@"serviceId":serviceId};
     [[AFNHTTPSessionManager shareInstance] requestURL:ServiceRoom_EndRecord RequestWay:@"POST" Header:nil Body:dict params:nil isFormData:NO success:^(NSError *error, id response) {
         NSLog(@"结束录制并结束会话");
-        
+        NSNotification *notification =[NSNotification notificationWithName:@"endRecordFirst" object:nil userInfo:nil];
+        [[NSNotificationCenter defaultCenter] postNotification:notification];
         [ZYSuspensionManager destroyWindowForKey:@"videowindow"];
     } failure:^(NSError *error, id response) {
         [ZYSuspensionManager destroyWindowForKey:@"videowindow"];

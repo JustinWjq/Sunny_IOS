@@ -35,10 +35,6 @@
 }
 
 - (void)setcell:(TXTUserModel *)model Width:(CGFloat)width Height:(CGFloat)height VoiceVolume:(NSArray<TRTCVolumeInfo *> *)userVolumes{
-//    for (UIView *view in [self.videoView subviews]) {
-//        [view removeFromSuperview];
-//    }
-    NSLog(@"setcell");
     videoView *videoview = [[videoView alloc] init];
     [self addSubview:videoview];
     [videoview mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -49,120 +45,14 @@
     }];
     videoview.userModel = model;
     if (model.showVideo) {
-        [videoview showVideoViewDirectionLeft:NO];
+        [videoview showVideoViewDirectionLeft:YES];
     }else{
-        [videoview initHideUIDirectionLeft:NO];
+        [videoview initHideUIDirectionLeft:YES];
     }
     
-//    UIImageView *muteImageView = [[UIImageView alloc] initWithFrame:CGRectMake(10, height-20, 10, 20)];
-//
-//    muteImageView.image = [UIImage imageNamed:@"mute_0@2x.png" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
-//    muteImageView.contentMode = UIViewContentModeScaleAspectFit;
-//    muteImageView.tag = 1234;
-//    [self addSubview:muteImageView];
-//    if (model.showAudio) {
-////        NSLog(@"2222222222222");
-//        for (TRTCVolumeInfo *info in userVolumes) {
-//            NSLog(@"=======++++++++++++++====%@==%@",info.userId,render.userId);
-//            if ([info.userId isEqualToString:render.userId]) {
-//                NSLog(@"进入%@-%d",info.userId,info.volume);
-//                NSInteger level = info.volume/20;
-//                switch (level) {
-//                    case 0:
-//                        muteImageView.image = [UIImage imageNamed:@"mute_0@2x.png" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
-//                        break;
-//                    case 1:
-//                        muteImageView.image = [UIImage imageNamed:@"mute_20@2x.png" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
-//                        break;
-//                    case 2:
-//                        muteImageView.image = [UIImage imageNamed:@"mute_40@2x.png" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
-//                        break;
-//                    case 3:
-//                        muteImageView.image = [UIImage imageNamed:@"mute_60@2x.png" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
-//                        break;
-//                    case 4:
-//                        muteImageView.image = [UIImage imageNamed:@"mute_80@2x.png" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
-//                        break;
-//                    case 5:
-//                        muteImageView.image = [UIImage imageNamed:@"mute_100@2x.png" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
-//                        break;
-//
-//                    default:
-//                        muteImageView.image = [UIImage imageNamed:@"mute_0@2x.png" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
-//                        break;
-//                }
-//            }else{
-//                if (info.userId == nil && [model.userRole isEqualToString:@"owner"]) {
-//                    NSLog(@"进入%@-%d",info.userId,info.volume);
-//                    NSInteger level = info.volume/20;
-//                    switch (level) {
-//                        case 0:
-//                            muteImageView.image = [UIImage imageNamed:@"mute_0@2x.png" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
-//                            break;
-//                        case 1:
-//                            muteImageView.image = [UIImage imageNamed:@"mute_20@2x.png" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
-//                            break;
-//                        case 2:
-//                            muteImageView.image = [UIImage imageNamed:@"mute_40@2x.png" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
-//                            break;
-//                        case 3:
-//                            muteImageView.image = [UIImage imageNamed:@"mute_60@2x.png" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
-//                            break;
-//                        case 4:
-//                            muteImageView.image = [UIImage imageNamed:@"mute_80@2x.png" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
-//                            break;
-//                        case 5:
-//                            muteImageView.image = [UIImage imageNamed:@"mute_100@2x.png" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
-//                            break;
-//
-//                        default:
-//                            muteImageView.image = [UIImage imageNamed:@"mute_0@2x.png" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
-//                            break;
-//                    }
-//                }else{
-//
-//                }
-//            }
-//
-//        }
-//
-//    }else{
-////        NSLog(@"==================%@",render.userId);
-//        muteImageView.image = [UIImage imageNamed:@"mute_no@2x.png" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
-//    }
+
     [CATransaction commit];
 }
-
-//- (UIImageView *)configWithMute:(NSInteger)voice subView:(UIImageView *)imageview{
-//
-//    NSInteger level = voice/20;
-//    switch (level) {
-//        case 0:
-//            imageview.image = [UIImage imageNamed:@"mute_0@2x.png" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
-//            break;
-//        case 1:
-//            imageview.image = [UIImage imageNamed:@"mute_20@2x.png" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
-//            break;
-//        case 2:
-//            imageview.image = [UIImage imageNamed:@"mute_40@2x.png" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
-//            break;
-//        case 3:
-//            imageview.image = [UIImage imageNamed:@"mute_60@2x.png" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
-//            break;
-//        case 4:
-//            imageview.image = [UIImage imageNamed:@"mute_80@2x.png" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
-//            break;
-//        case 5:
-//            imageview.image = [UIImage imageNamed:@"mute_100@2x.png" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
-//            break;
-//
-//        default:
-//            imageview.image = [UIImage imageNamed:@"mute_no@2x.png" inBundle:TXSDKBundle compatibleWithTraitCollection:nil];
-//            break;
-//    }
-//    return imageview;
-//
-//}
 
 - (void)reloadAudio:(TRTCVolumeInfo *)info Model:(TXTUserModel *)model{
     for (UIView *svideoView in self.subviews) {
@@ -195,7 +85,7 @@
                 if (model.showVideo) {
                     [nsvideoView showVideoViewDirectionLeft:YES];
                 }else{
-                    [nsvideoView initHideUIDirectionLeft:NO];
+                    [nsvideoView initHideUIDirectionLeft:YES];
                 }
             }
             

@@ -445,43 +445,22 @@
 }
 
 - (void)changeViewNumber:(TRTCVideoRenderNumber)number mode:(TRTCVideoRenderMode)mode Index:(NSInteger)index userVolumes:(NSArray<TRTCVolumeInfo *> *)userVolumes RenderArray:(NSArray *)array{
-    if (index > self.renderArray.count) {
-        for (UIView *svideoView in self.subviews) {
-            if ([svideoView isKindOfClass:[videoView class]]) {
-                videoView *nsvideoView = (videoView *)svideoView;
+    for (UIView *svideoView in self.subviews) {
+        if ([svideoView isKindOfClass:[videoView class]]) {
+            videoView *nsvideoView = (videoView *)svideoView;
+            TXTUserModel *userModel = self.renderArray[index];
+            if ([nsvideoView.userModel.render.userId isEqualToString:userModel.render.userId]) {
                 for (TRTCVolumeInfo *info in userVolumes) {
-                    if ([nsvideoView.userModel.render.userId isEqualToString:info.userId] || info.userId == nil) {
+                    if ([info.userId isEqualToString:userModel.render.userId] || info.userId == nil) {
+                        nsvideoView.userModel = userModel;
                         [nsvideoView changeVoiceImage:info];
                     }
                 }
-            }else if([svideoView isKindOfClass:[TXTVideoCollectionView class]]){
-//                NSMutableArray *newrenderArr = [NSMutableArray arrayWithArray:self.renderArray];
-//                [newrenderArr removeObjectAtIndex:0];
-//                self.renderViewCollectionView.renderViewsArray = newrenderArr;
-                [self.renderViewCollectionView setUserVolumesArray:userVolumes renderArray:array];
-            }
-        }
-    }else{
-        for (UIView *svideoView in self.subviews) {
-            if ([svideoView isKindOfClass:[videoView class]]) {
-                videoView *nsvideoView = (videoView *)svideoView;
-                TXTUserModel *userModel = self.renderArray[index];
-                if ([nsvideoView.userModel.render.userId isEqualToString:userModel.render.userId]) {
-                    for (TRTCVolumeInfo *info in userVolumes) {
-                        if ([info.userId isEqualToString:userModel.render.userId] || info.userId == nil) {
-                            nsvideoView.userModel = userModel;
-                            [nsvideoView changeVoiceImage:info];
-                        }
-                    }
-                    
-                }
                 
-            }else if([svideoView isKindOfClass:[TXTVideoCollectionView class]]){
-//                NSMutableArray *newrenderArr = [NSMutableArray arrayWithArray:self.renderArray];
-//                [newrenderArr removeObjectAtIndex:0];
-//                self.renderViewCollectionView.renderViewsArray = newrenderArr;
-                [self.renderViewCollectionView setUserVolumesArray:userVolumes renderArray:array];
             }
+            
+        }else if([svideoView isKindOfClass:[TXTVideoCollectionView class]]){
+            [self.renderViewCollectionView setUserVolumesArray:userVolumes renderArray:array];
         }
     }
     

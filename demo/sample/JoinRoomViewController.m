@@ -117,27 +117,10 @@
     [[TXTManage sharedInstance] setEnvironment:appType wechat:self.config appGroup:@"com.tx.txWhiteBoard.ReplaykitUpload"];
     
     
-    [[TXTManage sharedInstance] joinRoom:roomId UserId:userName UserName:userName OrgName:orgName SignOrgName:sign EnableVideo:self.config.enableVideo UserHead:@"" BusinessData:nil CallBack:^(int code, NSString * _Nonnull desc) {
-        
-//        ClassroomViewController *vc = [[ClassroomViewController alloc]init];
-//        vc.delegate = self;
-//        if (code == 0) {
-//
-//        }else if(code == 111111111){
-//
-//        }else{
-//            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"" message:desc preferredStyle:UIAlertControllerStyleAlert];
+//    [[TXTManage sharedInstance] st:roomId UserId:userName UserName:userName OrgName:orgName SignOrgName:sign EnableVideo:self.config.enableVideo UserHead:@"" BusinessData:nil CallBack:^(int code, NSString * _Nonnull desc) {
 //
 //
-//            UIAlertAction *action2 = [UIAlertAction actionWithTitle:@"确认" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-//                //确认处理
-//            }];
-//
-//
-//            [alert addAction:action2];
-//            [self.navigationController presentViewController:alert animated:YES completion:nil];
-//        }
-    }];
+//    }];
     
 }
 - (IBAction)chooseSmall:(id)sender {
@@ -287,12 +270,12 @@
 //            }
 //        }];
 //
-        [[TXTManage sharedInstance] startVideo:@"" UserName:@"" OrgName:@"" SignOrgName:@"" CallBack:^(int code, NSString * _Nonnull desc) {
-            if (code == 0) {
-            }else{
-
-            }
-        }];
+//        [[TXTManage sharedInstance] startVideo:@"" UserName:@"" OrgName:@"" SignOrgName:@"" CallBack:^(int code, NSString * _Nonnull desc) {
+//            if (code == 0) {
+//            }else{
+//
+//            }
+//        }];
 
     }];
     UIAlertAction *action3 = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
@@ -303,12 +286,12 @@
 //
 //            }
 //        }];
-        [[TXTManage sharedInstance] startVideo:@"" UserName:@"" OrgName:@"" SignOrgName:@"" CallBack:^(int code, NSString * _Nonnull desc) {
-            if (code == 0) {
-            }else{
-
-            }
-        }];
+//        [[TXTManage sharedInstance] startVideo:@"" UserName:@"" OrgName:@"" SignOrgName:@"" CallBack:^(int code, NSString * _Nonnull desc) {
+//            if (code == 0) {
+//            }else{
+//
+//            }
+//        }];
     }];
     [alert addAction:action2];
     [alert addAction:action3];
@@ -348,14 +331,14 @@
     }
     NSString *sign = [timeString aci_encryptWithAES];
     
-    [[TXTManage sharedInstance] setAgentInRoomStatus:self.agentId UserName:self.text1.text AndServiceId:self.text2.text InviteAccount:@"aaa" AndAction:@"invited" OrgName:orgName SignOrgName:sign CallBack:^(int code, NSString * _Nonnull desc) {
-        if (code == 0) {
-            [[TXTManage sharedInstance] setAgentInRoomStatus:self.agentId UserName:self.text1.text AndServiceId:self.text2.text InviteAccount:@"aaa" AndAction:@"refused" OrgName:orgName SignOrgName:sign CallBack:^(int code, NSString * _Nonnull desc) {
-                            
-            }];
-        }
-        
-    }];
+//    [[TXTManage sharedInstance] setAgentInRoomStatus:self.agentId UserName:self.text1.text AndServiceId:self.text2.text InviteAccount:@"aaa" AndAction:@"invited" OrgName:orgName SignOrgName:sign CallBack:^(int code, NSString * _Nonnull desc) {
+//        if (code == 0) {
+//            [[TXTManage sharedInstance] setAgentInRoomStatus:self.agentId UserName:self.text1.text AndServiceId:self.text2.text InviteAccount:@"aaa" AndAction:@"refused" OrgName:orgName SignOrgName:sign CallBack:^(int code, NSString * _Nonnull desc) {
+//
+//            }];
+//        }
+//
+//    }];
     
 //    [[TXTManage sharedInstance] setAgentInRoomStatus:self.agentId AndAction:@"invited" OrgName:orgName SignOrgName:sign CallBack:^(int code, NSString * _Nonnull desc) {
 //        [[TXTManage sharedInstance] setAgentInRoomStatus:self.agentId AndAction:@"refused" OrgName:orgName SignOrgName:sign CallBack:^(int code, NSString * _Nonnull desc) {
@@ -397,9 +380,9 @@
         appType = @"0";
     }
     NSString *sign = [timeString aci_encryptWithAES];
-    [[TXTManage sharedInstance] setAgentInRoomStatus:@"aaa" UserName:self.text1.text AndServiceId:self.text2.text InviteAccount:@"aaa" AndAction:@"invited" OrgName:orgName SignOrgName:sign CallBack:^(int code, NSString * _Nonnull desc) {
-            
-    }];
+//    [[TXTManage sharedInstance] setAgentInRoomStatus:@"aaa" UserName:self.text1.text AndServiceId:self.text2.text InviteAccount:@"aaa" AndAction:@"invited" OrgName:orgName SignOrgName:sign CallBack:^(int code, NSString * _Nonnull desc) {
+//
+//    }];
  
 }
 

@@ -4,8 +4,8 @@
 //
 //  Created by 洪青文 on 2020/9/8.
 //  Copyright © 2020 洪青文. All rights reserved.
-//  data:0301
-//  version：1.3.0
+//  data:1209
+//  version：1.0.3
 
 #import <Foundation/Foundation.h>
 #import "TXTCustomConfig.h"
@@ -27,6 +27,8 @@ typedef void (^TXTCallback)(int code, NSString *desc);
 
 /// 点击了共享文件
 - (void)addOnFileClickListenerRoomId:(NSInteger)roomId;
+///离开房间
+- (void)onEndRoom;
 
 @end
 
@@ -42,46 +44,16 @@ typedef void (^TXTCallback)(int code, NSString *desc);
  appGroup: 主 App 与 Broadcast 共享的 Application Group Identifier，可以指定为 nil，但按照文档设置会使功能更加可靠。
  */
 - (void)setEnvironment:(NSString *)environment wechat:(TXTCustomConfig *)txtCustomConfig appGroup:(NSString *)appGroup;
-//创建会议
-- (void)createRoom:(NSString *)agentName OrgName:(NSString *)orgName SignOrgName:(NSString *)signOrgName EnableVideo:(BOOL)enableVideo BusinessData:(NSDictionary *)businessData RoomInfo:(NSDictionary *)roomInfo CallBack:(TXTCallback)callback;
-//参加会议
-/**
- agentName: 用户名
- signOrgName：加密后的机构名
- businessData: 地理位置相关参数
- enableVideo: 是否打开摄像头
- userHead: 用户头像URL
- */
-- (void)joinRoom:(NSString *)inviteNumber UserId:(NSString *)userid UserName:(NSString *)userName OrgName:(NSString *)orgName SignOrgName:(NSString *)signOrgName EnableVideo:(BOOL)enableVideo UserHead:(NSString *)userHead BusinessData:(NSDictionary *)businessData CallBack:(TXTCallback)callback;
+
 //直接会议
 /**
+ roomId:会议号
  agentName: 对应阳光系统userCode
  userName: 对应阳光系统userName
  orgName: 机构
  signOrgName：加密后的机构名
  */
-- (void)startVideo:(NSString *)agentName UserName:(NSString *)userName OrgName:(NSString *)orgName SignOrgName:(NSString *)signOrgName CallBack:(TXTCallback)callback;
-
-//获取参会人和房间信息
-/**
- *  agentId 业务员账号
- *  serviceId
- *  OrgName 机构 测试：gscyf_test 必填
- *  SignOrgName 加密签名
- */
-- (void)getAgentAndRoomStatus:(NSString *)agentId AndServiceId:(NSString *)serviceId OrgName:(NSString *)orgName SignOrgName:(NSString *)signOrgName CallBack:(TXTCallback)callback;
-//设置参会人信息
-/**
- *  agentId 业务员账号
- *  userName 被邀请的业务员姓名
- *  serviceId 会议id
- *  inviteAccount  发送该邀请的业务员账号（指的是谁发出邀请的人，在 onFriendBtListener回调中的inviteAccount ）
- *  action 业务员操作, invited: 收到会议邀请, refused: 拒绝会议邀请
- *  OrgName 机构 测试：gscyf_test 必填
- *  SignOrgName 加密签名
- */
-- (void)setAgentInRoomStatus:(NSString *)agentId UserName:(NSString *)userName AndServiceId:(NSString *)serviceId InviteAccount:(NSString *)inviteAccount AndAction:(NSString *)action OrgName:(NSString *)orgName SignOrgName:(NSString *)signOrgName CallBack:(TXTCallback)callback;
-
+- (void)startVideo:(NSString *)roomId andAgent:(NSString *)agent UserName:(NSString *)userName OrgName:(NSString *)orgName SignOrgName:(NSString *)signOrgName CallBack:(TXTCallback)callback;
 
 //反初始化
 - (void)unInit;

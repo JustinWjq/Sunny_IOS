@@ -13,9 +13,11 @@
 #import "NSString+TXTAES.h"
 #import "BRPickerView.h"
 #import "settingViewController.h"
+#import <TXTWhiteBoard/TXTFileModel.h>
+//#import "QFHttpTool.h"
+#import "AFNetworking.h"
 
-
-@interface hehhheViewController ()
+@interface hehhheViewController ()<TXTManageDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *agentName;
 @property (weak, nonatomic) IBOutlet UITextField *orgName;
 @property (weak, nonatomic) IBOutlet UILabel *smalllab;
@@ -60,6 +62,8 @@
     self.config.miniProgramPath = @"/pages/index/index";
     self.config.enableVideo = YES;
     self.config.isChat = NO;
+    
+    [TXTManage sharedInstance].manageDelegate = self;
 }
 
 - (void)viewWillAppear:(BOOL)animated{
@@ -71,7 +75,7 @@
     }
 }
 
-
+static AFHTTPSessionManager *instance;
 - (IBAction)start:(id)sender {
     [self.view endEditing:YES];
     NSString *agentName = self.agentName.text;
@@ -116,62 +120,70 @@
      
     
     [[TXTManage sharedInstance] setEnvironment:appType wechat:self.config appGroup:@"com.tx.txWhiteBoard.ReplaykitUpload"];
-
-    if ([self.route isEqualToString:@"creat"]) {
-      
-        [[TXTManage sharedInstance] createRoom:agentName OrgName:orgName SignOrgName:sign EnableVideo:self.config.enableVideo BusinessData:nil RoomInfo:nil CallBack:^(int code, NSString * _Nonnull desc) {
-            if (code == 0) {
-                NSLog(@"%@",desc);
-                NSData *jsonData = [desc dataUsingEncoding:NSUTF8StringEncoding];
-                    NSError *err;
-                    NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:jsonData
-                                                                        options:NSJSONReadingMutableContainers
-                                                                          error:&err];
-                NSString *inviteNumber = [dic valueForKey:@"inviteNumber"];
-                [[NSUserDefaults standardUserDefaults] setObject:inviteNumber forKey:@"inviteNumber"];
-                [self.navigationController popViewControllerAnimated:YES];
-                
-            }
-        }];
+    
+    //创建会话
+    instance = [AFHTTPSessionManager manager];
+    instance.securityPolicy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeNone];
+    instance.securityPolicy.allowInvalidCertificates = YES;
+    [instance.securityPolicy setValidatesDomainName:NO];
+    NSString *urlstr = @"";
+    if ([appType isEqualToString:@"1"]) {
+        urlstr = [NSString stringWithFormat:@"%@%@",@"https://video-sells-test.ikandy.cn",@"/api/serviceRoom/create"];
+    }else if([appType isEqualToString:@"2"]) {
+        urlstr = [NSString stringWithFormat:@"%@%@",@"https://video-sells.cloud-ins.cn",@"/api/serviceRoom/create"];
     }else{
-        
-//        [[TXTManage sharedInstance] startVideo:agentName OrgName:orgName SignOrgName:sign UserHead:@"" BusinessData:nil CallBack:^(int code, NSString * _Nonnull desc) {
-//            if (code == 0) {
-//            }else if(code == 111111111){
-//
-//            }else{
-//                UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"" message:desc preferredStyle:UIAlertControllerStyleAlert];
-//                UIAlertAction *action2 = [UIAlertAction actionWithTitle:@"确认" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-//                    //确认处理
-//                }];
-//                [alert addAction:action2];
-//                [self.navigationController presentViewController:alert animated:YES completion:nil];
-//            }
-//        }];
-        [[TXTManage sharedInstance] startVideo:agentName UserName:@"测试" OrgName:orgName SignOrgName:sign CallBack:^(int code, NSString * _Nonnull desc) {
-            if (code == 0) {
-            }else if(code == 111111111){
-                
-            }else{
-                UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"" message:desc preferredStyle:UIAlertControllerStyleAlert];
-                UIAlertAction *action2 = [UIAlertAction actionWithTitle:@"确认" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                    //确认处理
-                }];
-                [alert addAction:action2];
-                [self.navigationController presentViewController:alert animated:YES completion:nil];
-            }
-        }];
-        
+        urlstr = [NSString stringWithFormat:@"%@%@",@"https://dev1.ikandy.cn:60312",@"/api/serviceRoom/create"];
     }
+    NSLog(@"%@",urlstr);
+    urlstr = [urlstr stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+    NSMutableURLRequest *request = [[AFJSONRequestSerializer serializer]requestWithMethod:@"POST" URLString:urlstr parameters:nil error:nil];
+    request.timeoutInterval = 10;
+    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    
+  
+    NSMutableDictionary *bodyDic = [NSMutableDictionary dictionary];
+    [bodyDic setValue:agentName forKey:@"account"];
+    [bodyDic setValue:orgName forKey:@"orgAccount"];
+    [bodyDic setValue:sign forKey:@"sign"];
+    NSData *data1 = [NSJSONSerialization dataWithJSONObject:bodyDic options:0 error:nil];
+    NSString *jsonstr = [[NSString alloc] initWithData:data1 encoding:NSUTF8StringEncoding];
+    [request setHTTPBody:[jsonstr dataUsingEncoding:NSUTF8StringEncoding]];
+        [[instance dataTaskWithRequest:request completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
+            
+            if (!error) {
+                
+                NSDictionary *responseDict = (NSDictionary *)responseObject;
+                NSLog(@"%@",[responseDict description]);
+                NSString *errCode = [responseObject valueForKey:@"errCode"];
+                if ([errCode intValue] == 0) {
+                    NSDictionary *result = [responseObject valueForKey:@"result"];
+                    NSString *inviteNumber = [result valueForKey:@"inviteNumber"];
+                    [[TXTManage sharedInstance] startVideo:inviteNumber andAgent:agentName UserName:@"测试" OrgName:orgName SignOrgName:sign CallBack:^(int code, NSString * _Nonnull desc) {
+                        if (code == 0) {
+                        }else if(code == 111111111){
+                            
+                        }else{
+                            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"" message:desc preferredStyle:UIAlertControllerStyleAlert];
+                            UIAlertAction *action2 = [UIAlertAction actionWithTitle:@"确认" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                                //确认处理
+                            }];
+                            [alert addAction:action2];
+                            [self.navigationController presentViewController:alert animated:YES completion:nil];
+                        }
+                    }];
+                }
+                
+            }
+            else
+            {
+               
+            }
+        }] resume];
+
+   
 }
 
-- (void)creat{
-    
-}
-
-- (void)start{
-    
-}
 
 - (IBAction)chooseSmall:(id)sender {
     /// 1.单列字符串选择器（传字符串数组）
@@ -230,6 +242,10 @@
 - (void)setting{
     settingViewController *vc = [[settingViewController alloc] initWithNibName:@"settingViewController" bundle:nil];
     [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)onEndRoom{
+    NSLog(@"结束了");
 }
    
 @end
