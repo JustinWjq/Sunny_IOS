@@ -114,7 +114,9 @@
     if (imagesArray.count > 1) {
         self.collectionView.hidden = NO;
         self.collectionView.imagesArray = imagesArray;
-        self.whiteBoardView.teleprompStr = self.contentArray[0];
+        if (self.contentArray.count > 0) {
+            self.whiteBoardView.teleprompStr = self.contentArray[0];
+        }
     } else {
         self.collectionView.hidden = YES;
         if (imagesArray.count == 1) {
@@ -144,6 +146,7 @@
 
 - (void)onTEBVideoStatusChanged:(NSString *)fileId status:(TEduBoardVideoStatus)status progress:(CGFloat)progress duration:(CGFloat)duration {
     NSLog(@"video progress = %.f", progress);
+    [[[TICManager sharedInstance] getBoardController] playVideo];
 }
 
 /// orientationChange
