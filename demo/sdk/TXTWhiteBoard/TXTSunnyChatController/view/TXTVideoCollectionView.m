@@ -55,12 +55,11 @@
 }
 
 - (void)setUserVideoCell:(NSInteger)index renderArray:(NSArray *)array{
-    if (index<1) {
+    if (array.count < 1) {
         return;
     }
-//    self.renderViewsArray = array;
-    TXTUserModel *model = array[index-1];
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:(index-1) inSection:0];
+    TXTUserModel *model = array[index];
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:(index) inSection:0];
     TXTVideoCollectionViewCell *cell = (TXTVideoCollectionViewCell *)[_collectionView cellForItemAtIndexPath:indexPath];
     [cell reloadVideo:model];
 }

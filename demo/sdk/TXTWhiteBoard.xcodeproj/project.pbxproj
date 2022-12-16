@@ -113,7 +113,7 @@
 		F01D22E32917B8E70025F107 /* TXTMemberInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = F01D22E12917B8E70025F107 /* TXTMemberInfoView.m */; };
 		F01D22E62917FB700025F107 /* QSTapGestureRecognizer.h in Headers */ = {isa = PBXBuildFile; fileRef = F01D22E42917FB700025F107 /* QSTapGestureRecognizer.h */; };
 		F01D22E72917FB700025F107 /* QSTapGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = F01D22E52917FB700025F107 /* QSTapGestureRecognizer.m */; };
-		F0241D68292CA58000E3AE6D /* TXTFileModel.h in Headers */ = {isa = PBXBuildFile; fileRef = F0241D66292CA58000E3AE6D /* TXTFileModel.h */; };
+		F0241D68292CA58000E3AE6D /* TXTFileModel.h in Headers */ = {isa = PBXBuildFile; fileRef = F0241D66292CA58000E3AE6D /* TXTFileModel.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F0241D69292CA58000E3AE6D /* TXTFileModel.m in Sources */ = {isa = PBXBuildFile; fileRef = F0241D67292CA58000E3AE6D /* TXTFileModel.m */; };
 		F0241D6E292CC63300E3AE6D /* ImagesPPTCollectionViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = F0241D6A292CC63200E3AE6D /* ImagesPPTCollectionViewCell.h */; };
 		F0241D6F292CC63300E3AE6D /* ImagesPPTCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0241D6B292CC63300E3AE6D /* ImagesPPTCollectionView.m */; };
@@ -1464,6 +1464,7 @@
 			files = (
 				F08168CD290FC9A200C5CA29 /* UIScreen+Extension.h in Headers */,
 				31B7434D2507650400837C37 /* TXTManage.h in Headers */,
+				F0241D68292CA58000E3AE6D /* TXTFileModel.h in Headers */,
 				31B5FD252501DC58006587C0 /* ntp-log.h in Headers */,
 				F08168DB290FC9A200C5CA29 /* QSButton.h in Headers */,
 				3100A4FC2614466200ECA26A /* TXTCustomConfig.h in Headers */,
@@ -1488,7 +1489,6 @@
 				31D45ED02915270200765B6B /* TXTVideoCollectionViewCell.h in Headers */,
 				31D45ECD2915270200765B6B /* TXTUserModel.h in Headers */,
 				31B5FD262501DC58006587C0 /* NSDate+NetworkClock.h in Headers */,
-				F0241D68292CA58000E3AE6D /* TXTFileModel.h in Headers */,
 				F08168CB290FC9A200C5CA29 /* UIImage+Orientation.h in Headers */,
 				31B5FC7F2501D71B006587C0 /* TXTWhiteBoard.h in Headers */,
 				F0E22B9E2915009C00C1E031 /* TXTSmallMessage.h in Headers */,
