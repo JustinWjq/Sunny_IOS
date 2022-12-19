@@ -33,7 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
 /** videoUrl */
 @property (nonatomic, copy) NSString *videoUrl;
 
-// h5类型
+// h5类型 h5Url、name 都是必填选项
 /**
  TXTFileModel *fileModel = [[TXTFileModel alloc] init];
  fileModel.h5Url = @"https://recall-sync-demo.cloud-ins.cn/mirror.html?syncid=51-cvsstest123-1&synctoken=0060490432279104e008daf9a660dfb8d2aIABaoflIqpo4-W91SrtSeG8e-QAQ5_O7_RsAQrms1PxSLJ597XwAAAAAEADKL1Dbsjd_YwEA6AOyN39j";
