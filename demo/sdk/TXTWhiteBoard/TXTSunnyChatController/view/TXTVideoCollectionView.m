@@ -95,8 +95,13 @@
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     TXTVideoCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:ReuseIdentifier forIndexPath:indexPath];
-//    [cell configVideoCell:self.renderViewsArray[indexPath.row] Width:imageWidth Height:self.frame.size.height VoiceVolume:self.userVolumesArray];
-    [cell configVideoCell:self.renderViewsArray[indexPath.row] Width:Adapt(132) Height:Adapt(100) VoiceVolume:self.userVolumesArray];
+    NSString *direction = TXUserDefaultsGetObjectforKey(Direction);
+    if ([direction integerValue] == TRTCVideoResolutionModePortrait) {
+        [cell configVideoCell:self.renderViewsArray[indexPath.row] Width:imageWidth Height:Adapt(100) VoiceVolume:self.userVolumesArray];
+    }else{
+        [cell configVideoCell:self.renderViewsArray[indexPath.row] Width:Adapt(132) Height:Adapt(100) VoiceVolume:self.userVolumesArray];
+    }
+    
     return cell;
 }
 
