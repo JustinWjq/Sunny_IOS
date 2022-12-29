@@ -156,7 +156,7 @@
             make.bottom.equalTo(self.mas_safeAreaLayoutGuideBottom).offset(bottomH);
         }];
         
-        if (self.teleprompView.isOpen) {
+        if (self.teleprompView.isOpen && self.teleprompView.teleprompStr.length > 0) {
             [self teleprompViewDidClickOpen];
         } else {
             CGFloat teleprompViewTopH = ![UIWindow isLandscape] ? 54 : 80;
