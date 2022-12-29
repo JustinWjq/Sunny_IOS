@@ -79,18 +79,22 @@
 
 - (void)setModel:(TXTUserModel *)model {
     _model = model;
-    if (self.keyWord) {
-        NSRange range = [model.userName rangeOfString:self.keyWord];
-        NSMutableAttributedString *attribute = [[NSMutableAttributedString alloc] initWithString:[model.userRole isEqualToString:@"owner"] ? [NSString stringWithFormat:@"%@（主持人、我）", model.userName] : model.userName];
-        [attribute addAttribute:NSFontAttributeName value:[UIFont qs_regularFontWithSize:15] range:range];
-        [attribute addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithHexString:@"E6B980"] range:range];
-        self.nameLabel.attributedText = attribute;
-    } else {
-        self.nameLabel.text = [model.userRole isEqualToString:@"owner"] ? [NSString stringWithFormat:@"%@（主持人、我）", model.userName] : model.userName;
+    
+    NSString *oregionUserName = model.userName;
+    if (oregionUserName.length > 10) {
+        oregionUserName = [NSString stringWithFormat:@"%@...", [oregionUserName substringToIndex:10]];
     }
-    if (self.nameLabel.text.length > 10) {
-        self.nameLabel.text = [NSString stringWithFormat:@"%@...", [self.nameLabel.text substringToIndex:10]];
-    }
+    
+//    if (self.keyWord) {
+//        NSRange range = [userName rangeOfString:self.keyWord];
+//        NSMutableAttributedString *attribute = [[NSMutableAttributedString alloc] initWithString:[model.userRole isEqualToString:@"owner"] ? [NSString stringWithFormat:@"%@（主持人、我）", model.userName] : model.userName];
+//        [attribute addAttribute:NSFontAttributeName value:[UIFont qs_regularFontWithSize:15] range:range];
+//        [attribute addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithHexString:@"E6B980"] range:range];
+//        self.nameLabel.attributedText = attribute;
+//    } else {
+        self.nameLabel.text = [model.userRole isEqualToString:@"owner"] ? [NSString stringWithFormat:@"%@（主持人、我）", oregionUserName] : oregionUserName;
+//    }
+
     
 //    [self.icon sd_setImageWithURL:[NSURL URLWithString:model.userIcon] placeholderImage:[UIImage imageNamed:@"HeadPortrait_s" inBundle:TXTSDKBundle compatibleWithTraitCollection:nil] completed:nil];
     
