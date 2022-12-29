@@ -79,7 +79,8 @@ static TXTMemberInfoView *_alertView = nil; //第一步：静态实例，并初�
     }];
     
     UIImageView *icon = [[UIImageView alloc] init];
-    [icon sd_setImageWithURL:[NSURL URLWithString:model.userIcon] placeholderImage:[UIImage imageNamed:@"HeadPortrait_s" inBundle:TXTSDKBundle compatibleWithTraitCollection:nil] completed:nil];
+//    [icon sd_setImageWithURL:[NSURL URLWithString:model.userIcon] placeholderImage:[UIImage imageNamed:@"HeadPortrait_s" inBundle:TXTSDKBundle compatibleWithTraitCollection:nil] completed:nil];
+    icon.backgroundColor = [UIColor colorWithHexString:@"E6B980"];
     [topBgView addSubview:icon];
     icon.layer.cornerRadius = 30 / 2;
     icon.clipsToBounds = YES;

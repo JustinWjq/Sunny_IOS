@@ -88,6 +88,10 @@
     } else {
         self.nameLabel.text = [model.userRole isEqualToString:@"owner"] ? [NSString stringWithFormat:@"%@（主持人、我）", model.userName] : model.userName;
     }
+    if (self.nameLabel.text.length > 10) {
+        self.nameLabel.text = [NSString stringWithFormat:@"%@...", [self.nameLabel.text substringToIndex:10]];
+    }
+    
 //    [self.icon sd_setImageWithURL:[NSURL URLWithString:model.userIcon] placeholderImage:[UIImage imageNamed:@"HeadPortrait_s" inBundle:TXTSDKBundle compatibleWithTraitCollection:nil] completed:nil];
     
     NSString *userName = model.userName;

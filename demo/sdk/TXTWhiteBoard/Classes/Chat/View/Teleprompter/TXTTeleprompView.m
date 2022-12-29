@@ -58,7 +58,7 @@
     if (self) {
         self.backgroundColor = [UIColor clearColor];
         [self initUI];
-        
+        self.isOpen = YES;
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleScreenOrientationChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
     }
     return self;
