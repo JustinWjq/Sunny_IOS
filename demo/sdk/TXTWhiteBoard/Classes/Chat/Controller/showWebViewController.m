@@ -112,7 +112,11 @@
         }else{
             if ([self.type isEqualToString:@"0"]) {
                 //结束共享
-                NSDictionary *messagedict = @{@"serviceId":TXUserDefaultsGetObjectforKey(ServiceId),@"type":@"wxShareWebFileEnd",@"userId":TXUserDefaultsGetObjectforKey(@"miniUserId"),@"fromUserId":[TICConfig shareInstance].userId,@"toUserId":TXUserDefaultsGetObjectforKey(@"miniUserId")};
+                NSDictionary *messagedict = @{@"serviceId":TXUserDefaultsGetObjectforKey(ServiceId),
+                                              @"type":@"wxShareWebFileEnd",
+                                              @"userId":TXUserDefaultsGetObjectforKey(@"miniUserId"),
+                                              @"fromUserId":[TICConfig shareInstance].userId,
+                                              @"toUserId":TXUserDefaultsGetObjectforKey(@"miniUserId")};
                 NSString *str = [[TXTCommon sharedInstance] convertToJsonData:messagedict];
                 [[TICManager sharedInstance] sendGroupTextMessage:str callback:^(TICModule module, int code, NSString *desc) {
                     
@@ -133,7 +137,11 @@
                     
                 }];
             }else{
-                NSDictionary *messagedict = @{@"serviceId":TXUserDefaultsGetObjectforKey(ServiceId),@"type":@"wxShareWebFileEnd",@"userId":self.type,@"fromUserId":self.type,@"toUserId":[TICConfig shareInstance].userId};
+                NSDictionary *messagedict = @{@"serviceId":TXUserDefaultsGetObjectforKey(ServiceId),
+                                              @"type":@"wxShareWebFileEnd",
+                                              @"userId":self.type,
+                                              @"fromUserId":self.type,
+                                              @"toUserId":[TICConfig shareInstance].userId};
                 NSLog(@"wxShareWebFileEnd = %@",[messagedict description]);
                 NSString *str = [[TXTCommon sharedInstance] convertToJsonData:messagedict];
                 [[TICManager sharedInstance] sendGroupTextMessage:str callback:^(TICModule module, int code, NSString *desc) {

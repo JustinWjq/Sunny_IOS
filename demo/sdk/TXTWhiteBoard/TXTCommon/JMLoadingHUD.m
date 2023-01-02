@@ -13,6 +13,8 @@
     BOOL _isShow;
 }
 
+
+
 @property (nonatomic, strong) TXTMBProgressHUD *loadingHUD;
 
 @end

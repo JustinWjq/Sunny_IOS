@@ -11,9 +11,9 @@
 #import "TICRenderView.h"
 #import "TXTUserModel.h"
 
-#define imageWidth Adapt(70)
+#define imageWidth Adapt(80)
 //
-#define imageHeight Adapt(90)
+#define imageHeight Adapt(100)
 #define ReuseIdentifier @"videoCell"
 @interface TXTVideoCollectionView()<UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout>
 
@@ -69,7 +69,8 @@
     if(!_collectionView) {
         NSLog(@"config_collectionView");
         UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
-        layout.minimumLineSpacing = 1;
+        layout.minimumLineSpacing = 2;
+        layout.minimumInteritemSpacing = 2;
         NSString *direction = TXUserDefaultsGetObjectforKey(Direction);
         if ([direction integerValue] == TRTCVideoResolutionModePortrait) {
             layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
@@ -115,15 +116,15 @@
 }
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section {
-    return 1;
+    return 2;
 }
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section {
-    return 1;
+    return 2;
 }
 
 -(UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section{
-    return UIEdgeInsetsMake(0, 1, 0, 0);
+    return UIEdgeInsetsMake(2, 2, 2, 2);
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{

@@ -66,14 +66,15 @@
     
     [self.contentView addSubview:self.videoBtn];
     [self.videoBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(self.contentView.mas_right).offset(-15);
-        make.width.height.mas_equalTo(17);
+        make.right.equalTo(self.contentView.mas_right).offset(-20);
+        make.width.height.mas_equalTo(25);
         make.centerY.equalTo(self.icon);
     }];
     [self.contentView addSubview:self.voiceBtn];
     [self.voiceBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(self.videoBtn.mas_left).offset(-19);
-        make.width.height.centerY.equalTo(self.icon);
+        make.right.equalTo(self.videoBtn.mas_left).offset(-15);
+        make.width.height.mas_equalTo(25);
+        make.centerY.equalTo(self.icon);
     }];
 }
 

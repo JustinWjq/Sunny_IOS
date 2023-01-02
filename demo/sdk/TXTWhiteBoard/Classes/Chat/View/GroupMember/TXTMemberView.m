@@ -524,6 +524,7 @@
         UITableView *tableView = [[UITableView alloc] init];
         tableView.delegate = self;
         tableView.dataSource = self;
+        tableView.backgroundColor = [UIColor whiteColor];
         tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         tableView.showsVerticalScrollIndicator = NO;
         tableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);

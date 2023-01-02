@@ -172,6 +172,17 @@ static AFHTTPSessionManager *instance;
                             [self.navigationController presentViewController:alert animated:YES completion:nil];
                         }
                     }];
+                } else {
+                    NSString *errInfo = [responseObject valueForKey:@"errInfo"];
+                    UIAlertController *alert = [UIAlertController
+                                                alertControllerWithTitle:[NSString stringWithFormat:@"错误码：%@", errCode]
+                                                message:errInfo
+                                                preferredStyle:UIAlertControllerStyleAlert];
+                    UIAlertAction *action2 = [UIAlertAction actionWithTitle:@"确认" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                        //确认处理
+                    }];
+                    [alert addAction:action2];
+                    [self.navigationController presentViewController:alert animated:YES completion:nil];
                 }
                 
             }
@@ -230,6 +241,10 @@ static AFHTTPSessionManager *instance;
     };
 
     [stringPickerView show];
+}
+
+- (void)addOnFileClickListenerRoomId:(NSInteger)roomId {
+    NSLog(@"addOnFileClickListenerRoomId ++ %ld", roomId);
 }
 
 
