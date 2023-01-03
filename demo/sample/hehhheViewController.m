@@ -54,8 +54,8 @@
     self.config.appid = @"wx8e6096173bff1149";//wx8ac1db9b5f5e385e  wx8e6096173bff1149
     self.config.universalLink = @"https://video-sells-test.ikandy.cn/txWhiteBoard/";
     self.config.userName = @"gh_c7b7987a7660";//gh_534ca5cd3ab2
-    self.config.miniprogramTitle = @"智慧展业-足不出户，随时联系您的顾问";
-    self.config.miniprogramCard = @"智慧展业-足不出户，随时联系您的顾问";
+    self.config.miniprogramTitle = @"诚邀您参与贵宾专属会议";
+    self.config.miniprogramCard = @"诚邀您参与贵宾专属会议";
     self.config.miniprogramCardURL = @"https://l106.oss-cn-szfinance.aliyuncs.com/0activityV3/shareExprien/newMiniShare.png";
     self.config.isShowInviteButton = YES;
     self.config.isShowTemporaryButton = YES;
