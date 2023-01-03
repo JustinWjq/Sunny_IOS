@@ -1052,12 +1052,17 @@ static NSInteger const kInputToolBarH = 62;
 //录制
 - (void)bottomShareSceneButtonClick{
     if (self.openStartRecord) {
-        NSDictionary *bodydic = @{@"agentId":TXUserDefaultsGetObjectforKey(AgentId)};
+        NSDictionary *bodydic = @{@"agentId":TXUserDefaultsGetObjectforKey(AgentId),
+                                  @"serviceId":TXUserDefaultsGetObjectforKey(ServiceId)
+                                };
         [ [AFNHTTPSessionManager shareInstance] requestURL:ServiceRoom_EndRecordAudio RequestWay:@"POST" Header:nil Body:bodydic params:nil isFormData:NO success:^(NSError *error, id response) {
             NSString *errCode = [response valueForKey:@"errCode"];
             if ([errCode intValue] == 0) {
                 self.openStartRecord = NO;
                 [self.bottomToos changeShareSceneStatus:NO];
+            } else {
+                NSString *errInfo = [response valueForKey:@"errInfo"];
+                [[JMToast sharedToast] showDialogWithMsg:[NSString stringWithFormat:@"%@(%@)",errInfo,errCode]];
             }
            
          } failure:^(NSError *error, id response) {
@@ -1065,7 +1070,10 @@ static NSInteger const kInputToolBarH = 62;
          }];
     }else{
         if (self.renderViews.count == 1) {
-            NSDictionary *bodydic = @{@"agentId":TXUserDefaultsGetObjectforKey(AgentId),@"serviceId":TXUserDefaultsGetObjectforKey(ServiceId),@"userId":self.userId,@"type":@"1"};
+            NSDictionary *bodydic = @{@"agentId":TXUserDefaultsGetObjectforKey(AgentId),
+                                      @"serviceId":TXUserDefaultsGetObjectforKey(ServiceId),
+                                      @"userId":self.userId,
+                                      @"type":@"1"};
            [ [AFNHTTPSessionManager shareInstance] requestURL:ServiceRoom_RecordAudio RequestWay:@"POST" Header:nil Body:bodydic params:nil isFormData:NO success:^(NSError *error, id response) {
                
                NSLog(@"ServiceRoom_RecordAudio %@ %@", [error description], [response description]);
@@ -1076,11 +1084,15 @@ static NSInteger const kInputToolBarH = 62;
                    
                        NSDictionary *messagedict = @{@"serviceId":TXUserDefaultsGetObjectforKey(ServiceId),
                                                      @"type":@"startRecordFromHost",
+                                                     @"agentId":TXUserDefaultsGetObjectforKey(AgentId),
                                                      @"userId":[TICConfig shareInstance].userId};
                        NSString *str = [NSString objectToJsonString:messagedict];
                        [[TICManager sharedInstance] sendGroupTextMessage:str callback:^(TICModule module, int code, NSString *desc) {
                    
                        }];
+               }else {
+                   NSString *errInfo = [response valueForKey:@"errInfo"];
+                   [[JMToast sharedToast] showDialogWithMsg:[NSString stringWithFormat:@"%@(%@)",errInfo,errCode]];
                }
                
             } failure:^(NSError *error, id response) {
@@ -1090,7 +1102,10 @@ static NSInteger const kInputToolBarH = 62;
             TXTCommonAlertView *alert = [TXTCommonAlertView alertWithTitle:@"本次录制需获得全部参会人员授权确认后可进行录制，请您确认"  titleColor:nil titleFont:nil leftBtnStr:@"取消" rightBtnStr:@"确定" leftColor:nil rightColor:nil];
             alert.sureBlock = ^{
                 [TXTCommonAlertView hide];
-                NSDictionary *bodydic = @{@"agentId":TXUserDefaultsGetObjectforKey(AgentId),@"serviceId":TXUserDefaultsGetObjectforKey(ServiceId),@"userId":self.userId,@"type":@"1"};
+                NSDictionary *bodydic = @{@"agentId":TXUserDefaultsGetObjectforKey(AgentId),
+                                          @"serviceId":TXUserDefaultsGetObjectforKey(ServiceId),
+                                          @"userId":self.userId,
+                                          @"type":@"1"};
                [ [AFNHTTPSessionManager shareInstance] requestURL:ServiceRoom_RecordAudio RequestWay:@"POST" Header:nil Body:bodydic params:nil isFormData:NO success:^(NSError *error, id response) {
                    
                    NSLog(@"ServiceRoom_RecordAudio %@ %@", [error description], [response description]);
@@ -1099,27 +1114,34 @@ static NSInteger const kInputToolBarH = 62;
                    if ([errCode intValue] == 0) {
                       
                        NSDictionary *messagedict = @{@"serviceId":TXUserDefaultsGetObjectforKey(ServiceId),
+                                                     @"agentId":TXUserDefaultsGetObjectforKey(AgentId),
                                                      @"type":@"startRecordFromHost",
                                                      @"userId":[TICConfig shareInstance].userId};
                        NSString *str = [NSString objectToJsonString:messagedict];
                        [[TICManager sharedInstance] sendGroupTextMessage:str callback:^(TICModule module, int code, NSString *desc) {
                    
                        }];
-                       
+                   }else {
+                       NSString *errInfo = [response valueForKey:@"errInfo"];
+                       [[JMToast sharedToast] showDialogWithMsg:[NSString stringWithFormat:@"%@(%@)",errInfo,errCode]];
                    }
                 } failure:^(NSError *error, id response) {
                     [[JMToast sharedToast] showDialogWithMsg:@"网络请求超时"];
                 }];
             };
             alert.cancleBlock = ^{
-                NSDictionary *bodydic = @{@"agentId":TXUserDefaultsGetObjectforKey(AgentId)};
+                NSDictionary *bodydic = @{@"agentId":TXUserDefaultsGetObjectforKey(AgentId),
+                                          @"serviceId":TXUserDefaultsGetObjectforKey(ServiceId)
+                                        };
                 [ [AFNHTTPSessionManager shareInstance] requestURL:ServiceRoom_EndRecordAudio RequestWay:@"POST" Header:nil Body:bodydic params:nil isFormData:NO success:^(NSError *error, id response) {
                     NSString *errCode = [response valueForKey:@"errCode"];
                     if ([errCode intValue] == 0) {
                         self.openStartRecord = NO;
                         [self.bottomToos changeShareSceneStatus:NO];
+                    }else {
+                        NSString *errInfo = [response valueForKey:@"errInfo"];
+                        [[JMToast sharedToast] showDialogWithMsg:[NSString stringWithFormat:@"%@(%@)",errInfo,errCode]];
                     }
-                   
                  } failure:^(NSError *error, id response) {
                      [[JMToast sharedToast] showDialogWithMsg:@"网络请求超时"];
                  }];
