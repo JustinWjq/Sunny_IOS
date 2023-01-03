@@ -688,11 +688,11 @@ static NSInteger const kInputToolBarH = 62;
 - (void)bottomShareFileButtonClick{
     TXTShareFileAlertView *shareFileAlertView = [[TXTShareFileAlertView alloc] init];
     shareFileAlertView.fileBlock = ^{
-#ifdef DEBUG
-        [self addFile:FileTypeVideo fileModel:[[TXTFileModel alloc] init]];
-#else
+//#ifdef DEBUG
+//        [self addFile:FileTypeVideo fileModel:[[TXTFileModel alloc] init]];
+//#else
         [[TXTManage sharedInstance] onClickFile];
-#endif
+//#endif
     };
     __weak typeof(self) weakSelf = self;
     shareFileAlertView.whiteBoardBlock = ^{
