@@ -312,7 +312,8 @@
         if ([[TXTCustomConfig sharedInstance].miniProgramPath isEqualToString:@""] || [TXTCustomConfig sharedInstance].miniProgramPath == nil) {
             [TXTCustomConfig sharedInstance].miniProgramPath = @"pages/index/index";
         }
-        NSString *path = [NSString stringWithFormat:@"%@?meetingNum=%@&agentId=%@&inviteNumber=%@&shareConfig=%@&userCode=%@&userName=%@",[TXTCustomConfig sharedInstance].miniProgramPath,TXUserDefaultsGetObjectforKey(ServiceId),TXUserDefaultsGetObjectforKey(AgentId),TXUserDefaultsGetObjectforKey(InviteNumber),[[TXTCommon sharedInstance] convertToJsonData:shareConfig],TXUserDefaultsGetObjectforKey(AgentId),TXUserDefaultsGetObjectforKey(AgentName)];
+        NSString *path = [NSString stringWithFormat:@"%@?serviceId=%@&agentId=%@&inviteNumber=%@&channel=txMeeting&userCode=%@&userName=%@",[TXTCustomConfig sharedInstance].miniProgramPath,TXUserDefaultsGetObjectforKey(ServiceId),TXUserDefaultsGetObjectforKey(AgentId),TXUserDefaultsGetObjectforKey(InviteNumber),TXUserDefaultsGetObjectforKey(AgentId),TXUserDefaultsGetObjectforKey(AgentName)];
+                
         NSLog(@"chooseWeChat = %@",path);
         object.path = path;
        
