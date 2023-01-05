@@ -112,8 +112,8 @@
 
 - (void)setIsTelepromp:(BOOL)isTelepromp {
     _isTelepromp = isTelepromp;
+    self.teleprompView.isOpen = self.isTelepromp;
     self.teleprompView.hidden = !self.isTelepromp;
-    
     [self updateUI:![UIWindow isLandscape]];
 }
 
@@ -196,7 +196,7 @@
 //        [self.teleprompView updateUI:isPortrait];
 //    }
     } else {
-        CGFloat bottomH = isPortrait ? -76 : - 20;
+        CGFloat bottomH = isPortrait ? -76 : - 35;
         CGFloat rightMargin = isPortrait ? Adapt(-15) : Adapt(-65);
         [self.toolView mas_updateConstraints:^(MASConstraintMaker *make) {
             make.right.equalTo(self.mas_safeAreaLayoutGuideRight).offset(rightMargin);
@@ -238,7 +238,7 @@
 }
 
 - (void)whiteToolViewDidClickToolBtn:(UIButton *)toolBtn {
-    CGFloat bottomH = [UIWindow isLandscape] ? - 20 : -76;
+    CGFloat bottomH = [UIWindow isLandscape] ? - 35 : -76;
     CGFloat rightMargin = ![UIWindow isLandscape] ? Adapt(-15) : Adapt(-65);
     if (self.isTelepromp) {
         bottomH = bottomH - 90;

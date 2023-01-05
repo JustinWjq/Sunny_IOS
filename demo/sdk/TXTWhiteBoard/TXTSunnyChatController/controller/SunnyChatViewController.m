@@ -729,7 +729,7 @@ static NSInteger const kInputToolBarH = 62;
     }];
     self.isWhite = YES;
     
-    CGFloat bottomH = self.whiteBoardViewController.isTelepromp ? -110 : -20;
+    CGFloat bottomH = self.whiteBoardViewController.isTelepromp ? -110 : -35;
     [self.smallChatView mas_updateConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideBottom).offset(bottomH);
     }];
