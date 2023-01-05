@@ -55,7 +55,7 @@ return _ ## className; \
 
 #define SDKWindow [ZYSuspensionManager windowForKey:@"videowindow"]
 #define safeAreaBottom [UIApplication sharedApplication].keyWindow.safeAreaInsets.bottom
-
+#define isHair UIApplication.sharedApplication.keyWindow.safeAreaInsets.top > 20
 
 //状态栏 标签栏
 #define kStatusBarHeight [[UIApplication sharedApplication] statusBarFrame].size.height

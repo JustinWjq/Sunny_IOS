@@ -1421,13 +1421,14 @@ static NSInteger const kInputToolBarH = 62;
         }];
         
         if(self.statusToos != nil && self.statusToos.superview != nil) {
+            CGFloat height = isHair ? 44 : 22;
             [self.statusToos mas_remakeConstraints:^(MASConstraintMaker *make) {
                 make.left.right.top.equalTo(self.view);
-                make.height.mas_equalTo(44);
+                make.height.mas_equalTo(height);
             }];
             
             [self.topToos mas_remakeConstraints:^(MASConstraintMaker *make) {
-                make.top.mas_equalTo(44);
+                make.top.mas_equalTo(height);
                 make.left.equalTo(self.view.mas_left).offset(0);
                 make.right.equalTo(self.view.mas_right).offset(0);
                 make.height.mas_equalTo(Adapt(44));
@@ -2232,13 +2233,14 @@ static NSInteger const kInputToolBarH = 62;
 
         }else{
             if(self.statusToos != nil && self.statusToos.superview != nil) {
+                CGFloat height = isHair ? 44 : 22;
                 [self.statusToos mas_remakeConstraints:^(MASConstraintMaker *make) {
                     make.left.right.top.equalTo(self.view);
-                    make.height.mas_equalTo(44);
+                    make.height.mas_equalTo(height);
                 }];
                 
                 [self.topToos mas_remakeConstraints:^(MASConstraintMaker *make) {
-                    make.top.mas_equalTo(44);
+                    make.top.mas_equalTo(height);
                     make.left.equalTo(self.view.mas_left).offset(0);
                     make.right.equalTo(self.view.mas_right).offset(0);
                     make.height.mas_equalTo(Adapt(44));
