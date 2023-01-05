@@ -118,7 +118,7 @@ static NSInteger const kInputToolBarH = 62;
         make.top.mas_equalTo(20);
         make.left.equalTo(self.view.mas_left).offset(0);
         make.right.equalTo(self.view.mas_right).offset(0);
-        make.height.mas_equalTo(Adapt(60));
+        make.height.mas_equalTo(Adapt(44));
     }];
     [self.navView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.mas_equalTo(self.topToos.mas_bottom).offset(0);
@@ -790,7 +790,7 @@ static NSInteger const kInputToolBarH = 62;
 //        fileModel.contents = @[@"你是哈回电话阿萨德发生的",@"",@"", @"adfajsdfhjahshhh噶恒大华府阿德发斯蒂芬阿迪斯发斯蒂芬阿萨德发生的发斯蒂芬dfjhasdfhjhasdhfasdhfahsdfasdfasdfasdfasdfa"];
         [self showWhiteViewController:fileType fileModel:fileModel];
     } else if (fileType == FileTypeVideo) {
-        fileModel.videoUrl = @"https://res.qcloudtiw.com/demo/tiw-vod.mp4";
+//        fileModel.videoUrl = @"https://res.qcloudtiw.com/demo/tiw-vod.mp4";
         [self showWhiteViewController:fileType fileModel:fileModel];
     } else if (fileType == FileTypeH5) {
 //        fileModel.h5Url = @"https://recall-sync-demo.cloud-ins.cn/mirror.html?syncid=51-cvsstest123-1&synctoken=0060490432279104e008daf9a660dfb8d2aIABaoflIqpo4-W91SrtSeG8e-QAQ5_O7_RsAQrms1PxSLJ597XwAAAAAEADKL1Dbsjd_YwEA6AOyN39j";
@@ -1965,7 +1965,7 @@ static NSInteger const kInputToolBarH = 62;
             make.bottom.mas_equalTo(self.view.mas_bottom).offset(0);
             make.left.mas_equalTo(self.view.mas_left).offset(0);
             make.right.mas_equalTo(self.view.mas_right).offset(0);
-            make.height.mas_equalTo(Adapt(60) + safeAreaBottom);
+            make.height.mas_equalTo(Adapt(44) + safeAreaBottom);
         }];
         _bottomToos.delegate = self;
         [self.view bringSubviewToFront:_bottomToos];
