@@ -27,6 +27,8 @@
 @property (nonatomic, strong) NSArray *contentArray;
 
 @property (strong, nonatomic) NSArray *imageIds;
+/** hasPaly */
+@property (nonatomic, assign) BOOL hasPaly;
 @end
 
 @implementation TXTWhiteBoardViewController
@@ -146,7 +148,11 @@
 
 - (void)onTEBVideoStatusChanged:(NSString *)fileId status:(TEduBoardVideoStatus)status progress:(CGFloat)progress duration:(CGFloat)duration {
     NSLog(@"video progress = %.f", progress);
-    [[[TICManager sharedInstance] getBoardController] playVideo];
+    NSLog(@"%zd", status);
+    if (status == TEDU_BOARD_VIDEO_STATUS_LOADING  && !self.hasPaly) {
+        self.hasPaly = YES;
+        [[[TICManager sharedInstance] getBoardController] playVideo];
+    }
 }
 
 /// orientationChange
