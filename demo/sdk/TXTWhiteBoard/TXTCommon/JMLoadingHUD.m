@@ -13,6 +13,8 @@
     BOOL _isShow;
 }
 
+
+
 @property (nonatomic, strong) TXTMBProgressHUD *loadingHUD;
 
 @end
@@ -32,7 +34,7 @@
 {
     self = [super init];
     if (self) {
-        [[[UIApplication sharedApplication] keyWindow] addSubview:self.loadingHUD];
+        
     }
     return self;
 }
@@ -43,6 +45,7 @@
         if (hud->_isShow) {
             return;
         }
+        [[[UIApplication sharedApplication] keyWindow] addSubview:hud.loadingHUD];
         [hud.loadingHUD showAnimated:YES];
         hud->_isShow = YES;
     });
@@ -54,6 +57,8 @@
         hud.loadingHUD.label.text = @"";
         [hud.loadingHUD hideAnimated:YES];
         hud->_isShow = NO;
+        [hud.loadingHUD removeFromSuperview];
+        hud.loadingHUD = nil;
     });
 }
 

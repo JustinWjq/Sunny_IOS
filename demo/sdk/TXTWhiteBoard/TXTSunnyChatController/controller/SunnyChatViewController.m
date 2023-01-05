@@ -153,6 +153,7 @@ static NSInteger const kInputToolBarH = 62;
 
 /// didBecomeActive
 - (void)didBecomeActive {
+    NSLog(@"didBecomeActive");
     if ([UIWindow isLandscape]) {
 //        NSString *portrait = [NSString stringWithFormat:@"%ld",(long)TRTCVideoRenderModePortrait];
 //        TXUserDefaultsSetObjectforKey(portrait, Direction);
@@ -439,6 +440,9 @@ static NSInteger const kInputToolBarH = 62;
 //}
 
 - (void)initParams{
+    //设置屏幕常亮
+    [[UIApplication sharedApplication] setIdleTimerDisabled: YES];
+    
     TXTNavigationController *navigationController = (TXTNavigationController *)self.navigationController;
 //    if ([self isLandscape]) {
 //        NSString *portrait = [NSString stringWithFormat:@"%ld",(long)TRTCVideoRenderModePortrait];
@@ -525,6 +529,9 @@ static NSInteger const kInputToolBarH = 62;
                 userModel.showAudio = ![[roomInfoDic valueForKey:@"defaultMute"] boolValue];
                 [TICConfig shareInstance].enableVideo = ![[roomInfoDic valueForKey:@"defaultBlind"] boolValue];
                 [TICConfig shareInstance].enableAudio = ![[roomInfoDic valueForKey:@"defaultMute"] boolValue];
+                
+                [[[TICManager sharedInstance] getTRTCCloud] muteLocalVideo:![TICConfig shareInstance].enableVideo];
+                
             }
 
             self.isShowWhiteBoard = [[result valueForKey:@"shareStatus"] boolValue];
@@ -681,8 +688,11 @@ static NSInteger const kInputToolBarH = 62;
 - (void)bottomShareFileButtonClick{
     TXTShareFileAlertView *shareFileAlertView = [[TXTShareFileAlertView alloc] init];
     shareFileAlertView.fileBlock = ^{
+#ifdef DEBUG
+        [self addFile:FileTypeVideo fileModel:[[TXTFileModel alloc] init]];
+#else
         [[TXTManage sharedInstance] onClickFile];
-//        [self addFile:FileTypePics fileModel:[[TXTFileModel alloc] init]];
+#endif
     };
     __weak typeof(self) weakSelf = self;
     shareFileAlertView.whiteBoardBlock = ^{
@@ -780,7 +790,7 @@ static NSInteger const kInputToolBarH = 62;
 //        fileModel.contents = @[@"你是哈回电话阿萨德发生的",@"",@"", @"adfajsdfhjahshhh噶恒大华府阿德发斯蒂芬阿迪斯发斯蒂芬阿萨德发生的发斯蒂芬dfjhasdfhjhasdhfasdhfahsdfasdfasdfasdfasdfa"];
         [self showWhiteViewController:fileType fileModel:fileModel];
     } else if (fileType == FileTypeVideo) {
-//        fileModel.videoUrl = @"https://res.qcloudtiw.com/demo/tiw-vod.mp4";
+        fileModel.videoUrl = @"https://res.qcloudtiw.com/demo/tiw-vod.mp4";
         [self showWhiteViewController:fileType fileModel:fileModel];
     } else if (fileType == FileTypeH5) {
 //        fileModel.h5Url = @"https://recall-sync-demo.cloud-ins.cn/mirror.html?syncid=51-cvsstest123-1&synctoken=0060490432279104e008daf9a660dfb8d2aIABaoflIqpo4-W91SrtSeG8e-QAQ5_O7_RsAQrms1PxSLJ597XwAAAAAEADKL1Dbsjd_YwEA6AOyN39j";
@@ -1042,12 +1052,17 @@ static NSInteger const kInputToolBarH = 62;
 //录制
 - (void)bottomShareSceneButtonClick{
     if (self.openStartRecord) {
-        NSDictionary *bodydic = @{@"agentId":TXUserDefaultsGetObjectforKey(AgentId)};
+        NSDictionary *bodydic = @{@"agentId":TXUserDefaultsGetObjectforKey(AgentId),
+                                  @"serviceId":TXUserDefaultsGetObjectforKey(ServiceId)
+                                };
         [ [AFNHTTPSessionManager shareInstance] requestURL:ServiceRoom_EndRecordAudio RequestWay:@"POST" Header:nil Body:bodydic params:nil isFormData:NO success:^(NSError *error, id response) {
             NSString *errCode = [response valueForKey:@"errCode"];
             if ([errCode intValue] == 0) {
                 self.openStartRecord = NO;
                 [self.bottomToos changeShareSceneStatus:NO];
+            } else {
+                NSString *errInfo = [response valueForKey:@"errInfo"];
+                [[JMToast sharedToast] showDialogWithMsg:[NSString stringWithFormat:@"%@(%@)",errInfo,errCode]];
             }
            
          } failure:^(NSError *error, id response) {
@@ -1055,11 +1070,29 @@ static NSInteger const kInputToolBarH = 62;
          }];
     }else{
         if (self.renderViews.count == 1) {
-            NSDictionary *bodydic = @{@"agentId":TXUserDefaultsGetObjectforKey(AgentId),@"serviceId":TXUserDefaultsGetObjectforKey(ServiceId),@"userId":self.userId,@"type":@"1"};
+            NSDictionary *bodydic = @{@"agentId":TXUserDefaultsGetObjectforKey(AgentId),
+                                      @"serviceId":TXUserDefaultsGetObjectforKey(ServiceId),
+                                      @"userId":self.userId,
+                                      @"type":@"1"};
            [ [AFNHTTPSessionManager shareInstance] requestURL:ServiceRoom_RecordAudio RequestWay:@"POST" Header:nil Body:bodydic params:nil isFormData:NO success:^(NSError *error, id response) {
+               
+               NSLog(@"ServiceRoom_RecordAudio %@ %@", [error description], [response description]);
+               
                NSString *errCode = [response valueForKey:@"errCode"];
                if ([errCode intValue] == 0) {
                    self.openStartRecord = YES;
+                   
+                       NSDictionary *messagedict = @{@"serviceId":TXUserDefaultsGetObjectforKey(ServiceId),
+                                                     @"type":@"startRecordFromHost",
+                                                     @"agentId":TXUserDefaultsGetObjectforKey(AgentId),
+                                                     @"userId":[TICConfig shareInstance].userId};
+                       NSString *str = [NSString objectToJsonString:messagedict];
+                       [[TICManager sharedInstance] sendGroupTextMessage:str callback:^(TICModule module, int code, NSString *desc) {
+                   
+                       }];
+               }else {
+                   NSString *errInfo = [response valueForKey:@"errInfo"];
+                   [[JMToast sharedToast] showDialogWithMsg:[NSString stringWithFormat:@"%@(%@)",errInfo,errCode]];
                }
                
             } failure:^(NSError *error, id response) {
@@ -1069,25 +1102,46 @@ static NSInteger const kInputToolBarH = 62;
             TXTCommonAlertView *alert = [TXTCommonAlertView alertWithTitle:@"本次录制需获得全部参会人员授权确认后可进行录制，请您确认"  titleColor:nil titleFont:nil leftBtnStr:@"取消" rightBtnStr:@"确定" leftColor:nil rightColor:nil];
             alert.sureBlock = ^{
                 [TXTCommonAlertView hide];
-                NSDictionary *bodydic = @{@"agentId":TXUserDefaultsGetObjectforKey(AgentId),@"serviceId":TXUserDefaultsGetObjectforKey(ServiceId),@"userId":self.userId,@"type":@"1"};
+                NSDictionary *bodydic = @{@"agentId":TXUserDefaultsGetObjectforKey(AgentId),
+                                          @"serviceId":TXUserDefaultsGetObjectforKey(ServiceId),
+                                          @"userId":self.userId,
+                                          @"type":@"1"};
                [ [AFNHTTPSessionManager shareInstance] requestURL:ServiceRoom_RecordAudio RequestWay:@"POST" Header:nil Body:bodydic params:nil isFormData:NO success:^(NSError *error, id response) {
+                   
+                   NSLog(@"ServiceRoom_RecordAudio %@ %@", [error description], [response description]);
+                   
                    NSString *errCode = [response valueForKey:@"errCode"];
                    if ([errCode intValue] == 0) {
                       
+                       NSDictionary *messagedict = @{@"serviceId":TXUserDefaultsGetObjectforKey(ServiceId),
+                                                     @"agentId":TXUserDefaultsGetObjectforKey(AgentId),
+                                                     @"type":@"startRecordFromHost",
+                                                     @"userId":[TICConfig shareInstance].userId};
+                       NSString *str = [NSString objectToJsonString:messagedict];
+                       [[TICManager sharedInstance] sendGroupTextMessage:str callback:^(TICModule module, int code, NSString *desc) {
+                   
+                       }];
+                   }else {
+                       NSString *errInfo = [response valueForKey:@"errInfo"];
+                       [[JMToast sharedToast] showDialogWithMsg:[NSString stringWithFormat:@"%@(%@)",errInfo,errCode]];
                    }
                 } failure:^(NSError *error, id response) {
                     [[JMToast sharedToast] showDialogWithMsg:@"网络请求超时"];
                 }];
             };
             alert.cancleBlock = ^{
-                NSDictionary *bodydic = @{@"agentId":TXUserDefaultsGetObjectforKey(AgentId)};
+                NSDictionary *bodydic = @{@"agentId":TXUserDefaultsGetObjectforKey(AgentId),
+                                          @"serviceId":TXUserDefaultsGetObjectforKey(ServiceId)
+                                        };
                 [ [AFNHTTPSessionManager shareInstance] requestURL:ServiceRoom_EndRecordAudio RequestWay:@"POST" Header:nil Body:bodydic params:nil isFormData:NO success:^(NSError *error, id response) {
                     NSString *errCode = [response valueForKey:@"errCode"];
                     if ([errCode intValue] == 0) {
                         self.openStartRecord = NO;
                         [self.bottomToos changeShareSceneStatus:NO];
+                    }else {
+                        NSString *errInfo = [response valueForKey:@"errInfo"];
+                        [[JMToast sharedToast] showDialogWithMsg:[NSString stringWithFormat:@"%@(%@)",errInfo,errCode]];
                     }
-                   
                  } failure:^(NSError *error, id response) {
                      [[JMToast sharedToast] showDialogWithMsg:@"网络请求超时"];
                  }];

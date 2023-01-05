@@ -312,7 +312,7 @@
         if ([[TXTCustomConfig sharedInstance].miniProgramPath isEqualToString:@""] || [TXTCustomConfig sharedInstance].miniProgramPath == nil) {
             [TXTCustomConfig sharedInstance].miniProgramPath = @"pages/index/index";
         }
-        NSString *path = [NSString stringWithFormat:@"%@?serviceId=%@&agentId=%@&inviteNumber=%@&shareConfig=%@&userCode=%@&userName=%@",[TXTCustomConfig sharedInstance].miniProgramPath,TXUserDefaultsGetObjectforKey(ServiceId),TXUserDefaultsGetObjectforKey(AgentId),TXUserDefaultsGetObjectforKey(InviteNumber),[[TXTCommon sharedInstance] convertToJsonData:shareConfig],TXUserDefaultsGetObjectforKey(AgentId),TXUserDefaultsGetObjectforKey(AgentName)];
+        NSString *path = [NSString stringWithFormat:@"%@?meetingNum=%@&agentId=%@&inviteNumber=%@&shareConfig=%@&userCode=%@&userName=%@",[TXTCustomConfig sharedInstance].miniProgramPath,TXUserDefaultsGetObjectforKey(ServiceId),TXUserDefaultsGetObjectforKey(AgentId),TXUserDefaultsGetObjectforKey(InviteNumber),[[TXTCommon sharedInstance] convertToJsonData:shareConfig],TXUserDefaultsGetObjectforKey(AgentId),TXUserDefaultsGetObjectforKey(AgentName)];
         NSLog(@"chooseWeChat = %@",path);
         object.path = path;
        
@@ -524,6 +524,7 @@
         UITableView *tableView = [[UITableView alloc] init];
         tableView.delegate = self;
         tableView.dataSource = self;
+        tableView.backgroundColor = [UIColor whiteColor];
         tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         tableView.showsVerticalScrollIndicator = NO;
         tableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);

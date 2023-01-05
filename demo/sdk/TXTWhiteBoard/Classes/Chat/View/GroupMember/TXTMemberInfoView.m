@@ -245,6 +245,9 @@ static TXTMemberInfoView *_alertView = nil; //第一步：静态实例，并初�
             [TXTMemberInfoView hide];
             if(code == 0){
                 [TXTToast toastWithTitle:@"已将该成员移除会议室"];
+            } else {
+                NSString *msg = [NSString stringWithFormat:@"将该成员移除会议室失败：%@(%d)",desc ,code];
+                [TXTToast toastWithTitle:msg type:TXTToastTypeWarn];
             }
         }];
     }

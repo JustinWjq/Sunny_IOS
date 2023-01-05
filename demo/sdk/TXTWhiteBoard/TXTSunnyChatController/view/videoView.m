@@ -11,6 +11,7 @@
 //Screen_Width/7
 //Screen_Width > Screen_Height ? Screen_Width/12 : Screen_Width/7
 #define nameWidth Adapt(55)
+//#define nameWidth Screen_Width > Screen_Height ? Adapt(132) : Adapt(70)
 @implementation videoView
 
 - (instancetype)initWithFrame:(CGRect)frame{
@@ -47,6 +48,7 @@
     nameLabel.textAlignment = NSTextAlignmentCenter;
     nameLabel.backgroundColor = [UIColor colorWithHexString:@"#E6B980"];
     nameLabel.font = [UIFont systemFontOfSize:15];
+    
 }
 
 - (void)userNameView:(BOOL)directionLeft{
@@ -81,7 +83,8 @@
         if ([userRole isEqualToString:@"owner"]) {
             make.left.mas_equalTo(self.mas_left).offset(nameWidth/2.5);
             if (directionLeft) {
-                make.width.mas_equalTo(nameWidth+12);
+//                make.width.mas_equalTo(nameWidth+10);
+                make.right.mas_equalTo(self.mas_right).offset(0);
             }else{
                 make.right.mas_equalTo(self.mas_right).offset(0);
             }
@@ -89,10 +92,12 @@
         }else{
             if (directionLeft) {
                 make.left.mas_equalTo(self.mas_left).offset(0);
+                make.right.mas_equalTo(self.mas_right).offset(0);
             }else{
                 make.centerX.mas_equalTo(self.mas_centerX).offset(0);
+                make.width.mas_equalTo(nameWidth+10);
             }
-            make.width.mas_equalTo(nameWidth+12);
+            
         }
         
         make.height.mas_equalTo(nameWidth/2.5);
@@ -105,7 +110,7 @@
     [voiceImage mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(self.nameBackgroundView.mas_top).offset(0);
         make.bottom.mas_equalTo(self.nameBackgroundView.mas_bottom).offset(0);
-        make.left.mas_equalTo(self.nameBackgroundView.mas_left).offset(5);
+        make.left.mas_equalTo(self.nameBackgroundView.mas_left).offset(2);
         make.width.mas_equalTo(nameWidth/2/2);
     }];
     voiceImage.contentMode = UIViewContentModeScaleAspectFit;
