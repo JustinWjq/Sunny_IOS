@@ -63,6 +63,8 @@ static NSInteger const kInputToolBarH = 62;
 @property (nonatomic, assign) NSInteger count;//隐藏tab+nav时间
 @property (nonatomic, assign) BOOL isSpeak;//是否是扬声器
 
+@property (nonatomic, assign)NSInteger directionInt;
+
 // 成员管理
 /** groupMemberViewController */
 @property (nonatomic, strong) TXTGroupMemberViewController *groupMemberViewController;
@@ -1385,25 +1387,55 @@ static NSInteger const kInputToolBarH = 62;
     
     NSString *direction = TXUserDefaultsGetObjectforKey(Direction);
     NSLog(@"Direction = %@-%lu",direction,(unsigned long)self.renderViews.count);
-    NSInteger directionInt = [direction integerValue];
+    _directionInt = [direction integerValue];
     
     NSLog(@"updateRenderViewsLayout");
-    if (directionInt == TRTCVideoRenderModeLandscape) {
+    if (_directionInt == TRTCVideoRenderModeLandscape) {
         [_renderVideoView mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.top.mas_equalTo(self.view.mas_safeAreaLayoutGuideTop).offset(0);
-            make.left.mas_equalTo(self.view.mas_safeAreaLayoutGuideLeft).offset(0);
-            make.right.mas_equalTo(self.view.mas_safeAreaLayoutGuideRight).offset(0);
+            make.left.mas_equalTo(self.view.mas_left).offset(0);
+            make.right.mas_equalTo(self.view.mas_right).offset(0);
             make.bottom.mas_equalTo(self.view.mas_bottom).offset(0);
         }];
+        
+        if(self.statusToos != nil && self.statusToos.superview != nil) {
+            [self.statusToos mas_remakeConstraints:^(MASConstraintMaker *make) {
+                make.left.right.top.equalTo(self.view);
+                make.height.mas_equalTo(22);
+            }];
+            
+            [self.topToos mas_remakeConstraints:^(MASConstraintMaker *make) {
+                make.top.mas_equalTo(22);
+                make.left.equalTo(self.view.mas_left).offset(0);
+                make.right.equalTo(self.view.mas_right).offset(0);
+                make.height.mas_equalTo(Adapt(44));
+            }];
+        }
+
     }else{
         [_renderVideoView mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.top.mas_equalTo(self.view.mas_safeAreaLayoutGuideTop).offset(Adapt(168));
             make.left.mas_equalTo(self.view.mas_safeAreaLayoutGuideLeft).offset(0);
             make.right.mas_equalTo(self.view.mas_safeAreaLayoutGuideRight).offset(0);
-            make.height.mas_equalTo(Adapt(230)+Adapt(90));
+            make.height.mas_equalTo(Adapt(260)+Adapt(90));
         }];
+        
+        if(self.statusToos != nil && self.statusToos.superview != nil) {
+            [self.statusToos mas_remakeConstraints:^(MASConstraintMaker *make) {
+                make.left.right.top.equalTo(self.view);
+                make.height.mas_equalTo(44);
+            }];
+            
+            [self.topToos mas_remakeConstraints:^(MASConstraintMaker *make) {
+                make.top.mas_equalTo(44);
+                make.left.equalTo(self.view.mas_left).offset(0);
+                make.right.equalTo(self.view.mas_right).offset(0);
+                make.height.mas_equalTo(Adapt(44));
+            }];
+        }
+
     }
-    [self.renderVideoView setVideoRenderNumber:(self.renderViews.count - 1) mode:directionInt];
+    [self.renderVideoView setVideoRenderNumber:(self.renderViews.count - 1) mode:_directionInt];
 }
 
 //更新某一个view，audio
@@ -2181,6 +2213,38 @@ static NSInteger const kInputToolBarH = 62;
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [self countDown];
         });
+        
+        if (_directionInt == TRTCVideoRenderModeLandscape) {
+
+            if(self.statusToos != nil && self.statusToos.superview != nil) {
+                [self.statusToos mas_remakeConstraints:^(MASConstraintMaker *make) {
+                    make.left.right.top.equalTo(self.view);
+                    make.height.mas_equalTo(22);
+                }];
+                
+                [self.topToos mas_remakeConstraints:^(MASConstraintMaker *make) {
+                    make.top.mas_equalTo(22);
+                    make.left.equalTo(self.view.mas_left).offset(0);
+                    make.right.equalTo(self.view.mas_right).offset(0);
+                    make.height.mas_equalTo(Adapt(44));
+                }];
+            }
+
+        }else{
+            if(self.statusToos != nil && self.statusToos.superview != nil) {
+                [self.statusToos mas_remakeConstraints:^(MASConstraintMaker *make) {
+                    make.left.right.top.equalTo(self.view);
+                    make.height.mas_equalTo(44);
+                }];
+                
+                [self.topToos mas_remakeConstraints:^(MASConstraintMaker *make) {
+                    make.top.mas_equalTo(44);
+                    make.left.equalTo(self.view.mas_left).offset(0);
+                    make.right.equalTo(self.view.mas_right).offset(0);
+                    make.height.mas_equalTo(Adapt(44));
+                }];
+            }
+        }
     }
     //显示转隐藏
     else{
