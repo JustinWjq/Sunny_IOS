@@ -42,7 +42,7 @@
 
     }else if(self.rightRotation) {
 
-        return UIInterfaceOrientationMaskLandscapeRight;
+        return UIInterfaceOrientationMaskLandscapeLeft;
 
     }
 

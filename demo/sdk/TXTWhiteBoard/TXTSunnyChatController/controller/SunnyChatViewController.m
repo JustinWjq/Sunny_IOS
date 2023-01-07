@@ -1299,7 +1299,7 @@ static NSInteger const kInputToolBarH = 62;
             NSArray *array = [[[UIApplication sharedApplication] connectedScenes] allObjects];
             UIWindowScene *scene = [array firstObject];
             // 屏幕方向
-            UIInterfaceOrientationMask orientation = UIInterfaceOrientationMaskLandscapeRight;
+            UIInterfaceOrientationMask orientation = UIInterfaceOrientationMaskLandscapeLeft;
             UIWindowSceneGeometryPreferencesIOS *geometryPreferencesIOS = [[UIWindowSceneGeometryPreferencesIOS alloc] initWithInterfaceOrientations:orientation];
             // 开始切换
             [scene requestGeometryUpdateWithPreferences:geometryPreferencesIOS errorHandler:^(NSError * _Nonnull error) {
@@ -1307,7 +1307,7 @@ static NSInteger const kInputToolBarH = 62;
             }];
     #endif
         }else{
-            [[UIDevice currentDevice] setValue:@(UIDeviceOrientationLandscapeRight) forKey:@"orientation"];
+            [[UIDevice currentDevice] setValue:@(UIDeviceOrientationLandscapeLeft) forKey:@"orientation"];
         }
         NSString *portrait = [NSString stringWithFormat:@"%ld",(long)TRTCVideoRenderModeLandscape];
         TXUserDefaultsSetObjectforKey(portrait, Direction);
