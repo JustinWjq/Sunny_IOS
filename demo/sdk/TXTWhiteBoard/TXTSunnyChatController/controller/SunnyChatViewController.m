@@ -513,10 +513,10 @@ static NSInteger const kInputToolBarH = 62;
         [[[TICManager sharedInstance] getTRTCCloud] setAudioRoute:TRTCAudioModeEarpiece];
     }
     [self.renderViews addObject:userModel];
-    [self roomInfo:userModel];
+    [self roomInfo:userModel isJoinNotifi:NO];
 }
 
-- (void)roomInfo:(TXTUserModel *)userModel{
+- (void)roomInfo:(TXTUserModel *)userModel isJoinNotifi:(BOOL)isJoin{
     NSString *serviceId = TXUserDefaultsGetObjectforKey(ServiceId);
     [[AFNHTTPSessionManager shareInstance] requestURL:[NSString stringWithFormat:@"%@/%@",ServiceRoom_RoomInfo,serviceId] RequestWay:@"GET" Header:nil Body:nil params:nil isFormData:NO success:^(NSError *error, id response) {
         NSString *errCode = [response valueForKey:@"errCode"];
@@ -576,6 +576,13 @@ static NSInteger const kInputToolBarH = 62;
                                 }
                             }
                         }
+                    }
+                }
+                
+                if(isJoin) {
+                    if ([userModel.render.userId isEqualToString:[userdic valueForKey:@"userId"]]) {
+                        NSString *userName = [NSString stringWithFormat:@"%@已加入了房间",[userdic valueForKey:@"userName"]];
+                        [TXTToast toastWithTitle:userName];
                     }
                 }
                 
@@ -1497,7 +1504,7 @@ static NSInteger const kInputToolBarH = 62;
     userModel.showAudio = NO;
     userModel.userName = userId;
     [self.renderViews addObject:userModel];
-    [self roomInfo:userModel];
+    [self roomInfo:userModel isJoinNotifi:YES];
 }
 
 - (void)onTICUserAudioAvailable:(NSString *)userId available:(BOOL)available{
@@ -1536,7 +1543,7 @@ static NSInteger const kInputToolBarH = 62;
         userModel.showAudio = available;
         userModel.userName = userId;
         [self.renderViews addObject:userModel];
-        [self roomInfo:userModel];
+        [self roomInfo:userModel isJoinNotifi:NO];
     }
 }
 
@@ -1579,7 +1586,7 @@ static NSInteger const kInputToolBarH = 62;
         }
         userModel.userName = userId;
         [self.renderViews addObject:userModel];
-        [self roomInfo:userModel];
+        [self roomInfo:userModel isJoinNotifi:NO];
     }
 }
 
