@@ -909,7 +909,11 @@ static NSInteger const kInputToolBarH = 62;
 }
 
 - (void)startH5Show:(NSString *)userId fileModel:(TXTFileModel *)fileModel webId:(NSString *)webId {
-    NSDictionary *bodydic = @{@"webId":webId,@"serviceId":TXUserDefaultsGetObjectforKey(ServiceId),@"fromUserId":[TICConfig shareInstance].userId,@"toUserId":userId};
+    NSDictionary *bodydic = @{@"webId":webId,
+                              @"serviceId":TXUserDefaultsGetObjectforKey(ServiceId),
+                              @"fromUserId":[TICConfig shareInstance].userId,
+                              @"control":TXUserDefaultsGetObjectforKey(AgentId),
+                              @"toUserId":userId};
     [[AFNHTTPSessionManager shareInstance] requestURL:ShareWebs_Start RequestWay:@"POST" Header:nil Body:bodydic params:nil isFormData:NO success:^(NSError *error, id response) {
         NSString *errCode = [response valueForKey:@"errCode"];
         NSLog(@"%@", [response valueForKey:@"errInfo"]);
