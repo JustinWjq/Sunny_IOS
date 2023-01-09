@@ -157,6 +157,8 @@
     NSLog(@"bodyDic == %@", [bodyDic description]);
        [[AFNHTTPSessionManager shareInstance] requestURL:ServiceRoom_StartUser RequestWay:@"POST" Header:nil Body:bodyDic params:nil isFormData:NO success:^(NSError *error, id response) {
           
+//           NSLog(@"response == %@", [response description]);
+           
            NSString *errCode = [response valueForKey:@"errCode"];
            if ([errCode intValue] == 0) {
                NSDictionary *result = [response valueForKey:@"result"];
@@ -339,7 +341,7 @@
                     TXTNavigationController *nav = [[TXTNavigationController alloc] initWithRootViewController:classRoom];
                     [nav.navigationBar setShadowImage:[[UIImage alloc] init]];
                     ws.nnwindow.rootViewController = nav;
-                    [ZYSuspensionManager saveWindow:ws.nnwindow forKey:@"videowindow"];
+                    [ZYSuspensionManager saveWindow:ws.nnwindow forKey:@"txtvideowindow"];
                     [ws.nnwindow makeKeyAndVisible];
                     
                     TICBLOCK_SAFE_RUN(callback,code,joinDesc);
@@ -461,7 +463,7 @@
  *  fileModel 文件数据
  */
 - (void)addFileToSdk:(FileType)fileType fileModel:(TXTFileModel *)fileModel {
-    UIWindow *window = [ZYSuspensionManager windowForKey:@"videowindow"];
+    UIWindow *window = [ZYSuspensionManager windowForKey:@"txtvideowindow"];
     TXTNavigationController *nav = (TXTNavigationController *)window.rootViewController;
     SunnyChatViewController *classRoom = (SunnyChatViewController *)nav.viewControllers[0];
     [classRoom addFile:fileType fileModel:fileModel];

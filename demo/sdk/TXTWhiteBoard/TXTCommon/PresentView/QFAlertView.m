@@ -632,7 +632,7 @@ typedef void(^animateBlock)(void);
   - (void)show{
       self.alpha = 1;
       //videowindow
-      [self showInView:[ZYSuspensionManager windowForKey:@"videowindow"]];
+      [self showInView:[ZYSuspensionManager windowForKey:@"txtvideowindow"]];
  }
 
 

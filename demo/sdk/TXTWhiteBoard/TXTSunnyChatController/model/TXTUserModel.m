@@ -13,4 +13,23 @@
 {
     
 }
+
+-(BOOL)compareUserIdWithoutExtra:(NSString *)tuserId {
+    
+    if(_render == nil || _render.userId == nil) {
+        return NO;
+    }
+    
+    NSArray *arr = [_render.userId componentsSeparatedByString:@"extra"];
+    if(arr == nil || arr.count == 0) {
+        return NO;
+    }
+    
+    NSString *newUserId = [arr firstObject];
+    if([newUserId isEqualToString:tuserId]) {
+        return YES;
+    }
+    
+    return NO;
+}
 @end

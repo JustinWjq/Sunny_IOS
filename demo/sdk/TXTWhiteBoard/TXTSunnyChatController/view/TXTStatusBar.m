@@ -7,13 +7,14 @@
 //
 
 #import "TXTStatusBar.h"
+#import <TXLiteAVSDK_TRTC/TRTCCloudDef.h>
 
 @implementation TXTStatusBar
 
 - (instancetype)initWithFrame:(CGRect)frame{
     self = [super initWithFrame:frame];
     if (self) {
-//        NSLog(@"bottomButtons");
+        //        NSLog(@"bottomButtons");
         self.backgroundColor = [UIColor colorWithHexString:@"#424548"];
         [self setUI];
     }
@@ -31,6 +32,16 @@
     UILabel *dateLabel = [[UILabel alloc]init];
     dateLabel.bounds = CGRectMake(0, 0, 100, 16);
     dateLabel.center = CGPointMake(self.bounds.size.width*0.5, 12);
+    
+    NSString *direction = TXUserDefaultsGetObjectforKey(Direction);
+    NSInteger directionInt = [direction integerValue];
+    if(isHair) {
+        dateLabel.center = CGPointMake(45, 12);
+        if (directionInt == TRTCVideoResolutionModePortrait) {
+            dateLabel.center = CGPointMake(45, 32);
+        }
+    }
+    
     dateLabel.textColor = [UIColor whiteColor];
     dateLabel.font = [UIFont boldSystemFontOfSize:12];
     dateLabel.textAlignment = NSTextAlignmentCenter;
@@ -53,7 +64,18 @@
     }
     
     /// 电池
-    UIBezierPath *bezierPath = [UIBezierPath bezierPathWithRoundedRect:CGRectMake(self.bounds.size.width-35, 7, 20, 10) cornerRadius:2.5];
+    CGFloat base = 35;
+    CGFloat y = 7;
+    if(isHair) {
+        base = 45;
+        if (directionInt == TRTCVideoResolutionModePortrait) {
+            y = 27;
+        } else {
+            base = 55;
+        }
+    }
+    
+    UIBezierPath *bezierPath = [UIBezierPath bezierPathWithRoundedRect:CGRectMake(self.bounds.size.width-base, y, 20, 10) cornerRadius:2.5];
     CAShapeLayer *lineLayer = [CAShapeLayer layer];
     lineLayer.lineWidth = 1;
     lineLayer.strokeColor = [[UIColor whiteColor] colorWithAlphaComponent:0.4].CGColor;
@@ -61,7 +83,7 @@
     lineLayer.fillColor = nil; // 默认为blackColor
     [topToolView.layer addSublayer:lineLayer];
     // 正极小玩意
-    UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:CGRectMake(self.bounds.size.width-35+20+2, 7.5+3, 1, 3) byRoundingCorners:(UIRectCornerTopRight|UIRectCornerBottomRight) cornerRadii:CGSizeMake(2, 2)];
+    UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:CGRectMake(self.bounds.size.width-base+20+2, y+3.5, 1, 3) byRoundingCorners:(UIRectCornerTopRight|UIRectCornerBottomRight) cornerRadii:CGSizeMake(2, 2)];
     CAShapeLayer *lineLayer2 = [CAShapeLayer layer];
     lineLayer2.lineWidth = 0.5;
     lineLayer2.strokeColor = [[UIColor whiteColor] colorWithAlphaComponent:0.4].CGColor;
@@ -76,10 +98,8 @@
     // 是否在充电
     UIImageView *batteryImg = [[UIImageView alloc]init];
     batteryImg.bounds = CGRectMake(0, 0, 8, 12);
-    batteryImg.center = CGPointMake(self.bounds.size.width-35+10, 7+5);
+    batteryImg.center = CGPointMake(self.bounds.size.width-base+10, y+5);
     batteryImg.image = [UIImage imageNamed:@"lightning"];
-    
-    
     
     UIColor *batteryColor;
     UIDeviceBatteryState batteryState = [UIDevice currentDevice].batteryState;
@@ -98,7 +118,7 @@
         batteryImg.hidden = YES;
     }
     
-    UIBezierPath *batteryPath = [UIBezierPath bezierPathWithRoundedRect:CGRectMake(self.bounds.size.width-35+1.5, 7+1.5, (20-3)*batteryLevel, 10-3) cornerRadius:2];
+    UIBezierPath *batteryPath = [UIBezierPath bezierPathWithRoundedRect:CGRectMake(self.bounds.size.width-base+1.5, y+1.5, (20-3)*batteryLevel, 10-3) cornerRadius:2];
     CAShapeLayer *batteryLayer = [CAShapeLayer layer];
     batteryLayer.lineWidth = 1;
     batteryLayer.strokeColor = [UIColor clearColor].CGColor;
@@ -108,7 +128,7 @@
     
     [topToolView addSubview:batteryImg];
     
-    UILabel *batteryLabel = [[UILabel alloc]initWithFrame:CGRectMake(self.bounds.size.width-35-50-2, 4, 50, 16)];
+    UILabel *batteryLabel = [[UILabel alloc]initWithFrame:CGRectMake(self.bounds.size.width-base-50-2, y-3, 50, 16)];
     batteryLabel.text = [NSString stringWithFormat:@"%.0f%%",batteryLevel*100];
     batteryLabel.textColor = [UIColor whiteColor];
     batteryLabel.font = [UIFont systemFontOfSize:12];
@@ -129,6 +149,16 @@
         _is24H = (amRange.location == NSNotFound && pmRange.location == NSNotFound);
     }
     return _is24H;
+}
+
+- (void)updateLayoutFrame {
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.35 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        // 当前选中的 label
+        for(UIView *sub in self.subviews) {
+            [sub removeFromSuperview];
+        }
+        [self setUI];
+    });
 }
 
 

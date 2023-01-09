@@ -153,6 +153,10 @@ static NSInteger const kInputToolBarH = 62;
 //    }
 }
 
+- (BOOL)prefersStatusBarHidden {
+    return YES;
+}
+
 /// didBecomeActive
 - (void)didBecomeActive {
     NSLog(@"didBecomeActive");
@@ -184,7 +188,7 @@ static NSInteger const kInputToolBarH = 62;
             navigationController.interfaceOrientationMask = UIInterfaceOrientationMaskLandscapeRight;
 
             [[UIDevice currentDevice] setValue:@(UIDeviceOrientationLandscapeLeft) forKey:@"orientation"];
-            
+
             NSString *portrait = [NSString stringWithFormat:@"%ld",(long)TRTCVideoRenderModeLandscape];
             TXUserDefaultsSetObjectforKey(portrait, Direction);
             [self.whiteBoardViewController updateUI:(navigationController.interfaceOrientation == UIInterfaceOrientationPortrait)];
@@ -397,14 +401,14 @@ static NSInteger const kInputToolBarH = 62;
 
 - (void)viewWillLayoutSubviews {
     [super viewWillLayoutSubviews];
-    if ([UIWindow isLandscape]) {
-        self.statusToos.hidden = NO;
+//    if ([UIWindow isLandscape]) {
+//        self.statusToos.hidden = NO;
 //        if (self.isWhite) {
 //            self.crossBtn.hidden = YES;
 //        }
-    } else {
-        self.statusToos.hidden = YES;
-    }
+//    } else {
+//        self.statusToos.hidden = YES;
+//    }
 }
 
 - (void)viewDidAppear:(BOOL)animated{
@@ -589,7 +593,8 @@ static NSInteger const kInputToolBarH = 62;
                 for (int j = 0; j<renderNewArr.count; j++) {
                     
                     TXTUserModel *umodel = renderNewArr[j];
-                    if ([umodel.render.userId isEqualToString:[userdic valueForKey:@"userId"]]) {
+//                    if ([umodel.render.userId isEqualToString:[userdic valueForKey:@"userId"]]) {
+                    if([umodel compareUserIdWithoutExtra:[userdic valueForKey:@"userId"]]) {
                         umodel.userName = [userdic valueForKey:@"userName"];
                         umodel.userRole = [userdic valueForKey:@"userRole"];
                         if ([keysArr containsObject:@"userIcon"]) {
@@ -598,7 +603,8 @@ static NSInteger const kInputToolBarH = 62;
                         
                         if ([umodel.userRole isEqualToString:@"owner"]) {
                             //业务员
-                            if ([self.userId isEqualToString:umodel.render.userId]) {
+//                            if ([self.userId isEqualToString:umodel.render.userId]) {
+                            if ([umodel compareUserIdWithoutExtra:self.userId]) {
                                 [self.renderViews removeObject:umodel];
                                 [self.renderViews insertObject:umodel atIndex:0];
                             }else{
@@ -1351,6 +1357,7 @@ static NSInteger const kInputToolBarH = 62;
 //        [[[TICManager sharedInstance] getTRTCCloud] setVideoEncoderParam:param];
         //        [[[TICManager sharedInstance] getTRTCCloud] setVideoEncoderRotation:TRTCVideoRotation_0];
     }
+    [self hiddenTabAndNav];
 //    [[[TICManager sharedInstance] getTRTCCloud] setGSensorMode:TRTCGSensorMode_UIAutoLayout];
     [self.whiteBoardViewController updateUI:(navigationController.interfaceOrientation == UIInterfaceOrientationPortrait)];
     [self setPortraitLandscapeUI];
@@ -1359,6 +1366,7 @@ static NSInteger const kInputToolBarH = 62;
 - (void)setPortraitLandscapeUI{
     //刷新
     [UIViewController attemptRotationToDeviceOrientation];
+    [self.statusToos updateLayoutFrame];
     [self updateRenderViewsLayout];
     [self.bottomToos updateButtons];
     NSString *portrait = TXUserDefaultsGetObjectforKey(Direction);
@@ -1604,7 +1612,7 @@ static NSInteger const kInputToolBarH = 62;
     for (int i = 0; i < cnt; i++) {
         TIMElem * elem = [message getElem:i];
         NSLog(@"%@",[elem description]);
-        for (UIView *view in [ZYSuspensionManager windowForKey:@"videowindow"].subviews) {
+        for (UIView *view in [ZYSuspensionManager windowForKey:@"txtvideowindow"].subviews) {
             if ([view isKindOfClass:[QFAlertView class]]) {
                 [view removeFromSuperview];
             }
@@ -1766,7 +1774,7 @@ static NSInteger const kInputToolBarH = 62;
             //                if (!self.sendMessage) {
             //                    return;
             //                }
-            //                UIWindow *currentWindow = [ZYSuspensionManager windowForKey:@"videowindow"];
+            //                UIWindow *currentWindow = [ZYSuspensionManager windowForKey:@"txtvideowindow"];
             //
             //                //通知延长
             //                if ([type isEqualToString:@"notifyExtend"]) {
@@ -1774,7 +1782,7 @@ static NSInteger const kInputToolBarH = 62;
             //                        NSLog(@"小屏中%f-%f",currentWindow.frame.size.width,Screen_Width);
             //                        return;
             //                    }
-            //                    for (UIView *view in [ZYSuspensionManager windowForKey:@"videowindow"].subviews) {
+            //                    for (UIView *view in [ZYSuspensionManager windowForKey:@"txtvideowindow"].subviews) {
             //                        if ([view isKindOfClass:[QFAlertView class]]) {
             //                            [view removeFromSuperview];
             //                        }
@@ -1823,7 +1831,7 @@ static NSInteger const kInputToolBarH = 62;
             //                        NSLog(@"小屏中%f-%f",currentWindow.frame.size.width,Screen_Width);
             //                        return;
             //                    }
-            //                    for (UIView *view in [ZYSuspensionManager windowForKey:@"videowindow"].subviews) {
+            //                    for (UIView *view in [ZYSuspensionManager windowForKey:@"txtvideowindow"].subviews) {
             //                        if ([view isKindOfClass:[QFAlertView class]]) {
             //                            [view removeFromSuperview];
             //                        }
@@ -1995,9 +2003,6 @@ static NSInteger const kInputToolBarH = 62;
 
 - (void)setBottomToolsUI{
     self.bottomToos.hidden = NO;
-//    self.topToos.hidden = NO;
-//    self.statusToos.hidden = NO;
-    [self.navView addSubview:self.statusToos];
     self.navView.hidden = NO;
 }
 
@@ -2030,7 +2035,7 @@ static NSInteger const kInputToolBarH = 62;
     if (!_statusToos) {
         CGFloat width = MAX(Screen_Height, Screen_Width);
         _statusToos = [[TXTStatusBar alloc] initWithFrame:CGRectMake(0, 0, width, 20)];
-        _statusToos.hidden = ![UIWindow isLandscape];
+//        _statusToos.hidden = ![UIWindow isLandscape];
 //        [self.view addSubview:_statusToos];
 //        [self.view bringSubviewToFront:_statusToos];
     }
@@ -2154,9 +2159,9 @@ static NSInteger const kInputToolBarH = 62;
         NSLog(@"结束录制并结束会话");
         NSNotification *notification =[NSNotification notificationWithName:@"endRecordFirst" object:nil userInfo:nil];
         [[NSNotificationCenter defaultCenter] postNotification:notification];
-        [ZYSuspensionManager destroyWindowForKey:@"videowindow"];
+        [ZYSuspensionManager destroyWindowForKey:@"txtvideowindow"];
     } failure:^(NSError *error, id response) {
-        [ZYSuspensionManager destroyWindowForKey:@"videowindow"];
+        [ZYSuspensionManager destroyWindowForKey:@"txtvideowindow"];
     }];
     
 }
@@ -2175,9 +2180,6 @@ static NSInteger const kInputToolBarH = 62;
 - (void)countDown {
     self.count -= 1;
     if (self.count <= 0.01) {
-        [self.statusToos removeFromSuperview];
-        self.statusToos = nil;
-//        self.topToos.hidden = YES;
         self.navView.hidden = YES;
         self.bottomToos.hidden = YES;
         if (!self.isWhite) {
@@ -2214,9 +2216,6 @@ static NSInteger const kInputToolBarH = 62;
     //隐藏转显示
     if (self.hideBottomAndTop) {
         [self endPolling];
-    //    self.statusToos.hidden = NO;
-    //    self.topToos.hidden = NO;
-        [self.navView addSubview:self.statusToos];
         self.navView.hidden = NO;
         self.bottomToos.hidden = NO;
         self.hideBottomAndTop = NO;
@@ -2261,8 +2260,8 @@ static NSInteger const kInputToolBarH = 62;
     }
     //显示转隐藏
     else{
-        [self.statusToos removeFromSuperview];
-        self.statusToos = nil;
+//        [self.statusToos removeFromSuperview];
+//        self.statusToos = nil;
         self.navView.hidden = YES;
 //        [self.statusToos removeFromSuperview];
 //        self.topToos.hidden = YES;

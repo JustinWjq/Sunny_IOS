@@ -11,7 +11,11 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface TXTStatusBar : UIView
+
 @property (nonatomic,assign)BOOL is24H;
+
+- (void)updateLayoutFrame;
+
 @end
 
 NS_ASSUME_NONNULL_END

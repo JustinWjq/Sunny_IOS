@@ -108,6 +108,9 @@ static ZYSuspensionManager *_instance;
 //        }
     window.rootViewController = nil;
     [[ZYSuspensionManager shared].windowDic removeObjectForKey:key];
+    
+    AppDelegate *ad = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    [ad.window makeKeyAndVisible];
 }
 
 + (void)destroyAllWindow

@@ -22,6 +22,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) NSString *userRole;
 @property (strong, nonatomic) NSString *userIcon;//图标地址
 @property (strong, nonatomic) NSString *userHead;//头像
+
+-(BOOL)compareUserIdWithoutExtra:(NSString *)userId;
+
 @end
 
 NS_ASSUME_NONNULL_END
