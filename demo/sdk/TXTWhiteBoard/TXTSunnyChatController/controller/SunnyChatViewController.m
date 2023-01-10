@@ -92,6 +92,8 @@ static NSInteger const kInputToolBarH = 62;
 @property (nonatomic, strong) TXTShareFileAlertView *shareFileAlertView;
 /** moreView */
 @property (nonatomic, strong) TXTMoreView *moreView;
+/** lastIsLandscape 最后是否是横屏 */
+@property (nonatomic, assign) BOOL lastIsLandscape;
 @end
 
 @implementation SunnyChatViewController
@@ -689,7 +691,7 @@ static NSInteger const kInputToolBarH = 62;
     TXTShareFileAlertView *shareFileAlertView = [[TXTShareFileAlertView alloc] init];
     shareFileAlertView.fileBlock = ^{
 #ifdef DEBUG
-        [self addFile:FileTypeVideo fileModel:[[TXTFileModel alloc] init]];
+        [self addFile:FileTypeH5 fileModel:[[TXTFileModel alloc] init]];
 #else
         [[TXTManage sharedInstance] onClickFile];
 #endif
@@ -793,8 +795,8 @@ static NSInteger const kInputToolBarH = 62;
         fileModel.videoUrl = @"https://res.qcloudtiw.com/demo/tiw-vod.mp4";
         [self showWhiteViewController:fileType fileModel:fileModel];
     } else if (fileType == FileTypeH5) {
-//        fileModel.h5Url = @"https://recall-sync-demo.cloud-ins.cn/mirror.html?syncid=51-cvsstest123-1&synctoken=0060490432279104e008daf9a660dfb8d2aIABaoflIqpo4-W91SrtSeG8e-QAQ5_O7_RsAQrms1PxSLJ597XwAAAAAEADKL1Dbsjd_YwEA6AOyN39j";
-//        fileModel.name = @"同期Canon";
+        fileModel.h5Url = @"https://recall-sync-demo.cloud-ins.cn/mirror.html?syncid=51-cvsstest123-1&synctoken=0060490432279104e008daf9a660dfb8d2aIABaoflIqpo4-W91SrtSeG8e-QAQ5_O7_RsAQrms1PxSLJ597XwAAAAAEADKL1Dbsjd_YwEA6AOyN39j";
+        fileModel.name = @"同期Canon";
         if (fileModel.h5Url.length <= 0) {
             [TXTToast toastWithTitle:@"url为空" type:TXTToastTypeWarn];
             return;
@@ -929,15 +931,22 @@ static NSInteger const kInputToolBarH = 62;
     self.webId = webId;
     NSLog(@"pushToWebView");
 //    self.shareState = YES;
-    showWebViewController *webViewVc = [[showWebViewController alloc] init];
-    webViewVc.delegate = self;
-    webViewVc.url = url;
-    webViewVc.webId = webId;
-    webViewVc.userModel = self.renderViews[0];
-    webViewVc.productName = productName;
-    webViewVc.actionType = actionType;
-    webViewVc.type = @"0";
-    [self.navigationController pushViewController:webViewVc animated:YES];
+    // 先进行旋转
+    self.lastIsLandscape = [UIWindow isLandscape];
+    if (self.lastIsLandscape) {
+        [self btnAction];
+    }
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.25 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        showWebViewController *webViewVc = [[showWebViewController alloc] init];
+        webViewVc.delegate = self;
+        webViewVc.url = url;
+        webViewVc.webId = webId;
+        webViewVc.userModel = self.renderViews[0];
+        webViewVc.productName = productName;
+        webViewVc.actionType = actionType;
+        webViewVc.type = @"0";
+        [self.navigationController pushViewController:webViewVc animated:YES];
+    });
 //    [self presentViewController:self.showWebViewController animated:YES completion:nil];
 }
 - (void)selfPushToWebView:(NSString *)url WebId:(nonnull NSString *)webId ActionType:(NSString *)actionType {
@@ -1274,6 +1283,11 @@ static NSInteger const kInputToolBarH = 62;
 //}
 ///结束同屏
 - (void)hideshowview{
+    // 还原页面
+    if (self.lastIsLandscape) {
+        [self btnAction];
+    }
+    
     //    self.backView.hidden = YES;
     //    self.otherShareStatus = NO;
     //    [self.webViewListController removeFromParentViewController];

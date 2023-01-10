@@ -146,7 +146,7 @@
         CGFloat bottomH = ![UIWindow isLandscape] ? (-76 - 90) : (-20 - 90);
         CGFloat rightMargin = ![UIWindow isLandscape] ? Adapt(-15) : Adapt(-65);
         if (self.teleprompView.isOpen) {
-            if ([UIWindow isLandscape]) {
+            if ([UIWindow isLandscape] && self.teleprompView.teleprompStr.length > 0) {
                 rightMargin = rightMargin - 180;
             }
             [[NSNotificationCenter defaultCenter] postNotificationName:@"kTeleprompStatus" object:nil userInfo:@{@"kTeleprompStatus" : @"close"}];
@@ -242,8 +242,11 @@
     CGFloat rightMargin = ![UIWindow isLandscape] ? Adapt(-15) : Adapt(-65);
     if (self.isTelepromp) {
         bottomH = bottomH - 90;
+        if ([UIWindow isLandscape]) {
+            bottomH = bottomH + 15;
+        }
     }
-    if (self.teleprompView.isOpen) {
+    if (self.teleprompView.isOpen && self.teleprompView.teleprompStr.length > 0) {
         if ([UIWindow isLandscape]) {
             rightMargin = rightMargin - 180;
         }
@@ -269,9 +272,12 @@
     [self.coverView addSubview:self.brushThinView];
     [self.brushThinView setType:TXTBrushThinViewTypeArrow];
     
-    CGFloat bottomH = [UIWindow isLandscape] ? -61 : -124;
+    CGFloat bottomH = [UIWindow isLandscape] ? -61 -15 : -124;
     if (self.isTelepromp) {
         bottomH = bottomH - 90;
+        if ([UIWindow isLandscape]) {
+            bottomH = bottomH + 15;
+        }
     }
     CGRect newFrame = [self.toolView convertRect:self.toolView.bounds toView:self.coverView];
     CGFloat centerX = newFrame.size.width / 2 + newFrame.origin.x;
@@ -290,9 +296,12 @@
     [self.coverView addSubview:self.brushThinView];
     [self.brushThinView setType:TXTBrushThinViewTypePaint];
     
-    CGFloat bottomH = [UIWindow isLandscape] ? -61 : -124;
+    CGFloat bottomH = [UIWindow isLandscape] ? -61 -15 : -124;
     if (self.isTelepromp) {
         bottomH = bottomH - 90;
+        if ([UIWindow isLandscape]) {
+            bottomH = bottomH + 15;
+        }
     }
     CGRect newFrame = [self.toolView convertRect:self.toolView.bounds toView:self.coverView];
     CGFloat centerX = newFrame.size.width / 2 + newFrame.origin.x;
