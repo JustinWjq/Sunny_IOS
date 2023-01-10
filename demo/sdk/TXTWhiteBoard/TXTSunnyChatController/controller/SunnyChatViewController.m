@@ -63,6 +63,8 @@ static NSInteger const kInputToolBarH = 62;
 @property (nonatomic, assign) NSInteger count;//隐藏tab+nav时间
 @property (nonatomic, assign) BOOL isSpeak;//是否是扬声器
 
+@property (nonatomic, assign)NSInteger directionInt;
+
 // 成员管理
 /** groupMemberViewController */
 @property (nonatomic, strong) TXTGroupMemberViewController *groupMemberViewController;
@@ -120,7 +122,7 @@ static NSInteger const kInputToolBarH = 62;
         make.top.mas_equalTo(20);
         make.left.equalTo(self.view.mas_left).offset(0);
         make.right.equalTo(self.view.mas_right).offset(0);
-        make.height.mas_equalTo(Adapt(60));
+        make.height.mas_equalTo(Adapt(44));
     }];
     [self.navView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.mas_equalTo(self.topToos.mas_bottom).offset(0);
@@ -690,11 +692,11 @@ static NSInteger const kInputToolBarH = 62;
 - (void)bottomShareFileButtonClick{
     TXTShareFileAlertView *shareFileAlertView = [[TXTShareFileAlertView alloc] init];
     shareFileAlertView.fileBlock = ^{
-#ifdef DEBUG
-        [self addFile:FileTypeH5 fileModel:[[TXTFileModel alloc] init]];
-#else
+//#ifdef DEBUG
+//        [self addFile:FileTypeVideo fileModel:[[TXTFileModel alloc] init]];
+//#else
         [[TXTManage sharedInstance] onClickFile];
-#endif
+//#endif
     };
     __weak typeof(self) weakSelf = self;
     shareFileAlertView.whiteBoardBlock = ^{
@@ -792,11 +794,11 @@ static NSInteger const kInputToolBarH = 62;
 //        fileModel.contents = @[@"你是哈回电话阿萨德发生的",@"",@"", @"adfajsdfhjahshhh噶恒大华府阿德发斯蒂芬阿迪斯发斯蒂芬阿萨德发生的发斯蒂芬dfjhasdfhjhasdhfasdhfahsdfasdfasdfasdfasdfa"];
         [self showWhiteViewController:fileType fileModel:fileModel];
     } else if (fileType == FileTypeVideo) {
-        fileModel.videoUrl = @"https://res.qcloudtiw.com/demo/tiw-vod.mp4";
+//        fileModel.videoUrl = @"https://res.qcloudtiw.com/demo/tiw-vod.mp4";
         [self showWhiteViewController:fileType fileModel:fileModel];
     } else if (fileType == FileTypeH5) {
-        fileModel.h5Url = @"https://recall-sync-demo.cloud-ins.cn/mirror.html?syncid=51-cvsstest123-1&synctoken=0060490432279104e008daf9a660dfb8d2aIABaoflIqpo4-W91SrtSeG8e-QAQ5_O7_RsAQrms1PxSLJ597XwAAAAAEADKL1Dbsjd_YwEA6AOyN39j";
-        fileModel.name = @"同期Canon";
+//        fileModel.h5Url = @"https://recall-sync-demo.cloud-ins.cn/mirror.html?syncid=51-cvsstest123-1&synctoken=0060490432279104e008daf9a660dfb8d2aIABaoflIqpo4-W91SrtSeG8e-QAQ5_O7_RsAQrms1PxSLJ597XwAAAAAEADKL1Dbsjd_YwEA6AOyN39j";
+//        fileModel.name = @"同期Canon";
         if (fileModel.h5Url.length <= 0) {
             [TXTToast toastWithTitle:@"url为空" type:TXTToastTypeWarn];
             return;
@@ -1399,25 +1401,56 @@ static NSInteger const kInputToolBarH = 62;
     
     NSString *direction = TXUserDefaultsGetObjectforKey(Direction);
     NSLog(@"Direction = %@-%lu",direction,(unsigned long)self.renderViews.count);
-    NSInteger directionInt = [direction integerValue];
+    _directionInt = [direction integerValue];
     
     NSLog(@"updateRenderViewsLayout");
-    if (directionInt == TRTCVideoRenderModeLandscape) {
+    if (_directionInt == TRTCVideoRenderModeLandscape) {
         [_renderVideoView mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.top.mas_equalTo(self.view.mas_safeAreaLayoutGuideTop).offset(0);
-            make.left.mas_equalTo(self.view.mas_safeAreaLayoutGuideLeft).offset(0);
-            make.right.mas_equalTo(self.view.mas_safeAreaLayoutGuideRight).offset(0);
+            make.left.mas_equalTo(self.view.mas_left).offset(0);
+            make.right.mas_equalTo(self.view.mas_right).offset(0);
             make.bottom.mas_equalTo(self.view.mas_bottom).offset(0);
         }];
+        
+        if(self.statusToos != nil && self.statusToos.superview != nil) {
+            [self.statusToos mas_remakeConstraints:^(MASConstraintMaker *make) {
+                make.left.right.top.equalTo(self.view);
+                make.height.mas_equalTo(22);
+            }];
+            
+            [self.topToos mas_remakeConstraints:^(MASConstraintMaker *make) {
+                make.top.mas_equalTo(22);
+                make.left.equalTo(self.view.mas_left).offset(0);
+                make.right.equalTo(self.view.mas_right).offset(0);
+                make.height.mas_equalTo(Adapt(44));
+            }];
+        }
+
     }else{
         [_renderVideoView mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.top.mas_equalTo(self.view.mas_safeAreaLayoutGuideTop).offset(Adapt(168));
             make.left.mas_equalTo(self.view.mas_safeAreaLayoutGuideLeft).offset(0);
             make.right.mas_equalTo(self.view.mas_safeAreaLayoutGuideRight).offset(0);
-            make.height.mas_equalTo(Adapt(230)+Adapt(90));
+            make.height.mas_equalTo(Adapt(260)+Adapt(90));
         }];
+        
+        if(self.statusToos != nil && self.statusToos.superview != nil) {
+            CGFloat height = isHair ? 44 : 22;
+            [self.statusToos mas_remakeConstraints:^(MASConstraintMaker *make) {
+                make.left.right.top.equalTo(self.view);
+                make.height.mas_equalTo(height);
+            }];
+            
+            [self.topToos mas_remakeConstraints:^(MASConstraintMaker *make) {
+                make.top.mas_equalTo(height);
+                make.left.equalTo(self.view.mas_left).offset(0);
+                make.right.equalTo(self.view.mas_right).offset(0);
+                make.height.mas_equalTo(Adapt(44));
+            }];
+        }
+
     }
-    [self.renderVideoView setVideoRenderNumber:(self.renderViews.count - 1) mode:directionInt];
+    [self.renderVideoView setVideoRenderNumber:(self.renderViews.count - 1) mode:_directionInt];
 }
 
 //更新某一个view，audio
@@ -1979,7 +2012,7 @@ static NSInteger const kInputToolBarH = 62;
             make.bottom.mas_equalTo(self.view.mas_bottom).offset(0);
             make.left.mas_equalTo(self.view.mas_left).offset(0);
             make.right.mas_equalTo(self.view.mas_right).offset(0);
-            make.height.mas_equalTo(Adapt(60) + safeAreaBottom);
+            make.height.mas_equalTo(Adapt(44) + safeAreaBottom);
         }];
         _bottomToos.delegate = self;
         [self.view bringSubviewToFront:_bottomToos];
@@ -2195,6 +2228,39 @@ static NSInteger const kInputToolBarH = 62;
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [self countDown];
         });
+        
+        if (_directionInt == TRTCVideoRenderModeLandscape) {
+
+            if(self.statusToos != nil && self.statusToos.superview != nil) {
+                [self.statusToos mas_remakeConstraints:^(MASConstraintMaker *make) {
+                    make.left.right.top.equalTo(self.view);
+                    make.height.mas_equalTo(22);
+                }];
+                
+                [self.topToos mas_remakeConstraints:^(MASConstraintMaker *make) {
+                    make.top.mas_equalTo(22);
+                    make.left.equalTo(self.view.mas_left).offset(0);
+                    make.right.equalTo(self.view.mas_right).offset(0);
+                    make.height.mas_equalTo(Adapt(44));
+                }];
+            }
+
+        }else{
+            if(self.statusToos != nil && self.statusToos.superview != nil) {
+                CGFloat height = isHair ? 44 : 22;
+                [self.statusToos mas_remakeConstraints:^(MASConstraintMaker *make) {
+                    make.left.right.top.equalTo(self.view);
+                    make.height.mas_equalTo(height);
+                }];
+                
+                [self.topToos mas_remakeConstraints:^(MASConstraintMaker *make) {
+                    make.top.mas_equalTo(height);
+                    make.left.equalTo(self.view.mas_left).offset(0);
+                    make.right.equalTo(self.view.mas_right).offset(0);
+                    make.height.mas_equalTo(Adapt(44));
+                }];
+            }
+        }
     }
     //显示转隐藏
     else{

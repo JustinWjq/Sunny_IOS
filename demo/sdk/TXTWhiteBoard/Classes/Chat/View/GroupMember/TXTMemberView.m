@@ -56,9 +56,9 @@
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidTextChange:) name:UITextFieldTextDidChangeNotification object:nil];
         
         QSTapGestureRecognizer *gesture = [[QSTapGestureRecognizer alloc] initWithTarget:self action:@selector(tipClick)];
-      //    gesture.cancelsTouchesInView = NO;
+        //    gesture.cancelsTouchesInView = NO;
         [self addGestureRecognizer:gesture];
-//        [self addTarget:self action:@selector(tipClick)];
+        //        [self addTarget:self action:@selector(tipClick)];
     }
     return self;
 }
@@ -183,7 +183,7 @@
             make.height.mas_equalTo(35);
         }];
     }
-//    [self layoutIfNeeded];
+    //    [self layoutIfNeeded];
 }
 
 - (void)setManageMembersArr:(NSMutableArray *)manageMembersArr {
@@ -216,9 +216,9 @@
 /// setupFooterView
 - (void)setupFooterView {
     UIView *footerView = [[UIView alloc] initWithFrame:self.tableView.bounds];
-//    [footerView mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.edges.equalTo(self.tableView);
-//    }];
+    //    [footerView mas_makeConstraints:^(MASConstraintMaker *make) {
+    //        make.edges.equalTo(self.tableView);
+    //    }];
     self.tableView.tableFooterView = footerView;
     
     UILabel *tipLabel = [UILabel labelWithTitle:@"暂无搜索结果" color:[UIColor colorWithHexString:@"999999"] font:[UIFont qs_regularFontWithSize:14]];
@@ -250,10 +250,10 @@
 /// allMuteBtnClick
 - (void)allMuteBtnClick {
     TXTCommonAlertView *alert = [TXTCommonAlertView alertWithTitle:@"所有参会人员将被静音" titleColor:nil titleFont:nil leftBtnStr:@"取消" rightBtnStr:@"确定" leftColor:nil rightColor:nil];
-//    TXTCommonAlertView *alert = [TXTCommonAlertView alertWithTitle:@"所有参会人员将被静音" message:@"允许参会人员自行解除静音" leftBtnStr:@"取消" rightBtnStr:@"确定" leftColor:nil rightColor:nil];
+    //    TXTCommonAlertView *alert = [TXTCommonAlertView alertWithTitle:@"所有参会人员将被静音" message:@"允许参会人员自行解除静音" leftBtnStr:@"取消" rightBtnStr:@"确定" leftColor:nil rightColor:nil];
     alert.sureBlock = ^{
         [TXTCommonAlertView hide];
- 
+        
         NSMutableArray *usersArr = [NSMutableArray array];
         for (TXTUserModel *usermodel in self.manageMembersArr) {
             NSDictionary *dict = @{@"userId":usermodel.render.userId,@"muteAudio":@YES};
@@ -263,9 +263,9 @@
         NSString *str = [[TXTCommon sharedInstance] convertToJsonData:messagedict];
         [[TICManager sharedInstance] sendGroupTextMessage:str callback:^(TICModule module, int code, NSString *desc) {
             if (code == 0) {
-                 NSLog(@"消息发送成功");
+                NSLog(@"消息发送成功");
             }
-//            [self getTableData];
+            //            [self getTableData];
             [self setSoundStatus:NO];
         }];
     };
@@ -282,9 +282,9 @@
     NSString *str = [[TXTCommon sharedInstance] convertToJsonData:messagedict];
     [[TICManager sharedInstance] sendGroupTextMessage:str callback:^(TICModule module, int code, NSString *desc) {
         if(code == 0){
-             [[JMToast sharedToast] showDialogWithMsg:@"当前全体静音已解除，参会人本人可控制静音状态"];
+            [[JMToast sharedToast] showDialogWithMsg:@"当前全体静音已解除，参会人本人可控制静音状态"];
         }
-//        [self getTableData];
+        //        [self getTableData];
         [self setSoundStatus:YES];
     }];
 }
@@ -308,17 +308,28 @@
         WXMiniProgramObject *object = [WXMiniProgramObject object];
         object.webpageUrl = @"";
         object.userName = TXUserDefaultsGetObjectforKey(ShareLink);
-        NSDictionary *shareConfig = @{@"version":TXTVersion,@"terminal":@"iOS",@"title":@"智慧展业"};
         if ([[TXTCustomConfig sharedInstance].miniProgramPath isEqualToString:@""] || [TXTCustomConfig sharedInstance].miniProgramPath == nil) {
             [TXTCustomConfig sharedInstance].miniProgramPath = @"pages/index/index";
         }
-        NSString *path = [NSString stringWithFormat:@"%@?meetingNum=%@&agentId=%@&inviteNumber=%@&shareConfig=%@&userCode=%@&userName=%@",[TXTCustomConfig sharedInstance].miniProgramPath,TXUserDefaultsGetObjectforKey(ServiceId),TXUserDefaultsGetObjectforKey(AgentId),TXUserDefaultsGetObjectforKey(InviteNumber),[[TXTCommon sharedInstance] convertToJsonData:shareConfig],TXUserDefaultsGetObjectforKey(AgentId),TXUserDefaultsGetObjectforKey(AgentName)];
+        
+        NSString *path = [TXTCustomConfig sharedInstance].miniProgramPath;
+        NSRange range = [path rangeOfString:@"?"];
+        if(range.location == NSNotFound) {
+            NSDictionary *shareConfig = @{@"version":TXTVersion,@"terminal":@"iOS",@"title":@"智慧展业"};
+            path = [NSString stringWithFormat:@"%@?serviceId=%@&agentId=%@&inviteNumber=%@&shareConfig=%@&userCode=%@&userName=%@",[TXTCustomConfig sharedInstance].miniProgramPath,
+                    TXUserDefaultsGetObjectforKey(ServiceId),
+                    TXUserDefaultsGetObjectforKey(AgentId),
+                    TXUserDefaultsGetObjectforKey(InviteNumber),
+                    [[TXTCommon sharedInstance] convertToJsonData:shareConfig],
+                    TXUserDefaultsGetObjectforKey(AgentId),
+                    TXUserDefaultsGetObjectforKey(AgentName)];
+        }
         NSLog(@"chooseWeChat = %@",path);
         object.path = path;
-       
+        
         NSData *imgData ;
         if ([[TXTCustomConfig sharedInstance].miniprogramCardURL isEqualToString:@""]) {
-           imgData = [NSData dataWithContentsOfURL:[NSURL URLWithString:@"https://l106.oss-cn-szfinance.aliyuncs.com/0activityV3/shareExprien/newMiniShare.png"]];
+            imgData = [NSData dataWithContentsOfURL:[NSURL URLWithString:@"https://l106.oss-cn-szfinance.aliyuncs.com/0activityV3/shareExprien/newMiniShare.png"]];
         }else{
             imgData = [NSData dataWithContentsOfURL:[NSURL URLWithString:[TXTCustomConfig sharedInstance].miniprogramCardURL]];
         }
@@ -340,7 +351,7 @@
         message.title = [NSString stringWithFormat:@"%@",[TXTCustomConfig sharedInstance].miniprogramTitle];
         message.description = [NSString stringWithFormat:@"%@",[TXTCustomConfig sharedInstance].miniprogramCard];
         message.thumbData = nil;  //兼容旧版本节点的图片，小于32KB，新版本优先
-                                  //使用WXMiniProgramObject的hdImageData属性
+        //使用WXMiniProgramObject的hdImageData属性
         message.mediaObject = object;
         SendMessageToWXReq *req = [[SendMessageToWXReq alloc] init];
         req.bText = NO;
@@ -348,9 +359,9 @@
         req.scene = WXSceneSession;  //目前只支持会话
         [WXApi sendReq:req completion:^(BOOL success) {
             if (success) {
-
+                
             }else{
-
+                
             }
         }];
     };
@@ -437,17 +448,17 @@
     if (textField.hasText) {
         self.keyWord = textField.text;
         // 开始模糊搜索
-//        if (self.keyWord) {
-//           self.searchedArray = pois;
-//        } else {
-//            self.searchedArray = nil;
-//        }
-//        [self getTableData];
+        //        if (self.keyWord) {
+        //           self.searchedArray = pois;
+        //        } else {
+        //            self.searchedArray = nil;
+        //        }
+        //        [self getTableData];
         if ([NSString isEmpty:textField.text]) {
             return;
         }
         [self searchCustomers:self.manageMembersArr withSearchText:textField.text];
-
+        
     } else {
         self.searchedArray = nil;
         self.keyWord = nil;

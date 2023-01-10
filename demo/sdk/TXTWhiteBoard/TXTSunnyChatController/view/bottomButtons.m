@@ -119,37 +119,37 @@
         make.top.equalTo(self.mas_top).offset(0);
         make.left.equalTo(self.mas_left).offset(0);
         make.width.equalTo(self.mas_width).dividedBy(6.0);
-        make.bottom.mas_equalTo(self.mas_safeAreaLayoutGuideBottom).offset(0);
+        make.bottom.mas_equalTo(self.mas_safeAreaLayoutGuideBottom).offset(-6);
     }];
     [self.txMuteButton mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(self.mas_top).offset(0);
         make.left.mas_equalTo(self.txVideoButton.mas_right).offset(0);
         make.width.equalTo(self.mas_width).dividedBy(6.0);
-        make.bottom.mas_equalTo(self.mas_safeAreaLayoutGuideBottom).offset(0);
+        make.bottom.mas_equalTo(self.mas_safeAreaLayoutGuideBottom).offset(-6);
     }];
     [self.txShareFileButton mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(self.mas_top).offset(0);
         make.left.mas_equalTo(self.txMuteButton.mas_right).offset(0);
         make.width.equalTo(self.mas_width).dividedBy(6.0);
-        make.bottom.mas_equalTo(self.mas_safeAreaLayoutGuideBottom).offset(0);
+        make.bottom.mas_equalTo(self.mas_safeAreaLayoutGuideBottom).offset(-6);
     }];
     [self.txMembersButton mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(self.mas_top).offset(0);
         make.left.mas_equalTo(self.txShareFileButton.mas_right).offset(0);
         make.width.equalTo(self.mas_width).dividedBy(6.0);
-        make.bottom.mas_equalTo(self.mas_safeAreaLayoutGuideBottom).offset(0);
+        make.bottom.mas_equalTo(self.mas_safeAreaLayoutGuideBottom).offset(-6);
     }];
     [self.txShareSceneButton mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(self.mas_top).offset(0);
         make.left.mas_equalTo(self.txMembersButton.mas_right).offset(0);
         make.width.equalTo(self.mas_width).dividedBy(6.0);
-        make.bottom.mas_equalTo(self.mas_safeAreaLayoutGuideBottom).offset(0);
+        make.bottom.mas_equalTo(self.mas_safeAreaLayoutGuideBottom).offset(-6);
     }];
     [self.txMoreActionButton mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(self.mas_top).offset(0);
         make.left.mas_equalTo(self.txShareSceneButton.mas_right).offset(0);
         make.width.equalTo(self.mas_width).dividedBy(6.0);
-        make.bottom.mas_equalTo(self.mas_safeAreaLayoutGuideBottom).offset(0);
+        make.bottom.mas_equalTo(self.mas_safeAreaLayoutGuideBottom).offset(-6);
     }];
 }
 
@@ -162,7 +162,7 @@
     UILabel *label = [[UILabel alloc] init];
     [self addSubview:label];
     [label mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(self.txVideoButton.mas_bottom).offset(-14);
+        make.top.mas_equalTo(self.txVideoButton.mas_bottom).offset(-10);
         make.width.equalTo(self.mas_width).dividedBy(6.0);
         make.centerX.mas_equalTo(button.mas_centerX).offset(0);
         make.height.mas_equalTo(15);

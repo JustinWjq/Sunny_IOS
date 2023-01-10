@@ -409,9 +409,9 @@
     [self addSubview:self.renderViewCollectionView];
     [self.renderViewCollectionView mas_makeConstraints:^(MASConstraintMaker *make) {
         //        make.top.mas_equalTo(videoview.mas_bottom).offset(0);
-        make.top.mas_equalTo(self.mas_safeAreaLayoutGuideTop).offset(0);
-        make.right.mas_equalTo(self.mas_safeAreaLayoutGuideRight).offset(0);
-        make.bottom.mas_equalTo(self.mas_safeAreaLayoutGuideBottom).offset(0);
+        make.top.mas_equalTo(self.mas_top).offset(0);
+        make.right.mas_equalTo(self.mas_right).offset(0);
+        make.bottom.mas_equalTo(self.mas_bottom).offset(0);
         make.width.mas_equalTo(Adapt(132));
     }];
     self.renderViewCollectionView.delegate = self;
