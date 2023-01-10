@@ -211,8 +211,10 @@ static TXTMemberInfoView *_alertView = nil; //第一步：静态实例，并初�
             [[TICManager sharedInstance] sendGroupTextMessage:str callback:^(TICModule module, int code, NSString *desc) {
                 [TXTMemberInfoView hide];
                 if(code == 0){
-                    NSString *str = self.model.showAudio ? @"已将该成员静音" : @"已将该成员解除静音";
-                    [TXTToast toastWithTitle:str];
+                    if (dict[@"muteAudio"]) {
+//                    NSString *str = self.model.showAudio ? @"已将该成员静音" : @"已将该成员解除静音";
+                        [TXTToast toastWithTitle:@"已将该成员静音"];
+                    }
                 }
             }];
         }
@@ -229,8 +231,10 @@ static TXTMemberInfoView *_alertView = nil; //第一步：静态实例，并初�
             [[TICManager sharedInstance] sendGroupTextMessage:str callback:^(TICModule module, int code, NSString *desc) {
                 [TXTMemberInfoView hide];
                 if(code == 0){
-                    NSString *str = self.model.showAudio ? @"已将该成员摄像头关闭" : @"已将该成员摄像头打开";
-                    [TXTToast toastWithTitle:str];
+                    if (dict[@"muteVideo"]) {
+//                        NSString *str = self.model.showAudio ? @"已将该成员摄像头关闭" : @"已将该成员摄像头打开";
+                        [TXTToast toastWithTitle:@"已将该成员摄像头关闭"];
+                    }
                 }
             }];
         }
