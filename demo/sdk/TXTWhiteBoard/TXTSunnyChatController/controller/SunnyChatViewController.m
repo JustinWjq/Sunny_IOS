@@ -198,7 +198,7 @@ static NSInteger const kInputToolBarH = 62;
             //刷新
             [UIViewController attemptRotationToDeviceOrientation];
             [self updateRenderViewsLayout];
-            [self.bottomToos updateButtons];
+            [self updateBottomButtons];
     //        NSString *portrait = TXUserDefaultsGetObjectforKey(Direction);
             NSString *imageNameStr = ( [portrait intValue] == 0 ) ? @"Landscape-Portrait" : @"Portrait-Landscape";
             [_crossBtn setImage:[UIImage imageNamed:imageNameStr inBundle:TXSDKBundle compatibleWithTraitCollection:nil] forState:UIControlStateNormal];
@@ -476,7 +476,7 @@ static NSInteger const kInputToolBarH = 62;
         //刷新
         [UIViewController attemptRotationToDeviceOrientation];
         [self updateRenderViewsLayout];
-        [self.bottomToos updateButtons];
+        [self updateBottomButtons];
 //    }
     
     TRTCVideoEncParam *param = [TRTCVideoEncParam new];
@@ -1382,7 +1382,7 @@ static NSInteger const kInputToolBarH = 62;
     [UIViewController attemptRotationToDeviceOrientation];
     [self.statusToos updateLayoutFrame];
     [self updateRenderViewsLayout];
-    [self.bottomToos updateButtons];
+    [self updateBottomButtons];
     NSString *portrait = TXUserDefaultsGetObjectforKey(Direction);
     NSString *imageNameStr = ( [portrait intValue] == 0 ) ? @"Landscape-Portrait" : @"Portrait-Landscape";
     [_crossBtn setImage:[UIImage imageNamed:imageNameStr inBundle:TXSDKBundle compatibleWithTraitCollection:nil] forState:UIControlStateNormal];
@@ -1450,7 +1450,7 @@ static NSInteger const kInputToolBarH = 62;
             make.top.mas_equalTo(self.view.mas_safeAreaLayoutGuideTop).offset(Adapt(168));
             make.left.mas_equalTo(self.view.mas_safeAreaLayoutGuideLeft).offset(0);
             make.right.mas_equalTo(self.view.mas_safeAreaLayoutGuideRight).offset(0);
-            make.height.mas_equalTo(Adapt(260)+Adapt(90));
+            make.height.mas_equalTo(Adapt(230)+Adapt(90));
         }];
         
         if(self.statusToos != nil && self.statusToos.superview != nil) {
@@ -1470,6 +1470,22 @@ static NSInteger const kInputToolBarH = 62;
 
     }
     [self.renderVideoView setVideoRenderNumber:(self.renderViews.count - 1) mode:_directionInt];
+}
+
+-(void)updateBottomButtons {
+
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.35 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        
+        CGFloat height = Adapt(44) + safeAreaBottom;
+        [self.bottomToos mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.bottom.mas_equalTo(self.view.mas_bottom).offset(0);
+            make.left.mas_equalTo(self.view.mas_left).offset(0);
+            make.right.mas_equalTo(self.view.mas_right).offset(0);
+            make.height.mas_equalTo(height);
+        }];
+        
+        [self.bottomToos updateButtons];
+    });
 }
 
 //更新某一个view，audio
@@ -2154,7 +2170,7 @@ static NSInteger const kInputToolBarH = 62;
             //刷新
             [UIViewController attemptRotationToDeviceOrientation];
             [self updateRenderViewsLayout];
-            [self.bottomToos updateButtons];
+            [self updateBottomButtons];
             [[[TICManager sharedInstance] getBoardController] removeDelegate:self];
             [[TICManager sharedInstance] removeIMessageListener:self];
             [[TICManager sharedInstance] removeEventListener:self];
