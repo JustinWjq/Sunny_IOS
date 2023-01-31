@@ -53,7 +53,7 @@ static NSInteger const kInputToolBarH = 62;
 @property (strong, nonatomic) renderVideoView *renderVideoView;//视频视图
 @property (nonatomic,strong) UIButton *crossBtn;//横竖屏按钮
 
-@property (assign, nonatomic) BOOL state;//打开摄像头
+@property (assign, nonatomic) BOOL cameraState;//打开摄像头
 @property (assign, nonatomic) BOOL muteState;//麦克风开关
 @property (assign, nonatomic) BOOL openStartRecord;//开始录制
 @property (assign, nonatomic) BOOL shareState;//共享开关
@@ -461,7 +461,7 @@ static NSInteger const kInputToolBarH = 62;
 //    }
     self.hideBottomAndTop = YES;
     self.openStartRecord = NO;
-    self.state = ![TICConfig shareInstance].enableVideo;
+    self.cameraState = ![TICConfig shareInstance].enableVideo;
     self.muteState = YES;
     
     //切换rootViewController的旋转方向
@@ -1074,7 +1074,13 @@ static NSInteger const kInputToolBarH = 62;
 
 #pragma mark - TXTGroupMemberViewControllerDelegate
 - (void)memberViewControllerDidUpdateInfo:(TXTUserModel *)model {
-    
+    if ([model.userRole isEqualToString:@"owner"]) {
+        if(self.cameraState == model.showVideo) {
+            [self closeVideoAction];
+        } else if(self.muteState == model.showAudio) {
+            [self muteAudioAction];
+        }
+    }
 }
 
 //录制
@@ -1207,7 +1213,7 @@ static NSInteger const kInputToolBarH = 62;
         if ([model.render.userId isEqualToString:self.userId]) {
             TXTUserModel *newModel = [[TXTUserModel alloc] init];
             newModel.render = model.render;
-            newModel.showVideo = self.state;
+            newModel.showVideo = self.cameraState;
             newModel.showAudio = model.showAudio;
             newModel.info = model.info;
             newModel.userRole = model.userRole;
@@ -1221,9 +1227,9 @@ static NSInteger const kInputToolBarH = 62;
     //更新单个视图
 //    [self updateRenderViewsLayout];
    
-    [[[TICManager sharedInstance] getTRTCCloud] muteLocalVideo:!self.state];
-    [self.bottomToos changeVideoButtonStatus:self.state];
-    self.state = !self.state;
+    [[[TICManager sharedInstance] getTRTCCloud] muteLocalVideo:!self.cameraState];
+    [self.bottomToos changeVideoButtonStatus:self.cameraState];
+    self.cameraState = !self.cameraState;
 }
 
 ///开关麦克风
@@ -1784,7 +1790,7 @@ static NSInteger const kInputToolBarH = 62;
                 for (NSDictionary *dict in usersArr) {
                     NSString *userid = [dict valueForKey:@"userId"];
                     if ([userid isEqualToString:[TICConfig shareInstance].userId]) {
-                        self.state = ![[dict valueForKey:@"muteVideo"] boolValue];
+                        self.cameraState = ![[dict valueForKey:@"muteVideo"] boolValue];
                         [self closeVideoAction];
                     }
                     

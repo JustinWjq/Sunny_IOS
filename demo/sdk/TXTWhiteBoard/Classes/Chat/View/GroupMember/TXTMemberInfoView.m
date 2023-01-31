@@ -96,8 +96,11 @@ static TXTMemberInfoView *_alertView = nil; //第一步：静态实例，并初�
         make.edges.mas_equalTo(icon);
     }];
     
+
+    NSString *showUserName = [model.userRole isEqualToString:@"owner"] ? [NSString stringWithFormat:@"%@（主持人、我）", model.userName] : model.userName;
+    
     /** label */
-    UILabel *nameLabel = [UILabel labelWithTitle:model.userName color:[UIColor colorWithHexString:@"333333"] font:[UIFont qs_mediumFontWithSize:15]];
+    UILabel *nameLabel = [UILabel labelWithTitle:showUserName color:[UIColor colorWithHexString:@"333333"] font:[UIFont qs_mediumFontWithSize:15]];
     [topBgView addSubview:nameLabel];
     [nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(55);
@@ -127,7 +130,12 @@ static TXTMemberInfoView *_alertView = nil; //第一步：静态实例，并初�
     UIView *lastView = nil;
     NSString *voiceStr = model.showAudio ? @"静音" : @"解除静音";
     NSString *videoStr = model.showVideo ? @"关闭摄像头" : @"打开摄像头";
+    
     NSArray *btnsTitleArray = @[voiceStr, videoStr, @"移除会议室"];
+    if ([model.userRole isEqualToString:@"owner"]) {
+        btnsTitleArray = @[voiceStr, videoStr];
+    }
+
     for (int i=0; i<btnsTitleArray.count; i++) {
         UIButton *btn = [UIButton buttonWithTitle:btnsTitleArray[i] titleColor:[UIColor colorWithHexString:@"333333"] font:[UIFont qs_regularFontWithSize:15] target:_alertView action:@selector(btnClick:)];
         btn.tag = i + kBtnTag;
@@ -202,7 +210,6 @@ static TXTMemberInfoView *_alertView = nil; //第一步：静态实例，并初�
     if (tag == 0) {
         if ([self.model.userRole isEqualToString:@"owner"]) {
             self.model.showAudio = !self.model.showAudio;
-            [[[TICManager sharedInstance] getTRTCCloud] muteLocalVideo:self.model.showAudio];
             [self sureBtnClick];
         } else {
             NSDictionary *dict = @{@"userId":self.model.render.userId,@"muteAudio":@(self.model.showAudio)};
@@ -222,7 +229,6 @@ static TXTMemberInfoView *_alertView = nil; //第一步：静态实例，并初�
         
         if ([self.model.userRole isEqualToString:@"owner"]) {
             self.model.showVideo = !self.model.showVideo;
-            [[[TICManager sharedInstance] getTRTCCloud] muteLocalVideo:self.model.showVideo];
             [self sureBtnClick];
         } else {
             NSDictionary *dict = @{@"userId":self.model.render.userId,@"muteVideo":@(self.model.showVideo)};

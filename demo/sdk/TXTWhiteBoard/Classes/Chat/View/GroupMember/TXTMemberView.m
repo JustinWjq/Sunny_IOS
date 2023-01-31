@@ -386,9 +386,6 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     TXTSearchMemberCell *cell = (TXTSearchMemberCell *)[tableView cellForRowAtIndexPath:indexPath];
-    if ([cell.model.userRole isEqualToString:@"owner"]) {
-        return;
-    }
     TXTMemberInfoView *infoView = [TXTMemberInfoView alertWithUserModel:cell.model];
     infoView.sureBlock = ^{
         if ([self.delegate respondsToSelector:@selector(memberViewDidUpdateInfo:)]) {
