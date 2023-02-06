@@ -159,6 +159,7 @@ static NSInteger const kInputToolBarH = 62;
     return YES;
 }
 
+
 /// didBecomeActive
 - (void)didBecomeActive {
     NSLog(@"didBecomeActive");
@@ -398,7 +399,7 @@ static NSInteger const kInputToolBarH = 62;
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [self.navigationController setNavigationBarHidden:YES animated:YES];
+    [self.navigationController setNavigationBarHidden:YES animated:animated];
 }
 
 - (void)viewWillLayoutSubviews {
@@ -430,6 +431,11 @@ static NSInteger const kInputToolBarH = 62;
 //    }
 //    [self.navigationController setNavigationBarHidden:YES animated:YES];
     [self setBottomToolsUI];
+}
+
+-(void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    [self.navigationController setNavigationBarHidden:NO animated:animated];
 }
 
 ///// isLandscape
