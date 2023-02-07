@@ -157,7 +157,11 @@
         for(UIView *sub in self.subviews) {
             [sub removeFromSuperview];
         }
-        [self setUI];
+        
+        NSString *portrait = TXUserDefaultsGetObjectforKey(Direction);
+        if([portrait intValue] == 0 ) {
+            [self setUI];
+        }
     });
 }
 

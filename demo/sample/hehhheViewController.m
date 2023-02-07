@@ -8,6 +8,8 @@
 
 #import "hehhheViewController.h"
 
+#import "Masonry.h"
+#import <WebKit/WebKit.h>
 #import <TXTWhiteBoard/TXTManage.h>
 #import <TXTWhiteBoard/TXTCustomConfig.h>
 #import "NSString+TXTAES.h"
@@ -18,6 +20,10 @@
 #import "AFNetworking.h"
 
 @interface hehhheViewController ()<TXTManageDelegate>
+@property (strong, nonatomic) WKWebView *webView;
+
+@property (strong, nonatomic) IBOutlet UIView *contentView;
+
 @property (weak, nonatomic) IBOutlet UITextField *agentName;
 @property (weak, nonatomic) IBOutlet UITextField *orgName;
 @property (weak, nonatomic) IBOutlet UILabel *smalllab;
@@ -35,9 +41,20 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"账号登录";
+    
+    [self setUI];
+    
+    [self.view addSubview:self.contentView];
+    [self.webView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(0);
+        make.left.mas_equalTo(0);
+        make.right.mas_equalTo(0);
+        make.bottom.mas_equalTo(300);
+    }];
+    
     [self.smallbtn setTitle:@" 生产环境" forState:UIControlStateNormal];
     [self.appbtn setTitle:@" 测试环境" forState:UIControlStateNormal];
-//    self.phonelab.text = @"app是生产环境";
+    //    self.phonelab.text = @"app是生产环境";
     self.smallbtn.layer.borderWidth = 0.5;
     self.smallbtn.layer.borderColor = [UIColor lightGrayColor].CGColor;
     self.smallbtn.layer.cornerRadius = 3;
@@ -47,8 +64,8 @@
     self.appbtn.layer.cornerRadius = 3;
     self.appbtn.layer.masksToBounds = YES;
     
-//    UIBarButtonItem *rightBarItem = [[UIBarButtonItem alloc] initWithTitle:@"设置" style:UIBarButtonItemStylePlain target:self action:@selector(setting)];
-//    self.navigationItem.rightBarButtonItem = rightBarItem;
+    //    UIBarButtonItem *rightBarItem = [[UIBarButtonItem alloc] initWithTitle:@"设置" style:UIBarButtonItemStylePlain target:self action:@selector(setting)];
+    //    self.navigationItem.rightBarButtonItem = rightBarItem;
     
     self.config = [TXTCustomConfig sharedInstance];
     self.config.appid = @"wx8e6096173bff1149";//wx8ac1db9b5f5e385e  wx8e6096173bff1149
@@ -62,8 +79,43 @@
     self.config.miniProgramPath = @"/pages/index/index";
     self.config.enableVideo = YES;
     self.config.isChat = NO;
+    self.config.isDebug = YES;
     
     [TXTManage sharedInstance].manageDelegate = self;
+}
+
+- (void)setUI{
+    
+    WKWebViewConfiguration *configuration = [[WKWebViewConfiguration alloc] init];
+    // 设置偏好设置
+    configuration.preferences = [[WKPreferences alloc] init];
+    configuration.preferences.minimumFontSize = 10;
+    configuration.preferences.javaScriptCanOpenWindowsAutomatically = NO;
+    // 默认认为YES
+    configuration.preferences.javaScriptEnabled = YES;
+    WKUserContentController *userContentController = [WKUserContentController new];
+    configuration.userContentController = userContentController;
+    configuration.allowsInlineMediaPlayback = YES;
+    configuration.processPool = [[WKProcessPool alloc]init];
+    
+    //初始化
+    _webView = [[WKWebView alloc] initWithFrame:CGRectZero configuration:configuration];
+    //1.网络
+    _webView.allowsBackForwardNavigationGestures = YES;
+    
+    _webView.scrollView.contentInsetAdjustmentBehavior =  UIScrollViewContentInsetAdjustmentAutomatic;
+    
+    NSString *url = @"https://sync-web-test.cloud-ins.cn/demo/index.html#/";
+    NSMutableURLRequest * request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]];
+    
+    
+    [_webView loadRequest:request];
+    [self.view addSubview:self.webView];
+    
+    [self.webView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self.view);
+    }];
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated{
@@ -94,30 +146,30 @@ static AFHTTPSessionManager *instance;
     //@"gh_9fd3da8ad9f6"
     NSString *smallstr = self.smallbtn.titleLabel.text;
     NSString *miniprogramType = @"1";
-//    if ([smallstr isEqualToString:@" 生产环境"]) {
-//        miniprogramType = @"2";
-//    }else if ([smallstr isEqualToString:@" 开发环境"]) {
-//        miniprogramType = @"0";
-//    }
+    //    if ([smallstr isEqualToString:@" 生产环境"]) {
+    //        miniprogramType = @"2";
+    //    }else if ([smallstr isEqualToString:@" 开发环境"]) {
+    //        miniprogramType = @"0";
+    //    }
     
     NSString *appstr = self.appbtn.titleLabel.text;
     NSString *appType = @"1";
     [[NSUserDefaults standardUserDefaults] setObject:@"net02d2geftdt4tj" forKey:@"PSW_AES_KEY"];
     [[NSUserDefaults standardUserDefaults] setObject:@"4kz8rn8a7yxdy9u8" forKey:@"AES_IV_PARAMETER"];
-//    if ([appstr isEqualToString:@" 生产环境"]) {
-//        appType = @"2";
-//        [[NSUserDefaults standardUserDefaults] setObject:@"nvvmjk1hi8qlvoy4" forKey:@"PSW_AES_KEY"];
-//        [[NSUserDefaults standardUserDefaults] setObject:@"fstvas2suhosmvjl" forKey:@"AES_IV_PARAMETER"];
-//    }else if ([appstr isEqualToString:@" 开发环境"]) {
-//        appType = @"0";
-//    }
+    //    if ([appstr isEqualToString:@" 生产环境"]) {
+    //        appType = @"2";
+    //        [[NSUserDefaults standardUserDefaults] setObject:@"nvvmjk1hi8qlvoy4" forKey:@"PSW_AES_KEY"];
+    //        [[NSUserDefaults standardUserDefaults] setObject:@"fstvas2suhosmvjl" forKey:@"AES_IV_PARAMETER"];
+    //    }else if ([appstr isEqualToString:@" 开发环境"]) {
+    //        appType = @"0";
+    //    }
     NSString *sign = [timeString aci_encryptWithAES];
     //    NSDictionary *dict = @{@"appid":@"wx8e6096173bff1149",@"universalLink":@"https://video-sells-test.ikandy.cn/txWhiteBoard/",@"userName":@"gh_9fd3da8ad9f6",@"miniprogramType":miniprogramType};
     
     NSDictionary *addressDict = @{@"adr":@"eeeeeee",@"city":@"ddd111111111",@"latitude":@11.22,@"longitude":@123.9,@"province":@"hhhhhhhhhhhhh",@"accuracy":@1};
     
     self.config.miniprogramType = miniprogramType;
-     
+    
     
     [[TXTManage sharedInstance] setEnvironment:appType wechat:self.config appGroup:@"com.tx.txWhiteBoard.ReplaykitUpload"];
     
@@ -141,7 +193,7 @@ static AFHTTPSessionManager *instance;
     [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
     
-  
+    
     NSMutableDictionary *bodyDic = [NSMutableDictionary dictionary];
     [bodyDic setValue:agentName forKey:@"account"];
     [bodyDic setValue:orgName forKey:@"orgAccount"];
@@ -149,50 +201,50 @@ static AFHTTPSessionManager *instance;
     NSData *data1 = [NSJSONSerialization dataWithJSONObject:bodyDic options:0 error:nil];
     NSString *jsonstr = [[NSString alloc] initWithData:data1 encoding:NSUTF8StringEncoding];
     [request setHTTPBody:[jsonstr dataUsingEncoding:NSUTF8StringEncoding]];
-        [[instance dataTaskWithRequest:request completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
+    [[instance dataTaskWithRequest:request completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
+        
+        if (!error) {
             
-            if (!error) {
-                
-                NSDictionary *responseDict = (NSDictionary *)responseObject;
-                NSLog(@"%@",[responseDict description]);
-                NSString *errCode = [responseObject valueForKey:@"errCode"];
-                if ([errCode intValue] == 0) {
-                    NSDictionary *result = [responseObject valueForKey:@"result"];
-                    NSString *inviteNumber = [result valueForKey:@"inviteNumber"];
-                    [[TXTManage sharedInstance] startVideo:inviteNumber andAgent:agentName UserName:@"测试" OrgName:orgName SignOrgName:sign CallBack:^(int code, NSString * _Nonnull desc) {
-                        if (code == 0) {
-                        }else if(code == 111111111){
-                            
-                        }else{
-                            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"" message:desc preferredStyle:UIAlertControllerStyleAlert];
-                            UIAlertAction *action2 = [UIAlertAction actionWithTitle:@"确认" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                                //确认处理
-                            }];
-                            [alert addAction:action2];
-                            [self.navigationController presentViewController:alert animated:YES completion:nil];
-                        }
-                    }];
-                } else {
-                    NSString *errInfo = [responseObject valueForKey:@"errInfo"];
-                    UIAlertController *alert = [UIAlertController
-                                                alertControllerWithTitle:[NSString stringWithFormat:@"错误码：%@", errCode]
-                                                message:errInfo
-                                                preferredStyle:UIAlertControllerStyleAlert];
-                    UIAlertAction *action2 = [UIAlertAction actionWithTitle:@"确认" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                        //确认处理
-                    }];
-                    [alert addAction:action2];
-                    [self.navigationController presentViewController:alert animated:YES completion:nil];
-                }
-                
+            NSDictionary *responseDict = (NSDictionary *)responseObject;
+            NSLog(@"%@",[responseDict description]);
+            NSString *errCode = [responseObject valueForKey:@"errCode"];
+            if ([errCode intValue] == 0) {
+                NSDictionary *result = [responseObject valueForKey:@"result"];
+                NSString *inviteNumber = [result valueForKey:@"inviteNumber"];
+                [[TXTManage sharedInstance] startVideo:inviteNumber andAgent:agentName UserName:@"测试" OrgName:orgName SignOrgName:sign CallBack:^(int code, NSString * _Nonnull desc) {
+                    if (code == 0) {
+                    }else if(code == 111111111){
+                        
+                    }else{
+                        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"" message:desc preferredStyle:UIAlertControllerStyleAlert];
+                        UIAlertAction *action2 = [UIAlertAction actionWithTitle:@"确认" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                            //确认处理
+                        }];
+                        [alert addAction:action2];
+                        [self.navigationController presentViewController:alert animated:YES completion:nil];
+                    }
+                }];
+            } else {
+                NSString *errInfo = [responseObject valueForKey:@"errInfo"];
+                UIAlertController *alert = [UIAlertController
+                                            alertControllerWithTitle:[NSString stringWithFormat:@"错误码：%@", errCode]
+                                            message:errInfo
+                                            preferredStyle:UIAlertControllerStyleAlert];
+                UIAlertAction *action2 = [UIAlertAction actionWithTitle:@"确认" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                    //确认处理
+                }];
+                [alert addAction:action2];
+                [self.navigationController presentViewController:alert animated:YES completion:nil];
             }
-            else
-            {
-               
-            }
-        }] resume];
-
-   
+            
+        }
+        else
+        {
+            
+        }
+    }] resume];
+    
+    
 }
 
 
@@ -215,7 +267,7 @@ static AFHTTPSessionManager *instance;
             self.smalllab.text = @"小程序是开发环境";
         }
     };
-
+    
     [stringPickerView show];
     
 }
@@ -239,7 +291,7 @@ static AFHTTPSessionManager *instance;
             self.phonelab.text = @"app是开发环境";
         }
     };
-
+    
     [stringPickerView show];
 }
 
@@ -262,5 +314,5 @@ static AFHTTPSessionManager *instance;
 - (void)onEndRoom{
     NSLog(@"结束了");
 }
-   
+
 @end

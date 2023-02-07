@@ -24,6 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic,strong) NSString *miniProgramPath;  //小程序路径
 @property(nonatomic,assign) BOOL enableVideo; //是否打开摄像头
 @property(nonatomic,assign) BOOL isChat; //是否群聊模式
+@property(nonatomic,assign) BOOL isDebug; //是否群聊模式
 
 + (instancetype)sharedInstance;
 @end

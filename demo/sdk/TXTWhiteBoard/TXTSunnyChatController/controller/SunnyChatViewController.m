@@ -155,6 +155,8 @@ static NSInteger const kInputToolBarH = 62;
 //    }
 }
 
+
+
 /// didBecomeActive
 - (void)didBecomeActive {
     NSLog(@"didBecomeActive");
@@ -706,11 +708,12 @@ static NSInteger const kInputToolBarH = 62;
 - (void)bottomShareFileButtonClick{
     TXTShareFileAlertView *shareFileAlertView = [[TXTShareFileAlertView alloc] init];
     shareFileAlertView.fileBlock = ^{
-//#ifdef DEBUG
-//        [self addFile:FileTypeH5 fileModel:[[TXTFileModel alloc] init]];
-//#else
-        [[TXTManage sharedInstance] onClickFile];
-//#endif
+        
+        if([TXTCustomConfig sharedInstance].isDebug) {
+            [self addFile:FileTypeH5 fileModel:[[TXTFileModel alloc] init]];
+        } else {
+            [[TXTManage sharedInstance] onClickFile];
+        }
     };
     __weak typeof(self) weakSelf = self;
     shareFileAlertView.whiteBoardBlock = ^{
@@ -811,9 +814,12 @@ static NSInteger const kInputToolBarH = 62;
 //        fileModel.videoUrl = @"https://res.qcloudtiw.com/demo/tiw-vod.mp4";
         [self showWhiteViewController:fileType fileModel:fileModel];
     } else if (fileType == FileTypeH5) {
-//        fileModel.h5Url = @"https://sync-web-test.cloud-ins.cn/demo/index.html#/";
-//        fileModel.name = @"同期Canon";
-//        fileModel.cookieDict = @{@"AAA":@"BB"};
+        if([TXTCustomConfig sharedInstance].isDebug) {
+            fileModel.h5Url = @"https://sync-web-test.cloud-ins.cn/demo/index.html#/";
+            fileModel.name = @"同期Canon";
+            fileModel.cookieDict = @{@"AAA":@"BB"};
+        }
+        
         if (fileModel.h5Url.length <= 0) {
             [TXTToast toastWithTitle:@"url为空" type:TXTToastTypeWarn];
             return;
@@ -2341,9 +2347,9 @@ static NSInteger const kInputToolBarH = 62;
 }
 
 
-- (BOOL)prefersStatusBarHidden {
-    return YES;
-}
+//- (BOOL)prefersStatusBarHidden {
+//    return YES;
+//}
 
 #pragma  mark 横屏设置
 
