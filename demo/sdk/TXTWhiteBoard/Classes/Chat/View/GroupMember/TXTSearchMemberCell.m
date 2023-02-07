@@ -82,8 +82,11 @@
     _model = model;
     
     NSString *oregionUserName = model.userName;
-    if (oregionUserName.length > 10) {
-        oregionUserName = [NSString stringWithFormat:@"%@...", [oregionUserName substringToIndex:10]];
+    
+    self.nameLabel.text = oregionUserName;
+    
+    if (self.nameLabel.text.length > 10) {
+        oregionUserName = [NSString stringWithFormat:@"%@...", [NSString stringWithFormat:@"%@...", [NSString subStringWithEmoji:self.nameLabel.text limitLength:10]]];
     }
     
 //    if (self.keyWord) {
@@ -100,10 +103,10 @@
 //    [self.icon sd_setImageWithURL:[NSURL URLWithString:model.userIcon] placeholderImage:[UIImage imageNamed:@"HeadPortrait_s" inBundle:TXTSDKBundle compatibleWithTraitCollection:nil] completed:nil];
     
     NSString *userName = model.userName;
-    if (userName.length >= 2) {
-        self.iconLabel.text = [userName substringFromIndex:userName.length - 2];
-    } else {
-        self.iconLabel.text = userName;
+    self.iconLabel.text = userName;
+    if (self.iconLabel.text.length >= 2) {
+//        self.iconLabel.text = [self.iconLabel.text substringFromIndex:self.iconLabel.text.length - 2];
+        self.iconLabel.text = [NSString subStrWithStr:userName fromIndex:userName.length - 2];
     }
     self.videoBtn.selected = model.showVideo;
     self.voiceBtn.selected = model.showAudio;

@@ -113,6 +113,7 @@
             _contentview.bgImageView.hidden = NO;
             [_contentview addSubview:_textContent];
             [self refreshTextLayout];
+            [self.contentview setNeedsDisplay];
             break;
         case 1: // 刷新图片内容布局
             [self sendContentHaveRead];
@@ -120,6 +121,7 @@
             [self.contentview addSubview:_imageContent];
             [self.contentview addSubview:self.percentLabel];
             [self refreshImageLayout];
+            [self.contentview setNeedsDisplay];
             break;
     }
 }
@@ -142,17 +144,24 @@
         NSDictionary *dict = [[TXTCommon sharedInstance] dictionaryWithJsonString:jsonStr];
         self.textContent.text = dict[@"content"];
         NSString *userName = dict[@"userName"];
-        if (userName.length >= 2) {
-            self.iconLabel.text = [userName substringFromIndex:userName.length - 2];
+        if (userName.length > 2) {
+//            self.iconLabel.text = [userName substringFromIndex:userName.length - 2];
+            self.iconLabel.text = [NSString subStrWithStr:userName fromIndex:userName.length - 2];
         } else {
             self.iconLabel.text = userName;
+        }
+        
+        
+        self.userNameLabel.text = userName;
+        if (self.userNameLabel.text.length > 10) {
+//            userName = [NSString stringWithFormat:@"%@...", [self.userNameLabel.text substringToIndex:10]];
+            userName = [NSString stringWithFormat:@"%@...", [NSString subStringWithEmoji:self.userNameLabel.text limitLength:10]];
         }
         self.userNameLabel.text = userName;
         self.contentview.backgroundColor = [UIColor colorWithHexString:@"FFFFFF"];
         self.messageType = 0;
     }
 }
-
 
 
 - (NSString *)getTimeStr:(NSInteger)duration {

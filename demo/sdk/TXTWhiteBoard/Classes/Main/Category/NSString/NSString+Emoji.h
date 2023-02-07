@@ -25,4 +25,13 @@
  *  是否为emoji字符
  */
 - (BOOL)isEmoji;
+
+
+
+//截取字符前多少位，处理emoji表情问题
+////🐒🐒🐒🐒 + 截取3 = 🐒🐒🐒
++ (NSString *)subStringWithEmoji:(NSString *)emojiString
+                     limitLength:(NSInteger)limitLength;
+
++ (NSString *)subStrWithStr:(NSString *)str fromIndex:(NSInteger)index;
 @end

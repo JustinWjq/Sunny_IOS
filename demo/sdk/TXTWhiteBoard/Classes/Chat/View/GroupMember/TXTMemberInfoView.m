@@ -89,18 +89,25 @@ static TXTMemberInfoView *_alertView = nil; //第一步：静态实例，并初�
         make.width.height.mas_equalTo(30);
         make.centerY.equalTo(topBgView.mas_centerY);
     }];
-    NSString *userName = model.userName.length >= 2 ? [model.userName substringFromIndex:model.userName.length - 2] : model.userName;
+    NSString *userName = model.userName.length > 2 ? [NSString subStrWithStr:model.userName fromIndex:model.userName.length - 2] : model.userName;
     UILabel *iconLabel = [UILabel labelWithTitle:userName color:[UIColor colorWithHexString:@"FFFFFF"] font:[UIFont qs_regularFontWithSize:10]];
     [icon addSubview:iconLabel];
     [iconLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.mas_equalTo(icon);
     }];
     
-
-    NSString *showUserName = [model.userRole isEqualToString:@"owner"] ? [NSString stringWithFormat:@"%@（主持人、我）", model.userName] : model.userName;
+//    NSString *showUserName = [model.userRole isEqualToString:@"owner"] ? [NSString stringWithFormat:@"%@（主持人、我）", model.userName] : model.userName;
     
     /** label */
-    UILabel *nameLabel = [UILabel labelWithTitle:showUserName color:[UIColor colorWithHexString:@"333333"] font:[UIFont qs_mediumFontWithSize:15]];
+    UILabel *nameLabel = [UILabel labelWithTitle:@"" color:[UIColor colorWithHexString:@"333333"] font:[UIFont qs_mediumFontWithSize:15]];
+    
+    NSString *oregionUserName = model.userName;
+    nameLabel.text = oregionUserName;
+    if (nameLabel.text.length > 10) {
+        oregionUserName = [NSString stringWithFormat:@"%@...", [NSString subStringWithEmoji:nameLabel.text limitLength:10]];
+        nameLabel.font = [UIFont qs_mediumFontWithSize:13];
+    }
+    nameLabel.text = [model.userRole isEqualToString:@"owner"] ? [NSString stringWithFormat:@"%@（主持人、我）", oregionUserName] : oregionUserName;
     [topBgView addSubview:nameLabel];
     [nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(55);

@@ -112,7 +112,8 @@ static NSInteger const kInputToolBarH = 65;
     [self.messageTableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.navBgView.mas_bottom);
         make.left.equalTo(self);
-        make.right.equalTo(self.mas_safeAreaLayoutGuideRight);
+//        make.right.equalTo(self.mas_safeAreaLayoutGuideRight);
+        make.right.equalTo(self.mas_right);
         make.bottom.equalTo(self.inputToolBar.mas_top);
     }];
     [self bringSubviewToFront:self.inputToolBar];
