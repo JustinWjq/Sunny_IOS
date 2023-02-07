@@ -709,7 +709,7 @@ static NSInteger const kInputToolBarH = 62;
 //#ifdef DEBUG
 //        [self addFile:FileTypeH5 fileModel:[[TXTFileModel alloc] init]];
 //#else
-//        [[TXTManage sharedInstance] onClickFile];
+        [[TXTManage sharedInstance] onClickFile];
 //#endif
     };
     __weak typeof(self) weakSelf = self;
