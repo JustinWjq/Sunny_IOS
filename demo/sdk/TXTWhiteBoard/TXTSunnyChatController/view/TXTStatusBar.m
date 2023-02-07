@@ -27,12 +27,12 @@
     UIImage *shadowImage = [UIImage imageNamed:@"top_shadow"];
     topToolView.layer.contents = (id)shadowImage.CGImage;
     [self addSubview:topToolView];
-    
+
     /// 时间
     UILabel *dateLabel = [[UILabel alloc]init];
     dateLabel.bounds = CGRectMake(0, 0, 100, 16);
     dateLabel.center = CGPointMake(self.bounds.size.width*0.5, 12);
-    
+
     NSString *direction = TXUserDefaultsGetObjectforKey(Direction);
     NSInteger directionInt = [direction integerValue];
     if(isHair) {
@@ -41,7 +41,7 @@
             dateLabel.center = CGPointMake(45, 32);
         }
     }
-    
+
     dateLabel.textColor = [UIColor whiteColor];
     dateLabel.font = [UIFont boldSystemFontOfSize:12];
     dateLabel.textAlignment = NSTextAlignmentCenter;
@@ -62,7 +62,7 @@
             dateLabel.text = [NSString stringWithFormat:@"上午 %@",dateString];
         }
     }
-    
+
     /// 电池
     CGFloat base = 35;
     CGFloat y = 7;
@@ -74,7 +74,7 @@
             base = 55;
         }
     }
-    
+
     UIBezierPath *bezierPath = [UIBezierPath bezierPathWithRoundedRect:CGRectMake(self.bounds.size.width-base, y, 20, 10) cornerRadius:2.5];
     CAShapeLayer *lineLayer = [CAShapeLayer layer];
     lineLayer.lineWidth = 1;
@@ -90,17 +90,17 @@
     lineLayer2.path = path.CGPath;
     lineLayer2.fillColor = lineLayer.strokeColor; // 默认为blackColor
     [topToolView.layer addSublayer:lineLayer2];
-    
+
     // 当前的电池电量
     [UIDevice currentDevice].batteryMonitoringEnabled = YES;
     CGFloat batteryLevel = [UIDevice currentDevice].batteryLevel;
-    
+
     // 是否在充电
     UIImageView *batteryImg = [[UIImageView alloc]init];
     batteryImg.bounds = CGRectMake(0, 0, 8, 12);
     batteryImg.center = CGPointMake(self.bounds.size.width-base+10, y+5);
     batteryImg.image = [UIImage imageNamed:@"lightning"];
-    
+
     UIColor *batteryColor;
     UIDeviceBatteryState batteryState = [UIDevice currentDevice].batteryState;
     if(batteryState == UIDeviceBatteryStateCharging || batteryState == UIDeviceBatteryStateFull){ // 在充电 绿色
@@ -117,7 +117,7 @@
         }
         batteryImg.hidden = YES;
     }
-    
+
     UIBezierPath *batteryPath = [UIBezierPath bezierPathWithRoundedRect:CGRectMake(self.bounds.size.width-base+1.5, y+1.5, (20-3)*batteryLevel, 10-3) cornerRadius:2];
     CAShapeLayer *batteryLayer = [CAShapeLayer layer];
     batteryLayer.lineWidth = 1;
@@ -125,9 +125,9 @@
     batteryLayer.path = batteryPath.CGPath;
     batteryLayer.fillColor = batteryColor.CGColor; // 默认为blackColor
     [topToolView.layer addSublayer:batteryLayer];
-    
+
     [topToolView addSubview:batteryImg];
-    
+
     UILabel *batteryLabel = [[UILabel alloc]initWithFrame:CGRectMake(self.bounds.size.width-base-50-2, y-3, 50, 16)];
     batteryLabel.text = [NSString stringWithFormat:@"%.0f%%",batteryLevel*100];
     batteryLabel.textColor = [UIColor whiteColor];

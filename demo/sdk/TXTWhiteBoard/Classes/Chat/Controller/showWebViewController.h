@@ -26,6 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) NSString *type;
 @property (strong, nonatomic) NSString *productName;
 @property (strong, nonatomic) NSString *actionType;
+@property (nonatomic , copy) NSDictionary *cookieDict;
 @end
 
 NS_ASSUME_NONNULL_END

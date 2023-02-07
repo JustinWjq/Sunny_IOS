@@ -17,6 +17,9 @@
 @property (strong, nonatomic) WKWebViewConfiguration *config;
 @property (strong, nonatomic) UIButton *muteBtn;
 @property (strong, nonatomic) UIButton *endButton;
+
+@property (nonatomic, copy) NSMutableString *cookieStr;
+@property (nonatomic, strong) NSArray *cookieArray;
 @end
 
 @implementation showWebViewController
@@ -63,13 +66,72 @@
 
 - (void)setUI{
     
+    WKWebViewConfiguration *configuration = [[WKWebViewConfiguration alloc] init];
+    // 设置偏好设置
+    configuration.preferences = [[WKPreferences alloc] init];
+    configuration.preferences.minimumFontSize = 10;
+    configuration.preferences.javaScriptCanOpenWindowsAutomatically = NO;
+    // 默认认为YES
+    configuration.preferences.javaScriptEnabled = YES;
+    WKUserContentController *userContentController = [WKUserContentController new];
+    configuration.userContentController = userContentController;
+    configuration.allowsInlineMediaPlayback = YES;
+    configuration.processPool = [[WKProcessPool alloc]init];
+
     //初始化
-    _webView = [[WKWebView alloc] initWithFrame:CGRectMake(0, 0, Screen_Width, Screen_Height)];
+    _webView = [[WKWebView alloc] initWithFrame:CGRectMake(0, 0, Screen_Width, Screen_Height) configuration:configuration];
     //1.网络
     _webView.allowsBackForwardNavigationGestures = YES;
     NSLog(@"_webView = %@",self.url);
 
+    NSDictionary *dictCookies = nil;
+    if(self.cookieDict != nil) {
+        NSMutableArray *tempArrCookies = [NSMutableArray array];
+        //取出字典所有key
+        NSArray *keyArray = [self.cookieDict allKeys];
+        for (NSString *key in keyArray) {
+            NSDictionary *dictCookie = [NSDictionary dictionaryWithObjectsAndKeys:key, NSHTTPCookieName,
+                                               self.cookieDict[key], NSHTTPCookieValue,
+                                            @"/", NSHTTPCookiePath,
+                                            self.url, NSHTTPCookieDomain,nil];
+            NSHTTPCookie *cookie = [NSHTTPCookie cookieWithProperties:dictCookie];
+            [tempArrCookies addObject:cookie];
+        }
+        NSArray *arrCookies = [tempArrCookies copy];
+        self.cookieArray = arrCookies;
+        dictCookies = [NSHTTPCookie requestHeaderFieldsWithCookies:arrCookies];
+    }
+    
     NSMutableURLRequest * request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:self.url]];
+    
+    if(dictCookies != nil) {
+        [request setValue:[dictCookies objectForKey:@"Cookie"] forHTTPHeaderField: @"Cookie"];
+        
+        NSMutableString *cookieStr = [NSMutableString stringWithFormat:@""];
+        if (self.cookieArray) {
+            for (NSHTTPCookie *cookie in self.cookieArray) {
+                [cookieStr appendFormat:@"document.cookie = '%@=%@';\n", cookie.name, cookie.value];
+            }
+        }
+        self.cookieStr = cookieStr.mutableCopy;
+
+        WKUserScript *cookieScript = [[WKUserScript alloc] initWithSource:self.cookieStr
+                                                            injectionTime:WKUserScriptInjectionTimeAtDocumentStart
+                                                         forMainFrameOnly:NO];
+        [userContentController addUserScript:cookieScript];
+        
+        if (@available(iOS 11.0, *)) {
+            WKHTTPCookieStore *cookieStore = _webView.configuration.websiteDataStore.httpCookieStore;
+            for (NSHTTPCookie *cookie in self.cookieArray) {
+                [cookieStore setCookie:cookie completionHandler:^{
+                    
+                }];
+            }
+        }
+        [[NSHTTPCookieStorage sharedHTTPCookieStorage] setCookieAcceptPolicy:NSHTTPCookieAcceptPolicyAlways];
+        [[NSHTTPCookieStorage sharedHTTPCookieStorage] setCookies:self.cookieArray forURL:[NSURL URLWithString:self.url] mainDocumentURL:nil];
+    }
+    
     [_webView loadRequest:request];
     [self.view addSubview:self.webView];
     

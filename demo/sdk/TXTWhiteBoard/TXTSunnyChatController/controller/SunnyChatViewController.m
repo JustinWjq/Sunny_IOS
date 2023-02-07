@@ -155,11 +155,6 @@ static NSInteger const kInputToolBarH = 62;
 //    }
 }
 
-- (BOOL)prefersStatusBarHidden {
-    return YES;
-}
-
-
 /// didBecomeActive
 - (void)didBecomeActive {
     NSLog(@"didBecomeActive");
@@ -399,7 +394,7 @@ static NSInteger const kInputToolBarH = 62;
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [self.navigationController setNavigationBarHidden:YES animated:animated];
+//    [self.navigationController setNavigationBarHidden:YES animated:animated];
 }
 
 - (void)viewWillLayoutSubviews {
@@ -435,7 +430,7 @@ static NSInteger const kInputToolBarH = 62;
 
 -(void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
-    [self.navigationController setNavigationBarHidden:NO animated:animated];
+//    [self.navigationController setNavigationBarHidden:NO animated:animated];
 }
 
 ///// isLandscape
@@ -712,9 +707,9 @@ static NSInteger const kInputToolBarH = 62;
     TXTShareFileAlertView *shareFileAlertView = [[TXTShareFileAlertView alloc] init];
     shareFileAlertView.fileBlock = ^{
 //#ifdef DEBUG
-//        [self addFile:FileTypeVideo fileModel:[[TXTFileModel alloc] init]];
+//        [self addFile:FileTypeH5 fileModel:[[TXTFileModel alloc] init]];
 //#else
-        [[TXTManage sharedInstance] onClickFile];
+//        [[TXTManage sharedInstance] onClickFile];
 //#endif
     };
     __weak typeof(self) weakSelf = self;
@@ -816,8 +811,9 @@ static NSInteger const kInputToolBarH = 62;
 //        fileModel.videoUrl = @"https://res.qcloudtiw.com/demo/tiw-vod.mp4";
         [self showWhiteViewController:fileType fileModel:fileModel];
     } else if (fileType == FileTypeH5) {
-//        fileModel.h5Url = @"https://recall-sync-demo.cloud-ins.cn/mirror.html?syncid=51-cvsstest123-1&synctoken=0060490432279104e008daf9a660dfb8d2aIABaoflIqpo4-W91SrtSeG8e-QAQ5_O7_RsAQrms1PxSLJ597XwAAAAAEADKL1Dbsjd_YwEA6AOyN39j";
+//        fileModel.h5Url = @"https://sync-web-test.cloud-ins.cn/demo/index.html#/";
 //        fileModel.name = @"同期Canon";
+//        fileModel.cookieDict = @{@"AAA":@"BB"};
         if (fileModel.h5Url.length <= 0) {
             [TXTToast toastWithTitle:@"url为空" type:TXTToastTypeWarn];
             return;
@@ -826,7 +822,11 @@ static NSInteger const kInputToolBarH = 62;
             [TXTToast toastWithTitle:@"name为空" type:TXTToastTypeWarn];
             return;
         }
-        NSDictionary *bodydic = @{@"serviceId":TXUserDefaultsGetObjectforKey(ServiceId),@"name":(fileModel.name.length > 0 ? fileModel.name : @""),@"url":(fileModel.h5Url.length > 0 ? fileModel.h5Url : @""), @"agent" : TXUserDefaultsGetObjectforKey(AgentId)};
+        NSDictionary *bodydic = @{
+            @"serviceId":TXUserDefaultsGetObjectforKey(ServiceId),
+            @"name":(fileModel.name.length > 0 ? fileModel.name : @""),
+            @"url":(fileModel.h5Url.length > 0 ? fileModel.h5Url : @""),
+            @"agent" : TXUserDefaultsGetObjectforKey(AgentId)};
         [[AFNHTTPSessionManager shareInstance] requestURL:ShareWebs_Add RequestWay:@"POST" Header:nil Body:bodydic params:nil isFormData:NO success:^(NSError *error, id response) {
             NSString *errCode = [response valueForKey:@"errCode"];
             NSLog(@"%@", [response valueForKey:@"errInfo"]);
@@ -926,7 +926,7 @@ static NSInteger const kInputToolBarH = 62;
     NSDictionary *bodydic = @{@"webId":webId,
                               @"serviceId":TXUserDefaultsGetObjectforKey(ServiceId),
                               @"fromUserId":[TICConfig shareInstance].userId,
-                              @"control":TXUserDefaultsGetObjectforKey(AgentId),
+                              @"control":@"agent",
                               @"toUserId":userId};
     [[AFNHTTPSessionManager shareInstance] requestURL:ShareWebs_Start RequestWay:@"POST" Header:nil Body:bodydic params:nil isFormData:NO success:^(NSError *error, id response) {
         NSString *errCode = [response valueForKey:@"errCode"];
@@ -938,12 +938,23 @@ static NSInteger const kInputToolBarH = 62;
             NSString *agentUrl = [resultDic valueForKey:@"agentUrl"];
             //发消息
             TXUserDefaultsSetObjectforKey(userId, @"miniUserId");
-            NSDictionary *messagedict = @{@"serviceId":TXUserDefaultsGetObjectforKey(ServiceId),@"type":@"wxShareWebFile",@"userId":userId,@"webId":webId,@"webUrl":clientUrl,@"fromId":[TICConfig shareInstance].userId,@"fileName":fileModel.name};
+            NSDictionary *messagedict = @{@"serviceId":TXUserDefaultsGetObjectforKey(ServiceId),
+                                          @"type":@"wxShareWebFile",
+                                          @"userId":userId,
+                                          @"webId":webId,
+                                          @"webUrl":clientUrl,
+                                          @"fromId":[TICConfig shareInstance].userId,
+                                          @"fileName":fileModel.name};
+            
             NSLog(@"wxShareWebFile = %@",[messagedict description]);
             NSString *str = [[TXTCommon sharedInstance] convertToJsonData:messagedict];
             [[TICManager sharedInstance] sendGroupTextMessage:str callback:^(TICModule module, int code, NSString *desc) {
                 NSLog(@"发消息");
-                [self pushToWebView:agentUrl WebId:webId ActionType:@"1" ProductName:fileModel.name];
+                [self pushToWebView:agentUrl
+                              WebId:webId
+                         ActionType:@"1"
+                        ProductName:fileModel.name
+                          fileModel:fileModel];
             }];
         } else {
             [TXTToast toastWithTitle:[response valueForKey:@"errInfo"] type:TXTToastTypeWarn];
@@ -952,7 +963,7 @@ static NSInteger const kInputToolBarH = 62;
     }];
 }
 
-- (void)pushToWebView:(NSString *)url WebId:(nonnull NSString *)webId ActionType:(NSString *)actionType ProductName:(NSString *)productName {
+- (void)pushToWebView:(NSString *)url WebId:(nonnull NSString *)webId ActionType:(NSString *)actionType ProductName:(NSString *)productName fileModel:(TXTFileModel *)fileModel {
     self.webId = webId;
     NSLog(@"pushToWebView");
 //    self.shareState = YES;
@@ -970,6 +981,7 @@ static NSInteger const kInputToolBarH = 62;
         webViewVc.productName = productName;
         webViewVc.actionType = actionType;
         webViewVc.type = @"0";
+        webViewVc.cookieDict = fileModel.cookieDict;
         [self.navigationController pushViewController:webViewVc animated:YES];
     });
 //    [self presentViewController:self.showWebViewController animated:YES completion:nil];
@@ -1488,7 +1500,7 @@ static NSInteger const kInputToolBarH = 62;
 
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.35 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         
-        CGFloat height = Adapt(44) + safeAreaBottom;
+        CGFloat height = Adapt(50) + safeAreaBottom;
         [self.bottomToos mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.bottom.mas_equalTo(self.view.mas_bottom).offset(0);
             make.left.mas_equalTo(self.view.mas_left).offset(0);
@@ -2056,7 +2068,7 @@ static NSInteger const kInputToolBarH = 62;
             make.bottom.mas_equalTo(self.view.mas_bottom).offset(0);
             make.left.mas_equalTo(self.view.mas_left).offset(0);
             make.right.mas_equalTo(self.view.mas_right).offset(0);
-            make.height.mas_equalTo(Adapt(44) + safeAreaBottom);
+            make.height.mas_equalTo(Adapt(50) + safeAreaBottom);
         }];
         _bottomToos.delegate = self;
         [self.view bringSubviewToFront:_bottomToos];
@@ -2259,6 +2271,7 @@ static NSInteger const kInputToolBarH = 62;
     if (self.hideBottomAndTop) {
         [self endPolling];
         self.navView.hidden = NO;
+ 
         self.bottomToos.hidden = NO;
         self.hideBottomAndTop = NO;
         self.smallChatView.hidden = NO;
@@ -2326,6 +2339,12 @@ static NSInteger const kInputToolBarH = 62;
     //数据更新
     [[NSNotificationCenter defaultCenter] postNotificationName:@"ManageMembersViewController" object:nil];
 }
+
+
+- (BOOL)prefersStatusBarHidden {
+    return YES;
+}
+
 #pragma  mark 横屏设置
 
 - (BOOL)shouldAutorotate{
