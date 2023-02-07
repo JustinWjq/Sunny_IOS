@@ -136,25 +136,110 @@
     [self.view addSubview:self.webView];
     
     self.muteBtn = [[UIButton alloc] initWithFrame:CGRectMake(Screen_Width- Adapt(70), Screen_Height-Adapt(100), Adapt(50), Adapt(50))];
-   [self.muteBtn addTarget:self action:@selector(muteLocalAudio) forControlEvents:UIControlEventTouchDown];
+//   [self.muteBtn addTarget:self action:@selector(muteLocalAudio) forControlEvents:UIControlEventTouchDown];
     [self.view addSubview:self.muteBtn];
     if (self.userModel.showAudio) {
         [self.muteBtn setImage:[UIImage imageNamed:@"landscape-unmute" inBundle:TXSDKBundle compatibleWithTraitCollection:nil] forState:UIControlStateNormal];
     }else{
         [self.muteBtn setImage:[UIImage imageNamed:@"landscape-mute" inBundle:TXSDKBundle compatibleWithTraitCollection:nil] forState:UIControlStateNormal];
     }
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(muteLocalAudio)];
+    [self.muteBtn addGestureRecognizer:tap];
+    
+    UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanGesture:)];
+    [self.muteBtn addGestureRecognizer:pan];
+    
+    
     self.endButton = [[UIButton alloc] initWithFrame:CGRectMake(Screen_Width-116, kTopHeight+20, 100, 30)];
     [self.endButton setTitle:@"结束共享" forState:UIControlStateNormal];
     [self.endButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.endButton setBackgroundColor:[UIColor redColor]];
     self.endButton.tag = 90;
-    [self.endButton addTarget:self action:@selector(onQuitClassRoom) forControlEvents:UIControlEventTouchDown];
+//    [self.endButton addTarget:self action:@selector(onQuitClassRoom) forControlEvents:UIControlEventTouchDown];
     [self.view addSubview:self.endButton];
     if ([self.type isEqualToString:@"0"]) {
         self.endButton.hidden = NO;
     }else{
         self.endButton.hidden = YES;
     }
+    
+    UIPanGestureRecognizer *endPan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handleEndPanGesture:)];
+    [self.endButton addGestureRecognizer:endPan];
+    
+    UITapGestureRecognizer *endTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onQuitClassRoom)];
+    [self.endButton addGestureRecognizer:endTap];
+}
+
+
+- (void)handlePanGesture:(UIPanGestureRecognizer *)recognizer
+{
+    [self handlePanGesture:recognizer view:self.muteBtn];
+}
+
+- (void)handleEndPanGesture:(UIPanGestureRecognizer *)recognizer
+{
+    [self handlePanGesture:recognizer view:self.endButton];
+}
+
+-(void)handlePanGesture:(UIPanGestureRecognizer *)recognizer view:(UIView *)view
+{
+    //移动状态
+    UIGestureRecognizerState recState =  recognizer.state;
+    //    CGFloat btnW = 100;
+    CGFloat btnW = view.width;
+    CGFloat btnH = view.height;
+    switch (recState) {
+        case UIGestureRecognizerStateBegan:
+            break;
+        case UIGestureRecognizerStateChanged:
+        {
+            
+            CGPoint translation = [recognizer translationInView:self.muteBtn];
+            if (recognizer.view.center.x + translation.x >= Screen_Width - btnW/2.0) {
+                recognizer.view.center = CGPointMake(Screen_Width - btnW/2.0, recognizer.view.center.y + translation.y);
+            }else if(recognizer.view.center.x + translation.x < btnW/2.0){
+                recognizer.view.center = CGPointMake(btnW/2.0, recognizer.view.center.y + translation.y);
+            }else{
+                recognizer.view.center = CGPointMake(recognizer.view.center.x + translation.x, recognizer.view.center.y + translation.y);
+            }
+            
+            if (recognizer.view.center.y + translation.y >= Screen_Height - btnH/2.0) {
+                recognizer.view.center = CGPointMake(recognizer.view.center.x + translation.x, Screen_Height - btnH/2.0);
+            }else if(recognizer.view.center.y + translation.y < btnW/2.0){
+                recognizer.view.center = CGPointMake(recognizer.view.center.x + translation.x, btnH/2.0);
+            }else{
+                recognizer.view.center = CGPointMake(recognizer.view.center.x + translation.x, recognizer.view.center.y + translation.y);
+            }
+            
+        }
+            break;
+        case UIGestureRecognizerStateEnded:
+        {
+            CGPoint translation = [recognizer translationInView:self.muteBtn];
+            if (recognizer.view.center.x + translation.x >= Screen_Width - btnW/2) {
+                recognizer.view.center = CGPointMake(Screen_Width - btnW/2, recognizer.view.center.y + translation.y);
+            }else if(recognizer.view.center.x + translation.x < btnW/2){
+                recognizer.view.center = CGPointMake(btnW/2, recognizer.view.center.y + translation.y);
+            }else{
+                recognizer.view.center = CGPointMake(recognizer.view.center.x + translation.x, recognizer.view.center.y + translation.y);
+            }
+            
+            if (recognizer.view.center.y + translation.y >= Screen_Height - btnH/2) {
+                recognizer.view.center = CGPointMake(recognizer.view.center.x + translation.x, Screen_Height - btnH/2);
+            }else if(recognizer.view.center.y + translation.y < btnH/2){
+                recognizer.view.center = CGPointMake(recognizer.view.center.x + translation.x, btnH/2);
+            }else{
+                recognizer.view.center = CGPointMake(recognizer.view.center.x + translation.x, recognizer.view.center.y + translation.y);
+            }
+        }
+            break;
+            
+        default:
+            break;
+    }
+    
+    [recognizer setTranslation:CGPointMake(0, 0) inView:view];
 }
 
 - (void)setUserModel:(TXTUserModel *)userModel{
