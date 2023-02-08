@@ -815,8 +815,8 @@ static NSInteger const kInputToolBarH = 62;
         [self showWhiteViewController:fileType fileModel:fileModel];
     } else if (fileType == FileTypeH5) {
         if([TXTCustomConfig sharedInstance].isDebug) {
-//            fileModel.h5Url = @"https://sync-web-test.cloud-ins.cn/demo/index.html#/";
-            fileModel.h5Url = @"https://precisemkttest.sinosig.com/resourceNginx/H5Project/cv-sinosig/index.html#/familyList";
+            fileModel.h5Url = @"https://sync-web-test.cloud-ins.cn/demo/index.html#/";
+//            fileModel.h5Url = @"https://precisemkttest.sinosig.com/resourceNginx/H5Project/cv-sinosig/index.html#/familyList";
             fileModel.name = @"同期Canon";
             fileModel.cookieDict = @{
                 @"webViewFlag":@"WKWeb",

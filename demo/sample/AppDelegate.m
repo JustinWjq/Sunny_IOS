@@ -25,6 +25,7 @@
     
     hehhheViewController *baseView = [[hehhheViewController alloc]initWithNibName:@"hehhheViewController" bundle:[NSBundle mainBundle]];
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:baseView];
+    [nav setNavigationBarHidden:YES animated:NO];
     
 //把背景设为空，image设为nil的话会有一个半透明黑色图层，设为一个没有内容的图片，导航栏就是透明的了，view的布局从0，0开始，会被遮挡。
     [nav.navigationBar setBackgroundImage:[AppDelegate imageWithColor:[UIColor redColor] withFrame:CGRectMake(0, 0, 1, 1)]
