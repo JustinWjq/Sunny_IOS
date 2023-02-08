@@ -45,11 +45,11 @@
     [self setUI];
     
     [self.view addSubview:self.contentView];
-    [self.webView mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self.contentView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(0);
         make.left.mas_equalTo(0);
         make.right.mas_equalTo(0);
-        make.bottom.mas_equalTo(300);
+        make.bottom.mas_equalTo(-200);
     }];
     
     [self.smallbtn setTitle:@" 生产环境" forState:UIControlStateNormal];
@@ -106,6 +106,7 @@
     _webView.scrollView.contentInsetAdjustmentBehavior =  UIScrollViewContentInsetAdjustmentAutomatic;
     
     NSString *url = @"https://sync-web-test.cloud-ins.cn/demo/index.html#/";
+//    NSString *url = @"https://www.baidu.com";
     NSMutableURLRequest * request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]];
     
     
@@ -313,6 +314,22 @@ static AFHTTPSessionManager *instance;
 
 - (void)onEndRoom{
     NSLog(@"结束了");
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        
+        CGFloat statusBarHeight = 0;
+           if (@available(iOS 13.0, *)) {
+               statusBarHeight = [UIApplication sharedApplication].windows.firstObject.windowScene.statusBarManager.statusBarFrame.size.height;
+           } else {
+               statusBarHeight = [UIApplication sharedApplication].statusBarFrame.size.height;
+           }
+        
+        CGRect windowFrame = [UIScreen mainScreen].bounds;
+        
+        self.navigationController.navigationBar.frame = CGRectMake(0, statusBarHeight, windowFrame.size.width, 44);
+    });
+    
 }
 
 @end
+

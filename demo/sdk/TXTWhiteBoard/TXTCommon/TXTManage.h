@@ -67,6 +67,9 @@ typedef void (^TXTCallback)(int code, NSString *desc);
 
 /// 点击了共享文件
 - (void)onClickFile;
+
+-(NSString *)releaseVersion;
+
 @end
 
 NS_ASSUME_NONNULL_END

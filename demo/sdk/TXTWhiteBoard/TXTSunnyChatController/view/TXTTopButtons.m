@@ -7,6 +7,7 @@
 //
 
 #import "TXTTopButtons.h"
+#import "TXTManage.h"
 
 @implementation TXTTopButtons
 
@@ -23,12 +24,16 @@
 - (void)setUI{
     self.titleLabel = [[UILabel alloc] init];
     [self addSubview:self.titleLabel];
+    self.titleLabel.textAlignment = NSTextAlignmentCenter;
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.height.mas_equalTo(30);
-        make.width.mas_equalTo(70);
+        make.width.mas_equalTo(240);
         make.center.mas_equalTo(self.center).offset(0);
     }];
     self.titleLabel.text = @"远程会议";
+    if([TXTCustomConfig sharedInstance].isDebug) {
+        self.titleLabel.text = [NSString stringWithFormat: @"远程会议-V%@", [TXTManage sharedInstance].releaseVersion];
+    }
     self.titleLabel.textColor = [UIColor whiteColor];
     self.titleLabel.font = [UIFont systemFontOfSize:16];
     

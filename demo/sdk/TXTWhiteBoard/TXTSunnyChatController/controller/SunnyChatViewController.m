@@ -815,9 +815,45 @@ static NSInteger const kInputToolBarH = 62;
         [self showWhiteViewController:fileType fileModel:fileModel];
     } else if (fileType == FileTypeH5) {
         if([TXTCustomConfig sharedInstance].isDebug) {
-            fileModel.h5Url = @"https://sync-web-test.cloud-ins.cn/demo/index.html#/";
+//            fileModel.h5Url = @"https://sync-web-test.cloud-ins.cn/demo/index.html#/";
+            fileModel.h5Url = @"https://precisemkttest.sinosig.com/resourceNginx/H5Project/cv-sinosig/index.html#/familyList";
             fileModel.name = @"同期Canon";
-            fileModel.cookieDict = @{@"AAA":@"BB"};
+            fileModel.cookieDict = @{
+                @"webViewFlag":@"WKWeb",
+                @"agentLevel":@"5",
+                @"statusBarHeigh":@"0.0",
+                @"userType_s":@"S",
+                
+                @"agentCodeQNB":@"1090000001",
+                @"bundleId":@"com.sinosig.jzyx",
+                @"BusSrePcMac":@"",
+                @"BusSrePcIp":@"172.20.10.8",
+                
+                @"agentCodeoc":@"ZUZkbE5VVlhRMUZyT1ZaVU5WVmtNelF6YURaTlVuUXhTRWRIUkdoVmQzaFlZbUZLYVU1Sk9VVlFaRTh5YmtsalNuSXlNREJSTjBWRFl6QjJNR0V3SzBsbWNWWnFZbTVuUmpOdGJsWnZSV2RLYUZwMFEwRTlQUT09",
+                @"managecomName":@"%E9%98%B3%E5%85%89%E4%BA%BA%E5%AF%BF%E4%BF%9D%E9%99%A9%E8%82%A1%E4%BB%BD%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8%E5%8C%97%E4%BA%AC%E5%88%86%E5%85%AC%E5%8F%B8",
+                @"managecom":@"8601",
+                @"agentkind":@"NA",
+                
+                @"userType":@"4",
+                @"version":@"4.9.2",
+                @"fgsName":@"",
+                @"platform":@"slup",
+                
+                @"deviceString":@"iPhone 6s Plus",
+                @"token":@"ZUZkbE5VVlhRMUZyT1ZaVU5WVmtNelF6YURaTlVuUXhTRWRIUkdoVmQzaFlZbUZLYVU1Sk9VVlFaRTh5YmtsalNuSXlNREJSTjBWRFl6QjJNR0V3SzBsbWNWWnFZbTVuUmpOdGJsWnZSV2RLYUZwMFEwRTlQUT09",
+                @"phoneId":@"@00000000-0000-0000-0000-000000000000",
+                @"mobile":@"18618128372",
+                
+                @"userCode":@"1090000001",
+                @"licencenum":@"",
+                @"gradeName":@"SBM",
+                @"QingniuSDKVersion":@"1.3.0.84",
+                
+                @"branchtype":@"1",
+                @"userName":@"%E6%9D%8E%E6%9C%9D%E5%85%89",
+                @"picStr":@"https://precisemkttest.sinosig.com/resourceNginx/headPic/10900000011671606414117.jpg",
+                @"systemVersion":@"15.7.3",
+            };
         }
         
         if (fileModel.h5Url.length <= 0) {
@@ -2355,6 +2391,10 @@ static NSInteger const kInputToolBarH = 62;
 
 - (BOOL)shouldAutorotate{
     return NO;
+}
+
+-(UIStatusBarStyle)preferredStatusBarStyle {
+    return UIStatusBarStyleLightContent;
 }
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations{
