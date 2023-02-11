@@ -19,7 +19,7 @@
 //#import "QFHttpTool.h"
 #import "AFNetworking.h"
 
-@interface hehhheViewController ()<TXTManageDelegate>
+@interface hehhheViewController ()<TXTManageDelegate,WKUIDelegate,WKNavigationDelegate>
 @property (strong, nonatomic) WKWebView *webView;
 
 @property (strong, nonatomic) IBOutlet UIView *contentView;
@@ -34,6 +34,8 @@
 
 @property (strong, nonatomic) TXTCustomConfig *config;
 
+@property (weak, nonatomic) NSMutableString *cookieStr;
+
 @property (assign, nonatomic) UIEdgeInsets safe;
 @end
 
@@ -42,6 +44,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"账号登录";
+    
+    [self initSDK];
     
     [self setUI];
     
@@ -68,6 +72,9 @@
     //    UIBarButtonItem *rightBarItem = [[UIBarButtonItem alloc] initWithTitle:@"设置" style:UIBarButtonItemStylePlain target:self action:@selector(setting)];
     //    self.navigationItem.rightBarButtonItem = rightBarItem;
     
+}
+
+-(void)initSDK {
     self.config = [TXTCustomConfig sharedInstance];
     self.config.appid = @"wx8e6096173bff1149";//wx8ac1db9b5f5e385e  wx8e6096173bff1149
     self.config.universalLink = @"https://video-sells-test.ikandy.cn/txWhiteBoard/";
@@ -81,6 +88,42 @@
     self.config.enableVideo = YES;
     self.config.isChat = NO;
     self.config.isDebug = YES;
+    self.config.debugCookieDict = @{
+        @"webViewFlag":@"WKWeb",
+        @"agentLevel":@"5",
+        @"statusBarHeigh":@"0.0",
+        @"userType_s":@"S",
+        
+        @"agentCodeQNB":@"1090000001",
+        @"bundleId":@"com.sinosig.jzyx",
+        @"BusSrePcMac":@"",
+        @"BusSrePcIp":@"172.20.10.8",
+        
+        @"agentCodeoc":@"ZUZkbE5VVlhRMUZyT1ZaVU5WVmtNelF6YURaTlVuUXhTRWRIUkdoVmQzaFlZbUZLYVU1Sk9VVlFaRTh5YmtsalNuSXlNREJSTjBWRFl6QjJNR0V3SzBsbWNWWnFZbTVuUmpOdGJsWnZSV2RLYUZwMFEwRTlQUT09",
+        @"managecomName":@"%E9%98%B3%E5%85%89%E4%BA%BA%E5%AF%BF%E4%BF%9D%E9%99%A9%E8%82%A1%E4%BB%BD%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8%E5%8C%97%E4%BA%AC%E5%88%86%E5%85%AC%E5%8F%B8",
+        @"managecom":@"8601",
+        @"agentkind":@"NA",
+        
+        @"userType":@"4",
+        @"version":@"4.9.2",
+        @"fgsName":@"",
+        @"platform":@"slup",
+        
+        @"deviceString":@"iPhone 6s Plus",
+        @"token":@"WlRCalkxcEdZelpIV0doMlprTm5NazFNYzAxNVNYVlFjelpDUjJjNFFVRm5kalZMWVdwbEsySlZWV2d6U1ZKT04zVkJVRXhzUVdWVlZYQnhha2hxWjNCR2JuUkJiVTk0TkM5WlNFRjZOekpJWWtoUE1HYzlQUT09",
+        @"phoneId":@"@00000000-0000-0000-0000-000000000000",
+        @"mobile":@"18618128372",
+        
+        @"userCode":@"1090000001",
+        @"licencenum":@"",
+        @"gradeName":@"SBM",
+        @"QingniuSDKVersion":@"1.3.0.84",
+        
+        @"branchtype":@"1",
+        @"userName":@"%E6%9D%8E%E6%9C%9D%E5%85%89",
+        @"picStr":@"https://precisemkttest.sinosig.com/resourceNginx/headPic/10900000011671606414117.jpg",
+        @"systemVersion":@"15.7.3",
+    };
     
     [TXTManage sharedInstance].manageDelegate = self;
 }
@@ -99,33 +142,95 @@
     configuration.allowsInlineMediaPlayback = YES;
     configuration.processPool = [[WKProcessPool alloc]init];
     
+    if (@available(iOS 13.0, *)) {
+        configuration.preferences.fraudulentWebsiteWarningEnabled = NO;
+    } else {
+        // Fallback on earlier versions
+    }
     //初始化
     _webView = [[WKWebView alloc] initWithFrame:CGRectZero configuration:configuration];
     //1.网络
     _webView.allowsBackForwardNavigationGestures = YES;
+    _webView.UIDelegate = self;
+    _webView.navigationDelegate = self;
     
-//    if (@available(iOS 11.0, *)) {
-//         _webView.scrollView.contentInsetAdjustmentBehavior =     UIScrollViewContentInsetAdjustmentNever;
-//    }
-//    
+    if (@available(iOS 11.0, *)) {
+        _webView.scrollView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+    }
+    _webView.translatesAutoresizingMaskIntoConstraints = NO;
+    
 //    CGFloat statusBarHeight;
 //    if (@available(iOS 13.0, *)) {
 //          statusBarHeight = [UIApplication sharedApplication].windows.firstObject.windowScene.statusBarManager.statusBarFrame.size.height;
 //      } else {
 //          statusBarHeight = [UIApplication sharedApplication].statusBarFrame.size.height;
 //      }
-//
 //    _webView.scrollView.contentInset = UIEdgeInsetsMake(statusBarHeight, 0, [UIApplication sharedApplication].keyWindow.safeAreaInsets.bottom, 0);
     
-//    NSString *url = @"https://sync-web-test.cloud-ins.cn/demo/index.html#/";
-    NSString *url = @"https://www.baidu.com";
+    
+    //    NSString *url = @"https://sync-web-test.cloud-ins.cn/demo/index.html#/";
+    //    NSString *url = @"https://www.baidu.com";
+    NSString *url = @"https://precisemkttest.sinosig.com/resourceNginx/H5Project/qnbProjectV3/index.html#/rayVisitIndex";
+    
+    NSDictionary *cookieDict = [TXTCustomConfig sharedInstance].debugCookieDict;
+    NSDictionary *dictCookies = nil;
+    NSArray *cookieArray = nil;
+    if(cookieDict != nil) {
+        NSMutableArray *tempArrCookies = [NSMutableArray array];
+        //取出字典所有key
+        NSArray *keyArray = [cookieDict allKeys];
+        for (NSString *key in keyArray) {
+            NSDictionary *dictCookie = [NSDictionary dictionaryWithObjectsAndKeys:
+                                        key, NSHTTPCookieName,
+                                        cookieDict[key], NSHTTPCookieValue,
+                                        @"/", NSHTTPCookiePath,
+                                        url, NSHTTPCookieDomain, nil];
+            
+            NSHTTPCookie *cookie = [NSHTTPCookie cookieWithProperties:dictCookie];
+            [tempArrCookies addObject:cookie];
+        }
+        NSArray *arrCookies = [tempArrCookies copy];
+        cookieArray = arrCookies;
+        dictCookies = [NSHTTPCookie requestHeaderFieldsWithCookies:arrCookies];
+    }
+    
     NSMutableURLRequest * request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]];
     
+    if(dictCookies != nil) {
+        [request setValue:[dictCookies objectForKey:@"Cookie"] forHTTPHeaderField: @"Cookie"];
+        
+        NSMutableString *cookieStr = [NSMutableString stringWithFormat:@""];
+        if (cookieArray) {
+            for (NSHTTPCookie *cookie in cookieArray) {
+                [cookieStr appendFormat:@"document.cookie = '%@=%@';\n", cookie.name, cookie.value];
+            }
+        }
+        self.cookieStr = cookieStr.mutableCopy;
+        
+        WKUserScript *cookieScript = [[WKUserScript alloc] initWithSource:self.cookieStr
+                                                            injectionTime:WKUserScriptInjectionTimeAtDocumentStart
+                                                         forMainFrameOnly:NO];
+        [userContentController addUserScript:cookieScript];
+        
+        if (@available(iOS 11.0, *)) {
+            WKHTTPCookieStore *cookieStore = _webView.configuration.websiteDataStore.httpCookieStore;
+            for (NSHTTPCookie *cookie in cookieArray) {
+                [cookieStore setCookie:cookie completionHandler:^{
+                    
+                }];
+            }
+        }
+        
+        [[NSHTTPCookieStorage sharedHTTPCookieStorage] setCookieAcceptPolicy:NSHTTPCookieAcceptPolicyAlways];
+        [[NSHTTPCookieStorage sharedHTTPCookieStorage] setCookies:cookieArray
+                                                           forURL:[NSURL URLWithString:url]
+                                                  mainDocumentURL:nil];
+    }
     
     [_webView loadRequest:request];
-    [self.view addSubview:self.webView];
+    [self.view addSubview:_webView];
     
-    [self.webView mas_makeConstraints:^(MASConstraintMaker *make) {
+    [_webView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.view);
     }];
     
@@ -138,6 +243,34 @@
     }else{
         [self.actionBtn setTitle:@"开始会议" forState:UIControlStateNormal];
     }
+}
+
+-(IBAction)reload:(id)sender {
+    NSString *url = @"https://precisemkttest.sinosig.com/resourceNginx/H5Project/qnbProjectV3/index.html#/rayVisitIndex";
+    NSMutableURLRequest * request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]];
+    
+    [self.webView loadRequest:request];
+}
+
+-(void)URLSession:(NSURLSession *)session
+didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
+completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition disposition, NSURLCredential *credential))completionHandler {
+    if([challenge.protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust]){
+        NSURLCredential *credential = [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust];
+        completionHandler(NSURLSessionAuthChallengeUseCredential,credential);
+    }
+}
+
+- (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler {
+    NSURL *URL = navigationAction.request.URL;
+    NSString *scheme = [URL scheme];
+    NSLog(@"URL = %@", URL);
+    NSLog(@"scheme = %@", scheme);
+    
+    [webView evaluateJavaScript:self.cookieStr completionHandler:^(id result, NSError *error) {
+        NSLog(@"evaluateJavaScript ------- %@ ", result);
+        decisionHandler(WKNavigationActionPolicyAllow);
+    }];
 }
 
 static AFHTTPSessionManager *instance;
@@ -331,27 +464,34 @@ static AFHTTPSessionManager *instance;
     return NO;
 }
 
+-(BOOL)shouldAutorotate {
+    return YES;
+}
 
 - (void)onEndRoom{
     NSLog(@"结束了");
     
-//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//
-//        [self.webView removeFromSuperview];
-//
-//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.35 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//            [self.view addSubview:self.webView];
-//            [self.view sendSubviewToBack:self.webView];
-//
-//            [self.webView reload];
-//            [self.webView layoutSubviews];
-//
-//            [self.webView mas_remakeConstraints:^(MASConstraintMaker *make) {
-//                make.edges.equalTo(self.view);
-//            }];
-//        });
-//        self.navigationController.navigationBar.frame = CGRectMake(0, statusBarHeight, windowFrame.size.width, self.navigationController.navigationBar.bounds.size.height);
-//    });
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self setNeedsStatusBarAppearanceUpdate];
+    });
+    
+    //    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    //
+    //        [self.webView removeFromSuperview];
+    //
+    //        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.35 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    //            [self.view addSubview:self.webView];
+    //            [self.view sendSubviewToBack:self.webView];
+    //
+    //            [self.webView reload];
+    //            [self.webView layoutSubviews];
+    //
+    //            [self.webView mas_remakeConstraints:^(MASConstraintMaker *make) {
+    //                make.edges.equalTo(self.view);
+    //            }];
+    //        });
+    //        self.navigationController.navigationBar.frame = CGRectMake(0, statusBarHeight, windowFrame.size.width, self.navigationController.navigationBar.bounds.size.height);
+    //    });
     
 }
 

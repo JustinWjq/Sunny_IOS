@@ -12,7 +12,7 @@
 #import "TXTCommon.h"
 
 
-@interface showWebViewController ()
+@interface showWebViewController ()<WKNavigationDelegate,WKUIDelegate>
 @property (strong, nonatomic) WKWebView *webView;
 @property (strong, nonatomic) WKWebViewConfiguration *config;
 @property (strong, nonatomic) UIButton *muteBtn;
@@ -80,6 +80,10 @@
 
     //初始化
     _webView = [[WKWebView alloc] initWithFrame:CGRectMake(0, 0, Screen_Width, Screen_Height) configuration:configuration];
+    
+    _webView.navigationDelegate = self;
+    _webView.UIDelegate = self;
+    
     //1.网络
     _webView.allowsBackForwardNavigationGestures = YES;
     NSLog(@"_webView = %@",self.url);
@@ -102,7 +106,7 @@
         dictCookies = [NSHTTPCookie requestHeaderFieldsWithCookies:arrCookies];
     }
     
-    NSMutableURLRequest * request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:self.url]];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:self.url]];
     
     if(dictCookies != nil) {
         [request setValue:[dictCookies objectForKey:@"Cookie"] forHTTPHeaderField: @"Cookie"];
@@ -171,6 +175,12 @@
     [self.endButton addGestureRecognizer:endTap];
 }
 
+- (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler {
+    [webView evaluateJavaScript:self.cookieStr completionHandler:^(id result, NSError *error) {
+        QSLog(@"cookie-------%@",result);
+        decisionHandler(WKNavigationActionPolicyAllow);
+    }];
+}
 
 - (void)handlePanGesture:(UIPanGestureRecognizer *)recognizer
 {

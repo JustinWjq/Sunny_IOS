@@ -110,6 +110,7 @@ static ZYSuspensionManager *_instance;
     [[ZYSuspensionManager shared].windowDic removeObjectForKey:key];
     
     AppDelegate *ad = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    [ad.window setHidden:NO];
     [ad.window makeKeyAndVisible];
 }
 

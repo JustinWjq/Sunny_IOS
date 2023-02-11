@@ -818,42 +818,7 @@ static NSInteger const kInputToolBarH = 62;
             fileModel.h5Url = @"https://sync-web-test.cloud-ins.cn/demo/index.html#/";
 //            fileModel.h5Url = @"https://precisemkttest.sinosig.com/resourceNginx/H5Project/cv-sinosig/index.html#/familyList";
             fileModel.name = @"同期Canon";
-            fileModel.cookieDict = @{
-                @"webViewFlag":@"WKWeb",
-                @"agentLevel":@"5",
-                @"statusBarHeigh":@"0.0",
-                @"userType_s":@"S",
-                
-                @"agentCodeQNB":@"1090000001",
-                @"bundleId":@"com.sinosig.jzyx",
-                @"BusSrePcMac":@"",
-                @"BusSrePcIp":@"172.20.10.8",
-                
-                @"agentCodeoc":@"ZUZkbE5VVlhRMUZyT1ZaVU5WVmtNelF6YURaTlVuUXhTRWRIUkdoVmQzaFlZbUZLYVU1Sk9VVlFaRTh5YmtsalNuSXlNREJSTjBWRFl6QjJNR0V3SzBsbWNWWnFZbTVuUmpOdGJsWnZSV2RLYUZwMFEwRTlQUT09",
-                @"managecomName":@"%E9%98%B3%E5%85%89%E4%BA%BA%E5%AF%BF%E4%BF%9D%E9%99%A9%E8%82%A1%E4%BB%BD%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8%E5%8C%97%E4%BA%AC%E5%88%86%E5%85%AC%E5%8F%B8",
-                @"managecom":@"8601",
-                @"agentkind":@"NA",
-                
-                @"userType":@"4",
-                @"version":@"4.9.2",
-                @"fgsName":@"",
-                @"platform":@"slup",
-                
-                @"deviceString":@"iPhone 6s Plus",
-                @"token":@"ZUZkbE5VVlhRMUZyT1ZaVU5WVmtNelF6YURaTlVuUXhTRWRIUkdoVmQzaFlZbUZLYVU1Sk9VVlFaRTh5YmtsalNuSXlNREJSTjBWRFl6QjJNR0V3SzBsbWNWWnFZbTVuUmpOdGJsWnZSV2RLYUZwMFEwRTlQUT09",
-                @"phoneId":@"@00000000-0000-0000-0000-000000000000",
-                @"mobile":@"18618128372",
-                
-                @"userCode":@"1090000001",
-                @"licencenum":@"",
-                @"gradeName":@"SBM",
-                @"QingniuSDKVersion":@"1.3.0.84",
-                
-                @"branchtype":@"1",
-                @"userName":@"%E6%9D%8E%E6%9C%9D%E5%85%89",
-                @"picStr":@"https://precisemkttest.sinosig.com/resourceNginx/headPic/10900000011671606414117.jpg",
-                @"systemVersion":@"15.7.3",
-            };
+            fileModel.cookieDict = [TXTCustomConfig sharedInstance].debugCookieDict;
         }
         
         if (fileModel.h5Url.length <= 0) {
@@ -1408,8 +1373,7 @@ static NSInteger const kInputToolBarH = 62;
         }
         NSString *portrait = [NSString stringWithFormat:@"%ld",(long)TRTCVideoRenderModeLandscape];
         TXUserDefaultsSetObjectforKey(portrait, Direction);
-    }
-    else {
+    } else {
         navigationController.interfaceOrientation = UIInterfaceOrientationPortrait;
         navigationController.interfaceOrientationMask = UIInterfaceOrientationMaskPortrait;
         //设置屏幕的转向为竖屏
@@ -1440,10 +1404,10 @@ static NSInteger const kInputToolBarH = 62;
     [self hiddenTabAndNav];
 //    [[[TICManager sharedInstance] getTRTCCloud] setGSensorMode:TRTCGSensorMode_UIAutoLayout];
     [self.whiteBoardViewController updateUI:(navigationController.interfaceOrientation == UIInterfaceOrientationPortrait)];
-    [self setPortraitLandscapeUI];
+    [self updatePortraitLandscapeUI];
 }
 
-- (void)setPortraitLandscapeUI{
+- (void)updatePortraitLandscapeUI{
     //刷新
     [UIViewController attemptRotationToDeviceOrientation];
     [self.statusToos updateLayoutFrame];
@@ -1533,7 +1497,6 @@ static NSInteger const kInputToolBarH = 62;
                 make.height.mas_equalTo(Adapt(44));
             }];
         }
-
     }
     [self.renderVideoView setVideoRenderNumber:(self.renderViews.count - 1) mode:_directionInt];
 }
@@ -2172,9 +2135,7 @@ static NSInteger const kInputToolBarH = 62;
 }
 
 #pragma  mark 离开房间
-- (void)onQuitClassRoom
-{
-    
+- (void)onQuitClassRoom{
     if ([[TICConfig shareInstance].role isEqualToString:@"owner"])  {
         UIAlertController *actionSheet = [UIAlertController alertControllerWithTitle:nil message:@"您确定要结束会议吗？" preferredStyle:UIAlertControllerStyleActionSheet];
         
@@ -2229,14 +2190,31 @@ static NSInteger const kInputToolBarH = 62;
             //切换rootViewController的旋转方向
             navigationController.interfaceOrientation = UIInterfaceOrientationPortrait;
             navigationController.interfaceOrientationMask = UIInterfaceOrientationMaskPortrait;
-            //设置屏幕的转向为横屏
-            [[UIDevice currentDevice] setValue:@(UIDeviceOrientationPortrait) forKey:@"orientation"];
+   
+            //设置屏幕的转向为竖屏
+            if (@available(iOS 16.0, *)) {
+                // iOS16新API，让控制器刷新方向，新方向为上面设置的orientations
+        #if defined(__IPHONE_16_0)
+                [self setNeedsUpdateOfSupportedInterfaceOrientations];
+                NSArray *array = [[[UIApplication sharedApplication] connectedScenes] allObjects];
+                UIWindowScene *scene = [array firstObject];
+                // 屏幕方向
+                UIInterfaceOrientationMask orientation = UIInterfaceOrientationMaskPortrait;
+                UIWindowSceneGeometryPreferencesIOS *geometryPreferencesIOS = [[UIWindowSceneGeometryPreferencesIOS alloc] initWithInterfaceOrientations:orientation];
+                // 开始切换
+                [scene requestGeometryUpdateWithPreferences:geometryPreferencesIOS errorHandler:^(NSError * _Nonnull error) {
+                    NSLog(@"强制%@错误:%@", @"横屏", error);
+                }];
+        #endif
+            }else{
+                [[UIDevice currentDevice] setValue:@(UIDeviceOrientationPortrait) forKey:@"orientation"];
+            }
+
             NSString *portrait = [NSString stringWithFormat:@"%ld",(long)TRTCVideoRenderModePortrait];
             TXUserDefaultsSetObjectforKey(portrait, Direction);
-            //刷新
-            [UIViewController attemptRotationToDeviceOrientation];
-            [self updateRenderViewsLayout];
-            [self updateBottomButtons];
+            [self hiddenTabAndNav];
+            [self updatePortraitLandscapeUI];
+
             [[[TICManager sharedInstance] getBoardController] removeDelegate:self];
             [[TICManager sharedInstance] removeIMessageListener:self];
             [[TICManager sharedInstance] removeEventListener:self];
@@ -2252,10 +2230,15 @@ static NSInteger const kInputToolBarH = 62;
     NSString *serviceId = TXUserDefaultsGetObjectforKey(ServiceId);
     NSDictionary *dict = @{@"serviceId":serviceId};
     [[AFNHTTPSessionManager shareInstance] requestURL:ServiceRoom_EndRecord RequestWay:@"POST" Header:nil Body:dict params:nil isFormData:NO success:^(NSError *error, id response) {
-        NSLog(@"结束录制并结束会话");
-        NSNotification *notification =[NSNotification notificationWithName:@"endRecordFirst" object:nil userInfo:nil];
-        [[NSNotificationCenter defaultCenter] postNotification:notification];
+
         [ZYSuspensionManager destroyWindowForKey:@"txtvideowindow"];
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.35 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            NSLog(@"结束录制并结束会话");
+            NSNotification *notification =[NSNotification notificationWithName:@"endRecordFirst" object:nil userInfo:nil];
+            [[NSNotificationCenter defaultCenter] postNotification:notification];
+        });
+        
     } failure:^(NSError *error, id response) {
         [ZYSuspensionManager destroyWindowForKey:@"txtvideowindow"];
     }];

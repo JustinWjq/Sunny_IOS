@@ -28,11 +28,8 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jdd-au-6ac">
-                    <rect key="frame" x="50" y="304" width="314" height="40"/>
+                    <rect key="frame" x="60" y="304" width="140" height="30"/>
                     <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="40" id="Kpw-Se-pJc"/>
-                    </constraints>
                     <state key="normal" title="开始会议">
                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </state>
@@ -177,24 +174,38 @@
                     <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <nil key="highlightedColor"/>
                 </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hGj-Ig-dJm">
+                    <rect key="frame" x="214" y="304" width="140" height="30"/>
+                    <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <state key="normal" title="重新加载">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </state>
+                    <connections>
+                        <action selector="reload:" destination="-1" eventType="touchUpInside" id="qrx-ba-Z1Z"/>
+                    </connections>
+                </button>
             </subviews>
             <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
             <color key="backgroundColor" red="0.60453003084526336" green="0.97395461955398477" blue="0.74143906481710953" alpha="0.29999999999999999" colorSpace="custom" customColorSpace="displayP3"/>
             <constraints>
                 <constraint firstItem="gtL-pc-8Nd" firstAttribute="top" secondItem="knR-sW-cvv" secondAttribute="bottom" constant="19" id="1dP-2S-aT2"/>
                 <constraint firstItem="gtL-pc-8Nd" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="31X-MB-d9z"/>
-                <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="jdd-au-6ac" secondAttribute="trailing" constant="50" id="7KQ-tW-0rp"/>
                 <constraint firstItem="CjV-7G-OdW" firstAttribute="top" secondItem="r7G-bR-soT" secondAttribute="bottom" constant="5" id="8cR-7h-koo"/>
                 <constraint firstItem="r7G-bR-soT" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="AuO-Ak-mc1"/>
-                <constraint firstItem="jdd-au-6ac" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="50" id="FBJ-6o-yWJ"/>
+                <constraint firstItem="hGj-Ig-dJm" firstAttribute="width" secondItem="jdd-au-6ac" secondAttribute="width" id="H9u-kN-PIp"/>
+                <constraint firstItem="jdd-au-6ac" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="60" id="KHL-bg-RLc"/>
                 <constraint firstItem="CjV-7G-OdW" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="RQw-WI-TXM"/>
                 <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="r7G-bR-soT" secondAttribute="trailing" id="SUa-XC-Icg"/>
+                <constraint firstItem="hGj-Ig-dJm" firstAttribute="height" secondItem="jdd-au-6ac" secondAttribute="height" id="UNn-9Z-dSo"/>
                 <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="knR-sW-cvv" secondAttribute="trailing" constant="90" id="c3p-KG-VUQ"/>
+                <constraint firstItem="hGj-Ig-dJm" firstAttribute="top" secondItem="gtL-pc-8Nd" secondAttribute="bottom" constant="15" id="fEV-V1-7QV"/>
                 <constraint firstItem="Q5M-cg-NOt" firstAttribute="bottom" secondItem="CjV-7G-OdW" secondAttribute="bottom" constant="10" id="iTe-Pf-uFm"/>
-                <constraint firstItem="jdd-au-6ac" firstAttribute="top" secondItem="gtL-pc-8Nd" secondAttribute="bottom" constant="15" id="uGG-6Z-kep"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="hGj-Ig-dJm" secondAttribute="trailing" constant="60" id="jPj-Om-QIS"/>
+                <constraint firstItem="jdd-au-6ac" firstAttribute="top" secondItem="gtL-pc-8Nd" secondAttribute="bottom" constant="15" id="mjA-5c-4TD"/>
                 <constraint firstItem="gtL-pc-8Nd" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="60" id="vkK-xr-8M0"/>
                 <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="CjV-7G-OdW" secondAttribute="trailing" id="xdA-XL-3Su"/>
                 <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="gtL-pc-8Nd" secondAttribute="trailing" constant="60" id="xlF-Th-bxD"/>
+                <constraint firstItem="hGj-Ig-dJm" firstAttribute="leading" secondItem="jdd-au-6ac" secondAttribute="trailing" constant="14" id="zMu-0P-z0M"/>
                 <constraint firstItem="knR-sW-cvv" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="90" id="zxP-8z-Tny"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>

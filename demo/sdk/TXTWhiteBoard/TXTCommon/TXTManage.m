@@ -344,6 +344,9 @@
                     [ZYSuspensionManager saveWindow:ws.nnwindow forKey:@"txtvideowindow"];
                     [ws.nnwindow makeKeyAndVisible];
                     
+                    AppDelegate *ad = (AppDelegate *)[UIApplication sharedApplication].delegate;
+                    [ad.window setHidden:YES];
+                    
                     TICBLOCK_SAFE_RUN(callback,code,joinDesc);
                 }
                 else{
@@ -481,6 +484,7 @@
     if (self.manageDelegate && [self.manageDelegate respondsToSelector:@selector(onEndRoom)]) {
         [self.manageDelegate onEndRoom];
     }
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 //#param mark -- 权限获取
