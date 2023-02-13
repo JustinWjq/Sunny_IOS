@@ -7,6 +7,7 @@
 //
 
 #import "showWebViewController.h"
+#import "TXTNavigationController.h"
 #import <WebKit/WebKit.h>
 #import "UIAlertUtil.h"
 #import "TXTCommon.h"
@@ -36,6 +37,14 @@
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor blackColor]}];
     // 导航栏左右按钮字体颜色
     self.navigationController.navigationBar.tintColor = [UIColor blackColor];
+    
+//    TXTNavigationController *navigationController = (TXTNavigationController *)self.navigationController;
+//    navigationController.interfaceOrientation = UIInterfaceOrientationLandscapeRight;
+//    navigationController.interfaceOrientationMask = UIInterfaceOrientationMaskLandscapeRight;
+//    //设置屏幕的转向为横屏
+//    [[UIDevice currentDevice] setValue:@(UIDeviceOrientationLandscapeRight) forKey:@"orientation"];
+//    //刷新
+//    [UIViewController attemptRotationToDeviceOrientation];
 }
 
 - (void)setType:(NSString *)type{
@@ -83,6 +92,20 @@
     
     _webView.navigationDelegate = self;
     _webView.UIDelegate = self;
+    
+    _webView.scrollView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+    CGFloat statusBarHeight;
+    if (@available(iOS 13.0, *)) {
+          statusBarHeight = [UIApplication sharedApplication].windows.firstObject.windowScene.statusBarManager.statusBarFrame.size.height;
+      } else {
+          statusBarHeight = [UIApplication sharedApplication].statusBarFrame.size.height;
+      }
+    _webView.scrollView.contentInset = UIEdgeInsetsMake(statusBarHeight, 0, [UIApplication sharedApplication].keyWindow.safeAreaInsets.bottom, 0);
+        
+    if (@available(iOS 11.0, *)) {
+        _webView.scrollView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+    }
+    _webView.translatesAutoresizingMaskIntoConstraints = NO;
     
     //1.网络
     _webView.allowsBackForwardNavigationGestures = YES;

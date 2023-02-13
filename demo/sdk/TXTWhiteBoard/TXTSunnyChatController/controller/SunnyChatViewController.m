@@ -830,13 +830,25 @@ static NSInteger const kInputToolBarH = 62;
 //        fileModel.contents = @[@"你是哈回电话阿萨德发生的",@"",@"", @"adfajsdfhjahshhh噶恒大华府阿德发斯蒂芬阿迪斯发斯蒂芬阿萨德发生的发斯蒂芬dfjhasdfhjhasdhfasdhfahsdfasdfasdfasdfasdfa"];
         [self showWhiteViewController:fileType fileModel:fileModel];
     } else if (fileType == FileTypeVideo) {
-//        fileModel.videoUrl = @"https://res.qcloudtiw.com/demo/tiw-vod.mp4";
+        if([TXTCustomConfig sharedInstance].isDebug) {
+            fileModel.videoUrl = @"https://res.qcloudtiw.com/demo/tiw-vod.mp4";
+        }
         [self showWhiteViewController:fileType fileModel:fileModel];
     } else if (fileType == FileTypeH5) {
         if([TXTCustomConfig sharedInstance].isDebug) {
 //            fileModel.h5Url = @"https://sync-web-test.cloud-ins.cn/demo/index.html#/";
+            
+            /*
+             https://precisemkttest.sinosig.com/resourceNginx/H5Project/www/index.html#/claimsArea  测试理赔专区
+             https://precisemkttest.sinosig.com/resourceNginx/H5Project/cv-sinosig/index.html#/familyList  测试懂你保险首页
+             https://precisemkttest.sinosig.com/resourceNginx/H5Project/qnbProjectV3/index.html#/planIndex  测试保障规划
+             */
+            
+            fileModel.h5Url = @"https://precisemkttest.sinosig.com/resourceNginx/H5Project/qnbProjectV3/index.html#/planIndex";
+            
+//            fileModel.h5Url = [NSString stringWithFormat: @"https://precisemkttest.sinosig.com/resourceNginx/H5Project/qnbProjectV3/index.html#/rayVisitFile?meetId=%@", TXUserDefaultsGetObjectforKey(ServiceId)];
+            
 //            fileModel.h5Url = @"https://precisemkttest.sinosig.com/resourceNginx/H5Project/cv-sinosig/index.html#/familyList";
-            fileModel.h5Url = @"https://precisemkttest.sinosig.com/resourceNginx/H5Project/cv-sinosig/index.html#/familyList";
             fileModel.name = @"同期Canon";
             fileModel.cookieDict = [TXTCustomConfig sharedInstance].debugCookieDict;
         }
