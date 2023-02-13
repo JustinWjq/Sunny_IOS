@@ -194,54 +194,43 @@
 
 -(void)handlePanGesture:(UIPanGestureRecognizer *)recognizer view:(UIView *)view
 {
+    CGFloat top = UIApplication.sharedApplication.keyWindow.safeAreaInsets.top;
+    CGFloat bottom = UIApplication.sharedApplication.keyWindow.safeAreaInsets.bottom;
+    
     //移动状态
     UIGestureRecognizerState recState =  recognizer.state;
     //    CGFloat btnW = 100;
     CGFloat btnW = view.width;
     CGFloat btnH = view.height;
+    CGPoint translation = [recognizer translationInView:self.view];
+    
+    NSLog(@"handlePanGesture == %@", NSStringFromCGPoint(translation));
+    
     switch (recState) {
         case UIGestureRecognizerStateBegan:
             break;
         case UIGestureRecognizerStateChanged:
-        {
-            
-            CGPoint translation = [recognizer translationInView:self.muteBtn];
-            if (recognizer.view.center.x + translation.x >= Screen_Width - btnW/2.0) {
-                recognizer.view.center = CGPointMake(Screen_Width - btnW/2.0, recognizer.view.center.y + translation.y);
-            }else if(recognizer.view.center.x + translation.x < btnW/2.0){
-                recognizer.view.center = CGPointMake(btnW/2.0, recognizer.view.center.y + translation.y);
-            }else{
-                recognizer.view.center = CGPointMake(recognizer.view.center.x + translation.x, recognizer.view.center.y + translation.y);
-            }
-            
-            if (recognizer.view.center.y + translation.y >= Screen_Height - btnH/2.0) {
-                recognizer.view.center = CGPointMake(recognizer.view.center.x + translation.x, Screen_Height - btnH/2.0);
-            }else if(recognizer.view.center.y + translation.y < btnW/2.0){
-                recognizer.view.center = CGPointMake(recognizer.view.center.x + translation.x, btnH/2.0);
-            }else{
-                recognizer.view.center = CGPointMake(recognizer.view.center.x + translation.x, recognizer.view.center.y + translation.y);
-            }
-            
-        }
-            break;
         case UIGestureRecognizerStateEnded:
         {
-            CGPoint translation = [recognizer translationInView:self.muteBtn];
-            if (recognizer.view.center.x + translation.x >= Screen_Width - btnW/2) {
-                recognizer.view.center = CGPointMake(Screen_Width - btnW/2, recognizer.view.center.y + translation.y);
-            }else if(recognizer.view.center.x + translation.x < btnW/2){
-                recognizer.view.center = CGPointMake(btnW/2, recognizer.view.center.y + translation.y);
+            CGFloat x = 0.0;
+            CGFloat y = 0.0;
+            if (recognizer.view.center.x + translation.x >= Screen_Width - btnW/2.0) {
+                x = Screen_Width - btnW/2.0;
+            }else if(recognizer.view.center.x + translation.x < btnW/2.0){
+                x = btnW/2.0;
             }else{
-                recognizer.view.center = CGPointMake(recognizer.view.center.x + translation.x, recognizer.view.center.y + translation.y);
+                x = recognizer.view.center.x + translation.x;
             }
             
-            if (recognizer.view.center.y + translation.y >= Screen_Height - btnH/2) {
-                recognizer.view.center = CGPointMake(recognizer.view.center.x + translation.x, Screen_Height - btnH/2);
-            }else if(recognizer.view.center.y + translation.y < btnH/2){
-                recognizer.view.center = CGPointMake(recognizer.view.center.x + translation.x, btnH/2);
+            if (recognizer.view.center.y + translation.y >= Screen_Height - btnH/2.0 - bottom) {
+                y = Screen_Height - btnH/2.0 - bottom;
+            }else if(recognizer.view.center.y + translation.y < btnH/2.0 + top){
+                y = btnH/2.0 + top;
             }else{
-                recognizer.view.center = CGPointMake(recognizer.view.center.x + translation.x, recognizer.view.center.y + translation.y);
+                y = recognizer.view.center.y + translation.y;
             }
+            
+            recognizer.view.center = CGPointMake(x, y);
         }
             break;
             
