@@ -191,15 +191,12 @@ static NSInteger const kInputToolBarH = 62;
 
             NSString *portrait = [NSString stringWithFormat:@"%ld",(long)TRTCVideoRenderModeLandscape];
             TXUserDefaultsSetObjectforKey(portrait, Direction);
-            [self.whiteBoardViewController updateUI:(navigationController.interfaceOrientation == UIInterfaceOrientationPortrait)];
-    //        [self setPortraitLandscapeUI];
             //刷新
             [UIViewController attemptRotationToDeviceOrientation];
-            [self updateRenderViewsLayout];
-            [self updateBottomButtons];
-    //        NSString *portrait = TXUserDefaultsGetObjectforKey(Direction);
-            NSString *imageNameStr = ( [portrait intValue] == 0 ) ? @"Landscape-Portrait" : @"Portrait-Landscape";
-            [_crossBtn setImage:[UIImage imageNamed:imageNameStr inBundle:TXSDKBundle compatibleWithTraitCollection:nil] forState:UIControlStateNormal];
+            
+//            [self.whiteBoardViewController updateUI:(navigationController.interfaceOrientation == UIInterfaceOrientationPortrait)];
+//            [self doPortraitLandscapeUI];
+            
         }
 //        NSString *portrait = [NSString stringWithFormat:@"%ld",(long)TRTCVideoRenderModeLandscape];
 //        TXUserDefaultsSetObjectforKey(portrait, Direction);
@@ -272,16 +269,38 @@ static NSInteger const kInputToolBarH = 62;
 /// orientationChange
 - (void)handleScreenOrientationChange:(NSNotification *)noti {
     NSLog(@"handleScreenOrientationChange");
-    if (![UIWindow isLandscape]) {
-        [self updateUI:YES];
-    } else {
-        [self updateUI:NO];
-    }
+    
+    NSString *portrait = @"";
+    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
+       switch (orientation) {
+           case UIInterfaceOrientationUnknown:
+               portrait = [NSString stringWithFormat:@"%ld",(long)TRTCVideoRenderModePortrait];
+               break;
+           case UIInterfaceOrientationPortrait:
+               portrait = [NSString stringWithFormat:@"%ld",(long)TRTCVideoRenderModePortrait];
+               break;
+           case UIInterfaceOrientationPortraitUpsideDown:
+               portrait = [NSString stringWithFormat:@"%ld",(long)TRTCVideoRenderModePortrait];
+               break;
+           case UIInterfaceOrientationLandscapeLeft:
+               portrait = [NSString stringWithFormat:@"%ld",(long)TRTCVideoRenderModeLandscape];
+               break;
+           case UIInterfaceOrientationLandscapeRight:
+               portrait = [NSString stringWithFormat:@"%ld",(long)TRTCVideoRenderModeLandscape];
+               break;
+           default:
+               break;
+       }
+    TXUserDefaultsSetObjectforKey(portrait, Direction);
+
+    [self.whiteBoardViewController updateUI:(orientation == UIInterfaceOrientationPortrait)];
+    [self doPortraitLandscapeUI];
+    
 }
 
-- (void)updateUI:(BOOL)isPortrait {
-    [self.navigationController setNavigationBarHidden:YES animated:YES];
-    if (isPortrait) {
+//- (void)updateUI:(BOOL)isPortrait {
+//    [self.navigationController setNavigationBarHidden:YES animated:YES];
+//    if (isPortrait) {
 //        for (UIView *view in self.view.subviews) {
 //            if ([view isKindOfClass:[TXTStatusBar class]]) {
 //                [view removeFromSuperview];
@@ -293,7 +312,7 @@ static NSInteger const kInputToolBarH = 62;
 //            make.right.mas_equalTo(self.view.mas_right).offset(0);
 //            make.height.mas_equalTo(Adapt(60));
 //        }];
-    } else {
+//    } else {
 //        TXTStatusBar *statusBar = [[TXTStatusBar alloc] initWithFrame:CGRectMake(0, 0, Screen_Width, 20)];
 //        [self.view addSubview:self.statusToos];
 //        [self.topToos mas_remakeConstraints:^(MASConstraintMaker *make) {
@@ -303,14 +322,13 @@ static NSInteger const kInputToolBarH = 62;
 //            make.height.mas_equalTo(Adapt(60));
 //        }];
 //
-
-    }
+//    }
     
 //    NSString *direction = TXUserDefaultsGetObjectforKey(Direction);
 //    NSString *imageNameStr = ( [direction intValue] == 0 )? @"Portrait-Landscape" : @"Landscape-Portrait";
 //    NSLog(@"updateUI direction = %@",direction);
 //    [_crossBtn setImage:[UIImage imageNamed:imageNameStr inBundle:TXSDKBundle compatibleWithTraitCollection:nil] forState:UIControlStateNormal];
-}
+//}
 
 - (void)chatInputToolBarDidClickSendBtn:(UIButton *)btn {
     self.inputToolBar.textView.text = [self.inputToolBar.textView.text stringByAppendingString:@"\n"];
@@ -396,7 +414,7 @@ static NSInteger const kInputToolBarH = 62;
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-//    [self.navigationController setNavigationBarHidden:YES animated:animated];
+    [self.navigationController setNavigationBarHidden:YES animated:animated];
 }
 
 - (void)viewWillLayoutSubviews {
@@ -478,6 +496,7 @@ static NSInteger const kInputToolBarH = 62;
         TXUserDefaultsSetObjectforKey(portrait, Direction);
         //刷新
         [UIViewController attemptRotationToDeviceOrientation];
+    
         [self updateRenderViewsLayout];
         [self updateBottomButtons];
 //    }
@@ -1391,28 +1410,28 @@ static NSInteger const kInputToolBarH = 62;
                 NSLog(@"强制%@错误:%@", @"横屏", error);
             }];
     #endif
-        }else{
+        } else {
             [[UIDevice currentDevice] setValue:@(UIDeviceOrientationPortrait) forKey:@"orientation"];
         }
         NSString *portrait = [NSString stringWithFormat:@"%ld",(long)TRTCVideoRenderModePortrait];
         TXUserDefaultsSetObjectforKey(portrait, Direction);
-//        TRTCVideoEncParam *param = [TRTCVideoEncParam new];
-//        param.resMode = TRTCVideoResolutionModePortrait;
-//        [[[TICManager sharedInstance] getTRTCCloud] setVideoEncoderParam:param];
-        //        [[[TICManager sharedInstance] getTRTCCloud] setVideoEncoderRotation:TRTCVideoRotation_0];
     }
-    [self hiddenTabAndNav];
+    
+    [UIViewController attemptRotationToDeviceOrientation];
+    
 //    [[[TICManager sharedInstance] getTRTCCloud] setGSensorMode:TRTCGSensorMode_UIAutoLayout];
-    [self.whiteBoardViewController updateUI:(navigationController.interfaceOrientation == UIInterfaceOrientationPortrait)];
-    [self updatePortraitLandscapeUI];
+//    [self.whiteBoardViewController updateUI:(navigationController.interfaceOrientation == UIInterfaceOrientationPortrait)];
+//    [self doPortraitLandscapeUI];
 }
 
-- (void)updatePortraitLandscapeUI{
+- (void)doPortraitLandscapeUI{
     //刷新
-    [UIViewController attemptRotationToDeviceOrientation];
+    
+    [self hiddenTabAndNav];
     [self.statusToos updateLayoutFrame];
     [self updateRenderViewsLayout];
     [self updateBottomButtons];
+    
     NSString *portrait = TXUserDefaultsGetObjectforKey(Direction);
     NSString *imageNameStr = ( [portrait intValue] == 0 ) ? @"Landscape-Portrait" : @"Portrait-Landscape";
     [_crossBtn setImage:[UIImage imageNamed:imageNameStr inBundle:TXSDKBundle compatibleWithTraitCollection:nil] forState:UIControlStateNormal];
@@ -1474,7 +1493,6 @@ static NSInteger const kInputToolBarH = 62;
                 make.height.mas_equalTo(Adapt(44));
             }];
         }
-
     }else{
         [_renderVideoView mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.top.mas_equalTo(self.view.mas_safeAreaLayoutGuideTop).offset(Adapt(168));
@@ -1502,19 +1520,16 @@ static NSInteger const kInputToolBarH = 62;
 }
 
 -(void)updateBottomButtons {
-
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.35 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        
-        CGFloat height = Adapt(50) + safeAreaBottom;
-        [self.bottomToos mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.bottom.mas_equalTo(self.view.mas_bottom).offset(0);
-            make.left.mas_equalTo(self.view.mas_left).offset(0);
-            make.right.mas_equalTo(self.view.mas_right).offset(0);
-            make.height.mas_equalTo(height);
-        }];
-        
-        [self.bottomToos updateButtons];
-    });
+    
+    CGFloat height = Adapt(50) + safeAreaBottom;
+    [self.bottomToos mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.mas_equalTo(self.view.mas_bottom).offset(0);
+        make.left.mas_equalTo(self.view.mas_left).offset(0);
+        make.right.mas_equalTo(self.view.mas_right).offset(0);
+        make.height.mas_equalTo(height);
+    }];
+    
+    [self.bottomToos updateButtons];
 }
 
 //更新某一个view，audio
@@ -2029,13 +2044,15 @@ static NSInteger const kInputToolBarH = 62;
     [[TICManager sharedInstance] addEventListener:self];
     [[TICManager sharedInstance] addStatusListener:self];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleScreenOrientationChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleScreenOrientationChange:) name:UIDeviceOrientationDidChangeNotification
+                                               object:nil];
     //给键盘注册通知
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(inputKeyboardWillShow:)
-     
                                                  name:UIKeyboardWillShowNotification
                                                object:nil];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(inputKeyboardWillHide:)
                                                  name:UIKeyboardWillHideNotification
@@ -2175,7 +2192,10 @@ static NSInteger const kInputToolBarH = 62;
 
 - (void)quit{
     TXUserDefaultsSetObjectforKey(@"leave", VideoStatus);
-    NSDictionary *messagedict = @{@"serviceId":TXUserDefaultsGetObjectforKey(ServiceId),@"type":@"end",@"agentId":TXUserDefaultsGetObjectforKey(AgentId)};
+    NSDictionary *messagedict = @{@"serviceId":TXUserDefaultsGetObjectforKey(ServiceId),
+                                  @"type":@"end",
+                                  @"agentId":TXUserDefaultsGetObjectforKey(AgentId)};
+    
     NSString *str = [[TXTCommon sharedInstance] convertToJsonData:messagedict];
     [[TICManager sharedInstance] sendGroupTextMessage:str callback:^(TICModule module, int code, NSString *desc) {
         NSLog(@"发送消息 %d--%@",code,desc);
@@ -2212,14 +2232,10 @@ static NSInteger const kInputToolBarH = 62;
 
             NSString *portrait = [NSString stringWithFormat:@"%ld",(long)TRTCVideoRenderModePortrait];
             TXUserDefaultsSetObjectforKey(portrait, Direction);
-            [self hiddenTabAndNav];
-            [self updatePortraitLandscapeUI];
-
-            [[[TICManager sharedInstance] getBoardController] removeDelegate:self];
-            [[TICManager sharedInstance] removeIMessageListener:self];
-            [[TICManager sharedInstance] removeEventListener:self];
             
-            [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
+            [UIViewController attemptRotationToDeviceOrientation];
+            
+//            [self doPortraitLandscapeUI];
             [self endRecord];
         }];
     }];
@@ -2227,6 +2243,15 @@ static NSInteger const kInputToolBarH = 62;
 
 //结束录制并结束会话
 - (void)endRecord{
+    
+    [[[TICManager sharedInstance] getBoardController] removeDelegate:self];
+    [[TICManager sharedInstance] removeIMessageListener:self];
+    [[TICManager sharedInstance] removeEventListener:self];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:UIDeviceOrientationDidChangeNotification
+                                                  object:nil];
+    
     NSString *serviceId = TXUserDefaultsGetObjectforKey(ServiceId);
     NSDictionary *dict = @{@"serviceId":serviceId};
     [[AFNHTTPSessionManager shareInstance] requestURL:ServiceRoom_EndRecord RequestWay:@"POST" Header:nil Body:dict params:nil isFormData:NO success:^(NSError *error, id response) {

@@ -152,17 +152,14 @@
 }
 
 - (void)updateLayoutFrame {
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.35 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        // 当前选中的 label
-        for(UIView *sub in self.subviews) {
-            [sub removeFromSuperview];
-        }
-        
-        NSString *portrait = TXUserDefaultsGetObjectforKey(Direction);
-        if([portrait intValue] == 0 ) {
-            [self setUI];
-        }
-    });
+    for(UIView *sub in self.subviews) {
+        [sub removeFromSuperview];
+    }
+    
+    NSString *portrait = TXUserDefaultsGetObjectforKey(Direction);
+    if([portrait intValue] == 0 ) {
+        [self setUI];
+    }
 }
 
 
