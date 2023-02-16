@@ -28,8 +28,11 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jdd-au-6ac">
-                    <rect key="frame" x="60" y="304" width="140" height="30"/>
+                    <rect key="frame" x="60" y="304" width="90" height="30"/>
                     <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="30" id="yQ2-AG-YF9"/>
+                    </constraints>
                     <state key="normal" title="开始会议">
                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </state>
@@ -175,13 +178,29 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hGj-Ig-dJm">
-                    <rect key="frame" x="214" y="304" width="140" height="30"/>
+                    <rect key="frame" x="264" y="304" width="90" height="30"/>
                     <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="30" id="0GC-5O-r6B"/>
+                    </constraints>
                     <state key="normal" title="重新加载">
                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </state>
                     <connections>
                         <action selector="reload:" destination="-1" eventType="touchUpInside" id="qrx-ba-Z1Z"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CpC-HD-lZZ">
+                    <rect key="frame" x="161" y="304" width="90" height="30"/>
+                    <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="30" id="HEC-er-ZV9"/>
+                    </constraints>
+                    <state key="normal" title="继续会议">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </state>
+                    <connections>
+                        <action selector="continueA:" destination="-1" eventType="touchUpInside" id="u79-cZ-r3i"/>
                     </connections>
                 </button>
             </subviews>
@@ -192,20 +211,22 @@
                 <constraint firstItem="gtL-pc-8Nd" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="31X-MB-d9z"/>
                 <constraint firstItem="CjV-7G-OdW" firstAttribute="top" secondItem="r7G-bR-soT" secondAttribute="bottom" constant="5" id="8cR-7h-koo"/>
                 <constraint firstItem="r7G-bR-soT" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="AuO-Ak-mc1"/>
-                <constraint firstItem="hGj-Ig-dJm" firstAttribute="width" secondItem="jdd-au-6ac" secondAttribute="width" id="H9u-kN-PIp"/>
-                <constraint firstItem="jdd-au-6ac" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="60" id="KHL-bg-RLc"/>
+                <constraint firstItem="hGj-Ig-dJm" firstAttribute="width" secondItem="jdd-au-6ac" secondAttribute="width" id="EKw-AE-Ann"/>
+                <constraint firstItem="jdd-au-6ac" firstAttribute="top" secondItem="gtL-pc-8Nd" secondAttribute="bottom" constant="15" id="HWl-fR-NT6"/>
                 <constraint firstItem="CjV-7G-OdW" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="RQw-WI-TXM"/>
+                <constraint firstItem="CpC-HD-lZZ" firstAttribute="width" secondItem="jdd-au-6ac" secondAttribute="width" id="SLH-ag-8S2"/>
                 <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="r7G-bR-soT" secondAttribute="trailing" id="SUa-XC-Icg"/>
-                <constraint firstItem="hGj-Ig-dJm" firstAttribute="height" secondItem="jdd-au-6ac" secondAttribute="height" id="UNn-9Z-dSo"/>
+                <constraint firstItem="hGj-Ig-dJm" firstAttribute="top" secondItem="gtL-pc-8Nd" secondAttribute="bottom" constant="15" id="ad9-HU-tvX"/>
                 <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="knR-sW-cvv" secondAttribute="trailing" constant="90" id="c3p-KG-VUQ"/>
-                <constraint firstItem="hGj-Ig-dJm" firstAttribute="top" secondItem="gtL-pc-8Nd" secondAttribute="bottom" constant="15" id="fEV-V1-7QV"/>
                 <constraint firstItem="Q5M-cg-NOt" firstAttribute="bottom" secondItem="CjV-7G-OdW" secondAttribute="bottom" constant="10" id="iTe-Pf-uFm"/>
-                <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="hGj-Ig-dJm" secondAttribute="trailing" constant="60" id="jPj-Om-QIS"/>
-                <constraint firstItem="jdd-au-6ac" firstAttribute="top" secondItem="gtL-pc-8Nd" secondAttribute="bottom" constant="15" id="mjA-5c-4TD"/>
+                <constraint firstItem="CpC-HD-lZZ" firstAttribute="top" secondItem="gtL-pc-8Nd" secondAttribute="bottom" constant="15" id="jzb-5S-yje"/>
+                <constraint firstItem="CpC-HD-lZZ" firstAttribute="leading" secondItem="jdd-au-6ac" secondAttribute="trailing" constant="11" id="nc8-0B-29u"/>
+                <constraint firstItem="jdd-au-6ac" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="60" id="ooY-14-wM6"/>
+                <constraint firstItem="hGj-Ig-dJm" firstAttribute="leading" secondItem="CpC-HD-lZZ" secondAttribute="trailing" constant="13" id="qU5-Ij-cb0"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="hGj-Ig-dJm" secondAttribute="trailing" constant="60" id="tt7-7u-LIR"/>
                 <constraint firstItem="gtL-pc-8Nd" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="60" id="vkK-xr-8M0"/>
                 <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="CjV-7G-OdW" secondAttribute="trailing" id="xdA-XL-3Su"/>
                 <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="gtL-pc-8Nd" secondAttribute="trailing" constant="60" id="xlF-Th-bxD"/>
-                <constraint firstItem="hGj-Ig-dJm" firstAttribute="leading" secondItem="jdd-au-6ac" secondAttribute="trailing" constant="14" id="zMu-0P-z0M"/>
                 <constraint firstItem="knR-sW-cvv" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="90" id="zxP-8z-Tny"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>

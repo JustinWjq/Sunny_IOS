@@ -844,7 +844,7 @@ static NSInteger const kInputToolBarH = 62;
              https://precisemkttest.sinosig.com/resourceNginx/H5Project/qnbProjectV3/index.html#/planIndex  测试保障规划
              */
             
-            fileModel.h5Url = @"https://precisemkttest.sinosig.com/resourceNginx/H5Project/qnbProjectV3/index.html#/planIndex";
+            fileModel.h5Url = @"https://precisemkttest.sinosig.com/resourceNginx/H5Project/cv-sinosig/index.html#/familyList";
             
 //            fileModel.h5Url = [NSString stringWithFormat: @"https://precisemkttest.sinosig.com/resourceNginx/H5Project/qnbProjectV3/index.html#/rayVisitFile?meetId=%@", TXUserDefaultsGetObjectforKey(ServiceId)];
             
@@ -1011,7 +1011,7 @@ static NSInteger const kInputToolBarH = 62;
     if (self.lastIsLandscape) {
         [self btnAction];
     }
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.25 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.35 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         showWebViewController *webViewVc = [[showWebViewController alloc] init];
         webViewVc.delegate = self;
         webViewVc.url = url;
@@ -1023,7 +1023,6 @@ static NSInteger const kInputToolBarH = 62;
         webViewVc.cookieDict = fileModel.cookieDict;
         [self.navigationController pushViewController:webViewVc animated:YES];
     });
-//    [self presentViewController:self.showWebViewController animated:YES completion:nil];
 }
 - (void)selfPushToWebView:(NSString *)url WebId:(nonnull NSString *)webId ActionType:(NSString *)actionType {
     if ([webId isEqualToString:@""] || [self.productName isEqualToString:@""]) {
@@ -1036,18 +1035,24 @@ static NSInteger const kInputToolBarH = 62;
     }
     self.webId = webId;
     NSLog(@"selfPushToWebView");
-//    self.shareState = YES;
-    showWebViewController *webViewVc = [[showWebViewController alloc] init];
-//    _showWebViewController.view.frame = CGRectMake(0, 0, Screen_Width, Screen_Height);
-    webViewVc.delegate = self;
-    webViewVc.url = url;
-    webViewVc.webId = webId;
-    webViewVc.userModel = self.renderViews[0];
-    webViewVc.productName = self.productName;
-    webViewVc.actionType = actionType;
-    webViewVc.type = self.webType;
-    [self.navigationController pushViewController:webViewVc animated:YES];
-    //    [self presentViewController:self.showWebViewController animated:YES completion:nil];
+    
+    self.lastIsLandscape = [UIWindow isLandscape];
+    if (self.lastIsLandscape) {
+        [self btnAction];
+    }
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.35 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        showWebViewController *webViewVc = [[showWebViewController alloc] init];
+        //    _showWebViewController.view.frame = CGRectMake(0, 0, Screen_Width, Screen_Height);
+        webViewVc.delegate = self;
+        webViewVc.url = url;
+        webViewVc.webId = webId;
+        webViewVc.userModel = self.renderViews[0];
+        webViewVc.productName = self.productName;
+        webViewVc.actionType = actionType;
+        webViewVc.type = self.webType;
+        [self.navigationController pushViewController:webViewVc animated:YES];
+    });
 }
 
 
@@ -2058,7 +2063,7 @@ static NSInteger const kInputToolBarH = 62;
     [[TICManager sharedInstance] addStatusListener:self];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(handleScreenOrientationChange:) name:UIDeviceOrientationDidChangeNotification
+                                             selector:@selector(handleScreenOrientationChange:) name:UIApplicationDidChangeStatusBarOrientationNotification
                                                object:nil];
     //给键盘注册通知
     [[NSNotificationCenter defaultCenter] addObserver:self

@@ -87,21 +87,20 @@
     configuration.allowsInlineMediaPlayback = YES;
     configuration.processPool = [[WKProcessPool alloc]init];
 
-    //初始化
-    _webView = [[WKWebView alloc] initWithFrame:CGRectMake(0, 0, Screen_Width, Screen_Height) configuration:configuration];
-    
-    _webView.navigationDelegate = self;
-    _webView.UIDelegate = self;
-    
-    _webView.scrollView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
     CGFloat statusBarHeight;
     if (@available(iOS 13.0, *)) {
           statusBarHeight = [UIApplication sharedApplication].windows.firstObject.windowScene.statusBarManager.statusBarFrame.size.height;
       } else {
           statusBarHeight = [UIApplication sharedApplication].statusBarFrame.size.height;
       }
-    _webView.scrollView.contentInset = UIEdgeInsetsMake(statusBarHeight, 0, [UIApplication sharedApplication].keyWindow.safeAreaInsets.bottom, 0);
-        
+    CGFloat hairBottom = [UIApplication sharedApplication].keyWindow.safeAreaInsets.bottom;
+
+    //初始化
+    _webView = [[WKWebView alloc] initWithFrame:CGRectMake(0, statusBarHeight, Screen_Width, Screen_Height - statusBarHeight - hairBottom) configuration:configuration];
+    
+    _webView.navigationDelegate = self;
+    _webView.UIDelegate = self;
+       
     if (@available(iOS 11.0, *)) {
         _webView.scrollView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
     }

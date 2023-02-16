@@ -18,6 +18,7 @@
 #import <TXTWhiteBoard/TXTFileModel.h>
 //#import "QFHttpTool.h"
 #import "AFNetworking.h"
+#import "AppDelegate.h"
 
 @interface hehhheViewController ()<TXTManageDelegate,WKUIDelegate,WKNavigationDelegate>
 @property (strong, nonatomic) WKWebView *webView;
@@ -72,6 +73,40 @@
     //    UIBarButtonItem *rightBarItem = [[UIBarButtonItem alloc] initWithTitle:@"设置" style:UIBarButtonItemStylePlain target:self action:@selector(setting)];
     //    self.navigationItem.rightBarButtonItem = rightBarItem;
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleScreenOrientationChange:)
+                                                 name:UIDeviceOrientationDidChangeNotification
+                                               object:nil];
+    
+}
+
+- (void)handleScreenOrientationChange:(NSNotification *)noti {
+    NSString *portrait = @"";
+    UIDeviceOrientation orientation = [UIDevice currentDevice].orientation;
+       switch (orientation) {
+           case UIDeviceOrientationPortrait:
+               portrait = @"UIInterfaceOrientationUnknown";
+               break;
+           case UIDeviceOrientationPortraitUpsideDown:
+               portrait = @"UIInterfaceOrientationPortraitUpsideDown";
+               break;
+           case UIDeviceOrientationLandscapeLeft:
+               portrait = @"UIInterfaceOrientationLandscapeLeft";
+               break;
+           case UIDeviceOrientationLandscapeRight:
+               portrait = @"UIInterfaceOrientationLandscapeRight";
+               break;
+           case UIDeviceOrientationFaceDown:
+               portrait = @"UIInterfaceOrientationPortrait";
+               break;
+           case UIDeviceOrientationFaceUp:
+               portrait = @"UIDeviceOrientationFaceUp";
+               break;
+           default:
+               break;
+       }
+    
+    NSLog(@"hehhheViewController handleScreenOrientationChange ==== %@", portrait);
 }
 
 -(void)initSDK {
@@ -274,6 +309,40 @@ completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition disposition, NS
 }
 
 static AFHTTPSessionManager *instance;
+
+-(IBAction)continueA:(id)sender {
+    /*
+     inviteNumber = 25592201;
+     orgAccount = sunshineLifeOrg;
+     sign = 683a8fbce98b1c4d2c73b4b21991514535519fd0aeebb89e7da23af8fbbade09;
+     userId = 123123;
+     userName = "\U6d4b\U8bd5";
+     */
+    NSString *agentName = self.agentName.text;
+    NSString *orgName = self.orgName.text;
+    
+    [[TXTManage sharedInstance] startVideo:@"25592201"
+                                  andAgent:agentName
+                                  UserName:@"测试"
+                                   OrgName:orgName
+                               SignOrgName:@"683a8fbce98b1c4d2c73b4b21991514535519fd0aeebb89e7da23af8fbbade09"
+                                  CallBack:^(int code, NSString * _Nonnull desc) {
+        AppDelegate *ad = (AppDelegate*) [UIApplication sharedApplication].delegate;
+        if (code == 0) {
+//                        ad.allowRotation = YES;
+        }else if(code == 111111111){
+//                        ad.allowRotation = YES;
+        }else{
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"" message:desc preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *action2 = [UIAlertAction actionWithTitle:@"确认" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                //确认处理
+            }];
+            [alert addAction:action2];
+            [self.navigationController presentViewController:alert animated:YES completion:nil];
+        }
+    }];
+}
+
 - (IBAction)start:(id)sender {
     
     self.safe = self.webView.scrollView.contentInset;
@@ -360,10 +429,17 @@ static AFHTTPSessionManager *instance;
             if ([errCode intValue] == 0) {
                 NSDictionary *result = [responseObject valueForKey:@"result"];
                 NSString *inviteNumber = [result valueForKey:@"inviteNumber"];
-                [[TXTManage sharedInstance] startVideo:inviteNumber andAgent:agentName UserName:@"测试" OrgName:orgName SignOrgName:sign CallBack:^(int code, NSString * _Nonnull desc) {
+                [[TXTManage sharedInstance] startVideo:inviteNumber
+                                              andAgent:agentName
+                                              UserName:@"测试"
+                                               OrgName:orgName
+                                           SignOrgName:sign 
+                                              CallBack:^(int code, NSString * _Nonnull desc) {
+                    AppDelegate *ad = (AppDelegate*) [UIApplication sharedApplication].delegate;
                     if (code == 0) {
+//                        ad.allowRotation = YES;
                     }else if(code == 111111111){
-                        
+//                        ad.allowRotation = YES;
                     }else{
                         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"" message:desc preferredStyle:UIAlertControllerStyleAlert];
                         UIAlertAction *action2 = [UIAlertAction actionWithTitle:@"确认" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
@@ -386,9 +462,7 @@ static AFHTTPSessionManager *instance;
                 [self.navigationController presentViewController:alert animated:YES completion:nil];
             }
             
-        }
-        else
-        {
+        } else {
             
         }
     }] resume];
@@ -472,7 +546,26 @@ static AFHTTPSessionManager *instance;
     NSLog(@"结束了");
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self setNeedsStatusBarAppearanceUpdate];
+        if (@available(iOS 16.0, *)) {
+            // iOS16新API，让控制器刷新方向，新方向为上面设置的orientations
+    #if defined(__IPHONE_16_0)
+            NSArray *array = [[[UIApplication sharedApplication] connectedScenes] allObjects];
+            UIWindowScene *scene = [array firstObject];
+            // 屏幕方向
+            UIInterfaceOrientationMask orientation = UIInterfaceOrientationMaskPortrait;
+            UIWindowSceneGeometryPreferencesIOS *geometryPreferencesIOS = [[UIWindowSceneGeometryPreferencesIOS alloc] initWithInterfaceOrientations:orientation];
+            // 开始切换
+            [scene requestGeometryUpdateWithPreferences:geometryPreferencesIOS errorHandler:^(NSError * _Nonnull error) {
+                NSLog(@"强制%@错误:%@", @"横屏", error);
+            }];
+    #endif
+        }else{
+            [[UIDevice currentDevice] setValue:@(UIDeviceOrientationPortrait) forKey:@"orientation"];
+        }
+        [UIViewController attemptRotationToDeviceOrientation];
+        
+        AppDelegate *ad = (AppDelegate*) [UIApplication sharedApplication].delegate;
+//        ad.allowRotation = NO;
     });
     
     //    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
