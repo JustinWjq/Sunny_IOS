@@ -6,14 +6,14 @@
 //  Copyright © 2021 洪青文. All rights reserved.
 //
 
-#import "showWebViewController.h"
+#import "ShareScreenWebViewController.h"
 #import "TXTNavigationController.h"
 #import <WebKit/WebKit.h>
 #import "UIAlertUtil.h"
 #import "TXTCommon.h"
 
 
-@interface showWebViewController ()<WKNavigationDelegate,WKUIDelegate>
+@interface ShareScreenWebViewController ()<WKNavigationDelegate,WKUIDelegate>
 @property (strong, nonatomic) WKWebView *webView;
 @property (strong, nonatomic) WKWebViewConfiguration *config;
 @property (strong, nonatomic) UIButton *muteBtn;
@@ -23,7 +23,7 @@
 @property (nonatomic, strong) NSArray *cookieArray;
 @end
 
-@implementation showWebViewController
+@implementation ShareScreenWebViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -293,9 +293,9 @@
                         NSString *errCode = [response valueForKey:@"errCode"];
                         if ([errCode intValue] == 0) {
                             [self.navigationController popViewControllerAnimated:YES];
-                            if (self.delegate && [self.delegate respondsToSelector:@selector(hideshowview)]) {
+                            if (self.delegate && [self.delegate respondsToSelector:@selector(hideShareScreenWebView)]) {
                                 NSLog(@"=======++++++==");
-                                [self.delegate hideshowview];
+                                [self.delegate hideShareScreenWebView];
                             }
     //                        [self dismissViewControllerAnimated:YES completion:nil];
                         }

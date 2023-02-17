@@ -10,16 +10,16 @@
 #import "TXTUserModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
-@class showWebViewController;
-@protocol  showWebViewControllerDelegate <NSObject>
+@class ShareScreenWebViewController;
+@protocol  ShareScreenViewControllerDelegate <NSObject>
 
-- (void)muteAction:(showWebViewController *)showWebViewController;
-- (void)hideshowview;
+- (void)muteAction:(ShareScreenWebViewController *)showWebViewController;
+- (void)hideShareScreenWebView;
 
 @end
 
-@interface showWebViewController : UIViewController
-@property (assign, nonatomic) id<showWebViewControllerDelegate>delegate;
+@interface ShareScreenWebViewController : UIViewController
+@property (assign, nonatomic) id<ShareScreenViewControllerDelegate>delegate;
 @property (strong, nonatomic) NSString *url;
 @property (strong, nonatomic) NSString *webId;
 @property (strong, nonatomic) TXTUserModel *userModel;

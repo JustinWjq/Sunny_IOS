@@ -25,8 +25,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic,assign) BOOL enableVideo; //是否打开摄像头
 @property(nonatomic,assign) BOOL isChat; //是否群聊模式
 
+@property (nonatomic, strong) NSDictionary *cookieDict;
+
 @property(nonatomic,assign) BOOL isDebug;
-@property (nonatomic, strong) NSDictionary *debugCookieDict;
 
 + (instancetype)sharedInstance;
 

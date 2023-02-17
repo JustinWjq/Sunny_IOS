@@ -32,11 +32,11 @@
 #import "TXTChatInputToolBar.h"
 #import "TXTSmallMessageView.h"
 #import "QSTapGestureRecognizer.h"
-#import "showWebViewController.h"
+#import "ShareScreenWebViewController.h"
 
 static NSInteger const kInputToolBarH = 62;
 
-@interface SunnyChatViewController ()<bottomButtonsDelegate, TXTTopButtonsDelegate, TICEventListener, TICMessageListener, TICStatusListener, UITextViewDelegate, TXTSmallChatViewDelegate, TXTEmojiViewDelegate, TXTGroupMemberViewControllerDelegate, showWebViewControllerDelegate, TXTChatInputToolBarDelegate>
+@interface SunnyChatViewController ()<bottomButtonsDelegate, TXTTopButtonsDelegate, TICEventListener, TICMessageListener, TICStatusListener, UITextViewDelegate, TXTSmallChatViewDelegate, TXTEmojiViewDelegate, TXTGroupMemberViewControllerDelegate, ShareScreenViewControllerDelegate, TXTChatInputToolBarDelegate>
 @property (nonatomic, strong) bottomButtons *bottomToos;//底部视图
 /** navView */
 @property (nonatomic, strong) UIView *navView;
@@ -586,7 +586,7 @@ static NSInteger const kInputToolBarH = 62;
                                 }
                                 if ([keysArr containsObject:@"shareWebId"]) {
                                     if (![[userdic valueForKey:@"shareWebId"] isEqualToString:@""]) {
-                                        [self selfPushToWebView:[userdic valueForKey:@"shareWebUrl"] WebId:[userdic valueForKey:@"shareWebId"] ActionType:@"1"];
+                                        [self selfPushToShareScreenWebView:[userdic valueForKey:@"shareWebUrl"] WebId:[userdic valueForKey:@"shareWebId"] ActionType:@"1"];
                                     }
                                 }
                             }
@@ -599,7 +599,7 @@ static NSInteger const kInputToolBarH = 62;
                                 }
                                 if ([keysArr containsObject:@"shareWebId"]) {
                                     if (![[userdic valueForKey:@"shareWebId"] isEqualToString:@""]) {
-                                        [self selfPushToWebView:[userdic valueForKey:@"shareWebUrl"] WebId:[userdic valueForKey:@"shareWebId"] ActionType:@"1"];
+                                        [self selfPushToShareScreenWebView:[userdic valueForKey:@"shareWebUrl"] WebId:[userdic valueForKey:@"shareWebId"] ActionType:@"1"];
                                     }
                                 }
                             }
@@ -850,7 +850,10 @@ static NSInteger const kInputToolBarH = 62;
             
 //            fileModel.h5Url = @"https://precisemkttest.sinosig.com/resourceNginx/H5Project/cv-sinosig/index.html#/familyList";
             fileModel.name = @"同期Canon";
-            fileModel.cookieDict = [TXTCustomConfig sharedInstance].debugCookieDict;
+        }
+        
+        if (fileModel.cookieDict == nil) {
+            fileModel.cookieDict = [TXTCustomConfig sharedInstance].cookieDict;
         }
         
         if (fileModel.h5Url.length <= 0) {
@@ -876,7 +879,7 @@ static NSInteger const kInputToolBarH = 62;
                     [TXTToast toastWithTitle:@"webId为空" type:TXTToastTypeWarn];
                     return;
                 }
-                [self showWebViewControllerWithFileModel:fileModel webId:webId];
+                [self showH5WithFileModel:fileModel webId:webId];
             } else {
                 [TXTToast toastWithTitle:[response valueForKey:@"errInfo"] type:TXTToastTypeWarn];
             }
@@ -920,7 +923,7 @@ static NSInteger const kInputToolBarH = 62;
 }
 
 /// 同屏展示webview
-- (void)showWebViewControllerWithFileModel:(TXTFileModel *)fileModel webId:(NSString *)webId {
+- (void)showH5WithFileModel:(TXTFileModel *)fileModel webId:(NSString *)webId {
     NSMutableArray *membersListArr = [NSMutableArray arrayWithArray:self.renderViews];
     for (int i = 0 ; i < membersListArr.count; i ++) {
         TXTUserModel *model = membersListArr[i];
@@ -989,7 +992,7 @@ static NSInteger const kInputToolBarH = 62;
             NSString *str = [[TXTCommon sharedInstance] convertToJsonData:messagedict];
             [[TICManager sharedInstance] sendGroupTextMessage:str callback:^(TICModule module, int code, NSString *desc) {
                 NSLog(@"发消息");
-                [self pushToWebView:agentUrl
+                [self pushToShareScreenWebView:agentUrl
                               WebId:webId
                          ActionType:@"1"
                         ProductName:fileModel.name
@@ -1002,17 +1005,16 @@ static NSInteger const kInputToolBarH = 62;
     }];
 }
 
-- (void)pushToWebView:(NSString *)url WebId:(nonnull NSString *)webId ActionType:(NSString *)actionType ProductName:(NSString *)productName fileModel:(TXTFileModel *)fileModel {
+- (void)pushToShareScreenWebView:(NSString *)url WebId:(nonnull NSString *)webId ActionType:(NSString *)actionType ProductName:(NSString *)productName fileModel:(TXTFileModel *)fileModel {
     self.webId = webId;
-    NSLog(@"pushToWebView");
-//    self.shareState = YES;
+    
     // 先进行旋转
     self.lastIsLandscape = [UIWindow isLandscape];
     if (self.lastIsLandscape) {
         [self btnAction];
     }
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.35 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        showWebViewController *webViewVc = [[showWebViewController alloc] init];
+        ShareScreenWebViewController *webViewVc = [[ShareScreenWebViewController alloc] init];
         webViewVc.delegate = self;
         webViewVc.url = url;
         webViewVc.webId = webId;
@@ -1024,13 +1026,13 @@ static NSInteger const kInputToolBarH = 62;
         [self.navigationController pushViewController:webViewVc animated:YES];
     });
 }
-- (void)selfPushToWebView:(NSString *)url WebId:(nonnull NSString *)webId ActionType:(NSString *)actionType {
+- (void)selfPushToShareScreenWebView:(NSString *)url WebId:(nonnull NSString *)webId ActionType:(NSString *)actionType {
     if ([webId isEqualToString:@""] || [self.productName isEqualToString:@""]) {
         [[JMToast sharedToast] showDialogWithMsg:@"同屏链接不存在"];
         return;
     }
     UIViewController *currentvc = [[AFNHTTPSessionManager shareInstance] getCurrentVC];
-    if ([currentvc isKindOfClass:[showWebViewController class]]) {
+    if ([currentvc isKindOfClass:[ShareScreenWebViewController class]]) {
         [self.navigationController popViewControllerAnimated:YES];
     }
     self.webId = webId;
@@ -1042,8 +1044,7 @@ static NSInteger const kInputToolBarH = 62;
     }
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.35 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        showWebViewController *webViewVc = [[showWebViewController alloc] init];
-        //    _showWebViewController.view.frame = CGRectMake(0, 0, Screen_Width, Screen_Height);
+        ShareScreenWebViewController *webViewVc = [[ShareScreenWebViewController alloc] init];
         webViewVc.delegate = self;
         webViewVc.url = url;
         webViewVc.webId = webId;
@@ -1051,6 +1052,7 @@ static NSInteger const kInputToolBarH = 62;
         webViewVc.productName = self.productName;
         webViewVc.actionType = actionType;
         webViewVc.type = self.webType;
+        webViewVc.cookieDict = [TXTCustomConfig sharedInstance].cookieDict;
         [self.navigationController pushViewController:webViewVc animated:YES];
     });
 }
@@ -1068,6 +1070,7 @@ static NSInteger const kInputToolBarH = 62;
     }];
     [self shareStatus:NO];
 }
+
 - (void)shareStatus:(BOOL)shareStatus {
     NSString *serviceId = TXUserDefaultsGetObjectforKey(ServiceId);
     NSDictionary *bodyDict = @{@"serviceId":serviceId,@"shareStatus":@(shareStatus),@"userId":[TICConfig shareInstance].userId};
@@ -1079,7 +1082,7 @@ static NSInteger const kInputToolBarH = 62;
     }];
 }
 
-- (void)muteAction:(showWebViewController *)showWebViewController {
+- (void)muteAction:(ShareScreenWebViewController *)showWebViewController {
     [self muteAudioAction];
 //    TXTUserModel *model = [self.renderViews firstObject];
 //    TXTUserModel *newModel = [[TXTUserModel alloc] init];
@@ -1368,8 +1371,9 @@ static NSInteger const kInputToolBarH = 62;
     //
     //    [self.navigationController pushViewController:self.showWebViewController animated:YES];
 //}
+
 ///结束同屏
-- (void)hideshowview{
+- (void)hideShareScreenWebView{
     // 还原页面
     if (self.lastIsLandscape) {
         [self btnAction];
@@ -1763,7 +1767,7 @@ static NSInteger const kInputToolBarH = 62;
                     NSString *webId = [dict valueForKey:@"webId"];
                     self.webType = [dict valueForKey:@"fromId"];
                     self.productName = [dict valueForKey:@"fileName"];
-                    [self selfPushToWebView:webURL WebId:webId ActionType:@"1"];
+                    [self selfPushToShareScreenWebView:webURL WebId:webId ActionType:@"1"];
                 }
                 
             }
@@ -1783,7 +1787,7 @@ static NSInteger const kInputToolBarH = 62;
                         NSString *errCode = [response valueForKey:@"errCode"];
                         if ([errCode intValue] == 0) {
                             [self.navigationController popViewControllerAnimated:YES];
-                            [self hideshowview];
+                            [self hideShareScreenWebView];
                         }
                     } failure:^(NSError *error, id response) {
                         
@@ -1792,7 +1796,7 @@ static NSInteger const kInputToolBarH = 62;
                 }
                 if ([toUserId isEqualToString:[TICConfig shareInstance].userId]) {
                     [self.navigationController popViewControllerAnimated:YES];
-                    [self hideshowview];
+                    [self hideShareScreenWebView];
                     [[JMToast sharedToast] showDialogWithMsg:@"对方已结束同屏"];
                 }
             }

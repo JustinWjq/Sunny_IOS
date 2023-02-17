@@ -123,7 +123,7 @@
     self.config.enableVideo = YES;
     self.config.isChat = NO;
     self.config.isDebug = YES;
-    self.config.debugCookieDict = @{
+    self.config.cookieDict = @{
         @"webViewFlag":@"WKWeb",
         @"agentLevel":@"5",
         @"statusBarHeigh":@"0.0",
@@ -207,7 +207,7 @@
     //    NSString *url = @"https://www.baidu.com";
     NSString *url = @"https://precisemkttest.sinosig.com/resourceNginx/H5Project/qnbProjectV3/index.html#/rayVisitIndex";
     
-    NSDictionary *cookieDict = [TXTCustomConfig sharedInstance].debugCookieDict;
+    NSDictionary *cookieDict = [TXTCustomConfig sharedInstance].cookieDict;
     NSDictionary *dictCookies = nil;
     NSArray *cookieArray = nil;
     if(cookieDict != nil) {
@@ -312,20 +312,22 @@ static AFHTTPSessionManager *instance;
 
 -(IBAction)continueA:(id)sender {
     /*
-     inviteNumber = 25592201;
-     orgAccount = sunshineLifeOrg;
-     sign = 683a8fbce98b1c4d2c73b4b21991514535519fd0aeebb89e7da23af8fbbade09;
-     userId = 123123;
-     userName = "\U6d4b\U8bd5";
+     2023-02-17 15:33:53.348046+0800 sample[669:27926] bodyDic == {
+         inviteNumber = 75614360;
+         orgAccount = sunshineLifeOrg;
+         sign = 683a8fbce98b1c4d2c73b4b2199151457a5fd9b3a68e30b3fb48f590855a43cc;
+         userId = 123123;
+         userName = "\U6d4b\U8bd5";
+     }
      */
     NSString *agentName = self.agentName.text;
     NSString *orgName = self.orgName.text;
     
-    [[TXTManage sharedInstance] startVideo:@"25592201"
+    [[TXTManage sharedInstance] startVideo:@"75614360"
                                   andAgent:agentName
                                   UserName:@"测试"
                                    OrgName:orgName
-                               SignOrgName:@"683a8fbce98b1c4d2c73b4b21991514535519fd0aeebb89e7da23af8fbbade09"
+                               SignOrgName:@"683a8fbce98b1c4d2c73b4b2199151457a5fd9b3a68e30b3fb48f590855a43cc"
                                   CallBack:^(int code, NSString * _Nonnull desc) {
         AppDelegate *ad = (AppDelegate*) [UIApplication sharedApplication].delegate;
         if (code == 0) {

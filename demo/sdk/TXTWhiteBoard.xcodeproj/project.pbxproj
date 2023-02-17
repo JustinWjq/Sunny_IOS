@@ -119,8 +119,8 @@
 		F0241D6F292CC63300E3AE6D /* ImagesPPTCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0241D6B292CC63300E3AE6D /* ImagesPPTCollectionView.m */; };
 		F0241D70292CC63300E3AE6D /* ImagesPPTCollectionView.h in Headers */ = {isa = PBXBuildFile; fileRef = F0241D6C292CC63300E3AE6D /* ImagesPPTCollectionView.h */; };
 		F0241D71292CC63300E3AE6D /* ImagesPPTCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F0241D6D292CC63300E3AE6D /* ImagesPPTCollectionViewCell.m */; };
-		F028885B292DC39000314744 /* showWebViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = F0288859292DC39000314744 /* showWebViewController.h */; };
-		F028885C292DC39000314744 /* showWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F028885A292DC39000314744 /* showWebViewController.m */; };
+		F028885B292DC39000314744 /* ShareScreenWebViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = F0288859292DC39000314744 /* ShareScreenWebViewController.h */; };
+		F028885C292DC39000314744 /* ShareScreenWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F028885A292DC39000314744 /* ShareScreenWebViewController.m */; };
 		F050C78B2918B186002CA386 /* TXTAlertShareView.h in Headers */ = {isa = PBXBuildFile; fileRef = F050C7892918B186002CA386 /* TXTAlertShareView.h */; };
 		F050C78C2918B186002CA386 /* TXTAlertShareView.m in Sources */ = {isa = PBXBuildFile; fileRef = F050C78A2918B186002CA386 /* TXTAlertShareView.m */; };
 		F050C7902918BA1B002CA386 /* TXTCommonAlertView.h in Headers */ = {isa = PBXBuildFile; fileRef = F050C78E2918BA1B002CA386 /* TXTCommonAlertView.h */; };
@@ -490,8 +490,8 @@
 		F0241D6B292CC63300E3AE6D /* ImagesPPTCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImagesPPTCollectionView.m; sourceTree = "<group>"; };
 		F0241D6C292CC63300E3AE6D /* ImagesPPTCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImagesPPTCollectionView.h; sourceTree = "<group>"; };
 		F0241D6D292CC63300E3AE6D /* ImagesPPTCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImagesPPTCollectionViewCell.m; sourceTree = "<group>"; };
-		F0288859292DC39000314744 /* showWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = showWebViewController.h; sourceTree = "<group>"; };
-		F028885A292DC39000314744 /* showWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = showWebViewController.m; sourceTree = "<group>"; };
+		F0288859292DC39000314744 /* ShareScreenWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareScreenWebViewController.h; sourceTree = "<group>"; };
+		F028885A292DC39000314744 /* ShareScreenWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareScreenWebViewController.m; sourceTree = "<group>"; };
 		F050C7892918B186002CA386 /* TXTAlertShareView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXTAlertShareView.h; sourceTree = "<group>"; };
 		F050C78A2918B186002CA386 /* TXTAlertShareView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TXTAlertShareView.m; sourceTree = "<group>"; };
 		F050C78E2918BA1B002CA386 /* TXTCommonAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXTCommonAlertView.h; sourceTree = "<group>"; };
@@ -1102,8 +1102,8 @@
 		F06CC9EA2910E5E600CA4D6A /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				F0288859292DC39000314744 /* showWebViewController.h */,
-				F028885A292DC39000314744 /* showWebViewController.m */,
+				F0288859292DC39000314744 /* ShareScreenWebViewController.h */,
+				F028885A292DC39000314744 /* ShareScreenWebViewController.m */,
 				F0F62FFF292232A100B4C91C /* TXTWebViewController.h */,
 				F0F62FFE292232A100B4C91C /* TXTWebViewController.m */,
 				F0F62FFD292232A100B4C91C /* WeakScriptMessageDelegate.h */,
@@ -1564,7 +1564,7 @@
 				F06CCA052910F03800CA4D6A /* QSLeftMessageCell.h in Headers */,
 				F08168D3290FC9A200C5CA29 /* UILabel+Extension.h in Headers */,
 				F06CCA0F2910F08600CA4D6A /* QSIMBubbleView.h in Headers */,
-				F028885B292DC39000314744 /* showWebViewController.h in Headers */,
+				F028885B292DC39000314744 /* ShareScreenWebViewController.h in Headers */,
 				311426F625A300AF00AC639A /* UIView+JKBlockGesture.h in Headers */,
 				31B5FD602501DC58006587C0 /* UIAlertUtil.h in Headers */,
 				F06CCA172910F43A00CA4D6A /* JCHATStringUtils.h in Headers */,
@@ -1742,7 +1742,7 @@
 				31B5FD642501DC58006587C0 /* UIAlertUtil.m in Sources */,
 				F050C78C2918B186002CA386 /* TXTAlertShareView.m in Sources */,
 				F08168C8290FC9A200C5CA29 /* UIImage +ResizeMagick.m in Sources */,
-				F028885C292DC39000314744 /* showWebViewController.m in Sources */,
+				F028885C292DC39000314744 /* ShareScreenWebViewController.m in Sources */,
 				F0E22BB32915109D00C1E031 /* TXTEmojiView.m in Sources */,
 				31B5FD672501DC58006587C0 /* TXTMBProgressHUD.m in Sources */,
 				F08168C4290FC9A200C5CA29 /* UIImage+Transform.m in Sources */,
