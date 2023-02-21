@@ -46,7 +46,7 @@ static NSInteger const kInputToolBarH = 62;
 
 @property (nonatomic, strong) NSString *userId;//主持人id
 @property (strong, nonatomic) NSMutableArray *userIdArr;//房间存在人员id数组
-@property (nonatomic, strong) NSMutableArray *renderViews;//房间人员数组
+@property (nonatomic, strong) NSMutableArray *renderArray;//房间人员数组
 @property (strong, nonatomic) NSString *webType;//同屏还是被同屏
 @property (strong, nonatomic) NSString *productName;//同屏产品名
 @property (strong, nonatomic) NSString *webId;//同屏de id
@@ -540,7 +540,7 @@ static NSInteger const kInputToolBarH = 62;
         self.isSpeak = NO;
         [[[TICManager sharedInstance] getTRTCCloud] setAudioRoute:TRTCAudioModeEarpiece];
     }
-    [self.renderViews addObject:userModel];
+    [self.renderArray addObject:userModel];
     [self roomInfo:userModel isJoinNotifi:NO];
 }
 
@@ -567,7 +567,7 @@ static NSInteger const kInputToolBarH = 62;
             self.isShowWhiteBoard = [[result valueForKey:@"shareStatus"] boolValue];
             
             NSArray *userInfo = [result valueForKey:@"userInfo"];
-            NSMutableArray *renderNewArr = self.renderViews;
+            NSMutableArray *renderNewArr = self.renderArray;
             for (int i = 0; i<userInfo.count; i++) {
                 
                 NSDictionary *userdic = userInfo[i];
@@ -629,13 +629,13 @@ static NSInteger const kInputToolBarH = 62;
                             //业务员
 //                            if ([self.userId isEqualToString:umodel.render.userId]) {
                             if ([umodel compareUserIdWithoutExtra:self.userId]) {
-                                [self.renderViews removeObject:umodel];
-                                [self.renderViews insertObject:umodel atIndex:0];
+                                [self.renderArray removeObject:umodel];
+                                [self.renderArray insertObject:umodel atIndex:0];
                             }else{
-                                [self.renderViews replaceObjectAtIndex:j withObject:umodel];
+                                [self.renderArray replaceObjectAtIndex:j withObject:umodel];
                             }
                         }else{
-                            [self.renderViews replaceObjectAtIndex:j withObject:umodel];
+                            [self.renderArray replaceObjectAtIndex:j withObject:umodel];
                         }
                         
                         
@@ -700,14 +700,14 @@ static NSInteger const kInputToolBarH = 62;
             
         }else{
             userModel.userName = userModel.render.userId;
-            [self.renderViews replaceObjectAtIndex:(self.renderViews.count-1) withObject:userModel];
+            [self.renderArray replaceObjectAtIndex:(self.renderArray.count-1) withObject:userModel];
             [self reloadManageMembersArray];
             [self updateRenderViewsLayout];
         }
         
     } failure:^(NSError *error, id response) {
         userModel.userName = userModel.render.userId;
-        [self.renderViews replaceObjectAtIndex:(self.renderViews.count-1) withObject:userModel];
+        [self.renderArray replaceObjectAtIndex:(self.renderArray.count-1) withObject:userModel];
         [self reloadManageMembersArray];
         [self updateRenderViewsLayout];
     }];
@@ -809,7 +809,7 @@ static NSInteger const kInputToolBarH = 62;
     };
     [self addChildViewController:self.groupMemberViewController];
     [self.view addSubview:self.groupMemberViewController.view];
-    self.groupMemberViewController.manageMembersArr = self.renderViews;
+    self.groupMemberViewController.manageMembersArr = self.renderArray;
     [self.groupMemberViewController.view mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.view);
     }];
@@ -924,7 +924,7 @@ static NSInteger const kInputToolBarH = 62;
 
 /// 同屏展示webview
 - (void)showH5WithFileModel:(TXTFileModel *)fileModel webId:(NSString *)webId {
-    NSMutableArray *membersListArr = [NSMutableArray arrayWithArray:self.renderViews];
+    NSMutableArray *membersListArr = [NSMutableArray arrayWithArray:self.renderArray];
     for (int i = 0 ; i < membersListArr.count; i ++) {
         TXTUserModel *model = membersListArr[i];
         if ([model.render.userId isEqualToString:[TICConfig shareInstance].userId]) {
@@ -1018,7 +1018,7 @@ static NSInteger const kInputToolBarH = 62;
         webViewVc.delegate = self;
         webViewVc.url = url;
         webViewVc.webId = webId;
-        webViewVc.userModel = self.renderViews[0];
+        webViewVc.userModel = self.renderArray[0];
         webViewVc.productName = productName;
         webViewVc.actionType = actionType;
         webViewVc.type = @"0";
@@ -1048,7 +1048,7 @@ static NSInteger const kInputToolBarH = 62;
         webViewVc.delegate = self;
         webViewVc.url = url;
         webViewVc.webId = webId;
-        webViewVc.userModel = self.renderViews[0];
+        webViewVc.userModel = self.renderArray[0];
         webViewVc.productName = self.productName;
         webViewVc.actionType = actionType;
         webViewVc.type = self.webType;
@@ -1109,7 +1109,7 @@ static NSInteger const kInputToolBarH = 62;
 ////        [self.muteButton setImage:[UIImage imageNamed:@"mute_select" inBundle:TXSDKBundle compatibleWithTraitCollection:nil] forState:UIControlStateNormal];
 //    }
 //    self.muteState = !self.muteState;
-    showWebViewController.userModel = [self.renderViews firstObject];
+    showWebViewController.userModel = [self.renderArray firstObject];
 }
 #pragma mark -- TXTTopButtonsDelegate
 
@@ -1168,7 +1168,7 @@ static NSInteger const kInputToolBarH = 62;
              [[JMToast sharedToast] showDialogWithMsg:@"网络请求超时"];
          }];
     }else{
-        if (self.renderViews.count == 1) {
+        if (self.renderArray.count == 1) {
             NSDictionary *bodydic = @{@"agentId":TXUserDefaultsGetObjectforKey(AgentId),
                                       @"serviceId":TXUserDefaultsGetObjectforKey(ServiceId),
                                       @"userId":self.userId,
@@ -1273,8 +1273,8 @@ static NSInteger const kInputToolBarH = 62;
 #pragma mark - action
 ///开关摄像头
 - (void)closeVideoAction{
-    for (int i = 0; i<self.renderViews.count; i++) {
-        TXTUserModel *model = self.renderViews[i];
+    for (int i = 0; i<self.renderArray.count; i++) {
+        TXTUserModel *model = self.renderArray[i];
         if ([model.render.userId isEqualToString:self.userId]) {
             TXTUserModel *newModel = [[TXTUserModel alloc] init];
             newModel.render = model.render;
@@ -1284,7 +1284,7 @@ static NSInteger const kInputToolBarH = 62;
             newModel.userRole = model.userRole;
             newModel.userName = model.userName;
             newModel.userIcon = model.userIcon;
-            [self.renderViews replaceObjectAtIndex:i withObject:newModel];
+            [self.renderArray replaceObjectAtIndex:i withObject:newModel];
             [self updateVideoRenderViewsLayoutWithIndex:i];
             break;
         }
@@ -1299,8 +1299,8 @@ static NSInteger const kInputToolBarH = 62;
 
 ///开关麦克风
 - (void)muteAudioAction{
-    for (int i = 0; i<self.renderViews.count; i++) {
-        TXTUserModel *model = self.renderViews[i];
+    for (int i = 0; i<self.renderArray.count; i++) {
+        TXTUserModel *model = self.renderArray[i];
         if ([model.render.userId isEqualToString:self.userId]) {
             NSLog(@"mute_unselect == %@",model.render.userId);
             TXTUserModel *newModel = [[TXTUserModel alloc] init];
@@ -1311,7 +1311,7 @@ static NSInteger const kInputToolBarH = 62;
             newModel.userRole = model.userRole;
             newModel.userName = model.userName;
             newModel.userIcon = model.userIcon;
-            [self.renderViews replaceObjectAtIndex:i withObject:newModel];
+            [self.renderArray replaceObjectAtIndex:i withObject:newModel];
             break;
         }
     }
@@ -1487,10 +1487,10 @@ static NSInteger const kInputToolBarH = 62;
 #pragma mark - render view
 //更新布局
 - (void)updateRenderViewsLayout{
-    self.renderVideoView.renderArray = self.renderViews;
+    self.renderVideoView.renderArray = self.renderArray;
     
     NSString *direction = TXUserDefaultsGetObjectforKey(Direction);
-    NSLog(@"Direction = %@-%lu",direction,(unsigned long)self.renderViews.count);
+    NSLog(@"Direction = %@-%lu",direction,(unsigned long)self.renderArray.count);
     _directionInt = [direction integerValue];
     
     NSLog(@"updateRenderViewsLayout");
@@ -1538,7 +1538,7 @@ static NSInteger const kInputToolBarH = 62;
             }];
         }
     }
-    [self.renderVideoView setVideoRenderNumber:(self.renderViews.count - 1) mode:_directionInt];
+    [self.renderVideoView setVideoRenderNumber:(self.renderArray.count - 1) mode:_directionInt];
 }
 
 -(void)updateBottomButtons {
@@ -1560,7 +1560,7 @@ static NSInteger const kInputToolBarH = 62;
     NSInteger directionInt = [direction integerValue];
 //    NSMutableArray *newrenderArr = [NSMutableArray arrayWithArray:self.renderViews];
 //    [newrenderArr removeObjectAtIndex:0];
-    [self.renderVideoView changeViewNumber:(self.renderViews.count - 1) mode:directionInt Index:index userVolumes:userVolumes RenderArray:self.renderViews];
+    [self.renderVideoView changeViewNumber:(self.renderArray.count - 1) mode:directionInt Index:index userVolumes:userVolumes RenderArray:self.renderArray];
 }
 
 //更新某一个view，video
@@ -1569,7 +1569,7 @@ static NSInteger const kInputToolBarH = 62;
     NSInteger directionInt = [direction integerValue];
 //    NSMutableArray *newrenderArr = [NSMutableArray arrayWithArray:self.renderViews];
 //    [newrenderArr removeObjectAtIndex:0];
-    [self.renderVideoView changeVideoViewNumber:(self.renderViews.count - 1) mode:directionInt Index:index RenderArray:self.renderViews];
+    [self.renderVideoView changeVideoViewNumber:(self.renderArray.count - 1) mode:directionInt Index:index RenderArray:self.renderArray];
 }
 
 #pragma mark - TIC event listener
@@ -1578,10 +1578,10 @@ static NSInteger const kInputToolBarH = 62;
     NSLog(@"onTICMemberQuit === %@",userId);
     [self.userIdArr removeObject:userId];
     NSLog(@"移除列表");
-    [self.renderViews enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+    [self.renderArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         TXTUserModel *model = obj;
         if ([model.render.userId isEqualToString:userId]) {
-            [self.renderViews removeObject:model];
+            [self.renderArray removeObject:model];
             [self reloadManageMembersArray];
             [self updateRenderViewsLayout];
             [[NSNotificationCenter defaultCenter] postNotificationName:@"ManageMembersViewControllerLeave" object:userId];
@@ -1593,7 +1593,7 @@ static NSInteger const kInputToolBarH = 62;
 
 -(void)onTICMemberJoin:(NSString *)userId {
     NSLog(@"onTICMemberJoin === %@",userId);
-    [self.renderViews enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+    [self.renderArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         TXTUserModel *model = obj;
         //小程序加入去重
         NSString *weichatId = [NSString stringWithFormat:@"%@%@",model.render.userId,@"extra"];
@@ -1611,15 +1611,15 @@ static NSInteger const kInputToolBarH = 62;
     userModel.showVideo = NO;
     userModel.showAudio = NO;
     userModel.userName = userId;
-    [self.renderViews addObject:userModel];
+    [self.renderArray addObject:userModel];
     [self roomInfo:userModel isJoinNotifi:YES];
 }
 
 - (void)onTICUserAudioAvailable:(NSString *)userId available:(BOOL)available{
     NSLog(@"------------------onTICUserAudioAvailable--%@",userId);
     if ([self.userIdArr containsObject:userId]) {
-        for (int i = 0; i<self.renderViews.count; i++) {
-            TXTUserModel *model = self.renderViews[i];
+        for (int i = 0; i<self.renderArray.count; i++) {
+            TXTUserModel *model = self.renderArray[i];
             if ([model.render.userId isEqualToString:userId]) {
                 TXTUserModel *newModel = [[TXTUserModel alloc] init];
                 newModel.render = model.render;
@@ -1629,7 +1629,7 @@ static NSInteger const kInputToolBarH = 62;
                 newModel.userRole = model.userRole;
                 newModel.userName = model.userName;
                 newModel.userIcon = model.userIcon;
-                [self.renderViews replaceObjectAtIndex:i withObject:newModel];
+                [self.renderArray replaceObjectAtIndex:i withObject:newModel];
                 //更新某一个cell
                 TRTCVolumeInfo *info = [[TRTCVolumeInfo alloc] init];
                 info.userId = userId;
@@ -1650,7 +1650,7 @@ static NSInteger const kInputToolBarH = 62;
         userModel.showVideo = NO;
         userModel.showAudio = available;
         userModel.userName = userId;
-        [self.renderViews addObject:userModel];
+        [self.renderArray addObject:userModel];
         [self roomInfo:userModel isJoinNotifi:NO];
     }
 }
@@ -1659,8 +1659,8 @@ static NSInteger const kInputToolBarH = 62;
 {
     NSLog(@"------------------onTICUserVideoAvailable==%@",userId);
     if ([self.userIdArr containsObject:userId]) {
-        for (int i = 0; i<self.renderViews.count; i++) {
-            TXTUserModel *model = self.renderViews[i];
+        for (int i = 0; i<self.renderArray.count; i++) {
+            TXTUserModel *model = self.renderArray[i];
             if ([model.render.userId isEqualToString:userId]) {
                 TXTUserModel *newModel = [[TXTUserModel alloc] init];
                 newModel.render = model.render;
@@ -1670,7 +1670,7 @@ static NSInteger const kInputToolBarH = 62;
                 newModel.userName = model.userName;
                 newModel.userRole = model.userRole;
                 newModel.userIcon = model.userIcon;
-                [self.renderViews replaceObjectAtIndex:i withObject:newModel];
+                [self.renderArray replaceObjectAtIndex:i withObject:newModel];
                 //更新单个视频UI
                 [self updateVideoRenderViewsLayoutWithIndex:i];
                 break;
@@ -1693,7 +1693,7 @@ static NSInteger const kInputToolBarH = 62;
             userModel.showVideo = NO;
         }
         userModel.userName = userId;
-        [self.renderViews addObject:userModel];
+        [self.renderArray addObject:userModel];
         [self roomInfo:userModel isJoinNotifi:NO];
     }
 }
@@ -2150,11 +2150,11 @@ static NSInteger const kInputToolBarH = 62;
 }
 
 
-- (NSMutableArray *)renderViews {
-    if(!_renderViews){
-        _renderViews = [NSMutableArray array];
+- (NSMutableArray *)renderArray {
+    if(!_renderArray){
+        _renderArray = [NSMutableArray array];
     }
-    return _renderViews;
+    return _renderArray;
 }
 
 - (renderVideoView *)renderVideoView{
@@ -2407,7 +2407,7 @@ static NSInteger const kInputToolBarH = 62;
 
 
 - (void)reloadManageMembersArray {
-    self.groupMemberViewController.manageMembersArr = self.renderViews;
+    self.groupMemberViewController.manageMembersArr = self.renderArray;
     //数据更新
     [[NSNotificationCenter defaultCenter] postNotificationName:@"ManageMembersViewController" object:nil];
 }
