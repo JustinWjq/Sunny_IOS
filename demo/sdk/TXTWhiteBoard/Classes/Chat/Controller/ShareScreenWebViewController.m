@@ -97,6 +97,7 @@
 
     //初始化
     _webView = [[WKWebView alloc] initWithFrame:CGRectMake(0, statusBarHeight, Screen_Width, Screen_Height - statusBarHeight - hairBottom) configuration:configuration];
+    _webView.backgroundColor = [UIColor whiteColor];
     
     _webView.navigationDelegate = self;
     _webView.UIDelegate = self;
