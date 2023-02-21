@@ -1175,13 +1175,6 @@
 			path = View;
 			sourceTree = "<group>";
 		};
-		F07432C62917887C00FD9340 /* Tool */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Tool;
-			sourceTree = "<group>";
-		};
 		F0816860290FC96300C5CA29 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
@@ -1389,7 +1382,6 @@
 		F0816911290FC9E400C5CA29 /* Chat */ = {
 			isa = PBXGroup;
 			children = (
-				F07432C62917887C00FD9340 /* Tool */,
 				F06CC9EA2910E5E600CA4D6A /* Controller */,
 				F06CC9ED2910E5E600CA4D6A /* Model */,
 				F06CC9EE2910E5E600CA4D6A /* View */,

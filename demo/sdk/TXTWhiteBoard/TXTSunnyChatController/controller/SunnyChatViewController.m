@@ -257,7 +257,7 @@ static NSInteger const kInputToolBarH = 62;
     NSString *imageNameStr = ( [direction intValue] == 0 )? @"Landscape-Portrait" : @"Portrait-Landscape";
     [_crossBtn setImage:[UIImage imageNamed:imageNameStr inBundle:TXSDKBundle compatibleWithTraitCollection:nil] forState:UIControlStateNormal];
     //     _crossBtn.frame = CGRectMake(15, 0, 50, 50);
-    [_crossBtn addTarget:self action:@selector(btnAction) forControlEvents:UIControlEventTouchUpInside];
+    [_crossBtn addTarget:self action:@selector(doRotate) forControlEvents:UIControlEventTouchUpInside];
 }
 
 - (void)hideKeyBoard {
@@ -1011,7 +1011,7 @@ static NSInteger const kInputToolBarH = 62;
     // 先进行旋转
     self.lastIsLandscape = [UIWindow isLandscape];
     if (self.lastIsLandscape) {
-        [self btnAction];
+        [self doRotate];
     }
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.35 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         ShareScreenWebViewController *webViewVc = [[ShareScreenWebViewController alloc] init];
@@ -1026,6 +1026,7 @@ static NSInteger const kInputToolBarH = 62;
         [self.navigationController pushViewController:webViewVc animated:YES];
     });
 }
+
 - (void)selfPushToShareScreenWebView:(NSString *)url WebId:(nonnull NSString *)webId ActionType:(NSString *)actionType {
     if ([webId isEqualToString:@""] || [self.productName isEqualToString:@""]) {
         [[JMToast sharedToast] showDialogWithMsg:@"同屏链接不存在"];
@@ -1040,7 +1041,7 @@ static NSInteger const kInputToolBarH = 62;
     
     self.lastIsLandscape = [UIWindow isLandscape];
     if (self.lastIsLandscape) {
-        [self btnAction];
+        [self doRotate];
     }
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.35 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -1376,7 +1377,7 @@ static NSInteger const kInputToolBarH = 62;
 - (void)hideShareScreenWebView{
     // 还原页面
     if (self.lastIsLandscape) {
-        [self btnAction];
+        [self doRotate];
     }
     
     //    self.backView.hidden = YES;
@@ -1388,7 +1389,7 @@ static NSInteger const kInputToolBarH = 62;
 }
 
 //横竖屏切换
-- (void)btnAction{
+- (void)doRotate{
     TXTNavigationController *navigationController = (TXTNavigationController *)self.navigationController;
     //切换rootViewController的旋转方向
     if (![UIWindow isLandscape]) {
