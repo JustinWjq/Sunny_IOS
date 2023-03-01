@@ -145,7 +145,7 @@
         @"platform":@"slup",
         
         @"deviceString":@"iPhone 6s Plus",
-        @"token":@"WlRCalkxcEdZelpIV0doMlprTm5NazFNYzAxNVNYVlFjelpDUjJjNFFVRm5kalZMWVdwbEsySlZWV2d6U1ZKT04zVkJVRXhzUVdWVlZYQnhha2hxWjNCR2JuUkJiVTk0TkM5WlNFRjZOekpJWWtoUE1HYzlQUT09",
+        @"token": @"WlRCalkxcEdZelpIV0doMlprTm5NazFNYzAxNVFrOHdOVkIwYVVNek5FMW9WMVpyWlc5WE5qRndVRVIxYjFjdlZqbEpkMWszUXpFeWRYVnplWEJxWVU1SVlVWkNZVE5xUm1aMWJVcDZZbkJhVlRaUVVHYzlQUT09",
         @"phoneId":@"@00000000-0000-0000-0000-000000000000",
         @"mobile":@"18618128372",
         
