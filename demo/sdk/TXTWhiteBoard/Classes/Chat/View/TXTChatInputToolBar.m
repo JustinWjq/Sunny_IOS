@@ -37,7 +37,7 @@
     [self addSubview:self.sendBtn];
     [self.sendBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.mas_safeAreaLayoutGuideRight).offset(-15);
-        make.width.mas_equalTo(90);
+        make.width.mas_equalTo(50);
         make.top.mas_equalTo(15);
         make.height.mas_equalTo(32);
     }];
@@ -47,7 +47,7 @@
         make.top.mas_equalTo(15);
         make.bottom.equalTo(self.mas_bottom).offset(-15);
         make.left.equalTo(self.mas_left).offset(15);
-        make.right.equalTo(self.sendBtn.mas_left).offset(0);
+        make.right.equalTo(self.sendBtn.mas_left).offset(-8);
     }];
     
 //    [self insertSubview:self.bgView belowSubview:self.textView];
@@ -119,7 +119,8 @@
         UIButton *sendBtn = [UIButton buttonWithTitle:@"发送" titleColor:[UIColor colorWithHexString:@"FFFFFF"] font:[UIFont qs_regularFontWithSize:15] target:self action:@selector(sendBtnClick)];
 //        [sendBtn setTitleColor:[UIColor colorWithHexString:@"E6B980"] forState:UIControlStateSelected];
         sendBtn.cornerRadius = 5;
-        sendBtn.borderColor = [UIColor colorWithHexString:@"FFFFFF"];
+        sendBtn.backgroundColor = [UIColor colorWithHexString:@"#E6B980"];
+        sendBtn.borderColor = [UIColor colorWithHexString:@"#E6B980"];
         sendBtn.borderWidth = 1;
         self.sendBtn = sendBtn;
     }

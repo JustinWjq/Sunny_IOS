@@ -145,7 +145,7 @@
         @"platform":@"slup",
         
         @"deviceString":@"iPhone 6s Plus",
-        @"token": @"WlRCalkxcEdZelpIV0doMlprTm5NazFNYzAxNVFrOHdOVkIwYVVNek5FMW9WMVpyWlc5WE5qRndVRVIxYjFjdlZqbEpkMWszUXpFeWRYVnplWEJxWVU1SVlVWkNZVE5xUm1aMWJVcDZZbkJhVlRaUVVHYzlQUT09",
+        @"token":@"WlRCalkxcEdZelpIV0doMlprTm5NazFNYzAxNVNYVlFjelpDUjJjNFFVRm5kalZMWVdwbEsySlZWV2d6U1ZKT04zVkJVRXhzUVdWVlZYQnhha2hxWjNCR2JuUkJiVTk0TkM5WlNFRjZOekpJWWtoUE1HYzlQUT09",
         @"phoneId":@"@00000000-0000-0000-0000-000000000000",
         @"mobile":@"18618128372",
         
@@ -541,7 +541,7 @@ static AFHTTPSessionManager *instance;
 }
 
 -(BOOL)shouldAutorotate {
-    return YES;
+    return NO;
 }
 
 - (void)onEndRoom{
@@ -566,7 +566,7 @@ static AFHTTPSessionManager *instance;
         }
         [UIViewController attemptRotationToDeviceOrientation];
         
-        AppDelegate *ad = (AppDelegate*) [UIApplication sharedApplication].delegate;
+//        AppDelegate *ad = (AppDelegate*) [UIApplication sharedApplication].delegate;
 //        ad.allowRotation = NO;
     });
     

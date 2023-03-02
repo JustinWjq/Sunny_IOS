@@ -38,7 +38,7 @@
         make.bottom.mas_equalTo(self.mas_bottom).offset(0);
     }];
     backgroundView.alpha = 0.2;
-    backgroundView.backgroundColor = [UIColor colorWithHexString:@"#000000"];
+    backgroundView.backgroundColor = [UIColor clearColor];
 }
 
 - (void)setRenderArray:(NSArray *)renderArray{

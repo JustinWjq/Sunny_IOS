@@ -55,13 +55,23 @@
 ///// 如果属性值为YES，仅允许屏幕向左旋转，否则仅允许竖屏。
 //-(UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
 //    if (self.allowRotation) {
-//        return UIInterfaceOrientationMaskPortrait|UIInterfaceOrientationMaskLandscapeLeft|UIInterfaceOrientationMaskLandscapeRight;
+//        return UIInterfaceOrientationMaskAll;
 //    }else if(self.rightRotation) {
-//        return UIInterfaceOrientationMaskLandscapeRight;
+//        return UIInterfaceOrientationMaskLandscapeRight|UIInterfaceOrientationMaskPortrait;
+//    } else {
+//        return UIInterfaceOrientationMaskPortrait;
 //    }
-//    return UIInterfaceOrientationMaskPortrait;
-//
 //}
+
+- (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
+    if(window == self.window) {
+        return UIInterfaceOrientationMaskPortrait;
+    } else {
+        return  UIInterfaceOrientationMaskAll;
+    }
+}
+
+
 - (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray<id<UIUserActivityRestoring>> * _Nullable))restorationHandler{
     NSLog(@"handleOpenUniversalLink");
     return [WXApi handleOpenUniversalLink:userActivity delegate:self];
@@ -87,14 +97,6 @@
     [[NSUserDefaults standardUserDefaults] setObject:serviceId forKey:@"testserviceId"];
 }
 
-
-- (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
-    if(window == self.window) {
-        return UIInterfaceOrientationMaskPortrait;
-    } else {
-        return  UIInterfaceOrientationMaskAll;
-    }
-}
 
 +(UIImage *)imageWithColor:(UIColor *)aColor withFrame:(CGRect)aFrame
 {

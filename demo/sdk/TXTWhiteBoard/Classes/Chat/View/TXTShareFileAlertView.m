@@ -39,7 +39,7 @@
         make.centerX.equalTo(self.mas_centerX).multipliedBy(5.0/6.0);
         make.width.mas_equalTo(112);
         make.height.mas_equalTo(80);
-        make.bottom.equalTo(self.mas_safeAreaLayoutGuideBottom).offset(-Adapt(60 + 15));
+        make.bottom.equalTo(self.mas_safeAreaLayoutGuideBottom).offset(-Adapt(50+12));
     }];
     self.contenView.cornerRadius = 3;
     [self.contenView addSubview:self.fileBtn];
