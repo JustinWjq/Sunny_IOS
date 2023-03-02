@@ -18,6 +18,9 @@
 /** dataArray */
 @property (nonatomic, strong) NSMutableArray *dataArray;
 
+/** dataArray */
+@property (nonatomic, strong) NSMutableDictionary *dataDic;
+
 /** count */
 @property (nonatomic, assign) NSInteger count;
 @end
@@ -120,13 +123,28 @@
     [[V2TIMManager sharedInstance] findMessages:@[msgID] succ:^(NSArray<V2TIMMessage *> *msgs) {
         V2TIMMessage *v2message = [msgs firstObject];
         if (!v2message.textElem) return;
+        
+        NSLog(@"v2message.textElem === %@", v2message);
+        
         NSDictionary *dict = [[TXTCommon sharedInstance] dictionaryWithJsonString:v2message.textElem.text];
+        
         if (![dict[@"type"] isEqualToString:@"wxIM"]) return;
 //        if (self.dataArray.count >= 3) {
 //            [self.dataArray removeObjectAtIndex:0];
 //        }
 //        [self.dataArray addObject:v2message.textElem.text];
+        
+        //防止出现重复的判断
+        if(v2message.msgID != nil && ![@"" isEqualToString:v2message.msgID]) {
+            NSString *vl = [self.dataDic objectForKey:v2message.msgID];
+            if(vl != nil) {
+                return;
+            }
+            [self.dataDic setObject:@"1" forKey:v2message.msgID];
+        }
+    
         [self addMessage:v2message.textElem.text];
+        
         [self.messageTableView reloadData];
         [self scrollToEnd];
 //        [self addCellToTabel];
@@ -179,5 +197,12 @@
         self.dataArray = [NSMutableArray array];
     }
     return _dataArray;
+}
+
+- (NSMutableDictionary *)dataDic {
+    if (!_dataDic) {
+        self.dataDic = [NSMutableDictionary dictionary];
+    }
+    return _dataDic;
 }
 @end
