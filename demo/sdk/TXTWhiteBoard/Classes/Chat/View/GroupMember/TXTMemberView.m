@@ -347,6 +347,16 @@
             object.miniProgramType = WXMiniProgramTypePreview;
         }
         
+        if(![WXApi isWXAppInstalled]) {
+            [TXTToast toastWithTitle:@"未安装微信" type:TXTToastTypeWarn];
+            return;
+        }
+        
+        if(![WXApi isWXAppSupportApi]) {
+            [TXTToast toastWithTitle:@"微信版本过低，不支持OpenApi" type:TXTToastTypeWarn];
+            return;
+        }
+        
         WXMediaMessage *message = [WXMediaMessage message];
         message.title = [NSString stringWithFormat:@"%@",[TXTCustomConfig sharedInstance].miniprogramTitle];
         message.description = [NSString stringWithFormat:@"%@",[TXTCustomConfig sharedInstance].miniprogramCard];
