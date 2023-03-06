@@ -733,7 +733,7 @@ static NSInteger const kInputToolBarH = 62;
     shareFileAlertView.fileBlock = ^{
         
         if([TXTCustomConfig sharedInstance].isDebug) {
-            [self addFile:FileTypeH5 fileModel:[[TXTFileModel alloc] init]];
+            [self addFile:FileTypeVideo fileModel:[[TXTFileModel alloc] init]];
         } else {
             [[TXTManage sharedInstance] onClickFile];
         }
@@ -1583,15 +1583,18 @@ static NSInteger const kInputToolBarH = 62;
 -(void)updateImageView {
     NSString *direction = TXUserDefaultsGetObjectforKey(Direction);
     NSInteger directionInt = [direction integerValue];
-    CGFloat offset = 0;
+    CGFloat offset_bottom = 0;
+    CGFloat offset_right = 0;
     if(directionInt == 1) {
-        offset = -Adapt(76);
+        offset_bottom = -Adapt(76);
+    } else {
+        offset_right = -Adapt(132);
     }
     [_bgImageView mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(self.view.mas_top).offset(0);
-        make.bottom.mas_equalTo(self.view.mas_bottom).offset(offset);
+        make.bottom.mas_equalTo(self.view.mas_bottom).offset(offset_bottom);
         make.left.mas_equalTo(self.view.mas_left).offset(0);
-        make.right.mas_equalTo(self.view.mas_right).offset(0);
+        make.right.mas_equalTo(self.view.mas_right).offset(offset_right);
     }];
 }
 

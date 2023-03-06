@@ -69,8 +69,8 @@
     if(!_collectionView) {
         NSLog(@"config_collectionView");
         UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
-        layout.minimumLineSpacing = 2;
-        layout.minimumInteritemSpacing = 2;
+        layout.minimumLineSpacing = 0;
+        layout.minimumInteritemSpacing = 0;
         NSString *direction = TXUserDefaultsGetObjectforKey(Direction);
         if ([direction integerValue] == TRTCVideoResolutionModePortrait) {
             layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
@@ -116,15 +116,15 @@
 }
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section {
-    return 2;
+    return 0;
 }
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section {
-    return 2;
+    return 0;
 }
 
 -(UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section{
-    return UIEdgeInsetsMake(2, 2, 2, 2);
+    return UIEdgeInsetsMake(0, 0, 0, 0);
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
