@@ -63,9 +63,17 @@
         NSRange amRange = [dateString rangeOfString:[formatter AMSymbol]];
         dateString = [dateString substringToIndex:dateString.length-3];
         if(amRange.location == NSNotFound){ // 显示 下午 hh:mm
-            dateLabel.text = [NSString stringWithFormat:@"下午 %@",dateString];
+            if([dateString rangeOfString:@"下午"].location == NSNotFound) {
+                dateLabel.text = [NSString stringWithFormat:@"下午 %@",dateString];
+            } else {
+                dateLabel.text = [NSString stringWithFormat:@"%@",dateString];
+            }
         }else{ // 显示 上午 hh:mm
-            dateLabel.text = [NSString stringWithFormat:@"上午 %@",dateString];
+            if([dateString rangeOfString:@"上午"].location == NSNotFound) {
+                dateLabel.text = [NSString stringWithFormat:@"上午 %@",dateString];
+            } else {
+                dateLabel.text = [NSString stringWithFormat:@"%@",dateString];
+            }
         }
     }
 

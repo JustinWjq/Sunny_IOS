@@ -348,8 +348,7 @@
                     [ad.window setHidden:YES];
                     
                     TICBLOCK_SAFE_RUN(callback,code,joinDesc);
-                }
-                else{
+                } else{
                     [JMLoadingHUD hide];
                     NSString *joinDesc = [NSString stringWithFormat:@"joinClassroom=%@",desc];
                     TICBLOCK_SAFE_RUN(callback,code,joinDesc);

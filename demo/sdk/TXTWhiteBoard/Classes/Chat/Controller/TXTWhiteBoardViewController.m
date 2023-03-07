@@ -104,6 +104,7 @@
         NSLog(@"shareStatus == %@",[response description]);
     } failure:^(NSError *error, id response) {
 //        [[JMToast sharedToast] showDialogWithMsg:@"网络连接错误"];
+      
         [TXTToast toastWithTitle:@"网络连接错误" type:TXTToastTypeWarn];
     }];
 }

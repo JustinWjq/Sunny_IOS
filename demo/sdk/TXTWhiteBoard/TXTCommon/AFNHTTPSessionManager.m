@@ -7,6 +7,7 @@
  //
 
  #import "AFNHTTPSessionManager.h"
+#import "TXTCustomConfig.h"
 // #import "txDefine.h"
 // #import "Utils.h"
 // #import "UIAlertUtil.h"
@@ -76,6 +77,9 @@
              else
              {
                  //      [self parseResponse:response error:error success:success failure:failure];
+                 if([TXTCustomConfig sharedInstance].isDebug) {
+                     NSLog(@"AFNHTTPSessionManager === %@", [error localizedDescription]);
+                 }
                  failure(error,responseObject);
              }
          }] resume];
@@ -132,6 +136,10 @@
 
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         failure(error,nil);
+        
+        if([TXTCustomConfig sharedInstance].isDebug) {
+            NSLog(@"AFNHTTPSessionManager === %@", [error localizedDescription]);
+        }
     }];
 }
 
@@ -143,7 +151,9 @@
                success:(AFNHTTPSessionManagerBlock)success
                failure:(AFNHTTPSessionManagerBlock)failure {
      if (error) {
-         
+         if([TXTCustomConfig sharedInstance].isDebug) {
+             NSLog(@"AFNHTTPSessionManager === %@", [error localizedDescription]);
+         }
          
          failure(error,[NSDictionary dictionaryWithObjects:@[[error description]] forKeys:@[@"errInfo"]]);
          
@@ -172,6 +182,9 @@
                failure:(AFNHTTPSessionManagerBlock)failure {
      if (error) {
          
+         if([TXTCustomConfig sharedInstance].isDebug) {
+             NSLog(@"AFNHTTPSessionManager === %@", [error localizedDescription]);
+         }
          
          failure(error,[NSDictionary dictionaryWithObjects:@[[error description]] forKeys:@[@"errInfo"]]);
          
