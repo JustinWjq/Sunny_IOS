@@ -116,15 +116,30 @@
 }
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section {
-    return 0;
+    NSString *direction = TXUserDefaultsGetObjectforKey(Direction);
+    if ([direction integerValue] == TRTCVideoResolutionModePortrait) {
+        return 2;
+    } else {
+        return 0;
+    }
 }
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section {
-    return 0;
+    NSString *direction = TXUserDefaultsGetObjectforKey(Direction);
+    if ([direction integerValue] == TRTCVideoResolutionModePortrait) {
+        return 2;
+    } else {
+        return 0;
+    }
 }
 
 -(UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section{
-    return UIEdgeInsetsMake(0, 0, 0, 0);
+    NSString *direction = TXUserDefaultsGetObjectforKey(Direction);
+    if ([direction integerValue] == TRTCVideoResolutionModePortrait) {
+        return UIEdgeInsetsMake(2, 2, 2, 2);
+    } else {
+        return UIEdgeInsetsMake(0, 0, 0, 0);
+    }
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{

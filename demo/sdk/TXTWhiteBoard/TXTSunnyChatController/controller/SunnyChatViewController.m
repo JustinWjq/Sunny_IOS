@@ -851,9 +851,9 @@ static NSInteger const kInputToolBarH = 62;
              https://precisemkttest.sinosig.com/resourceNginx/H5Project/qnbProjectV3/index.html#/planIndex  测试保障规划
              */
             
-            fileModel.h5Url = @"https://precisemkttest.sinosig.com/resourceNginx/H5Project/cv-sinosig/index.html#/familyList";
+//            fileModel.h5Url = @"https://precisemkttest.sinosig.com/resourceNginx/H5Project/www/index.html#/claimsArea";
             
-//            fileModel.h5Url = [NSString stringWithFormat: @"https://precisemkttest.sinosig.com/resourceNginx/H5Project/qnbProjectV3/index.html#/rayVisitFile?meetId=%@", TXUserDefaultsGetObjectforKey(ServiceId)];
+            fileModel.h5Url = [NSString stringWithFormat: @"https://precisemkttest.sinosig.com/resourceNginx/H5Project/qnbProjectV3/index.html#/rayVisitFile?meetId=%@", TXUserDefaultsGetObjectforKey(ServiceId)];
             
 //            fileModel.h5Url = @"https://precisemkttest.sinosig.com/resourceNginx/H5Project/cv-sinosig/index.html#/familyList";
             fileModel.name = @"同期Canon";
