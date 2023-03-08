@@ -145,7 +145,7 @@
         @"platform":@"slup",
         
         @"deviceString":@"iPhone 6s Plus",
-        @"token":@"WlRCalkxcEdZelpIV0doMlprTm5NazFNYzAxNVNYVlFjelpDUjJjNFFVRm5kalZMWVdwbEsySlZWV2d6U1ZKT04zVkJVRXhzUVdWVlZYQnhha2hxWjNCR2JuUkJiVTk0TkM5WlNFRjZOekpJWWtoUE1HYzlQUT09",
+        @"token":@"WlRCalkxcEdZelpIV0doMlprTm5NazFNYzAxNVIweG1jbFI0Ymk5d1QyaEJTRGhHUkhFdmEyeDJaalVyVnlzd2RpdFRkR1ZCZERabGN6QnlkeXRuVDJOeldtbE5UVkZxVkhOMlYwVnZhbTVUYVcwNVpIYzlQUT09",
         @"phoneId":@"@00000000-0000-0000-0000-000000000000",
         @"mobile":@"18618128372",
         
@@ -312,22 +312,23 @@ static AFHTTPSessionManager *instance;
 
 -(IBAction)continueA:(id)sender {
     /*
-     2023-02-21 23:37:06.851767+0800 sample[1154:39460] bodyDic == {
-         inviteNumber = 25499707;
+     {
+         inviteNumber = 35035608;
          orgAccount = sunshineLifeOrg;
-         sign = 683a8fbce98b1c4d2c73b4b21991514598e898c4b7a53cba1a5de98a64fc120b;
-         userId = 123124;
+         sign = 683a8fbce98b1c4d2c73b4b21991514501d1e34b1f573ef8df62c25b02185782;
+         userId = 123123;
          userName = "\U6d4b\U8bd5";
      }
+     
      */
     NSString *agentName = self.agentName.text;
     NSString *orgName = self.orgName.text;
     
-    [[TXTManage sharedInstance] startVideo:@"25499707"
+    [[TXTManage sharedInstance] startVideo:@"35035608"
                                   andAgent:agentName
                                   UserName:@"测试"
                                    OrgName:orgName
-                               SignOrgName:@"683a8fbce98b1c4d2c73b4b21991514598e898c4b7a53cba1a5de98a64fc120b"
+                               SignOrgName:@"683a8fbce98b1c4d2c73b4b21991514501d1e34b1f573ef8df62c25b02185782"
                                   CallBack:^(int code, NSString * _Nonnull desc) {
         AppDelegate *ad = (AppDelegate*) [UIApplication sharedApplication].delegate;
         if (code == 0) {

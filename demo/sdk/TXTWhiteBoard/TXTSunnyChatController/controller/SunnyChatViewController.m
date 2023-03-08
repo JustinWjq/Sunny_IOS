@@ -627,6 +627,9 @@ static NSInteger const kInputToolBarH = 62;
                         if ([keysArr containsObject:@"userIcon"]) {
                             umodel.userIcon = [userdic valueForKey:@"userIcon"];
                         }
+                        if ([keysArr containsObject:@"userHead"]) {
+                            umodel.userHead = [userdic valueForKey:@"userHead"];
+                        }
                         
                         if ([umodel.userRole isEqualToString:@"owner"]) {
                             //业务员
@@ -733,7 +736,7 @@ static NSInteger const kInputToolBarH = 62;
     shareFileAlertView.fileBlock = ^{
         
         if([TXTCustomConfig sharedInstance].isDebug) {
-            [self addFile:FileTypeVideo fileModel:[[TXTFileModel alloc] init]];
+            [self addFile:FileTypeH5 fileModel:[[TXTFileModel alloc] init]];
         } else {
             [[TXTManage sharedInstance] onClickFile];
         }

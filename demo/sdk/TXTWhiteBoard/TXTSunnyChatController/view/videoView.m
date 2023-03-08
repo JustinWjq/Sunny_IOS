@@ -19,7 +19,7 @@
     if (self) {
 //        [self initHideUI];
 //        self.backgroundColor = [UIColor whiteColor];
-        [self.userModel addObserver:self forKeyPath:@"userModel" options:NSKeyValueObservingOptionNew context:nil];
+//        [self.userModel addObserver:self forKeyPath:@"userModel" options:NSKeyValueObservingOptionNew context:nil];
     }
     return self;
 }
@@ -27,28 +27,43 @@
 - (void)initHideUIDirectionLeft:(BOOL)directionLeft{
     [self userNameView:directionLeft];
     
-    UILabel *nameLabel = [[UILabel alloc] init];
-    [self addSubview:nameLabel];
-    [nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.mas_equalTo(self.mas_centerX).offset(0);
-        make.top.mas_equalTo(self.mas_top).offset(10);
-        make.width.mas_equalTo(nameWidth);
-        make.height.mas_equalTo(nameWidth);
-    }];
-    nameLabel.layer.cornerRadius = nameWidth/2;
-    nameLabel.layer.masksToBounds = YES;
-    if (self.userModel.userName.length < 2) {
-        nameLabel.text = self.userModel.userName;
-    }else{
-        NSString *showNameStr = [self.userModel.userName substringFromIndex:self.userModel.userName.length-2];
-        nameLabel.text = showNameStr;
+    if(self.userModel.userHead != nil && [self.userModel.userHead hasPrefix:@"https://"]) {
+        UIImageView *iconImage = [[UIImageView alloc] init];
+        [self addSubview:iconImage];
+        [iconImage mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerX.mas_equalTo(self.mas_centerX).offset(0);
+            make.top.mas_equalTo(self.mas_top).offset(10);
+            make.width.mas_equalTo(nameWidth);
+            make.height.mas_equalTo(nameWidth);
+        }];
+        iconImage.contentMode = UIViewContentModeScaleAspectFit;
+        iconImage.layer.cornerRadius = nameWidth/2;
+        iconImage.layer.masksToBounds = YES;
+        [iconImage sd_setImageWithURL:[NSURL URLWithString:self.userModel.userHead] placeholderImage:nil];
+    } else {
+        UILabel *nameLabel = [[UILabel alloc] init];
+        [self addSubview:nameLabel];
+        [nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerX.mas_equalTo(self.mas_centerX).offset(0);
+            make.top.mas_equalTo(self.mas_top).offset(10);
+            make.width.mas_equalTo(nameWidth);
+            make.height.mas_equalTo(nameWidth);
+        }];
+        nameLabel.layer.cornerRadius = nameWidth/2;
+        nameLabel.layer.masksToBounds = YES;
+        if (self.userModel.userName.length < 2) {
+            nameLabel.text = self.userModel.userName;
+        }else{
+            NSString *showNameStr = [self.userModel.userName substringFromIndex:self.userModel.userName.length-2];
+            nameLabel.text = showNameStr;
+        }
+        
+        nameLabel.textColor = [UIColor whiteColor];
+        nameLabel.textAlignment = NSTextAlignmentCenter;
+        nameLabel.backgroundColor = [UIColor colorWithHexString:@"#E6B980"];
+        nameLabel.font = [UIFont systemFontOfSize:15];
     }
-    
-    nameLabel.textColor = [UIColor whiteColor];
-    nameLabel.textAlignment = NSTextAlignmentCenter;
-    nameLabel.backgroundColor = [UIColor colorWithHexString:@"#E6B980"];
-    nameLabel.font = [UIFont systemFontOfSize:15];
-    
+
 }
 
 - (void)userNameView:(BOOL)directionLeft{
