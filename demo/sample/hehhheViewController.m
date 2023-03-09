@@ -332,7 +332,7 @@ static AFHTTPSessionManager *instance;
     
     [[TXTManage sharedInstance] startVideo:@"35035608"
                                   andAgent:agentName
-                                  UserName:@"测试测试测试"
+                                  UserName:@"测试^o^^o^"
                                    OrgName:orgName
                                SignOrgName:@"683a8fbce98b1c4d2c73b4b21991514501d1e34b1f573ef8df62c25b02185782"
                                   CallBack:^(int code, NSString * _Nonnull desc) {
@@ -440,7 +440,7 @@ static AFHTTPSessionManager *instance;
                 NSString *inviteNumber = [result valueForKey:@"inviteNumber"];
                 [[TXTManage sharedInstance] startVideo:inviteNumber
                                               andAgent:agentName
-                                              UserName:@"测试测试测试"
+                                              UserName:@"测试^o^^o^"
                                                OrgName:orgName
                                            SignOrgName:sign 
                                               CallBack:^(int code, NSString * _Nonnull desc) {

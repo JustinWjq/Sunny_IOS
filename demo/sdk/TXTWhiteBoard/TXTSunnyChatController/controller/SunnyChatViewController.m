@@ -96,6 +96,8 @@ static NSInteger const kInputToolBarH = 62;
 @property (nonatomic, strong) TXTMoreView *moreView;
 /** lastIsLandscape 最后是否是横屏 */
 @property (nonatomic, assign) BOOL lastIsLandscape;
+
+@property (nonatomic, strong) TXTFileModel *fileModel;
 @end
 
 @implementation SunnyChatViewController
@@ -858,14 +860,14 @@ static NSInteger const kInputToolBarH = 62;
             /*
              https://precisemkttest.sinosig.com/resourceNginx/H5Project/www/index.html#/claimsArea  测试理赔专区
              https://precisemkttest.sinosig.com/resourceNginx/H5Project/cv-sinosig/index.html#/familyList  测试懂你保险首页
-             https://precisemkttest.sinosig.com/resourceNginx/H5Project/qnbProjectV3/index.html#/planIndex  测试保障规划
+             https://precisemkttest.sinosig.com/resourceNginx/H5Project/qnbProjectV3/index.html#/planMain/planIndex  测试保障规划
              */
             
 //            fileModel.h5Url = @"https://precisemkttest.sinosig.com/resourceNginx/H5Project/www/index.html#/claimsArea";
             
 //            fileModel.h5Url = [NSString stringWithFormat: @"https://precisemkttest.sinosig.com/resourceNginx/H5Project/qnbProjectV3/index.html#/rayVisitFile?meetId=%@", TXUserDefaultsGetObjectforKey(ServiceId)];
             
-            fileModel.h5Url = @"https://precisemkttest.sinosig.com/resourceNginx/H5Project/qnbProjectV3/index.html#/planIndex";
+            fileModel.h5Url = @"https://precisemkttest.sinosig.com/resourceNginx/H5Project/qnbProjectV3/index.html#/planMain/planIndex";
             fileModel.name = @"同期Canon";
         }
         
@@ -881,6 +883,8 @@ static NSInteger const kInputToolBarH = 62;
             [TXTToast toastWithTitle:@"name为空" type:TXTToastTypeWarn];
             return;
         }
+        fileModel.isLandscape = NO;
+        
         NSDictionary *bodydic = @{
             @"serviceId":TXUserDefaultsGetObjectforKey(ServiceId),
             @"name":(fileModel.name.length > 0 ? fileModel.name : @""),
@@ -1024,10 +1028,12 @@ static NSInteger const kInputToolBarH = 62;
 
 - (void)pushToShareScreenWebView:(NSString *)url WebId:(nonnull NSString *)webId ActionType:(NSString *)actionType ProductName:(NSString *)productName fileModel:(TXTFileModel *)fileModel {
     self.webId = webId;
+    self.fileModel = fileModel;
     
     // 先进行旋转
     self.lastIsLandscape = [UIWindow isLandscape];
-    if (self.lastIsLandscape) {
+    if ((self.lastIsLandscape && !fileModel.isLandscape) ||
+        (!self.lastIsLandscape && fileModel.isLandscape)) {
         [self doRotate];
     }
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.35 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -1394,9 +1400,20 @@ static NSInteger const kInputToolBarH = 62;
 ///结束同屏
 - (void)hideShareScreenWebView{
     // 还原页面
-    if (self.lastIsLandscape) {
-        [self doRotate];
+    
+    if(self.fileModel != nil){
+        if ((self.lastIsLandscape && !self.fileModel.isLandscape) ||
+            (!self.lastIsLandscape && self.fileModel.isLandscape)) {
+            [self doRotate];
+        }
+        self.fileModel = nil;
+    } else {
+        if (self.lastIsLandscape) {
+            [self doRotate];
+        }
     }
+    
+    
     
     //    self.backView.hidden = YES;
     //    self.otherShareStatus = NO;

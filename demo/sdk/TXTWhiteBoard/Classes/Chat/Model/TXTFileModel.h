@@ -48,6 +48,8 @@ NS_ASSUME_NONNULL_BEGIN
 /** cookieDict缓存字典只有h5类型才能用 */
 @property (nonatomic, strong) NSDictionary *cookieDict;
 
+@property (nonatomic, assign) Boolean isLandscape;
+
 @end
 
 NS_ASSUME_NONNULL_END
