@@ -647,6 +647,11 @@ static NSInteger const kInputToolBarH = 62;
                             }
                         }else{
                             [self.renderArray replaceObjectAtIndex:j withObject:umodel];
+
+//                            [self.renderArray addObject:umodel];
+//                            [self.renderArray addObject:umodel];
+//                            [self.renderArray addObject:umodel];
+//                            [self.renderArray addObject:umodel];
                         }
                         
                         
@@ -858,9 +863,9 @@ static NSInteger const kInputToolBarH = 62;
             
 //            fileModel.h5Url = @"https://precisemkttest.sinosig.com/resourceNginx/H5Project/www/index.html#/claimsArea";
             
-            fileModel.h5Url = [NSString stringWithFormat: @"https://precisemkttest.sinosig.com/resourceNginx/H5Project/qnbProjectV3/index.html#/rayVisitFile?meetId=%@", TXUserDefaultsGetObjectforKey(ServiceId)];
+//            fileModel.h5Url = [NSString stringWithFormat: @"https://precisemkttest.sinosig.com/resourceNginx/H5Project/qnbProjectV3/index.html#/rayVisitFile?meetId=%@", TXUserDefaultsGetObjectforKey(ServiceId)];
             
-//            fileModel.h5Url = @"https://precisemkttest.sinosig.com/resourceNginx/H5Project/cv-sinosig/index.html#/familyList";
+            fileModel.h5Url = @"https://precisemkttest.sinosig.com/resourceNginx/H5Project/qnbProjectV3/index.html#/planIndex";
             fileModel.name = @"同期Canon";
         }
         
@@ -1296,6 +1301,7 @@ static NSInteger const kInputToolBarH = 62;
             newModel.userRole = model.userRole;
             newModel.userName = model.userName;
             newModel.userIcon = model.userIcon;
+            newModel.userHead = model.userHead;
             [self.renderArray replaceObjectAtIndex:i withObject:newModel];
             [self updateVideoRenderViewsLayoutWithIndex:i];
             break;
@@ -1323,6 +1329,7 @@ static NSInteger const kInputToolBarH = 62;
             newModel.userRole = model.userRole;
             newModel.userName = model.userName;
             newModel.userIcon = model.userIcon;
+            newModel.userHead = model.userHead;
             [self.renderArray replaceObjectAtIndex:i withObject:newModel];
             break;
         }
@@ -1663,6 +1670,7 @@ static NSInteger const kInputToolBarH = 62;
                 newModel.userRole = model.userRole;
                 newModel.userName = model.userName;
                 newModel.userIcon = model.userIcon;
+                newModel.userHead = model.userHead;
                 [self.renderArray replaceObjectAtIndex:i withObject:newModel];
                 //更新某一个cell
                 TRTCVolumeInfo *info = [[TRTCVolumeInfo alloc] init];
@@ -1704,6 +1712,7 @@ static NSInteger const kInputToolBarH = 62;
                 newModel.userName = model.userName;
                 newModel.userRole = model.userRole;
                 newModel.userIcon = model.userIcon;
+                newModel.userHead = model.userHead;
                 [self.renderArray replaceObjectAtIndex:i withObject:newModel];
                 //更新单个视频UI
                 [self updateVideoRenderViewsLayoutWithIndex:i];

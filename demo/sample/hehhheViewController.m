@@ -151,7 +151,7 @@
         @"platform":@"slup",
         
         @"deviceString":@"iPhone 6s Plus",
-        @"token":@"WlRCalkxcEdZelpIV0doMlprTm5NazFNYzAxNVIweG1jbFI0Ymk5d1QyaEJTRGhHUkhFdmEyeDJaalVyVnlzd2RpdFRkR1ZCZERabGN6QnlkeXRuVDJOeldtbE5UVkZxVkhOMlYwVnZhbTVUYVcwNVpIYzlQUT09",
+        @"token":@"WlRCalkxcEdZelpIV0doMlprTm5NazFNYzAxNVVHRk9TWEJsVkVOb0wyNXlTRnBEVUdsTWFIZFRVMDFYZUdWWE5WcEJiSG8wVGtGWlRYaDVOMHcxVW5GUmVEWnZiRWRpUzJSWE9UVTBaMHRNYlRVNFRYYzlQUT09",
         @"phoneId":@"@00000000-0000-0000-0000-000000000000",
         @"mobile":@"18618128372",
         
@@ -332,7 +332,7 @@ static AFHTTPSessionManager *instance;
     
     [[TXTManage sharedInstance] startVideo:@"35035608"
                                   andAgent:agentName
-                                  UserName:@"测试"
+                                  UserName:@"测试测试测试"
                                    OrgName:orgName
                                SignOrgName:@"683a8fbce98b1c4d2c73b4b21991514501d1e34b1f573ef8df62c25b02185782"
                                   CallBack:^(int code, NSString * _Nonnull desc) {
@@ -440,7 +440,7 @@ static AFHTTPSessionManager *instance;
                 NSString *inviteNumber = [result valueForKey:@"inviteNumber"];
                 [[TXTManage sharedInstance] startVideo:inviteNumber
                                               andAgent:agentName
-                                              UserName:@"测试"
+                                              UserName:@"测试测试测试"
                                                OrgName:orgName
                                            SignOrgName:sign 
                                               CallBack:^(int code, NSString * _Nonnull desc) {

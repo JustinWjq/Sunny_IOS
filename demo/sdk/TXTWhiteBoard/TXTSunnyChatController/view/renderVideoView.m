@@ -403,7 +403,7 @@
     }
 }
 
-//5人和5人以上
+
 - (void)setTRTCVideoRenderNumber5UILandscape{
     self.renderViewCollectionView = [[TXTVideoCollectionView alloc] init];
     [self addSubview:self.renderViewCollectionView];
@@ -472,8 +472,7 @@
             if([svideoView isKindOfClass:[TXTVideoCollectionView class]]){
                 [self.renderViewCollectionView setUserVideoCell:index renderArray:array];
             }
-        }
-        else{
+        } else{
             if([svideoView isKindOfClass:[TXTVideoCollectionView class]]){
                 [self.renderViewCollectionView setUserVideoCell:index renderArray:array];
             }

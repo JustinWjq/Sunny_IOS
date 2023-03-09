@@ -204,12 +204,13 @@
            }else{
                 [JMLoadingHUD hide];
 //               [[JMToast sharedToast] showDialogWithMsg:[response valueForKey:@"errInfo"]];
-               TICBLOCK_SAFE_RUN(callback,[errCode intValue],[response valueForKey:@"errInfo"]);
+               TICBLOCK_SAFE_RUN(callback, [errCode intValue], [response valueForKey:@"errInfo"]);
            }
 
        } failure:^(NSError *error, id response) {
             [JMLoadingHUD hide];
            [[JMToast sharedToast] showDialogWithMsg:@"网络请求超时"];
+           TICBLOCK_SAFE_RUN(callback, (int)[error code], @"网络请求超时");
        }];
    
 }
@@ -301,7 +302,7 @@
 //}
 
 //channel: 0 之前的模式 1 群聊模式
-- (void)loginSDK:(NSString *)channel CallBack:(TXTCallback)callback{
+- (void)loginSDK:(NSString *)channel CallBack:(TXTCallback)callback {
     NSString *userId = [TICConfig shareInstance].userId;
     NSString *userSig = [TICConfig shareInstance].userSig;
     __weak typeof(self) ws = self;
@@ -347,17 +348,16 @@
                     AppDelegate *ad = (AppDelegate *)[UIApplication sharedApplication].delegate;
                     [ad.window setHidden:YES];
                     
-                    TICBLOCK_SAFE_RUN(callback,code,joinDesc);
+                    TICBLOCK_SAFE_RUN(callback, code, joinDesc);
                 } else{
                     [JMLoadingHUD hide];
-                    NSString *joinDesc = [NSString stringWithFormat:@"joinClassroom=%@",desc];
-                    TICBLOCK_SAFE_RUN(callback,code,joinDesc);
+//                    NSString *joinDesc = [NSString stringWithFormat:@"joinClassroom=%@",desc];
+                    TICBLOCK_SAFE_RUN(callback, code, @"加入房间失败，网络异常无法连接服务器。");
                 }
             }];
-        }
-        else{
+        } else {
             [JMLoadingHUD hide];
-            TICBLOCK_SAFE_RUN(callback,code,[NSString stringWithFormat:@"%@=====登录失败",desc]);
+            TICBLOCK_SAFE_RUN(callback ,code, [NSString stringWithFormat:@"登录失败，%@", desc]);
         }
     }];
 }
@@ -549,7 +549,7 @@
 }
 
 -(NSString *)releaseVersion {
-    return @"1.0.21";
+    return @"1.0.23";
 }
 
 @end

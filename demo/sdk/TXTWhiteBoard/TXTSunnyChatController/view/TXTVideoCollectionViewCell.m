@@ -49,7 +49,6 @@
     }else{
         [videoview initHideUIDirectionLeft:YES];
     }
-    
 
     [CATransaction commit];
 }
