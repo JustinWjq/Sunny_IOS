@@ -78,6 +78,9 @@
                                                  name:UIDeviceOrientationDidChangeNotification
                                                object:nil];
     
+//    AppDelegate *ad = (AppDelegate*) [UIApplication sharedApplication].delegate;
+//    ad.allowRotation = YES;
+    
 }
 
 - (void)handleScreenOrientationChange:(NSNotification *)noti {
@@ -85,22 +88,25 @@
     UIDeviceOrientation orientation = [UIDevice currentDevice].orientation;
        switch (orientation) {
            case UIDeviceOrientationPortrait:
-               portrait = @"UIInterfaceOrientationUnknown";
+               portrait = @"UIDeviceOrientationPortrait";
                break;
            case UIDeviceOrientationPortraitUpsideDown:
-               portrait = @"UIInterfaceOrientationPortraitUpsideDown";
+               portrait = @"UIDeviceOrientationPortraitUpsideDown";
                break;
            case UIDeviceOrientationLandscapeLeft:
-               portrait = @"UIInterfaceOrientationLandscapeLeft";
+               portrait = @"UIDeviceOrientationLandscapeLeft";
                break;
            case UIDeviceOrientationLandscapeRight:
-               portrait = @"UIInterfaceOrientationLandscapeRight";
+               portrait = @"UIDeviceOrientationLandscapeRight";
                break;
            case UIDeviceOrientationFaceDown:
-               portrait = @"UIInterfaceOrientationPortrait";
+               portrait = @"UIDeviceOrientationFaceDown";
                break;
            case UIDeviceOrientationFaceUp:
                portrait = @"UIDeviceOrientationFaceUp";
+               break;
+           case UIDeviceOrientationUnknown:
+               portrait = @"UIDeviceOrientationUnknown";
                break;
            default:
                break;
@@ -548,28 +554,36 @@ static AFHTTPSessionManager *instance;
 - (void)onEndRoom{
     NSLog(@"结束了");
     
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        if (@available(iOS 16.0, *)) {
-            // iOS16新API，让控制器刷新方向，新方向为上面设置的orientations
-    #if defined(__IPHONE_16_0)
-            NSArray *array = [[[UIApplication sharedApplication] connectedScenes] allObjects];
-            UIWindowScene *scene = [array firstObject];
-            // 屏幕方向
-            UIInterfaceOrientationMask orientation = UIInterfaceOrientationMaskPortrait;
-            UIWindowSceneGeometryPreferencesIOS *geometryPreferencesIOS = [[UIWindowSceneGeometryPreferencesIOS alloc] initWithInterfaceOrientations:orientation];
-            // 开始切换
-            [scene requestGeometryUpdateWithPreferences:geometryPreferencesIOS errorHandler:^(NSError * _Nonnull error) {
-                NSLog(@"强制%@错误:%@", @"横屏", error);
-            }];
-    #endif
-        }else{
-            [[UIDevice currentDevice] setValue:@(UIDeviceOrientationPortrait) forKey:@"orientation"];
-        }
-        [UIViewController attemptRotationToDeviceOrientation];
+//    NSString *js = @"window.location.reload();";
+//    [self.webView evaluateJavaScript:js completionHandler:^(id result, NSError *error) {
+//        NSLog(@"onEndRoom evaluateJavaScript ------- %@ %@ ", result, [error localizedDescription]);
+//    }];
+    
+//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//        if (@available(iOS 16.0, *)) {
+//            // iOS16新API，让控制器刷新方向，新方向为上面设置的orientations
+//    #if defined(__IPHONE_16_0)
+//            NSArray *array = [[[UIApplication sharedApplication] connectedScenes] allObjects];
+//            UIWindowScene *scene = [array firstObject];
+//            // 屏幕方向
+//            UIInterfaceOrientationMask orientation = UIInterfaceOrientationMaskPortrait;
+//            UIWindowSceneGeometryPreferencesIOS *geometryPreferencesIOS = [[UIWindowSceneGeometryPreferencesIOS alloc] initWithInterfaceOrientations:orientation];
+//            // 开始切换
+//            [scene requestGeometryUpdateWithPreferences:geometryPreferencesIOS errorHandler:^(NSError * _Nonnull error) {
+//                NSLog(@"强制%@错误:%@", @"横屏", error);
+//            }];
+//    #endif
+//        }else{
+//            [[UIDevice currentDevice] setValue:@(UIDeviceOrientationPortrait) forKey:@"orientation"];
+//        }
+//        [UIViewController attemptRotationToDeviceOrientation];
         
 //        AppDelegate *ad = (AppDelegate*) [UIApplication sharedApplication].delegate;
 //        ad.allowRotation = NO;
-    });
+//    });
+    
+    
+    
     
     //    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
     //

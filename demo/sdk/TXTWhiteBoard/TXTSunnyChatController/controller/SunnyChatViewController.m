@@ -268,29 +268,34 @@ static NSInteger const kInputToolBarH = 62;
 
 /// orientationChange
 - (void)handleScreenOrientationChange:(NSNotification *)noti {
-    NSLog(@"handleScreenOrientationChange");
-    
     NSString *portrait = @"";
+    NSString *pt = @"";
     UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
        switch (orientation) {
            case UIInterfaceOrientationUnknown:
+               pt = @"UIInterfaceOrientationUnknown";
                portrait = [NSString stringWithFormat:@"%ld",(long)TRTCVideoRenderModePortrait];
                break;
            case UIInterfaceOrientationPortrait:
+               pt = @"UIInterfaceOrientationPortrait";
                portrait = [NSString stringWithFormat:@"%ld",(long)TRTCVideoRenderModePortrait];
                break;
            case UIInterfaceOrientationPortraitUpsideDown:
+               pt = @"UIInterfaceOrientationPortraitUpsideDown";
                portrait = [NSString stringWithFormat:@"%ld",(long)TRTCVideoRenderModePortrait];
                break;
            case UIInterfaceOrientationLandscapeLeft:
+               pt = @"UIInterfaceOrientationLandscapeLeft";
                portrait = [NSString stringWithFormat:@"%ld",(long)TRTCVideoRenderModeLandscape];
                break;
            case UIInterfaceOrientationLandscapeRight:
+               pt = @"UIInterfaceOrientationLandscapeRight";
                portrait = [NSString stringWithFormat:@"%ld",(long)TRTCVideoRenderModeLandscape];
                break;
            default:
                break;
        }
+    NSLog(@"SunnyChatViewController handleScreenOrientationChange  == %@", pt);
     TXUserDefaultsSetObjectforKey(portrait, Direction);
 
     
@@ -2300,19 +2305,19 @@ static NSInteger const kInputToolBarH = 62;
     [[TICManager sharedInstance] removeEventListener:self];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:UIDeviceOrientationDidChangeNotification
+                                                    name:UIApplicationDidChangeStatusBarOrientationNotification
                                                   object:nil];
     
     NSString *serviceId = TXUserDefaultsGetObjectforKey(ServiceId);
     NSDictionary *dict = @{@"serviceId":serviceId};
     [[AFNHTTPSessionManager shareInstance] requestURL:ServiceRoom_EndRecord RequestWay:@"POST" Header:nil Body:dict params:nil isFormData:NO success:^(NSError *error, id response) {
-
-        [ZYSuspensionManager destroyWindowForKey:@"txtvideowindow"];
+        
+        NSLog(@"结束录制并结束会话");
+        NSNotification *notification =[NSNotification notificationWithName:@"endRecordFirst" object:nil userInfo:nil];
+        [[NSNotificationCenter defaultCenter] postNotification:notification];
         
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.35 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            NSLog(@"结束录制并结束会话");
-            NSNotification *notification =[NSNotification notificationWithName:@"endRecordFirst" object:nil userInfo:nil];
-            [[NSNotificationCenter defaultCenter] postNotification:notification];
+            [ZYSuspensionManager destroyWindowForKey:@"txtvideowindow"];
         });
         
     } failure:^(NSError *error, id response) {
@@ -2460,9 +2465,9 @@ static NSInteger const kInputToolBarH = 62;
     return UIInterfaceOrientationMaskLandscapeRight | UIInterfaceOrientationMaskPortrait;
 }
 
-- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation{
-    return UIInterfaceOrientationPortrait;
-}
+//- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation{
+//    return UIInterfaceOrientationPortrait;
+//}
 
 - (TXTGroupMemberViewController *)groupMemberViewController {
     if (!_groupMemberViewController) {
