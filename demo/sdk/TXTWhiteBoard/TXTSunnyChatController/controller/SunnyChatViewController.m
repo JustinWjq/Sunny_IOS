@@ -721,6 +721,8 @@ static NSInteger const kInputToolBarH = 62;
             [self.renderArray replaceObjectAtIndex:(self.renderArray.count-1) withObject:userModel];
             [self reloadManageMembersArray];
             [self updateRenderViewsLayout];
+            
+            [TXTToast toastWithTitle:[NSString stringWithFormat:@"房间详情异常，状态码(%@)", errCode] type:TXTToastTypeWarn];
         }
         
     } failure:^(NSError *error, id response) {
@@ -728,6 +730,8 @@ static NSInteger const kInputToolBarH = 62;
         [self.renderArray replaceObjectAtIndex:(self.renderArray.count-1) withObject:userModel];
         [self reloadManageMembersArray];
         [self updateRenderViewsLayout];
+        
+        [TXTToast toastWithTitle:@"网络连接错误，获取房间详情失败" type:TXTToastTypeWarn];
     }];
 }
 

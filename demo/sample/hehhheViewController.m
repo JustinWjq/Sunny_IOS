@@ -318,23 +318,22 @@ static AFHTTPSessionManager *instance;
 
 -(IBAction)continueA:(id)sender {
     /*
-     {
-         inviteNumber = 35035608;
+     2023-03-10 00:05:27.404894+0800 sample[6417:348912] bodyDic == {
+         inviteNumber = 86054893;
          orgAccount = sunshineLifeOrg;
-         sign = 683a8fbce98b1c4d2c73b4b21991514501d1e34b1f573ef8df62c25b02185782;
+         sign = 683a8fbce98b1c4d2c73b4b219915145b951f7a05d4f56122b3fc00c5f5e5761;
          userId = 123123;
-         userName = "\U6d4b\U8bd5";
+         userName = "\U6d4b\U8bd5^o^^o^";
      }
-     
      */
     NSString *agentName = self.agentName.text;
     NSString *orgName = self.orgName.text;
     
-    [[TXTManage sharedInstance] startVideo:@"35035608"
+    [[TXTManage sharedInstance] startVideo:@"86054893"
                                   andAgent:agentName
                                   UserName:@"测试^o^^o^"
                                    OrgName:orgName
-                               SignOrgName:@"683a8fbce98b1c4d2c73b4b21991514501d1e34b1f573ef8df62c25b02185782"
+                               SignOrgName:@"683a8fbce98b1c4d2c73b4b219915145b951f7a05d4f56122b3fc00c5f5e5761"
                                   CallBack:^(int code, NSString * _Nonnull desc) {
         AppDelegate *ad = (AppDelegate*) [UIApplication sharedApplication].delegate;
         if (code == 0) {
