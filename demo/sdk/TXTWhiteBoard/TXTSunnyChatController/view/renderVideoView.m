@@ -451,7 +451,8 @@
             TXTUserModel *userModel = self.renderArray[index];
             if ([nsvideoView.userModel.render.userId isEqualToString:userModel.render.userId]) {
                 for (TRTCVolumeInfo *info in userVolumes) {
-                    if ([info.userId isEqualToString:userModel.render.userId] || info.userId == nil) {
+                    NSString *userId = [TXTUserModel removeExtraForUserId:info.userId];
+                    if ([userId isEqualToString:userModel.render.userId] || info.userId == nil) {
                         nsvideoView.userModel = userModel;
                         [nsvideoView changeVoiceImage:info];
                     }

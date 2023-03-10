@@ -14,6 +14,18 @@
     
 }
 
++(NSString *)removeExtraForUserId:(NSString *)userid {
+    if(userid != nil && [userid isKindOfClass:[NSString class]]) {
+        NSArray *arr = [userid componentsSeparatedByString:@"extra"];
+        if(arr == nil || arr.count == 0) {
+            return userid;
+        }
+        NSString *newUserId = [arr firstObject];
+        return newUserId;
+    }
+    return userid;
+}
+
 -(BOOL)compareUserIdWithoutExtra:(NSString *)tuserId {
     
     if(_render == nil || _render.userId == nil) {

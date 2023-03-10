@@ -25,6 +25,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 -(BOOL)compareUserIdWithoutExtra:(NSString *)userId;
 
++(NSString *)removeExtraForUserId:(NSString *)userid;
+
 @end
 
 NS_ASSUME_NONNULL_END

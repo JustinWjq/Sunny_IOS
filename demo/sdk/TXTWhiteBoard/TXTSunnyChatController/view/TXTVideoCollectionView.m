@@ -41,7 +41,8 @@
         for (int i = 0; i < array.count; i++) {
             TXTUserModel *model = array[i];
             TICRenderView *render = model.render;
-           if ([info.userId isEqualToString:render.userId]) {
+            NSString *userId = [TXTUserModel removeExtraForUserId:info.userId];
+           if ([userId isEqualToString:render.userId]) {
                 NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:0];
                 TXTVideoCollectionViewCell *cell = (TXTVideoCollectionViewCell *)[_collectionView cellForItemAtIndexPath:indexPath];
                 [cell reloadAudio:info Model:model];
