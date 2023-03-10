@@ -62,6 +62,7 @@
     [self.nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.icon.mas_right).offset(10);
         make.centerY.equalTo(self.icon);
+        make.right.equalTo(self.contentView.mas_right).offset(-90);
     }];
     
     [self.contentView addSubview:self.videoBtn];
@@ -85,9 +86,9 @@
     
     self.nameLabel.text = oregionUserName;
     
-    if (self.nameLabel.text.length > 10) {
-        oregionUserName = [NSString stringWithFormat:@"%@...", [NSString stringWithFormat:@"%@...", [NSString subStringWithEmoji:self.nameLabel.text limitLength:10]]];
-    }
+//    if (self.nameLabel.text.length > 10) {
+//        oregionUserName = [NSString stringWithFormat:@"%@...", [NSString stringWithFormat:@"%@...", [NSString subStringWithEmoji:self.nameLabel.text limitLength:10]]];
+//    }
     
 //    if (self.keyWord) {
 //        NSRange range = [userName rangeOfString:self.keyWord];
@@ -147,6 +148,11 @@
 - (UILabel *)nameLabel {
     if (!_nameLabel) {
         UILabel *nameLabel = [UILabel labelWithTitle:@"" color:[UIColor colorWithHexString:@"333333"] font:[UIFont qs_regularFontWithSize:15]];
+        
+        nameLabel.lineBreakMode = NSLineBreakByTruncatingMiddle;
+        nameLabel.textAlignment = NSTextAlignmentLeft;
+        nameLabel.numberOfLines = 1;
+        
         self.nameLabel = nameLabel;
     }
     return _nameLabel;

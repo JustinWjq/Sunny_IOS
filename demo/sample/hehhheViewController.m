@@ -129,41 +129,83 @@
     self.config.enableVideo = YES;
     self.config.isChat = NO;
     self.config.isDebug = YES;
+    
+    /*
+     
+     :{
+      webViewFlag = WKWeb,
+      agentLevel = 5,
+      statusBarHeigh = 20.0,
+      userType_s = S,
+      agentCodeQNB = 1090000001,
+      bundleId = com.sinosig.jzyx,
+      BusSrePcMac = ,
+      BusSrePcIp = 192.168.137.64,
+      publicKeyStr = MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC9GoCVoPiztYNS+tTXFCRwot15vD+8LhC98OaEuN0rUknPi8FWCOuy6N6HBRsBgojyVdqdgWGgF+OjzzYvQhehQcYK2c54vqYJVFOEGdWmd2eKfm3MBuFPXfCioexs2pQ6X2JZKWWlzB53AekhPRsrkR1YLzsjnmx0ZxllcQLhrQIDAQAB,
+      agentCodeoc = WlRCalkxcEdZelpIV0doMlprTm5NazFNYzAxNVVFMXpZVFpYUTI5c2VEaHlabTVzTlVkdVRWUnFTSFlyZGs5d2VTdEtiVXhaYkc1QlZIVTFSVWRWY0ZSWVlVaExVMUF4WTNSVU1YbFBORWxEYjFkVVUyYzlQUT09,
+      managecomName = %E9%98%B3%E5%85%89%E4%BA%BA%E5%AF%BF%E4%BF%9D%E9%99%A9%E8%82%A1%E4%BB%BD%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8%E5%8C%97%E4%BA%AC%E5%88%86%E5%85%AC%E5%8F%B8,
+      managecom = 8601,
+      agentkind = NA,
+      userType = 4,
+      version = 4.8.9,
+      fgsName = ,
+      platform = slup,
+      deviceString = iPhone 6 Plus,
+
+      token = WlRCalkxcEdZelpIV0doMlprTm5NazFNYzAxNVVFMXpZVFpYUTI5c2VEaHlabTVzTlVkdVRWUnFTSFlyZGs5d2VTdEtiVXhaYkc1QlZIVTFSVWRWY0ZSWVlVaExVMUF4WTNSVU1YbFBORWxEYjFkVVUyYzlQUT09,
+      phoneId = FBF76C19-8916-4151-A364-DC4CD27111B3,
+      mobile = 18618128372,
+      userCode = 1090000001,
+      licencenum = ,
+      gradeName = SBM,
+      branchtype = 1,
+      userName = %E6%9D%8E%E6%9C%9D%E5%85%89,
+      manageComName = ,
+      picStr = https://precisemkttest.sinosig.com/resourceNginx/headPic/10900000011671606414117.jpg,
+      systemVersion = 12.5.1,
+      QingniuSDKVersion = 1.4.3.0
+     }
+     */
     self.config.cookieDict = @{
         @"webViewFlag":@"WKWeb",
         @"agentLevel":@"5",
-        @"statusBarHeigh":@"0.0",
+        @"statusBarHeigh":@"20.0",
         @"userType_s":@"S",
         
         @"agentCodeQNB":@"1090000001",
         @"bundleId":@"com.sinosig.jzyx",
         @"BusSrePcMac":@"",
-        @"BusSrePcIp":@"172.20.10.8",
+        @"BusSrePcIp":@"192.168.137.64",
         
-        @"agentCodeoc":@"ZUZkbE5VVlhRMUZyT1ZaVU5WVmtNelF6YURaTlVuUXhTRWRIUkdoVmQzaFlZbUZLYVU1Sk9VVlFaRTh5YmtsalNuSXlNREJSTjBWRFl6QjJNR0V3SzBsbWNWWnFZbTVuUmpOdGJsWnZSV2RLYUZwMFEwRTlQUT09",
+        @"publicKeyStr":@"MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC9GoCVoPiztYNS+tTXFCRwot15vD+8LhC98OaEuN0rUknPi8FWCOuy6N6HBRsBgojyVdqdgWGgF+OjzzYvQhehQcYK2c54vqYJVFOEGdWmd2eKfm3MBuFPXfCioexs2pQ6X2JZKWWlzB53AekhPRsrkR1YLzsjnmx0ZxllcQLhrQIDAQAB",
+        
+        @"agentCodeoc":@"WlRCalkxcEdZelpIV0doMlprTm5NazFNYzAxNVVFMXpZVFpYUTI5c2VEaHlabTVzTlVkdVRWUnFTSFlyZGs5d2VTdEtiVXhaYkc1QlZIVTFSVWRWY0ZSWVlVaExVMUF4WTNSVU1YbFBORWxEYjFkVVUyYzlQUT09",
+        
         @"managecomName":@"%E9%98%B3%E5%85%89%E4%BA%BA%E5%AF%BF%E4%BF%9D%E9%99%A9%E8%82%A1%E4%BB%BD%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8%E5%8C%97%E4%BA%AC%E5%88%86%E5%85%AC%E5%8F%B8",
+        
         @"managecom":@"8601",
         @"agentkind":@"NA",
-        
         @"userType":@"4",
-        @"version":@"4.9.2",
+        @"version":@"4.8.9",
         @"fgsName":@"",
         @"platform":@"slup",
         
         @"deviceString":@"iPhone 6s Plus",
-        @"token":@"WlRCalkxcEdZelpIV0doMlprTm5NazFNYzAxNVVHRk9TWEJsVkVOb0wyNXlTRnBEVUdsTWFIZFRVMDFYZUdWWE5WcEJiSG8wVGtGWlRYaDVOMHcxVW5GUmVEWnZiRWRpUzJSWE9UVTBaMHRNYlRVNFRYYzlQUT09",
-        @"phoneId":@"@00000000-0000-0000-0000-000000000000",
+        @"token":@"WlRCalkxcEdZelpIV0doMlprTm5NazFNYzAxNVVFMXpZVFpYUTI5c2VEaHlabTVzTlVkdVRWUnFTSFlyZGs5d2VTdEtiVXhaYkc1QlZIVTFSVWRWY0ZSWVlVaExVMUF4WTNSVU1YbFBORWxEYjFkVVUyYzlQUT09",
+        
+        @"phoneId":@"FBF76C19-8916-4151-A364-DC4CD27111B3",
         @"mobile":@"18618128372",
         
         @"userCode":@"1090000001",
         @"licencenum":@"",
         @"gradeName":@"SBM",
-        @"QingniuSDKVersion":@"1.3.0.84",
-        
         @"branchtype":@"1",
         @"userName":@"%E6%9D%8E%E6%9C%9D%E5%85%89",
+        
+        @"manageComName":@"",
         @"picStr":@"https://precisemkttest.sinosig.com/resourceNginx/headPic/10900000011671606414117.jpg",
-        @"systemVersion":@"15.7.3",
+        @"systemVersion":@"12.5.1",
+        @"QingniuSDKVersion":@"1.4.3.0",
     };
     
     [TXTManage sharedInstance].manageDelegate = self;
@@ -331,7 +373,7 @@ static AFHTTPSessionManager *instance;
     
     [[TXTManage sharedInstance] startVideo:@"86054893"
                                   andAgent:agentName
-                                  UserName:@"测试^o^^o^"
+                                  UserName:@"👌😀😀🦷😅测试👌😀😀🦷😅👌😀😀🦷😅"
                                    OrgName:orgName
                                SignOrgName:@"683a8fbce98b1c4d2c73b4b219915145b951f7a05d4f56122b3fc00c5f5e5761"
                                   CallBack:^(int code, NSString * _Nonnull desc) {
@@ -439,7 +481,7 @@ static AFHTTPSessionManager *instance;
                 NSString *inviteNumber = [result valueForKey:@"inviteNumber"];
                 [[TXTManage sharedInstance] startVideo:inviteNumber
                                               andAgent:agentName
-                                              UserName:@"测试^o^^o^"
+                                              UserName:@"👌😀😀🦷😅测试👌😀😀🦷😅👌😀😀🦷😅"
                                                OrgName:orgName
                                            SignOrgName:sign 
                                               CallBack:^(int code, NSString * _Nonnull desc) {
