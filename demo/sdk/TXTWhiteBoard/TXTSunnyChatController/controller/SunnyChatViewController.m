@@ -160,15 +160,26 @@ static NSInteger const kInputToolBarH = 62;
 
 - (void)willResignActive {
     self.lastIsLandscape = [UIWindow isLandscape];
-    if(self.lastIsLandscape) {
-        [self doRotate];
-    }
+    //    if(self.lastIsLandscape) {
+    //        [self doRotate];
+    //    }
 }
 
 /// didBecomeActive
 - (void)didBecomeActive {
+    NSLog(@"didBecomeActive=== %d", (int)self.lastIsLandscape);
+    //强制选择为竖屏，防止出现webview导航栏上移动
     if(self.lastIsLandscape) {
-        [self doRotate];
+        [self doRotate:NO];
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            if(self.groupMemberViewController != nil) {
+                if(self.groupMemberViewController.view != nil &&
+                   self.groupMemberViewController.view.superview != nil) {
+                    [self bottomMembersButtonClick];
+                }
+            }
+        });
     }
 }
 
@@ -181,11 +192,11 @@ static NSInteger const kInputToolBarH = 62;
         make.width.mas_equalTo(150);
         make.height.mas_equalTo(34);
     }];
-
+    
     [self.view addSubview:self.smallMessageView];
     [self.smallMessageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.smallChatView);
-//        make.height.mas_equalTo(39 * 3);
+        //        make.height.mas_equalTo(39 * 3);
         make.bottom.equalTo(self.smallChatView.mas_top).offset(-10);
         make.width.mas_equalTo(265);
     }];
@@ -203,8 +214,8 @@ static NSInteger const kInputToolBarH = 62;
         make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideBottom);
         make.height.mas_equalTo(kInputToolBarH);
     }];
-//    QSTapGestureRecognizer *gesture = [[QSTapGestureRecognizer alloc] initWithTarget:self action:@selector(hideKeyBoard)];
-//    [self.view addGestureRecognizer:gesture];
+    //    QSTapGestureRecognizer *gesture = [[QSTapGestureRecognizer alloc] initWithTarget:self action:@selector(hideKeyBoard)];
+    //    [self.view addGestureRecognizer:gesture];
     _crossBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.view addSubview:_crossBtn];
     [_crossBtn mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -231,39 +242,39 @@ static NSInteger const kInputToolBarH = 62;
     NSString *portrait = @"";
     NSString *pt = @"";
     UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
-       switch (orientation) {
-           case UIInterfaceOrientationUnknown:
-               pt = @"UIInterfaceOrientationUnknown";
-               portrait = [NSString stringWithFormat:@"%ld",(long)TRTCVideoRenderModePortrait];
-               break;
-           case UIInterfaceOrientationPortrait:
-               pt = @"UIInterfaceOrientationPortrait";
-               portrait = [NSString stringWithFormat:@"%ld",(long)TRTCVideoRenderModePortrait];
-               break;
-           case UIInterfaceOrientationPortraitUpsideDown:
-               pt = @"UIInterfaceOrientationPortraitUpsideDown";
-               portrait = [NSString stringWithFormat:@"%ld",(long)TRTCVideoRenderModePortrait];
-               break;
-           case UIInterfaceOrientationLandscapeLeft:
-               pt = @"UIInterfaceOrientationLandscapeLeft";
-               portrait = [NSString stringWithFormat:@"%ld",(long)TRTCVideoRenderModeLandscape];
-               break;
-           case UIInterfaceOrientationLandscapeRight:
-               pt = @"UIInterfaceOrientationLandscapeRight";
-               portrait = [NSString stringWithFormat:@"%ld",(long)TRTCVideoRenderModeLandscape];
-               break;
-           default:
-               break;
-       }
+    switch (orientation) {
+        case UIInterfaceOrientationUnknown:
+            pt = @"UIInterfaceOrientationUnknown";
+            portrait = [NSString stringWithFormat:@"%ld",(long)TRTCVideoRenderModePortrait];
+            break;
+        case UIInterfaceOrientationPortrait:
+            pt = @"UIInterfaceOrientationPortrait";
+            portrait = [NSString stringWithFormat:@"%ld",(long)TRTCVideoRenderModePortrait];
+            break;
+        case UIInterfaceOrientationPortraitUpsideDown:
+            pt = @"UIInterfaceOrientationPortraitUpsideDown";
+            portrait = [NSString stringWithFormat:@"%ld",(long)TRTCVideoRenderModePortrait];
+            break;
+        case UIInterfaceOrientationLandscapeLeft:
+            pt = @"UIInterfaceOrientationLandscapeLeft";
+            portrait = [NSString stringWithFormat:@"%ld",(long)TRTCVideoRenderModeLandscape];
+            break;
+        case UIInterfaceOrientationLandscapeRight:
+            pt = @"UIInterfaceOrientationLandscapeRight";
+            portrait = [NSString stringWithFormat:@"%ld",(long)TRTCVideoRenderModeLandscape];
+            break;
+        default:
+            break;
+    }
     NSLog(@"SunnyChatViewController handleScreenOrientationChange  == %@", pt);
     TXUserDefaultsSetObjectforKey(portrait, Direction);
-
+    
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.35 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self.whiteBoardViewController updateUI:(orientation == UIInterfaceOrientationPortrait)];
         [self doPortraitLandscapeUI];
     });
-
+    
 }
 
 //- (void)updateUI:(BOOL)isPortrait {
@@ -291,7 +302,7 @@ static NSInteger const kInputToolBarH = 62;
 //        }];
 //
 //    }
-    
+
 //    NSString *direction = TXUserDefaultsGetObjectforKey(Direction);
 //    NSString *imageNameStr = ( [direction intValue] == 0 )? @"Portrait-Landscape" : @"Landscape-Portrait";
 //    NSLog(@"updateUI direction = %@",direction);
@@ -305,7 +316,7 @@ static NSInteger const kInputToolBarH = 62;
 
 #pragma mark - UITextViewDelegate
 - (void)textViewDidChange:(UITextView *)textView {
-  QSLog(@"%@", textView.text);
+    QSLog(@"%@", textView.text);
     if (![textView.text hasSuffix:@"\n"] && textView.text.length >= 50) {
         textView.text = [textView.text substringToIndex:50];
     }
@@ -313,60 +324,60 @@ static NSInteger const kInputToolBarH = 62;
     CGFloat textViewH = 0;
     CGFloat minHeight = 32; // textView最小的高度
     CGFloat maxHeight = 82 + 10; // textView最大的高度
-
+    
     // 获取contentSize 的高度
     CGFloat contentHeight = textView.contentSize.height;
     if (contentHeight < minHeight) {
-      textViewH = minHeight;
-      [textView setContentInset:UIEdgeInsetsZero];
+        textViewH = minHeight;
+        [textView setContentInset:UIEdgeInsetsZero];
     } else if (contentHeight > maxHeight) {
-      textViewH = maxHeight + 4.5;
-      [textView setContentInset:UIEdgeInsetsMake(-5, 0, -3.5, 0)];
+        textViewH = maxHeight + 4.5;
+        [textView setContentInset:UIEdgeInsetsMake(-5, 0, -3.5, 0)];
     } else {
-      if (contentHeight - (minHeight + 7) < 0.01) {
-          [textView setContentInset:UIEdgeInsetsMake(-4.5, 0, -4.5, 0)];
-          textViewH = minHeight;
-      } else {
-          textViewH = contentHeight - 8;
-          [textView setContentInset:UIEdgeInsetsMake(-4.5, 0, -4.5, 0)];
-      }
+        if (contentHeight - (minHeight + 7) < 0.01) {
+            [textView setContentInset:UIEdgeInsetsMake(-4.5, 0, -4.5, 0)];
+            textViewH = minHeight;
+        } else {
+            textViewH = contentHeight - 8;
+            [textView setContentInset:UIEdgeInsetsMake(-4.5, 0, -4.5, 0)];
+        }
     }
     // 2.监听send事件--判断最后一个字符串是不是换行符
     if ([textView.text hasSuffix:@"\n"]) {
-    textView.text = [textView.text stringByReplacingOccurrencesOfString:@"\n" withString:@"" options:NSBackwardsSearch range:NSMakeRange(0, textView.text.length)];
-      if (textView.text.length > 0) {
-          if ([NSString isEmpty:textView.text]) {
-          } else {
-              [self.view endEditing:YES];
-              [self sendText:textView.text];
-          }
-      } else {
-      }
-      // 清空textView的文字
-      textView.text = nil;
-      [textView setContentInset:UIEdgeInsetsMake(0, 0, 0, 0)];
-      
-      // 发送时，textViewH的高度为33
-      textViewH = minHeight;
-      [textView scrollRangeToVisible:textView.selectedRange];
+        textView.text = [textView.text stringByReplacingOccurrencesOfString:@"\n" withString:@"" options:NSBackwardsSearch range:NSMakeRange(0, textView.text.length)];
+        if (textView.text.length > 0) {
+            if ([NSString isEmpty:textView.text]) {
+            } else {
+                [self.view endEditing:YES];
+                [self sendText:textView.text];
+            }
+        } else {
+        }
+        // 清空textView的文字
+        textView.text = nil;
+        [textView setContentInset:UIEdgeInsetsMake(0, 0, 0, 0)];
+        
+        // 发送时，textViewH的高度为33
+        textViewH = minHeight;
+        [textView scrollRangeToVisible:textView.selectedRange];
     }
     // 3.调整整个InputToolBar 的高度
     [self.inputToolBar mas_updateConstraints:^(MASConstraintMaker *make) {
-      make.height.mas_equalTo(textViewH + 30);
+        make.height.mas_equalTo(textViewH + 30);
     }];
     CGFloat changeH = textViewH - self.previousTextViewContentHeight;
     if (changeH != 0) {
-    // 加个动画
-    [UIView animateWithDuration:0.25 animations:^{
-        [self.view layoutIfNeeded];
-        // 4.记光标回到原位
-        // 下面这几行代码需要写在[self.view layoutIfNeeded]后面，不然系统会自动调整为位置
-        if (contentHeight < maxHeight) {
-            [textView setContentOffset:CGPointZero animated:YES];
-            [textView scrollRangeToVisible:textView.selectedRange];
-        }
-    }];
-      self.previousTextViewContentHeight = textViewH;
+        // 加个动画
+        [UIView animateWithDuration:0.25 animations:^{
+            [self.view layoutIfNeeded];
+            // 4.记光标回到原位
+            // 下面这几行代码需要写在[self.view layoutIfNeeded]后面，不然系统会自动调整为位置
+            if (contentHeight < maxHeight) {
+                [textView setContentOffset:CGPointZero animated:YES];
+                [textView scrollRangeToVisible:textView.selectedRange];
+            }
+        }];
+        self.previousTextViewContentHeight = textViewH;
     }
     if (contentHeight > maxHeight) {
         [UIView animateWithDuration:0.2 animations:^{
@@ -387,38 +398,38 @@ static NSInteger const kInputToolBarH = 62;
 
 - (void)viewWillLayoutSubviews {
     [super viewWillLayoutSubviews];
-//    if ([UIWindow isLandscape]) {
-//        self.statusToos.hidden = NO;
-//        if (self.isWhite) {
-//            self.crossBtn.hidden = YES;
-//        }
-//    } else {
-//        self.statusToos.hidden = YES;
-//    }
+    //    if ([UIWindow isLandscape]) {
+    //        self.statusToos.hidden = NO;
+    //        if (self.isWhite) {
+    //            self.crossBtn.hidden = YES;
+    //        }
+    //    } else {
+    //        self.statusToos.hidden = YES;
+    //    }
 }
 
 - (void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
-//    [self.navigationController setNavigationBarHidden:YES animated:YES];
+    //    [self.navigationController setNavigationBarHidden:YES animated:YES];
     [self hiddenTabAndNav];
-//    TXTNavigationController *navigationController = (TXTNavigationController *)self.navigationController;
-//    if (navigationController.interfaceOrientation == UIInterfaceOrientationLandscapeRight) {
-//
-////        [self.view addSubview:self.statusToos];
-////        [self.topToos mas_remakeConstraints:^(MASConstraintMaker *make) {
-////                make.top.mas_equalTo(self.view.mas_top).offset(20);
-////                make.left.mas_equalTo(self.view.mas_left).offset(0);
-////                make.right.mas_equalTo(self.view.mas_right).offset(0);
-////                make.height.mas_equalTo(Adapt(60));
-////            }];
-//    }
-//    [self.navigationController setNavigationBarHidden:YES animated:YES];
+    //    TXTNavigationController *navigationController = (TXTNavigationController *)self.navigationController;
+    //    if (navigationController.interfaceOrientation == UIInterfaceOrientationLandscapeRight) {
+    //
+    ////        [self.view addSubview:self.statusToos];
+    ////        [self.topToos mas_remakeConstraints:^(MASConstraintMaker *make) {
+    ////                make.top.mas_equalTo(self.view.mas_top).offset(20);
+    ////                make.left.mas_equalTo(self.view.mas_left).offset(0);
+    ////                make.right.mas_equalTo(self.view.mas_right).offset(0);
+    ////                make.height.mas_equalTo(Adapt(60));
+    ////            }];
+    //    }
+    //    [self.navigationController setNavigationBarHidden:YES animated:YES];
     [self setBottomToolsUI];
 }
 
 -(void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
-//    [self.navigationController setNavigationBarHidden:NO animated:animated];
+    //    [self.navigationController setNavigationBarHidden:NO animated:animated];
 }
 
 ///// isLandscape
@@ -441,43 +452,43 @@ static NSInteger const kInputToolBarH = 62;
     [[UIApplication sharedApplication] setIdleTimerDisabled: YES];
     
     TXTNavigationController *navigationController = (TXTNavigationController *)self.navigationController;
-//    if ([self isLandscape]) {
-//        NSString *portrait = [NSString stringWithFormat:@"%ld",(long)TRTCVideoRenderModePortrait];
-//        TXUserDefaultsSetObjectforKey(portrait, Direction);
-//    }else{
-//        NSString *portrait = [NSString stringWithFormat:@"%ld",(long)TRTCVideoRenderModeLandscape];
-//        TXUserDefaultsSetObjectforKey(portrait, Direction);
-//    }
+    //    if ([self isLandscape]) {
+    //        NSString *portrait = [NSString stringWithFormat:@"%ld",(long)TRTCVideoRenderModePortrait];
+    //        TXUserDefaultsSetObjectforKey(portrait, Direction);
+    //    }else{
+    //        NSString *portrait = [NSString stringWithFormat:@"%ld",(long)TRTCVideoRenderModeLandscape];
+    //        TXUserDefaultsSetObjectforKey(portrait, Direction);
+    //    }
     self.hideBottomAndTop = YES;
     self.openStartRecord = NO;
     self.cameraState = ![TICConfig shareInstance].enableVideo;
     self.muteState = YES;
     
     //切换rootViewController的旋转方向
-//    if (![UIWindow isLandscape]) {
-//        [self btnAction];
-        navigationController.interfaceOrientation = UIInterfaceOrientationLandscapeRight;
-        navigationController.interfaceOrientationMask = UIInterfaceOrientationMaskLandscapeRight;
-        //设置屏幕的转向为横屏
-        [[UIDevice currentDevice] setValue:@(UIDeviceOrientationLandscapeRight) forKey:@"orientation"];
-        NSString *portrait = [NSString stringWithFormat:@"%ld",(long)TRTCVideoRenderModeLandscape];
-        TXUserDefaultsSetObjectforKey(portrait, Direction);
-        //刷新
-        [UIViewController attemptRotationToDeviceOrientation];
+    //    if (![UIWindow isLandscape]) {
+    //        [self btnAction];
+    navigationController.interfaceOrientation = UIInterfaceOrientationLandscapeRight;
+    navigationController.interfaceOrientationMask = UIInterfaceOrientationMaskLandscapeRight;
+    //设置屏幕的转向为横屏
+    [[UIDevice currentDevice] setValue:@(UIDeviceOrientationLandscapeRight) forKey:@"orientation"];
+    NSString *portrait = [NSString stringWithFormat:@"%ld",(long)TRTCVideoRenderModeLandscape];
+    TXUserDefaultsSetObjectforKey(portrait, Direction);
+    //刷新
+    [UIViewController attemptRotationToDeviceOrientation];
     
-        [self updateRenderViewsLayout];
-        [self updateBottomButtons];
-//    }
+    [self updateRenderViewsLayout];
+    [self updateBottomButtons];
+    //    }
     
     TRTCVideoEncParam *param = [TRTCVideoEncParam new];
     param.resMode = TRTCVideoResolutionModeLandscape;
     [[[TICManager sharedInstance] getTRTCCloud] setVideoEncoderParam:param];
-//        [[[TICManager sharedInstance] getTRTCCloud] setVideoEncoderRotation:TRTCVideoRotation_90];
+    //        [[[TICManager sharedInstance] getTRTCCloud] setVideoEncoderRotation:TRTCVideoRotation_90];
 }
 
 - (void)joinRoom{
     QSLog(@"%@ ----xxx", [TRTCCloud getSDKVersion]);
-//    [self addNotification];
+    //    [self addNotification];
     //更新视频视图
     //    self.userId = TXUserDefaultsGetObjectforKey(Agent);
     self.userId = [TICConfig shareInstance].userId;
@@ -487,15 +498,15 @@ static NSInteger const kInputToolBarH = 62;
     TICRenderView *render = [[TICRenderView alloc] init];
     render.userId = [TICConfig shareInstance].userId;
     render.streamType = TICStreamType_Main;
-//    [[[TICManager sharedInstance] getTRTCCloud] startRemoteView:[TICConfig shareInstance].userId view:render];
+    //    [[[TICManager sharedInstance] getTRTCCloud] startRemoteView:[TICConfig shareInstance].userId view:render];
     userModel.render = render;
     userModel.userName = TXUserDefaultsGetObjectforKey(Agent);
     userModel.showVideo = [TICConfig shareInstance].enableVideo;
     userModel.showAudio = YES;
     userModel.userRole = [TICConfig shareInstance].role;
     [[[TICManager sharedInstance] getTRTCCloud] startRemoteView:[TICConfig shareInstance].userId view:render];
-//    [[[TICManager sharedInstance] getTRTCCloud] setVideoEncoderRotation:TRTCVideoRotation_180];
-//    [[[TICManager sharedInstance] getTRTCCloud] setLocalViewRotation:TRTCVideoRotation_180];
+    //    [[[TICManager sharedInstance] getTRTCCloud] setVideoEncoderRotation:TRTCVideoRotation_180];
+    //    [[[TICManager sharedInstance] getTRTCCloud] setLocalViewRotation:TRTCVideoRotation_180];
     [[[TICManager sharedInstance] getTRTCCloud] startLocalPreview:YES view:render];
     [[[TICManager sharedInstance] getTRTCCloud] setLocalViewFillMode:TRTCVideoFillMode_Fit];
     [[[TICManager sharedInstance] getTRTCCloud] setVideoEncoderMirror:YES];
@@ -531,7 +542,7 @@ static NSInteger const kInputToolBarH = 62;
                 [[[TICManager sharedInstance] getTRTCCloud] muteLocalVideo:![TICConfig shareInstance].enableVideo];
                 
             }
-
+            
             self.isShowWhiteBoard = [[result valueForKey:@"shareStatus"] boolValue];
             
             NSArray *userInfo = [result valueForKey:@"userInfo"];
@@ -585,7 +596,7 @@ static NSInteger const kInputToolBarH = 62;
                 for (int j = 0; j<renderNewArr.count; j++) {
                     
                     TXTUserModel *umodel = renderNewArr[j];
-//                    if ([umodel.render.userId isEqualToString:[userdic valueForKey:@"userId"]]) {
+                    //                    if ([umodel.render.userId isEqualToString:[userdic valueForKey:@"userId"]]) {
                     if([umodel compareUserIdWithoutExtra:[userdic valueForKey:@"userId"]]) {
                         umodel.userName = [userdic valueForKey:@"userName"];
                         umodel.userRole = [userdic valueForKey:@"userRole"];
@@ -598,7 +609,7 @@ static NSInteger const kInputToolBarH = 62;
                         
                         if ([umodel.userRole isEqualToString:@"owner"]) {
                             //业务员
-//                            if ([self.userId isEqualToString:umodel.render.userId]) {
+                            //                            if ([self.userId isEqualToString:umodel.render.userId]) {
                             if ([umodel compareUserIdWithoutExtra:self.userId]) {
                                 [self.renderArray removeObject:umodel];
                                 [self.renderArray insertObject:umodel atIndex:0];
@@ -607,11 +618,11 @@ static NSInteger const kInputToolBarH = 62;
                             }
                         }else{
                             [self.renderArray replaceObjectAtIndex:j withObject:umodel];
-
-//                            [self.renderArray addObject:umodel];
-//                            [self.renderArray addObject:umodel];
-//                            [self.renderArray addObject:umodel];
-//                            [self.renderArray addObject:umodel];
+                            
+                            //                            [self.renderArray addObject:umodel];
+                            //                            [self.renderArray addObject:umodel];
+                            //                            [self.renderArray addObject:umodel];
+                            //                            [self.renderArray addObject:umodel];
                         }
                         
                         
@@ -637,31 +648,31 @@ static NSInteger const kInputToolBarH = 62;
             if (self.isShowWhiteBoard) {
                 self.isShowWhiteBoard = YES;
                 [self getWhiteBoard:self.isShowWhiteBoard];
-//                [self updateVideoView:@"insert" Index:1];
-//                if (self.landscapeRoomViewController) {
-//
-//                }else{
-//                    [self getWhiteBoard];
-//                }
-//
-//                self.shareState = YES;
-//
-//                if ([self.ShareStatusUserId isEqualToString:self.userId]) {
-//                    //                    self.pptView.hidden = YES;
-//
-//                }else{
-//                    self.pptView.hidden = YES;
-//                }
-//                [self.shareFileButton setImage:[UIImage imageNamed:@"fileShare_select" inBundle:TXSDKBundle compatibleWithTraitCollection:nil] forState:UIControlStateNormal];
-//                [self.drawBackView addSubview:self.brushView];
-//                [self.drawBackView addSubview:self.changeButton];
+                //                [self updateVideoView:@"insert" Index:1];
+                //                if (self.landscapeRoomViewController) {
+                //
+                //                }else{
+                //                    [self getWhiteBoard];
+                //                }
+                //
+                //                self.shareState = YES;
+                //
+                //                if ([self.ShareStatusUserId isEqualToString:self.userId]) {
+                //                    //                    self.pptView.hidden = YES;
+                //
+                //                }else{
+                //                    self.pptView.hidden = YES;
+                //                }
+                //                [self.shareFileButton setImage:[UIImage imageNamed:@"fileShare_select" inBundle:TXSDKBundle compatibleWithTraitCollection:nil] forState:UIControlStateNormal];
+                //                [self.drawBackView addSubview:self.brushView];
+                //                [self.drawBackView addSubview:self.changeButton];
             } else {
-//                //没有大图
-//                if (self.currentBigVideoModel == nil) {
-//                    [self updateVideoView:@"remove" Index:1];
-//                }else{
-//                    NSLog(@"直接加入房间");
-//                }
+                //                //没有大图
+                //                if (self.currentBigVideoModel == nil) {
+                //                    [self updateVideoView:@"remove" Index:1];
+                //                }else{
+                //                    NSLog(@"直接加入房间");
+                //                }
             }
             
             [self reloadManageMembersArray];
@@ -735,10 +746,10 @@ static NSInteger const kInputToolBarH = 62;
         [weakSelf.smallChatView mas_updateConstraints:^(MASConstraintMaker *make) {
             make.bottom.equalTo(weakSelf.view.mas_safeAreaLayoutGuideBottom).offset(-(Adapt(15+60)));
         }];
-//        weakSelf.crossBtn.hidden = NO;
+        //        weakSelf.crossBtn.hidden = NO;
         weakSelf.smallChatView.hidden = YES;
         [weakSelf.crossBtn mas_updateConstraints:^(MASConstraintMaker *make) {
-//            make.bottom.mas_equalTo(weakSelf.view.mas_safeAreaLayoutGuideBottom).offset(weakSelf.hideBottomAndTop ? -Adapt(15) : -(Adapt(15+60)));
+            //            make.bottom.mas_equalTo(weakSelf.view.mas_safeAreaLayoutGuideBottom).offset(weakSelf.hideBottomAndTop ? -Adapt(15) : -(Adapt(15+60)));
             make.right.mas_equalTo(weakSelf.view.mas_safeAreaLayoutGuideRight).offset(-Adapt(15));
             make.bottom.mas_equalTo(weakSelf.view.mas_safeAreaLayoutGuideBottom).offset(-(Adapt(15+60)));
         }];
@@ -755,8 +766,8 @@ static NSInteger const kInputToolBarH = 62;
         make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideBottom).offset(bottomH);
     }];
     self.smallChatView.hidden = NO;
-//    self.crossBtn.hidden = [UIWindow isLandscape];
-//    CGFloat rightMargin = self.whiteBoardViewController.isTelepromp ? -110 : -20;
+    //    self.crossBtn.hidden = [UIWindow isLandscape];
+    //    CGFloat rightMargin = self.whiteBoardViewController.isTelepromp ? -110 : -20;
     [self.crossBtn mas_updateConstraints:^(MASConstraintMaker *make) {
         make.bottom.mas_equalTo(self.view.mas_safeAreaLayoutGuideBottom).offset(bottomH);
     }];
@@ -774,15 +785,21 @@ static NSInteger const kInputToolBarH = 62;
 
 //成员
 - (void)bottomMembersButtonClick{
-//    TXTGroupMemberViewController *vc = [[TXTGroupMemberViewController alloc] init];
-//    vc.manageMembersArr = self.renderViews;
-//    self.groupMemberViewController = vc;
-//    vc.closeBlock = ^{
-//        self.groupMemberViewController = nil;
-//    };
-//    [self.navigationController pushViewController:vc animated:YES];
-//    return;
+    //    TXTGroupMemberViewController *vc = [[TXTGroupMemberViewController alloc] init];
+    //    vc.manageMembersArr = self.renderViews;
+    //    self.groupMemberViewController = vc;
+    //    vc.closeBlock = ^{
+    //        self.groupMemberViewController = nil;
+    //    };
+    //    [self.navigationController pushViewController:vc animated:YES];
+    //    return;
     // 添加成员页面
+    
+    if(self.groupMemberViewController != nil && self.groupMemberViewController.view != nil){
+        [self.groupMemberViewController.view removeFromSuperview];
+        self.groupMemberViewController = nil;
+    }
+    
     __weak __typeof(self)weakSelf = self;
     self.groupMemberViewController.closeBlock = ^{
         [weakSelf.groupMemberViewController.view removeFromSuperview];
@@ -803,12 +820,12 @@ static NSInteger const kInputToolBarH = 62;
 - (void)addFile:(FileType)fileType fileModel:(TXTFileModel *)fileModel {
     // 开始做事情
     if (fileType == FileTypePics) {
-//        fileModel.pics = @[@"https://wisdom-exhibition-1301905869.cos.ap-shenzhen-fsi.myqcloud.com/testdocument/0jsoaidalsh31nr2bk4c_tiw/picture/1.jpg",
-//                           @"https://wisdom-exhibition-1301905869.cos.ap-shenzhen-fsi.myqcloud.com/testdocument/0jsoaidalsh31nr2bk4c_tiw/picture/2.jpg",
-//                           @"https://wisdom-exhibition-1301905869.cos.ap-shenzhen-fsi.myqcloud.com/testdocument/0jsoaidalsh31nr2bk4c_tiw/picture/3.jpg",@"https://wisdom-exhibition-1301905869.cos.ap-shenzhen-fsi.myqcloud.com/testdocument/0jsoaidalsh31nr2bk4c_tiw/picture/1.jpg",
-//                           @"https://wisdom-exhibition-1301905869.cos.ap-shenzhen-fsi.myqcloud.com/testdocument/0jsoaidalsh31nr2bk4c_tiw/picture/2.jpg",
-//                           @"https://wisdom-exhibition-1301905869.cos.ap-shenzhen-fsi.myqcloud.com/testdocument/0jsoaidalsh31nr2bk4c_tiw/picture/3.jpg", @"https://wisdom-exhibition-1301905869.cos.ap-shenzhen-fsi.myqcloud.com/testdocument/0jsoaidalsh31nr2bk4c_tiw/picture/1.jpg",@"https://wisdom-exhibition-1301905869.cos.ap-shenzhen-fsi.myqcloud.com/testdocument/0jsoaidalsh31nr2bk4c_tiw/picture/1.jpg"];
-//        fileModel.contents = @[@"你是哈回电话阿萨德发生的",@"",@"", @"adfajsdfhjahshhh噶恒大华府阿德发斯蒂芬阿迪斯发斯蒂芬阿萨德发生的发斯蒂芬dfjhasdfhjhasdhfasdhfahsdfasdfasdfasdfasdfa"];
+        //        fileModel.pics = @[@"https://wisdom-exhibition-1301905869.cos.ap-shenzhen-fsi.myqcloud.com/testdocument/0jsoaidalsh31nr2bk4c_tiw/picture/1.jpg",
+        //                           @"https://wisdom-exhibition-1301905869.cos.ap-shenzhen-fsi.myqcloud.com/testdocument/0jsoaidalsh31nr2bk4c_tiw/picture/2.jpg",
+        //                           @"https://wisdom-exhibition-1301905869.cos.ap-shenzhen-fsi.myqcloud.com/testdocument/0jsoaidalsh31nr2bk4c_tiw/picture/3.jpg",@"https://wisdom-exhibition-1301905869.cos.ap-shenzhen-fsi.myqcloud.com/testdocument/0jsoaidalsh31nr2bk4c_tiw/picture/1.jpg",
+        //                           @"https://wisdom-exhibition-1301905869.cos.ap-shenzhen-fsi.myqcloud.com/testdocument/0jsoaidalsh31nr2bk4c_tiw/picture/2.jpg",
+        //                           @"https://wisdom-exhibition-1301905869.cos.ap-shenzhen-fsi.myqcloud.com/testdocument/0jsoaidalsh31nr2bk4c_tiw/picture/3.jpg", @"https://wisdom-exhibition-1301905869.cos.ap-shenzhen-fsi.myqcloud.com/testdocument/0jsoaidalsh31nr2bk4c_tiw/picture/1.jpg",@"https://wisdom-exhibition-1301905869.cos.ap-shenzhen-fsi.myqcloud.com/testdocument/0jsoaidalsh31nr2bk4c_tiw/picture/1.jpg"];
+        //        fileModel.contents = @[@"你是哈回电话阿萨德发生的",@"",@"", @"adfajsdfhjahshhh噶恒大华府阿德发斯蒂芬阿迪斯发斯蒂芬阿萨德发生的发斯蒂芬dfjhasdfhjhasdhfasdhfahsdfasdfasdfasdfasdfa"];
         [self showWhiteViewController:fileType fileModel:fileModel];
     } else if (fileType == FileTypeVideo) {
         if([TXTCustomConfig sharedInstance].isDebug) {
@@ -817,7 +834,7 @@ static NSInteger const kInputToolBarH = 62;
         [self showWhiteViewController:fileType fileModel:fileModel];
     } else if (fileType == FileTypeH5) {
         if([TXTCustomConfig sharedInstance].isDebug) {
-//            fileModel.h5Url = @"https://sync-web-test.cloud-ins.cn/demo/index.html#/";
+            //            fileModel.h5Url = @"https://sync-web-test.cloud-ins.cn/demo/index.html#/";
             
             /*
              https://precisemkttest.sinosig.com/resourceNginx/H5Project/www/index.html#/claimsArea  测试理赔专区
@@ -825,9 +842,9 @@ static NSInteger const kInputToolBarH = 62;
              https://precisemkttest.sinosig.com/resourceNginx/H5Project/qnbProjectV3/index.html#/planMain/planIndex  测试保障规划
              */
             
-//            fileModel.h5Url = @"https://precisemkttest.sinosig.com/resourceNginx/H5Project/www/index.html#/claimsArea";
+            //            fileModel.h5Url = @"https://precisemkttest.sinosig.com/resourceNginx/H5Project/www/index.html#/claimsArea";
             
-//            fileModel.h5Url = [NSString stringWithFormat: @"https://precisemkttest.sinosig.com/resourceNginx/H5Project/qnbProjectV3/index.html#/rayVisitFile?meetId=%@", TXUserDefaultsGetObjectforKey(ServiceId)];
+            //            fileModel.h5Url = [NSString stringWithFormat: @"https://precisemkttest.sinosig.com/resourceNginx/H5Project/qnbProjectV3/index.html#/rayVisitFile?meetId=%@", TXUserDefaultsGetObjectforKey(ServiceId)];
             
             fileModel.h5Url = @"https://precisemkttest.sinosig.com/resourceNginx/H5Project/qnbProjectV3/index.html#/planMain/planIndex";
             fileModel.name = @"同期Canon";
@@ -867,7 +884,7 @@ static NSInteger const kInputToolBarH = 62;
                 [TXTToast toastWithTitle:[response valueForKey:@"errInfo"] type:TXTToastTypeWarn];
             }
         } failure:^(NSError *error, id response) {
-                
+            
         }];
     }
 }
@@ -958,7 +975,7 @@ static NSInteger const kInputToolBarH = 62;
         NSLog(@"%@", [response valueForKey:@"errInfo"]);
         if ([errCode intValue] == 0) {
             NSDictionary *resultDic = [response valueForKey:@"result"];
-         
+            
             NSString *clientUrl = [resultDic valueForKey:@"clientUrl"];
             NSString *agentUrl = [resultDic valueForKey:@"agentUrl"];
             //发消息
@@ -976,10 +993,10 @@ static NSInteger const kInputToolBarH = 62;
             [[TICManager sharedInstance] sendGroupTextMessage:str callback:^(TICModule module, int code, NSString *desc) {
                 NSLog(@"发消息");
                 [self pushToShareScreenWebView:agentUrl
-                              WebId:webId
-                         ActionType:@"1"
-                        ProductName:fileModel.name
-                          fileModel:fileModel];
+                                         WebId:webId
+                                    ActionType:@"1"
+                                   ProductName:fileModel.name
+                                     fileModel:fileModel];
             }];
         } else {
             [TXTToast toastWithTitle:[response valueForKey:@"errInfo"] type:TXTToastTypeWarn];
@@ -1070,31 +1087,31 @@ static NSInteger const kInputToolBarH = 62;
 
 - (void)muteAction:(ShareScreenWebViewController *)showWebViewController {
     [self muteAudioAction];
-//    TXTUserModel *model = [self.renderViews firstObject];
-//    TXTUserModel *newModel = [[TXTUserModel alloc] init];
-//    if(self.muteState){
-//        newModel.render = model.render;
-//        newModel.showVideo = model.showVideo;
-//        newModel.showAudio = YES;
-//        newModel.info = model.info;
-//        newModel.userName = model.userName;
-//        [self.renderViews replaceObjectAtIndex:0 withObject:newModel];
-//        [self updateRenderViewsLayout];
-//        [[[TICManager sharedInstance] getTRTCCloud] muteLocalAudio:NO];
-////        [self.muteButton setImage:[UIImage imageNamed:@"mute_unselect" inBundle:TXSDKBundle compatibleWithTraitCollection:nil] forState:UIControlStateNormal];
-//    }
-//    else{
-//        newModel.render = model.render;
-//        newModel.showVideo = model.showVideo;
-//        newModel.showAudio = NO;
-//        newModel.info = model.info;
-//        newModel.userName = model.userName;
-//        [self.renderViews replaceObjectAtIndex:0 withObject:newModel];
-//        [self updateRenderViewsLayout];
-//        [[[TICManager sharedInstance] getTRTCCloud] muteLocalAudio:YES];
-////        [self.muteButton setImage:[UIImage imageNamed:@"mute_select" inBundle:TXSDKBundle compatibleWithTraitCollection:nil] forState:UIControlStateNormal];
-//    }
-//    self.muteState = !self.muteState;
+    //    TXTUserModel *model = [self.renderViews firstObject];
+    //    TXTUserModel *newModel = [[TXTUserModel alloc] init];
+    //    if(self.muteState){
+    //        newModel.render = model.render;
+    //        newModel.showVideo = model.showVideo;
+    //        newModel.showAudio = YES;
+    //        newModel.info = model.info;
+    //        newModel.userName = model.userName;
+    //        [self.renderViews replaceObjectAtIndex:0 withObject:newModel];
+    //        [self updateRenderViewsLayout];
+    //        [[[TICManager sharedInstance] getTRTCCloud] muteLocalAudio:NO];
+    ////        [self.muteButton setImage:[UIImage imageNamed:@"mute_unselect" inBundle:TXSDKBundle compatibleWithTraitCollection:nil] forState:UIControlStateNormal];
+    //    }
+    //    else{
+    //        newModel.render = model.render;
+    //        newModel.showVideo = model.showVideo;
+    //        newModel.showAudio = NO;
+    //        newModel.info = model.info;
+    //        newModel.userName = model.userName;
+    //        [self.renderViews replaceObjectAtIndex:0 withObject:newModel];
+    //        [self updateRenderViewsLayout];
+    //        [[[TICManager sharedInstance] getTRTCCloud] muteLocalAudio:YES];
+    ////        [self.muteButton setImage:[UIImage imageNamed:@"mute_select" inBundle:TXSDKBundle compatibleWithTraitCollection:nil] forState:UIControlStateNormal];
+    //    }
+    //    self.muteState = !self.muteState;
     showWebViewController.userModel = [self.renderArray firstObject];
 }
 #pragma mark -- TXTTopButtonsDelegate
@@ -1139,7 +1156,7 @@ static NSInteger const kInputToolBarH = 62;
     if (self.openStartRecord) {
         NSDictionary *bodydic = @{@"agentId":TXUserDefaultsGetObjectforKey(AgentId),
                                   @"serviceId":TXUserDefaultsGetObjectforKey(ServiceId)
-                                };
+        };
         [[AFNHTTPSessionManager shareInstance] requestURL:ServiceRoom_EndRecordAudio RequestWay:@"POST" Header:nil Body:bodydic params:nil isFormData:NO success:^(NSError *error, id response) {
             NSString *errCode = [response valueForKey:@"errCode"];
             if ([errCode intValue] == 0) {
@@ -1149,36 +1166,36 @@ static NSInteger const kInputToolBarH = 62;
                 NSString *errInfo = [response valueForKey:@"errInfo"];
                 [[JMToast sharedToast] showDialogWithMsg:[NSString stringWithFormat:@"%@(%@)",errInfo,errCode]];
             }
-         } failure:^(NSError *error, id response) {
-             [[JMToast sharedToast] showDialogWithMsg:@"网络请求超时"];
-         }];
+        } failure:^(NSError *error, id response) {
+            [[JMToast sharedToast] showDialogWithMsg:@"网络请求超时"];
+        }];
     }else{
         if (self.renderArray.count == 1) {
             NSDictionary *bodydic = @{@"agentId":TXUserDefaultsGetObjectforKey(AgentId),
                                       @"serviceId":TXUserDefaultsGetObjectforKey(ServiceId),
                                       @"userId":self.userId,
                                       @"type":@"1"};
-           [ [AFNHTTPSessionManager shareInstance] requestURL:ServiceRoom_RecordAudio RequestWay:@"POST" Header:nil Body:bodydic params:nil isFormData:NO success:^(NSError *error, id response) {
-               
-               NSLog(@"ServiceRoom_RecordAudio %@ %@", [error description], [response description]);
-               
-               NSString *errCode = [response valueForKey:@"errCode"];
-               if ([errCode intValue] == 0) {
-                   self.openStartRecord = YES;
-                   
-                       NSDictionary *messagedict = @{@"serviceId":TXUserDefaultsGetObjectforKey(ServiceId),
-                                                     @"type":@"startRecordFromHost",
-                                                     @"agentId":TXUserDefaultsGetObjectforKey(AgentId),
-                                                     @"userId":[TICConfig shareInstance].userId};
-                       NSString *str = [NSString objectToJsonString:messagedict];
-                       [[TICManager sharedInstance] sendGroupTextMessage:str callback:^(TICModule module, int code, NSString *desc) {
-                   
-                       }];
-               }else {
-                   NSString *errInfo = [response valueForKey:@"errInfo"];
-                   [[JMToast sharedToast] showDialogWithMsg:[NSString stringWithFormat:@"%@(%@)",errInfo,errCode]];
-               }
-               
+            [ [AFNHTTPSessionManager shareInstance] requestURL:ServiceRoom_RecordAudio RequestWay:@"POST" Header:nil Body:bodydic params:nil isFormData:NO success:^(NSError *error, id response) {
+                
+                NSLog(@"ServiceRoom_RecordAudio %@ %@", [error description], [response description]);
+                
+                NSString *errCode = [response valueForKey:@"errCode"];
+                if ([errCode intValue] == 0) {
+                    self.openStartRecord = YES;
+                    
+                    NSDictionary *messagedict = @{@"serviceId":TXUserDefaultsGetObjectforKey(ServiceId),
+                                                  @"type":@"startRecordFromHost",
+                                                  @"agentId":TXUserDefaultsGetObjectforKey(AgentId),
+                                                  @"userId":[TICConfig shareInstance].userId};
+                    NSString *str = [NSString objectToJsonString:messagedict];
+                    [[TICManager sharedInstance] sendGroupTextMessage:str callback:^(TICModule module, int code, NSString *desc) {
+                        
+                    }];
+                }else {
+                    NSString *errInfo = [response valueForKey:@"errInfo"];
+                    [[JMToast sharedToast] showDialogWithMsg:[NSString stringWithFormat:@"%@(%@)",errInfo,errCode]];
+                }
+                
             } failure:^(NSError *error, id response) {
                 [[JMToast sharedToast] showDialogWithMsg:@"网络请求超时"];
             }];
@@ -1190,25 +1207,25 @@ static NSInteger const kInputToolBarH = 62;
                                           @"serviceId":TXUserDefaultsGetObjectforKey(ServiceId),
                                           @"userId":self.userId,
                                           @"type":@"1"};
-               [ [AFNHTTPSessionManager shareInstance] requestURL:ServiceRoom_RecordAudio RequestWay:@"POST" Header:nil Body:bodydic params:nil isFormData:NO success:^(NSError *error, id response) {
-                   
-                   NSLog(@"ServiceRoom_RecordAudio %@ %@", [error description], [response description]);
-                   
-                   NSString *errCode = [response valueForKey:@"errCode"];
-                   if ([errCode intValue] == 0) {
-                      
-                       NSDictionary *messagedict = @{@"serviceId":TXUserDefaultsGetObjectforKey(ServiceId),
-                                                     @"agentId":TXUserDefaultsGetObjectforKey(AgentId),
-                                                     @"type":@"startRecordFromHost",
-                                                     @"userId":[TICConfig shareInstance].userId};
-                       NSString *str = [NSString objectToJsonString:messagedict];
-                       [[TICManager sharedInstance] sendGroupTextMessage:str callback:^(TICModule module, int code, NSString *desc) {
-                   
-                       }];
-                   }else {
-                       NSString *errInfo = [response valueForKey:@"errInfo"];
-                       [[JMToast sharedToast] showDialogWithMsg:[NSString stringWithFormat:@"%@(%@)",errInfo,errCode]];
-                   }
+                [ [AFNHTTPSessionManager shareInstance] requestURL:ServiceRoom_RecordAudio RequestWay:@"POST" Header:nil Body:bodydic params:nil isFormData:NO success:^(NSError *error, id response) {
+                    
+                    NSLog(@"ServiceRoom_RecordAudio %@ %@", [error description], [response description]);
+                    
+                    NSString *errCode = [response valueForKey:@"errCode"];
+                    if ([errCode intValue] == 0) {
+                        
+                        NSDictionary *messagedict = @{@"serviceId":TXUserDefaultsGetObjectforKey(ServiceId),
+                                                      @"agentId":TXUserDefaultsGetObjectforKey(AgentId),
+                                                      @"type":@"startRecordFromHost",
+                                                      @"userId":[TICConfig shareInstance].userId};
+                        NSString *str = [NSString objectToJsonString:messagedict];
+                        [[TICManager sharedInstance] sendGroupTextMessage:str callback:^(TICModule module, int code, NSString *desc) {
+                            
+                        }];
+                    }else {
+                        NSString *errInfo = [response valueForKey:@"errInfo"];
+                        [[JMToast sharedToast] showDialogWithMsg:[NSString stringWithFormat:@"%@(%@)",errInfo,errCode]];
+                    }
                 } failure:^(NSError *error, id response) {
                     [[JMToast sharedToast] showDialogWithMsg:@"网络请求超时"];
                 }];
@@ -1216,7 +1233,7 @@ static NSInteger const kInputToolBarH = 62;
             alert.cancleBlock = ^{
                 NSDictionary *bodydic = @{@"agentId":TXUserDefaultsGetObjectforKey(AgentId),
                                           @"serviceId":TXUserDefaultsGetObjectforKey(ServiceId)
-                                        };
+                };
                 [ [AFNHTTPSessionManager shareInstance] requestURL:ServiceRoom_EndRecordAudio RequestWay:@"POST" Header:nil Body:bodydic params:nil isFormData:NO success:^(NSError *error, id response) {
                     NSString *errCode = [response valueForKey:@"errCode"];
                     if ([errCode intValue] == 0) {
@@ -1226,9 +1243,9 @@ static NSInteger const kInputToolBarH = 62;
                         NSString *errInfo = [response valueForKey:@"errInfo"];
                         [[JMToast sharedToast] showDialogWithMsg:[NSString stringWithFormat:@"%@(%@)",errInfo,errCode]];
                     }
-                 } failure:^(NSError *error, id response) {
-                     [[JMToast sharedToast] showDialogWithMsg:@"网络请求超时"];
-                 }];
+                } failure:^(NSError *error, id response) {
+                    [[JMToast sharedToast] showDialogWithMsg:@"网络请求超时"];
+                }];
             };
         }
     }
@@ -1242,11 +1259,11 @@ static NSInteger const kInputToolBarH = 62;
         // 添加聊天页面
         weakSelf.chatViewController.closeBlock = ^{
             [weakSelf.chatViewController.view removeFromSuperview];
-//            weakSelf.chatViewController = nil;
+            //            weakSelf.chatViewController = nil;
         };
         [weakSelf addChildViewController:weakSelf.chatViewController];
         [weakSelf.view addSubview:weakSelf.chatViewController.view];
-//        [self.view insertSubview:self.chatViewController.view belowSubview:self.smallChatView];
+        //        [self.view insertSubview:self.chatViewController.view belowSubview:self.smallChatView];
         [weakSelf.chatViewController.view mas_makeConstraints:^(MASConstraintMaker *make) {
             make.edges.equalTo(weakSelf.view);
         }];
@@ -1276,8 +1293,8 @@ static NSInteger const kInputToolBarH = 62;
         }
     }
     //更新单个视图
-//    [self updateRenderViewsLayout];
-   
+    //    [self updateRenderViewsLayout];
+    
     [[[TICManager sharedInstance] getTRTCCloud] muteLocalVideo:!self.cameraState];
     [self.bottomToos changeVideoButtonStatus:self.cameraState];
     self.cameraState = !self.cameraState;
@@ -1302,7 +1319,7 @@ static NSInteger const kInputToolBarH = 62;
             break;
         }
     }
-//    [self updateRenderViewsLayout];
+    //    [self updateRenderViewsLayout];
     TRTCVolumeInfo *info = [[TRTCVolumeInfo alloc] init];
     info.userId = self.userId;
     info.volume = 0;
@@ -1337,26 +1354,26 @@ static NSInteger const kInputToolBarH = 62;
 //        [[JMToast sharedToast] showDialogWithMsg:@"同屏链接不存在"];
 //        return;
 //    }
-    //    UIViewController *currentvc = [[AFNHTTPSessionManager shareInstance] getCurrentVC];
-    //    if ([currentvc isKindOfClass:[showWebViewController class]]) {
-    //        [self.navigationController popViewControllerAnimated:YES];
-    //    }
-    //    self.webId = webId;
-    //    NSLog(@"selfPushToWebView");
-    //    self.backView.hidden = YES;
-    //    self.shareState = YES;
-    //    [self.webViewListController removeFromParentViewController];
-    //    [self.webViewListController.view removeFromSuperview];
-    //    self.drawBackView.hidden = YES;
-    //    self.pptView.hidden = YES;
-    //    self.showWebViewController.url = url;
-    //    self.showWebViewController.webId = webId;
-    //    self.showWebViewController.userModel = self.renderViews[0];
-    //    self.showWebViewController.productName = self.productName;
-    //    self.showWebViewController.actionType = actionType;
-    //    self.showWebViewController.type = self.webType;
-    //
-    //    [self.navigationController pushViewController:self.showWebViewController animated:YES];
+//    UIViewController *currentvc = [[AFNHTTPSessionManager shareInstance] getCurrentVC];
+//    if ([currentvc isKindOfClass:[showWebViewController class]]) {
+//        [self.navigationController popViewControllerAnimated:YES];
+//    }
+//    self.webId = webId;
+//    NSLog(@"selfPushToWebView");
+//    self.backView.hidden = YES;
+//    self.shareState = YES;
+//    [self.webViewListController removeFromParentViewController];
+//    [self.webViewListController.view removeFromSuperview];
+//    self.drawBackView.hidden = YES;
+//    self.pptView.hidden = YES;
+//    self.showWebViewController.url = url;
+//    self.showWebViewController.webId = webId;
+//    self.showWebViewController.userModel = self.renderViews[0];
+//    self.showWebViewController.productName = self.productName;
+//    self.showWebViewController.actionType = actionType;
+//    self.showWebViewController.type = self.webType;
+//
+//    [self.navigationController pushViewController:self.showWebViewController animated:YES];
 //}
 
 ///结束同屏
@@ -1385,11 +1402,16 @@ static NSInteger const kInputToolBarH = 62;
     //    self.shareState = NO;
 }
 
-//横竖屏切换
 - (void)doRotate{
+    bool is = ![UIWindow isLandscape];
+    [self doRotate:is];
+}
+
+//横竖屏切换
+- (void)doRotate:(BOOL)isLandscape {
     TXTNavigationController *navigationController = (TXTNavigationController *)self.navigationController;
     //切换rootViewController的旋转方向
-    if (![UIWindow isLandscape]) {
+    if (isLandscape) {
         navigationController.interfaceOrientation = UIInterfaceOrientationLandscapeRight;
         navigationController.interfaceOrientationMask = UIInterfaceOrientationMaskLandscapeRight;
         //设置屏幕的转向为横屏
@@ -2327,12 +2349,16 @@ static NSInteger const kInputToolBarH = 62;
         NSNotification *notification =[NSNotification notificationWithName:@"endRecordFirst" object:nil userInfo:nil];
         [[NSNotificationCenter defaultCenter] postNotification:notification];
         
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.35 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [ZYSuspensionManager destroyWindowForKey:@"txtvideowindow"];
         });
         
     } failure:^(NSError *error, id response) {
+        [TXTToast toastWithTitle:[NSString stringWithFormat:@"退出房间异常，状态码(%ld)", error != nil ? (long)[error code]: 0L]
+                            type:TXTToastTypeWarn];
+
         [ZYSuspensionManager destroyWindowForKey:@"txtvideowindow"];
+        
     }];
     
 }
