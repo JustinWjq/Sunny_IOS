@@ -76,6 +76,7 @@ static TXTMemberInfoView *_alertView = nil; //第一步：静态实例，并初�
     [topBgView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.top.right.equalTo(bgView);
         make.height.mas_equalTo(53);
+        make.right.equalTo(bgView.mas_right);
     }];
     
     UIImageView *icon = [[UIImageView alloc] init];
@@ -100,18 +101,23 @@ static TXTMemberInfoView *_alertView = nil; //第一步：静态实例，并初�
     
     /** label */
     UILabel *nameLabel = [UILabel labelWithTitle:@"" color:[UIColor colorWithHexString:@"333333"] font:[UIFont qs_mediumFontWithSize:15]];
+    nameLabel.numberOfLines = 1;
     
     NSString *oregionUserName = model.userName;
-    nameLabel.text = oregionUserName;
-    if (nameLabel.text.length > 10) {
-        oregionUserName = [NSString stringWithFormat:@"%@...", [NSString subStringWithEmoji:nameLabel.text limitLength:10]];
+    if([model.userRole isEqualToString:@"owner"]) {
         nameLabel.font = [UIFont qs_mediumFontWithSize:13];
+        nameLabel.text = [NSString stringWithFormat:@"%@（主持人、我）", oregionUserName];
+        nameLabel.lineBreakMode = NSLineBreakByTruncatingMiddle;
+    } else {
+        nameLabel.text = oregionUserName;
+        nameLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     }
-    nameLabel.text = [model.userRole isEqualToString:@"owner"] ? [NSString stringWithFormat:@"%@（主持人、我）", oregionUserName] : oregionUserName;
+    
     [topBgView addSubview:nameLabel];
     [nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(55);
         make.centerY.equalTo(icon.mas_centerY);
+        make.right.equalTo(topBgView.mas_right).offset(-40);
     }];
     
     UIButton *closeBtn = [UIButton buttonWithTitle:@"" titleColor:[UIColor colorWithHexString:@"D70110"] font:[UIFont qs_regularFontWithSize:15] target:_alertView action:@selector(cancelButtonClick)];
