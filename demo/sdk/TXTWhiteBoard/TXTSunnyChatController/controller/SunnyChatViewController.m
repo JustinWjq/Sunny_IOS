@@ -108,7 +108,7 @@ static NSInteger const kInputToolBarH = 62;
     [self joinRoom];
     [self addNotification];
     [self initParams];
-//    [self hiddenTabAndNav];
+    //    [self hiddenTabAndNav];
     
     [self.view addSubview:self.navView];
     [self.navView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -137,80 +137,38 @@ static NSInteger const kInputToolBarH = 62;
     [self.view addGestureRecognizer:contentviewTap];
     
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(willResignActive) name:UIApplicationWillResignActiveNotification object:nil];
     //进入后台UIApplicationDidEnterBackgroundNotification
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(teleprompStatus:) name:@"kTeleprompStatus" object:nil];
     
-//    TXTNavigationController *navigationController = (TXTNavigationController *)self.navigationController;
-//    //切换rootViewController的旋转方向
-//    if (navigationController.interfaceOrientation == UIInterfaceOrientationPortrait) {
-//        navigationController.interfaceOrientation = UIInterfaceOrientationLandscapeRight;
-//        navigationController.interfaceOrientationMask = UIInterfaceOrientationMaskLandscapeRight;
-//        //设置屏幕的转向为横屏
-//        [[UIDevice currentDevice] setValue:@(UIDeviceOrientationLandscapeRight) forKey:@"orientation"];
-//        NSString *portrait = [NSString stringWithFormat:@"%ld",(long)TRTCVideoRenderModeLandscape];
-//        TXUserDefaultsSetObjectforKey(portrait, Direction);
-//        //刷新
-//        [UIViewController attemptRotationToDeviceOrientation];
-//        [self updateRenderViewsLayout];
-//        [self.bottomToos updateButtons];
-//    }
+    //    TXTNavigationController *navigationController = (TXTNavigationController *)self.navigationController;
+    //    //切换rootViewController的旋转方向
+    //    if (navigationController.interfaceOrientation == UIInterfaceOrientationPortrait) {
+    //        navigationController.interfaceOrientation = UIInterfaceOrientationLandscapeRight;
+    //        navigationController.interfaceOrientationMask = UIInterfaceOrientationMaskLandscapeRight;
+    //        //设置屏幕的转向为横屏
+    //        [[UIDevice currentDevice] setValue:@(UIDeviceOrientationLandscapeRight) forKey:@"orientation"];
+    //        NSString *portrait = [NSString stringWithFormat:@"%ld",(long)TRTCVideoRenderModeLandscape];
+    //        TXUserDefaultsSetObjectforKey(portrait, Direction);
+    //        //刷新
+    //        [UIViewController attemptRotationToDeviceOrientation];
+    //        [self updateRenderViewsLayout];
+    //        [self.bottomToos updateButtons];
+    //    }
 }
 
-
+- (void)willResignActive {
+    self.lastIsLandscape = [UIWindow isLandscape];
+    if(self.lastIsLandscape) {
+        [self doRotate];
+    }
+}
 
 /// didBecomeActive
 - (void)didBecomeActive {
-    NSLog(@"didBecomeActive");
-    if ([UIWindow isLandscape]) {
-//        NSString *portrait = [NSString stringWithFormat:@"%ld",(long)TRTCVideoRenderModePortrait];
-//        TXUserDefaultsSetObjectforKey(portrait, Direction);
-//        [self btnAction];
-//        TXTNavigationController *navigationController = (TXTNavigationController *)self.navigationController;
-//        navigationController.interfaceOrientation = UIInterfaceOrientationLandscapeRight;
-//        navigationController.interfaceOrientationMask = UIInterfaceOrientationMaskLandscapeRight;
-        //设置屏幕的转向为横屏
-        if (@available(iOS 16.0, *)) {
-//             iOS16新API，让控制器刷新方向，新方向为上面设置的orientations
-//    #if defined(__IPHONE_16_0)
-//            [self setNeedsUpdateOfSupportedInterfaceOrientations];
-//            NSArray *array = [[[UIApplication sharedApplication] connectedScenes] allObjects];
-//            UIWindowScene *scene = [array firstObject];
-//            // 屏幕方向
-//            UIInterfaceOrientationMask orientation = UIInterfaceOrientationMaskLandscapeRight;
-//            UIWindowSceneGeometryPreferencesIOS *geometryPreferencesIOS = [[UIWindowSceneGeometryPreferencesIOS alloc] initWithInterfaceOrientations:orientation];
-//            // 开始切换
-//            [scene requestGeometryUpdateWithPreferences:geometryPreferencesIOS errorHandler:^(NSError * _Nonnull error) {
-//                NSLog(@"强制%@错误:%@", @"横屏", error);
-//            }];
-//    #endif
-        }else{
-//            TXTNavigationController *navigationController = (TXTNavigationController *)self.navigationController;
-//            navigationController.interfaceOrientation = UIInterfaceOrientationLandscapeRight;
-//            navigationController.interfaceOrientationMask = UIInterfaceOrientationMaskLandscapeRight;
-//
-//            [[UIDevice currentDevice] setValue:@(UIDeviceOrientationLandscapeLeft) forKey:@"orientation"];
-//
-//            NSString *portrait = [NSString stringWithFormat:@"%ld",(long)TRTCVideoRenderModeLandscape];
-//            TXUserDefaultsSetObjectforKey(portrait, Direction);
-//            //刷新
-//            [UIViewController attemptRotationToDeviceOrientation];
-            
-//            [self.whiteBoardViewController updateUI:(navigationController.interfaceOrientation == UIInterfaceOrientationPortrait)];
-//            [self doPortraitLandscapeUI];
-            
-        }
-//        NSString *portrait = [NSString stringWithFormat:@"%ld",(long)TRTCVideoRenderModeLandscape];
-//        TXUserDefaultsSetObjectforKey(portrait, Direction);
-//        [self.whiteBoardViewController updateUI:(navigationController.interfaceOrientation == UIInterfaceOrientationPortrait)];
-////        [self setPortraitLandscapeUI];
-//        //刷新
-//        [UIViewController attemptRotationToDeviceOrientation];
-////        [self updateRenderViewsLayout];
-//        [self.bottomToos updateButtons];
-////        NSString *portrait = TXUserDefaultsGetObjectforKey(Direction);
-//        NSString *imageNameStr = ( [portrait intValue] == 0 ) ? @"Landscape-Portrait" : @"Portrait-Landscape";
-//        [_crossBtn setImage:[UIImage imageNamed:imageNameStr inBundle:TXSDKBundle compatibleWithTraitCollection:nil] forState:UIControlStateNormal];
+    if(self.lastIsLandscape) {
+        [self doRotate];
     }
 }
 
@@ -1638,6 +1596,8 @@ static NSInteger const kInputToolBarH = 62;
 -(void)onTICMemberQuit:(NSArray*)members {
     NSString *userId = members[0];
     NSLog(@"onTICMemberQuit === %@",userId);
+    
+    userId = [TXTUserModel removeExtraForUserId:userId];
     [self.userIdArr removeObject:userId];
     NSLog(@"移除列表");
     [self.renderArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -1655,14 +1615,22 @@ static NSInteger const kInputToolBarH = 62;
 
 -(void)onTICMemberJoin:(NSString *)userId {
     NSLog(@"onTICMemberJoin === %@",userId);
-    [self.renderArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        TXTUserModel *model = obj;
-        //小程序加入去重
-        NSString *weichatId = [NSString stringWithFormat:@"%@%@",model.render.userId,@"extra"];
-        if ([model.render.userId isEqualToString:userId] || [weichatId isEqualToString:userId]) {
-            return;
-        }
-    }];
+    userId = [TXTUserModel removeExtraForUserId:userId];
+    
+//    [self.renderArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+//        TXTUserModel *model = obj;
+//        //小程序加入去重
+//        NSString *weichatId = [NSString stringWithFormat:@"%@%@",model.render.userId,@"extra"];
+//        if ([model.render.userId isEqualToString:userId] || [weichatId isEqualToString:userId]) {
+//            return;
+//        }
+//    }];
+    
+    //小程序加入去重
+    if([self.userIdArr containsObject:userId]) {
+        return;
+    }
+    
     [self.userIdArr addObject:userId];
     TXTUserModel *userModel = [[TXTUserModel alloc] init];
     TICRenderView *render = [[TICRenderView alloc] init];
@@ -1679,6 +1647,8 @@ static NSInteger const kInputToolBarH = 62;
 
 - (void)onTICUserAudioAvailable:(NSString *)userId available:(BOOL)available{
     NSLog(@"------------------onTICUserAudioAvailable--%@",userId);
+    userId = [TXTUserModel removeExtraForUserId:userId];
+    
     if ([self.userIdArr containsObject:userId]) {
         for (int i = 0; i<self.renderArray.count; i++) {
             TXTUserModel *model = self.renderArray[i];
@@ -1721,6 +1691,8 @@ static NSInteger const kInputToolBarH = 62;
 - (void)onTICUserVideoAvailable:(NSString *)userId available:(BOOL)available
 {
     NSLog(@"------------------onTICUserVideoAvailable==%@",userId);
+    userId = [TXTUserModel removeExtraForUserId:userId];
+    
     if ([self.userIdArr containsObject:userId]) {
         for (int i = 0; i<self.renderArray.count; i++) {
             TXTUserModel *model = self.renderArray[i];
@@ -1789,6 +1761,7 @@ static NSInteger const kInputToolBarH = 62;
             if ([type isEqualToString:@"wxPushWebFileSuccess"]) {
                 NSLog(@"//推送成功");
                 NSString *userId = [dict valueForKey:@"userId"];
+                userId = [TXTUserModel removeExtraForUserId:userId];
                 if ([userId isEqualToString:[TICConfig shareInstance].userId]) {
                     [[JMToast sharedToast] showDialogWithMsg:@"推送成功"];
                 }
@@ -1797,6 +1770,7 @@ static NSInteger const kInputToolBarH = 62;
             if ([type isEqualToString:@"startRecord"]) {
                 NSLog(@"参会人点击同意录制按钮");
                 NSString *userId = [dict valueForKey:@"userId"];
+                userId = [TXTUserModel removeExtraForUserId:userId];
                 if ([userId isEqualToString:[TICConfig shareInstance].userId]) {
                     
                 }
@@ -1808,6 +1782,7 @@ static NSInteger const kInputToolBarH = 62;
             if ([type isEqualToString:@"refuseRecord"]) {
                 NSLog(@"参会人点击取消按钮");
                 NSString *userId = [dict valueForKey:@"userId"];
+                userId = [TXTUserModel removeExtraForUserId:userId];
                 if ([userId isEqualToString:[TICConfig shareInstance].userId]) {
                     //弹框，点击取消按钮,结束会议
                     TXTCommonAlertView *alert = [TXTCommonAlertView alertWithTitle:@"本次录制需获得全部参会人员授权确认后可进行录制，请您确认"  titleColor:nil titleFont:nil leftBtnStr:@"取消" rightBtnStr:@"确定" leftColor:nil rightColor:nil];
@@ -1826,6 +1801,7 @@ static NSInteger const kInputToolBarH = 62;
             if ([type isEqualToString:@"wxShareWebFile"]) {
                 NSLog(@"同屏");
                 NSString *userId = [dict valueForKey:@"userId"];
+                userId = [TXTUserModel removeExtraForUserId:userId];
                 if ([userId isEqualToString:[TICConfig shareInstance].userId]) {
                     NSString *webURL = [dict valueForKey:@"webUrl"];
                     NSString *webId = [dict valueForKey:@"webId"];
@@ -1842,6 +1818,7 @@ static NSInteger const kInputToolBarH = 62;
 //                NSString *webURL = [dict valueForKey:@"webUrl"];
 //                NSString *webId = [dict valueForKey:@"webId"];
                 NSString *userId = [dict valueForKey:@"userId"];
+                userId = [TXTUserModel removeExtraForUserId:userId];
                 NSString *fromUserId = [dict valueForKey:@"fromUserId"];
                 NSString *toUserId = [dict valueForKey:@"toUserId"];
                 
@@ -1898,8 +1875,9 @@ static NSInteger const kInputToolBarH = 62;
                 NSLog(@"静音");
                 NSArray *usersArr = [dict valueForKey:@"users"];
                 for (NSDictionary *dict in usersArr) {
-                    NSString *userid = [dict valueForKey:@"userId"];
-                    if ([userid isEqualToString:[TICConfig shareInstance].userId]) {
+                    NSString *userId = [dict valueForKey:@"userId"];
+                    userId = [TXTUserModel removeExtraForUserId:userId];
+                    if ([userId isEqualToString:[TICConfig shareInstance].userId]) {
                         self.muteState = ![[dict valueForKey:@"muteAudio"] boolValue];
                         [self muteAudioAction];
                     }
@@ -1912,8 +1890,9 @@ static NSInteger const kInputToolBarH = 62;
                 NSLog(@"摄像头");
                 NSArray *usersArr = [dict valueForKey:@"users"];
                 for (NSDictionary *dict in usersArr) {
-                    NSString *userid = [dict valueForKey:@"userId"];
-                    if ([userid isEqualToString:[TICConfig shareInstance].userId]) {
+                    NSString *userId = [dict valueForKey:@"userId"];
+                    userId = [TXTUserModel removeExtraForUserId:userId];
+                    if ([userId isEqualToString:[TICConfig shareInstance].userId]) {
                         self.cameraState = ![[dict valueForKey:@"muteVideo"] boolValue];
                         [self closeVideoAction];
                     }
@@ -1925,7 +1904,9 @@ static NSInteger const kInputToolBarH = 62;
             if ([type isEqualToString:@"notifyRefused"]) {
                 NSLog(@"客户拒绝加入房间");
                 NSDictionary *dataDict = [dict valueForKey:@"data"];
-                if ([[dataDict valueForKey:@"inviteAccount"] isEqualToString:[TICConfig shareInstance].userId]) {
+                NSString *userId = [dataDict valueForKey:@"inviteAccount"];
+                userId = [TXTUserModel removeExtraForUserId:userId];
+                if ([userId isEqualToString:[TICConfig shareInstance].userId]) {
                     [[JMToast sharedToast] showDialogWithMsg:[NSString stringWithFormat:@"%@拒绝了您的邀请,请稍后再试",[dataDict valueForKey:@"userName"]]];
                 }
             }
