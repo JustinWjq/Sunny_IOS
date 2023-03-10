@@ -97,7 +97,16 @@
 //        [attribute addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithHexString:@"E6B980"] range:range];
 //        self.nameLabel.attributedText = attribute;
 //    } else {
-        self.nameLabel.text = [model.userRole isEqualToString:@"owner"] ? [NSString stringWithFormat:@"%@（主持人、我）", oregionUserName] : oregionUserName;
+    
+    
+    if([model.userRole isEqualToString:@"owner"]) {
+        self.nameLabel.text = [NSString stringWithFormat:@"%@（主持人、我）", oregionUserName];
+        self.nameLabel.lineBreakMode = NSLineBreakByTruncatingMiddle;
+    } else {
+        self.nameLabel.text = oregionUserName;
+        self.nameLabel.lineBreakMode = NSLineBreakByTruncatingTail;
+    }
+        
 //    }
 
     
