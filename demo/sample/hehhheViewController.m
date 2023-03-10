@@ -129,6 +129,8 @@
     self.config.enableVideo = YES;
     self.config.isChat = NO;
     self.config.isDebug = YES;
+    self.config.isDebugData = YES;
+    self.config.isDebugConsole = YES;
     
     /*
      

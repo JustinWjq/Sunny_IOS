@@ -29,6 +29,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property(nonatomic,assign) BOOL isDebug;
 
+@property(nonatomic,assign) BOOL isDebugData;
+
+@property(nonatomic,assign) BOOL isDebugConsole;
+
 + (instancetype)sharedInstance;
 
 @end

@@ -720,7 +720,7 @@ static NSInteger const kInputToolBarH = 62;
     TXTShareFileAlertView *shareFileAlertView = [[TXTShareFileAlertView alloc] init];
     shareFileAlertView.fileBlock = ^{
         
-        if([TXTCustomConfig sharedInstance].isDebug) {
+        if([TXTCustomConfig sharedInstance].isDebugData) {
             [self addFile:FileTypeH5 fileModel:[[TXTFileModel alloc] init]];
         } else {
             [[TXTManage sharedInstance] onClickFile];
@@ -828,12 +828,12 @@ static NSInteger const kInputToolBarH = 62;
         //        fileModel.contents = @[@"你是哈回电话阿萨德发生的",@"",@"", @"adfajsdfhjahshhh噶恒大华府阿德发斯蒂芬阿迪斯发斯蒂芬阿萨德发生的发斯蒂芬dfjhasdfhjhasdhfasdhfahsdfasdfasdfasdfasdfa"];
         [self showWhiteViewController:fileType fileModel:fileModel];
     } else if (fileType == FileTypeVideo) {
-        if([TXTCustomConfig sharedInstance].isDebug) {
+        if([TXTCustomConfig sharedInstance].isDebugData) {
             fileModel.videoUrl = @"https://res.qcloudtiw.com/demo/tiw-vod.mp4";
         }
         [self showWhiteViewController:fileType fileModel:fileModel];
     } else if (fileType == FileTypeH5) {
-        if([TXTCustomConfig sharedInstance].isDebug) {
+        if([TXTCustomConfig sharedInstance].isDebugData) {
             //            fileModel.h5Url = @"https://sync-web-test.cloud-ins.cn/demo/index.html#/";
             
             /*
