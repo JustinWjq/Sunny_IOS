@@ -36,7 +36,7 @@
             make.width.mas_equalTo(nameWidth);
             make.height.mas_equalTo(nameWidth);
         }];
-        iconImage.contentMode = UIViewContentModeScaleAspectFit;
+        iconImage.contentMode = UIViewContentModeScaleAspectFill;
         iconImage.layer.cornerRadius = nameWidth/2;
         iconImage.layer.masksToBounds = YES;
         [iconImage sd_setImageWithURL:[NSURL URLWithString:self.userModel.userHead] placeholderImage:nil];
