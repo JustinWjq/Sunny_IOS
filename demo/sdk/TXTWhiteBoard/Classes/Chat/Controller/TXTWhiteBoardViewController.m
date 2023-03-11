@@ -66,6 +66,8 @@
     }];
     
     [self.whiteBoardView insertSubview:self.collectionView atIndex:0];
+    self.whiteBoardView.isShowTXTWhiteBoardTool = self.isShowTXTWhiteBoardTool;
+    
     [self.collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
 //        make.left.right.equalTo(self.whiteBoardView);
         make.left.equalTo(self.whiteBoardView.mas_safeAreaLayoutGuideLeft);

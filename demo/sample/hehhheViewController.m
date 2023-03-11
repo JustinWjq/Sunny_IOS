@@ -362,22 +362,22 @@ static AFHTTPSessionManager *instance;
 
 -(IBAction)continueA:(id)sender {
     /*
-     2023-03-10 00:05:27.404894+0800 sample[6417:348912] bodyDic == {
-         inviteNumber = 86054893;
+     {
+         inviteNumber = 99212522;
          orgAccount = sunshineLifeOrg;
-         sign = 683a8fbce98b1c4d2c73b4b219915145b951f7a05d4f56122b3fc00c5f5e5761;
+         sign = 683a8fbce98b1c4d2c73b4b219915145585b4ae98e7959b6865c0d1045cc7d09;
          userId = 123123;
-         userName = "\U6d4b\U8bd5^o^^o^";
+         userName = "\Ud83d\Udc4c\Ud83d\Ude00\Ud83d\Ude00\Ud83e\Uddb7\Ud83d\Ude05\U6d4b\U8bd5\Ud83d\Udc4c\Ud83d\Ude00\Ud83d\Ude00\Ud83e\Uddb7\Ud83d\Ude05\Ud83d\Udc4c\Ud83d\Ude00\Ud83d\Ude00\Ud83e\Uddb7\Ud83d\Ude05";
      }
      */
     NSString *agentName = self.agentName.text;
     NSString *orgName = self.orgName.text;
     
-    [[TXTManage sharedInstance] startVideo:@"14547548"
+    [[TXTManage sharedInstance] startVideo:@"99212522"
                                   andAgent:agentName
                                   UserName:@"👌😀😀🦷😅测试👌😀😀🦷😅👌😀😀🦷😅"
                                    OrgName:orgName
-                               SignOrgName:@"683a8fbce98b1c4d2c73b4b219915145b951f7a05d4f56122b3fc00c5f5e5761"
+                               SignOrgName:@"683a8fbce98b1c4d2c73b4b219915145585b4ae98e7959b6865c0d1045cc7d09"
                                   CallBack:^(int code, NSString * _Nonnull desc) {
         AppDelegate *ad = (AppDelegate*) [UIApplication sharedApplication].delegate;
         if (code == 0) {

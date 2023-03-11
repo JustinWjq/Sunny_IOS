@@ -122,6 +122,10 @@
     self.teleprompView.teleprompStr = teleprompStr;
 }
 
+-(void)setIsShowTXTWhiteBoardTool:(BOOL)isShowTXTWhiteBoardTool {
+    _isShowTXTWhiteBoardTool = isShowTXTWhiteBoardTool;
+    [self.toolView setHidden:!isShowTXTWhiteBoardTool];
+}
 
 /// hideCover
 - (void)hideCover {

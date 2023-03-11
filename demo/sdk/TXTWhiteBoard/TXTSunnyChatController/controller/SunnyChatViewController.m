@@ -721,7 +721,7 @@ static NSInteger const kInputToolBarH = 62;
     shareFileAlertView.fileBlock = ^{
         
         if([TXTCustomConfig sharedInstance].isDebugData) {
-            [self addFile:FileTypeH5 fileModel:[[TXTFileModel alloc] init]];
+            [self addFile:FileTypeVideo fileModel:[[TXTFileModel alloc] init]];
         } else {
             [[TXTManage sharedInstance] onClickFile];
         }
@@ -908,8 +908,10 @@ static NSInteger const kInputToolBarH = 62;
                 }
                 [self getWhiteBoard:YES];
                 if (fileType == FileTypePics) {
+                    self.whiteBoardViewController.isShowTXTWhiteBoardTool = YES;
                     [self.whiteBoardViewController showImages:fileModel.pics contentArray:fileModel.contents];
                 } else if (fileType == FileTypeVideo) {
+                    self.whiteBoardViewController.isShowTXTWhiteBoardTool = NO;
                     [self.whiteBoardViewController showVideo:fileModel.videoUrl];
                 }
             }];

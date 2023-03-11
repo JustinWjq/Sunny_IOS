@@ -35,6 +35,10 @@ NS_ASSUME_NONNULL_BEGIN
 /** teleprompStr */
 @property (nonatomic, copy) NSString *teleprompStr;
 
+
+/** isTelepromp */
+@property (nonatomic, assign) BOOL isShowTXTWhiteBoardTool;
+
 @end
 
 NS_ASSUME_NONNULL_END

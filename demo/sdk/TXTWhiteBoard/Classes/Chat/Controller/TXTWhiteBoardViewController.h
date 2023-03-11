@@ -19,6 +19,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /** isTelepromp */
 @property (nonatomic, assign) BOOL isTelepromp;
+
+@property (nonatomic, assign) BOOL isShowTXTWhiteBoardTool;
+
 /// 展示ppt选图片
 - (void)showImages:(NSArray *)imagesArray contentArray:(NSArray *)contentArray;
 
