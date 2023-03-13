@@ -60,21 +60,29 @@
     if(self.is24H == YES){ // 24H制，直接显示
         dateLabel.text = dateString;
     }else{
-        NSRange amRange = [dateString rangeOfString:[formatter AMSymbol]];
-        dateString = [dateString substringToIndex:dateString.length-3];
-        if(amRange.location == NSNotFound){ // 显示 下午 hh:mm
-            if([dateString rangeOfString:@"下午"].location == NSNotFound) {
-                dateLabel.text = [NSString stringWithFormat:@"下午 %@",dateString];
-            } else {
-                dateLabel.text = [NSString stringWithFormat:@"%@",dateString];
-            }
-        }else{ // 显示 上午 hh:mm
-            if([dateString rangeOfString:@"上午"].location == NSNotFound) {
-                dateLabel.text = [NSString stringWithFormat:@"上午 %@",dateString];
-            } else {
-                dateLabel.text = [NSString stringWithFormat:@"%@",dateString];
-            }
-        }
+//        NSRange amRange = [dateString rangeOfString:[formatter AMSymbol]];
+//        dateString = [dateString substringToIndex:dateString.length-3];
+//        if(amRange.location == NSNotFound){ // 显示 下午 hh:mm
+//            if([dateString rangeOfString:@"下午"].location == NSNotFound) {
+//                dateLabel.text = [NSString stringWithFormat:@"下午 %@",dateString];
+//            } else {
+//                dateLabel.text = [NSString stringWithFormat:@"%@",dateString];
+//            }
+//        }else{ // 显示 上午 hh:mm
+//            if([dateString rangeOfString:@"上午"].location == NSNotFound) {
+//                dateLabel.text = [NSString stringWithFormat:@"上午 %@",dateString];
+//            } else {
+//                dateLabel.text = [NSString stringWithFormat:@"%@",dateString];
+//            }
+//        }
+        
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        dateFormatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"zh_Hans_CN"];
+        dateFormatter.calendar = [[NSCalendar alloc]initWithCalendarIdentifier:NSCalendarIdentifierISO8601];
+        [dateFormatter setDateFormat:@"a hh:mm"];
+        NSString *dateFormatterStr = [dateFormatter stringFromDate:[NSDate date]];
+
+        dateLabel.text = [NSString stringWithFormat:@"%@", dateFormatterStr];
     }
 
     /// 电池
@@ -153,14 +161,18 @@
 
 - (BOOL)is24H{
     if(!_is24H){
-        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-        [formatter setLocale:[NSLocale currentLocale]];
-        [formatter setDateStyle:NSDateFormatterNoStyle];
-        [formatter setTimeStyle:NSDateFormatterShortStyle];
-        NSString *dateString = [formatter stringFromDate:[NSDate date]];
-        NSRange amRange = [dateString rangeOfString:[formatter AMSymbol]];
-        NSRange pmRange = [dateString rangeOfString:[formatter PMSymbol]];
-        _is24H = (amRange.location == NSNotFound && pmRange.location == NSNotFound);
+//        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+//        [formatter setLocale:[NSLocale currentLocale]];
+//        [formatter setDateStyle:NSDateFormatterNoStyle];
+//        [formatter setTimeStyle:NSDateFormatterShortStyle];
+//        NSString *dateString = [formatter stringFromDate:[NSDate date]];
+//        NSRange amRange = [dateString rangeOfString:[formatter AMSymbol]];
+//        NSRange pmRange = [dateString rangeOfString:[formatter PMSymbol]];
+//        _is24H = (amRange.location == NSNotFound && pmRange.location == NSNotFound);
+        
+        NSString *formatStringForHours = [NSDateFormatter dateFormatFromTemplate:@"j" options:0 locale:[NSLocale currentLocale]];
+        NSRange containsA =[formatStringForHours rangeOfString:@"a"];
+        _is24H = containsA.location == NSNotFound;
     }
     return _is24H;
 }
