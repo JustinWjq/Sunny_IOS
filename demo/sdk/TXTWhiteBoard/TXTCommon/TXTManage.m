@@ -571,7 +571,7 @@
 }
 
 -(NSString *)releaseVersion {
-    return @"1.0.26";
+    return @"1.0.27";
 }
 
 @end
