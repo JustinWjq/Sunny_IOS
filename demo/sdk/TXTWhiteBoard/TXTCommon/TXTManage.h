@@ -58,7 +58,6 @@ typedef void (^TXTCallback)(int code, NSString *desc);
 //反初始化
 - (void)unInit;
 
-
 /**
  *  fileType 文件类型
  *  fileModel 文件数据
@@ -67,6 +66,8 @@ typedef void (^TXTCallback)(int code, NSString *desc);
 
 /// 点击了共享文件
 - (void)onClickFile;
+
+- (void)endFileScreenShare;
 
 -(NSString *)releaseVersion;
 

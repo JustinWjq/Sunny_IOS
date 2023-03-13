@@ -20,6 +20,8 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)addFile:(FileType)fileType fileModel:(TXTFileModel *)fileModel;
 
+- (void)hideShareScreenWebView;
+
 @end
 
 NS_ASSUME_NONNULL_END

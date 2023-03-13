@@ -11,6 +11,8 @@
 #import <WebKit/WebKit.h>
 #import "UIAlertUtil.h"
 #import "TXTCommon.h"
+#import "TXTCustomConfig.h"
+#import "TXTManage.h"
 
 
 @interface ShareScreenWebViewController ()<WKNavigationDelegate,WKUIDelegate>
@@ -45,6 +47,12 @@
 //    [[UIDevice currentDevice] setValue:@(UIDeviceOrientationLandscapeRight) forKey:@"orientation"];
 //    //刷新
 //    [UIViewController attemptRotationToDeviceOrientation];
+    
+    if([TXTCustomConfig sharedInstance].isDebugData) {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [[TXTManage sharedInstance] endFileScreenShare];
+        });
+    }
 }
 
 - (void)setType:(NSString *)type{

@@ -721,7 +721,7 @@ static NSInteger const kInputToolBarH = 62;
     shareFileAlertView.fileBlock = ^{
         
         if([TXTCustomConfig sharedInstance].isDebugData) {
-            [self addFile:FileTypeVideo fileModel:[[TXTFileModel alloc] init]];
+            [self addFile:FileTypeH5 fileModel:[[TXTFileModel alloc] init]];
         } else {
             [[TXTManage sharedInstance] onClickFile];
         }
@@ -1379,7 +1379,7 @@ static NSInteger const kInputToolBarH = 62;
 //}
 
 ///结束同屏
-- (void)hideShareScreenWebView{
+- (void)hideShareScreenWebView {
     // 还原页面
     
     if(self.fileModel != nil){
@@ -1393,9 +1393,6 @@ static NSInteger const kInputToolBarH = 62;
             [self doRotate];
         }
     }
-    
-    
-    
     //    self.backView.hidden = YES;
     //    self.otherShareStatus = NO;
     //    [self.webViewListController removeFromParentViewController];

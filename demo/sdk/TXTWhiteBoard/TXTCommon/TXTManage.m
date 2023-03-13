@@ -19,6 +19,8 @@
 #import "TXTNavigationController.h"
 #import "TXTStatusBar.h"
 
+#import "ShareScreenWebViewController.h"
+
 
 @interface TXTManage ()
 @property (strong, nonatomic) UIWindow *nnwindow;
@@ -479,6 +481,26 @@
     }
 }
 
+- (void)endFileScreenShare {
+    UIWindow *window = [ZYSuspensionManager windowForKey:@"txtvideowindow"];
+    TXTNavigationController *nav = (TXTNavigationController *)window.rootViewController;
+    NSArray *viewControllers = nav.viewControllers;
+    UIViewController *shareScreenVc = viewControllers.lastObject;
+    if([shareScreenVc isKindOfClass:[ShareScreenWebViewController class]]) {
+        [nav popViewControllerAnimated:YES];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.35 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            NSArray *viewControllers = nav.viewControllers;
+            SunnyChatViewController *chatVC = (SunnyChatViewController *)viewControllers.lastObject;
+            if([chatVC isKindOfClass:[SunnyChatViewController class]]) {
+                [chatVC hideShareScreenWebView];
+            }
+        });
+    } else if ([shareScreenVc isKindOfClass:[SunnyChatViewController class]]) {
+            SunnyChatViewController *chatVC = (SunnyChatViewController *)shareScreenVc;
+            [chatVC hideShareScreenWebView];
+    }
+}
+
 - (void)endRecordFirst{
     if (self.manageDelegate && [self.manageDelegate respondsToSelector:@selector(onEndRoom)]) {
         [self.manageDelegate onEndRoom];
@@ -549,7 +571,7 @@
 }
 
 -(NSString *)releaseVersion {
-    return @"1.0.24";
+    return @"1.0.26";
 }
 
 @end
