@@ -473,6 +473,15 @@
     [classRoom addFile:fileType fileModel:fileModel];
 }
 
+- (void)doRotate:(BOOL)isLandscape{
+    UIWindow *window = [ZYSuspensionManager windowForKey:@"txtvideowindow"];
+    TXTNavigationController *nav = (TXTNavigationController *)window.rootViewController;
+    SunnyChatViewController *classRoom = (SunnyChatViewController *)nav.viewControllers.lastObject;
+    if([classRoom isKindOfClass:[SunnyChatViewController class]]) {
+        [classRoom doRotate:isLandscape];
+    }
+}
+
 /// 点击了共享文件
 - (void)onClickFile {
     if ([self.manageDelegate respondsToSelector:@selector(addOnFileClickListenerRoomId:)]) {
@@ -571,7 +580,7 @@
 }
 
 -(NSString *)releaseVersion {
-    return @"1.0.28";
+    return @"1.0.29";
 }
 
 @end

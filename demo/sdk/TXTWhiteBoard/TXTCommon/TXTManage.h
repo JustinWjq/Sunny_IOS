@@ -67,6 +67,8 @@ typedef void (^TXTCallback)(int code, NSString *desc);
 /// 点击了共享文件
 - (void)onClickFile;
 
+- (void)doRotate:(BOOL)isLandscape;
+
 - (void)endFileScreenShare;
 
 -(NSString *)releaseVersion;

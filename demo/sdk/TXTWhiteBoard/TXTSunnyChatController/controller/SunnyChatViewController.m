@@ -721,7 +721,7 @@ static NSInteger const kInputToolBarH = 62;
     shareFileAlertView.fileBlock = ^{
         
         if([TXTCustomConfig sharedInstance].isDebugData) {
-            [self addFile:FileTypeH5 fileModel:[[TXTFileModel alloc] init]];
+            [self addFile:FileTypeVideo fileModel:[[TXTFileModel alloc] init]];
         } else {
             [[TXTManage sharedInstance] onClickFile];
         }
@@ -835,6 +835,7 @@ static NSInteger const kInputToolBarH = 62;
     } else if (fileType == FileTypeVideo) {
         if([TXTCustomConfig sharedInstance].isDebugData) {
             fileModel.videoUrl = @"https://res.qcloudtiw.com/demo/tiw-vod.mp4";
+            [[TXTManage sharedInstance] doRotate:YES];
         }
         [self showWhiteViewController:fileType fileModel:fileModel];
     } else if (fileType == FileTypeH5) {
