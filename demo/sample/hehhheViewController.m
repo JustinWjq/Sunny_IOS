@@ -423,7 +423,7 @@ static AFHTTPSessionManager *instance;
     //    }
     
     NSString *appstr = self.appbtn.titleLabel.text;
-    NSString *appType = @"1";
+    NSString *appType = @"2";
     [[NSUserDefaults standardUserDefaults] setObject:@"net02d2geftdt4tj" forKey:@"PSW_AES_KEY"];
     [[NSUserDefaults standardUserDefaults] setObject:@"4kz8rn8a7yxdy9u8" forKey:@"AES_IV_PARAMETER"];
     //    if ([appstr isEqualToString:@" 生产环境"]) {

@@ -5,6 +5,7 @@
 	<key>com.apple.developer.associated-domains</key>
 	<array>
 		<string>applinks:video-sells-test.ikandy.cn</string>
+		<string>applinks:sinosig-webview.cloud-ins.cn</string>
 	</array>
 	<key>com.apple.security.application-groups</key>
 	<array/>

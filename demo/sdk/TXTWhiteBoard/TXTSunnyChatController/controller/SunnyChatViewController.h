@@ -22,6 +22,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)hideShareScreenWebView;
 
+- (void)doRotate:(BOOL)isLandscape;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -721,7 +721,7 @@ static NSInteger const kInputToolBarH = 62;
     shareFileAlertView.fileBlock = ^{
         
         if([TXTCustomConfig sharedInstance].isDebugData) {
-            [self addFile:FileTypePics fileModel:[[TXTFileModel alloc] init]];
+            [self addFile:FileTypeH5 fileModel:[[TXTFileModel alloc] init]];
         } else {
             [[TXTManage sharedInstance] onClickFile];
         }
@@ -729,6 +729,9 @@ static NSInteger const kInputToolBarH = 62;
     __weak typeof(self) weakSelf = self;
     shareFileAlertView.whiteBoardBlock = ^{
         [weakSelf getWhiteBoard:weakSelf.isShowWhiteBoard];
+        if(self.whiteBoardViewController != nil) {
+            self.whiteBoardViewController.isShowTXTWhiteBoardTool = YES;
+        }
     };
     [shareFileAlertView show];
     self.shareFileAlertView = shareFileAlertView;
@@ -846,9 +849,10 @@ static NSInteger const kInputToolBarH = 62;
             
             //            fileModel.h5Url = @"https://precisemkttest.sinosig.com/resourceNginx/H5Project/www/index.html#/claimsArea";
             
-            //            fileModel.h5Url = [NSString stringWithFormat: @"https://precisemkttest.sinosig.com/resourceNginx/H5Project/qnbProjectV3/index.html#/rayVisitFile?meetId=%@", TXUserDefaultsGetObjectforKey(ServiceId)];
+            fileModel.h5Url = [NSString stringWithFormat: @"https://precisemkttest.sinosig.com/resourceNginx/H5Project/qnbProjectV3/index.html#/rayVisitFile?meetId=%@", TXUserDefaultsGetObjectforKey(ServiceId)];
             
-            fileModel.h5Url = @"https://precisemkttest.sinosig.com/resourceNginx/H5Project/qnbProjectV3/index.html#/planMain/planIndex";
+//            fileModel.h5Url = @"https://precisemkttest.sinosig.com/resourceNginx/H5Project/qnbProjectV3/index.html#/planMain/planIndex";
+            
             fileModel.name = @"同期Canon";
         }
         
@@ -1158,21 +1162,31 @@ static NSInteger const kInputToolBarH = 62;
 //录制
 - (void)bottomShareSceneButtonClick{
     if (self.openStartRecord) {
-        NSDictionary *bodydic = @{@"agentId":TXUserDefaultsGetObjectforKey(AgentId),
-                                  @"serviceId":TXUserDefaultsGetObjectforKey(ServiceId)
+        
+        TXTCommonAlertView *alert = [TXTCommonAlertView alertWithTitle:@"是否结束录制？"  titleColor:nil titleFont:nil leftBtnStr:@"我再想想" rightBtnStr:@"结束录制" leftColor:nil rightColor:nil];
+        alert.sureBlock = ^{
+            [TXTCommonAlertView hide];
+            NSDictionary *bodydic = @{@"agentId":TXUserDefaultsGetObjectforKey(AgentId),
+                                      @"serviceId":TXUserDefaultsGetObjectforKey(ServiceId)
+            };
+            [[AFNHTTPSessionManager shareInstance] requestURL:ServiceRoom_EndRecordAudio RequestWay:@"POST" Header:nil Body:bodydic params:nil isFormData:NO success:^(NSError *error, id response) {
+                NSString *errCode = [response valueForKey:@"errCode"];
+                if ([errCode intValue] == 0) {
+                    self.openStartRecord = NO;
+                    [self.bottomToos changeShareSceneStatus:NO];
+                } else {
+                    NSString *errInfo = [response valueForKey:@"errInfo"];
+                    [[JMToast sharedToast] showDialogWithMsg:[NSString stringWithFormat:@"%@(%@)",errInfo,errCode]];
+                }
+            } failure:^(NSError *error, id response) {
+                [[JMToast sharedToast] showDialogWithMsg:@"网络请求超时"];
+            }];
         };
-        [[AFNHTTPSessionManager shareInstance] requestURL:ServiceRoom_EndRecordAudio RequestWay:@"POST" Header:nil Body:bodydic params:nil isFormData:NO success:^(NSError *error, id response) {
-            NSString *errCode = [response valueForKey:@"errCode"];
-            if ([errCode intValue] == 0) {
-                self.openStartRecord = NO;
-                [self.bottomToos changeShareSceneStatus:NO];
-            } else {
-                NSString *errInfo = [response valueForKey:@"errInfo"];
-                [[JMToast sharedToast] showDialogWithMsg:[NSString stringWithFormat:@"%@(%@)",errInfo,errCode]];
-            }
-        } failure:^(NSError *error, id response) {
-            [[JMToast sharedToast] showDialogWithMsg:@"网络请求超时"];
-        }];
+        
+        alert.cancleBlock = ^{
+           
+        };
+        
     }else{
         if (self.renderArray.count == 1) {
             NSDictionary *bodydic = @{@"agentId":TXUserDefaultsGetObjectforKey(AgentId),
@@ -1806,19 +1820,20 @@ static NSInteger const kInputToolBarH = 62;
                 NSLog(@"参会人点击取消按钮");
                 NSString *userId = [dict valueForKey:@"userId"];
                 userId = [TXTUserModel removeExtraForUserId:userId];
-                if ([userId isEqualToString:[TICConfig shareInstance].userId]) {
+//                if ([userId isEqualToString:[TICConfig shareInstance].userId]) {
                     //弹框，点击取消按钮,结束会议
-                    TXTCommonAlertView *alert = [TXTCommonAlertView alertWithTitle:@"本次录制需获得全部参会人员授权确认后可进行录制，请您确认"  titleColor:nil titleFont:nil leftBtnStr:@"取消" rightBtnStr:@"确定" leftColor:nil rightColor:nil];
-                    alert.sureBlock = ^{
-                       //会议正常进行且不进行录制
-                        self.openStartRecord = NO;
-                    };
-                    alert.cancleBlock = ^{
-                        //展示退出会议选项
-                        self.openStartRecord = NO;
-                        [self onQuitClassRoom];
-                    };
-                }
+                TXTCommonAlertView *alert = [TXTCommonAlertView alertWithTitle:@"有人拒绝您的录制，是否继续会议？"  titleColor:nil titleFont:nil leftBtnStr:@"取消" rightBtnStr:@"确定" leftColor:nil rightColor:nil];
+                alert.sureBlock = ^{
+                   //会议正常进行且不进行录制
+                    [TXTCommonAlertView hide];
+                    self.openStartRecord = NO;
+                };
+                alert.cancleBlock = ^{
+                    //展示退出会议选项
+                    self.openStartRecord = NO;
+                    [self onQuitClassRoom];
+                };
+//                }
             }
             // 同屏
             if ([type isEqualToString:@"wxShareWebFile"]) {

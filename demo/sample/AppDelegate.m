@@ -6,7 +6,6 @@
 //  Copyright © 2020 洪青文. All rights reserved.
 //
 #import "AppDelegate.h"
-#import "HomeViewController.h"
 #import "TXTThirdSDK/OpenSDK1.8.7.1_NoPay/WXApi.h"
 #import <TXTWhiteBoard/TXTManage.h>
 #import "hehhheViewController.h"
@@ -19,9 +18,6 @@
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Override point for customization after application launch.
-//    HomeViewController *baseView = [[HomeViewController alloc]initWithNibName:@"HomeViewController" bundle:[NSBundle mainBundle]];
-//    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:baseView];
     
     hehhheViewController *baseView = [[hehhheViewController alloc]initWithNibName:@"hehhheViewController" bundle:[NSBundle mainBundle]];
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:baseView];
