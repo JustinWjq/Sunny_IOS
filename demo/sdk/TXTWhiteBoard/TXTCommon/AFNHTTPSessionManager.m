@@ -44,7 +44,7 @@
          if ([environment isEqualToString:@"1"]) {
              urlstr = [NSString stringWithFormat:@"%@%@",@"https://video-sells-test.ikandy.cn",url];
          }else if([environment isEqualToString:@"2"]) {
-             urlstr = [NSString stringWithFormat:@"%@%@",@"https://video-sells.cloud-ins.cn",url];
+             urlstr = [NSString stringWithFormat:@"%@%@",@"https://sig.cloud-ins.cn",url];
          }else{
              urlstr = [NSString stringWithFormat:@"%@%@",@"https://dev1.ikandy.cn:60312",url];
          }
@@ -99,7 +99,7 @@
     if ([environment isEqualToString:@"1"]) {
         urlstr = [NSString stringWithFormat:@"%@%@",@"https://video-sells-test.ikandy.cn",url];
     }else if([environment isEqualToString:@"2"]) {
-        urlstr = [NSString stringWithFormat:@"%@%@",@"https://video-sells.cloud-ins.cn",url];
+        urlstr = [NSString stringWithFormat:@"%@%@",@"https://sig.cloud-ins.cn",url];
     }else{
         urlstr = [NSString stringWithFormat:@"%@%@",@"https://developer.ikandy.cn:60312",url];
     }

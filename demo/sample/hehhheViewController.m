@@ -452,7 +452,7 @@ static AFHTTPSessionManager *instance;
     if ([appType isEqualToString:@"1"]) {
         urlstr = [NSString stringWithFormat:@"%@%@",@"https://video-sells-test.ikandy.cn",@"/api/serviceRoom/create"];
     }else if([appType isEqualToString:@"2"]) {
-        urlstr = [NSString stringWithFormat:@"%@%@",@"https://video-sells.cloud-ins.cn",@"/api/serviceRoom/create"];
+        urlstr = [NSString stringWithFormat:@"%@%@",@"https://sig.cloud-ins.cn",@"/api/serviceRoom/create"];
     }else{
         urlstr = [NSString stringWithFormat:@"%@%@",@"https://dev1.ikandy.cn:60312",@"/api/serviceRoom/create"];
     }
