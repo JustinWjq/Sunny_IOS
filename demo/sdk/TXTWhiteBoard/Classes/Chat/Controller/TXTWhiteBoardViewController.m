@@ -121,6 +121,11 @@
 /// 展示ppt选图片
 - (void)showImages:(NSArray *)imagesArray contentArray:(NSArray *)contentArray {
     [[[TICManager sharedInstance] getBoardController] addImagesFile:imagesArray];
+    TEduBoardToolType type = [[[TICManager sharedInstance] getBoardController] getToolType];
+    NSLog(@"type == %d", (int)type);
+    
+    [[[TICManager sharedInstance] getBoardController] setToolType:TEDU_BOARD_TOOL_TYPE_ZOOM_DRAG];
+    
     self.contentArray = contentArray;
     self.whiteBoardView.isTelepromp = YES;
     if (imagesArray.count > 1) {

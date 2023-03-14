@@ -262,12 +262,17 @@
             make.width.mas_equalTo(232 - 44);
             make.bottom.equalTo(self.mas_safeAreaLayoutGuideBottom).offset(bottomH);
         }];
+    
+        [[[TICManager sharedInstance] getBoardController] setToolType:TEDU_BOARD_TOOL_TYPE_PEN];
     } else {
+
         [self.toolView mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.right.equalTo(self.mas_safeAreaLayoutGuideRight).offset(rightMargin);
             make.width.height.mas_equalTo(40);
             make.bottom.equalTo(self.mas_safeAreaLayoutGuideBottom).offset(bottomH);
         }];
+        
+        [[[TICManager sharedInstance] getBoardController] setToolType:TEDU_BOARD_TOOL_TYPE_ZOOM_DRAG];
     }
 }
 
