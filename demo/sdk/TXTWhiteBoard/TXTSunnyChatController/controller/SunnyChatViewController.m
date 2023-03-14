@@ -721,7 +721,7 @@ static NSInteger const kInputToolBarH = 62;
     shareFileAlertView.fileBlock = ^{
         
         if([TXTCustomConfig sharedInstance].isDebugData) {
-            [self addFile:FileTypeH5 fileModel:[[TXTFileModel alloc] init]];
+            [self addFile:FileTypeVideo fileModel:[[TXTFileModel alloc] init]];
         } else {
             [[TXTManage sharedInstance] onClickFile];
         }

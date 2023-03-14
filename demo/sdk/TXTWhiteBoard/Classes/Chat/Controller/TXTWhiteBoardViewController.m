@@ -84,6 +84,13 @@
     }
 }
 
+-(void)setIsShowTXTWhiteBoardTool:(BOOL)isShowTXTWhiteBoardTool {
+    _isShowTXTWhiteBoardTool = isShowTXTWhiteBoardTool;
+    if(self.whiteBoardView != nil){
+        self.whiteBoardView.isShowTXTWhiteBoardTool = isShowTXTWhiteBoardTool;
+    }
+}
+
 /// getWhiteBoard
 - (void)getWhiteBoard {
     NSString *serviceId = TXUserDefaultsGetObjectforKey(ServiceId);
