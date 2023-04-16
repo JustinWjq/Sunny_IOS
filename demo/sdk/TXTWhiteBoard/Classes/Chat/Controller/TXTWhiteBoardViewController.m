@@ -13,12 +13,17 @@
 #import "TXTNavigationController.h"
 #import "ImagesPPTCollectionView.h"
 
+
 @interface TXTWhiteBoardViewController () <TEduBoardDelegate, TXTWhiteBoardViewDelegate, ImagesPPTCollectionViewDelegate>
 /** whiteBoardView */
 @property (nonatomic, strong) TXTWhiteBoardView *whiteBoardView;
 
 /** collectionView */
 @property (nonatomic, strong) ImagesPPTCollectionView *collectionView;
+
+@property (nonatomic, strong) UIButton *downArrow;
+
+@property (assign, nonatomic) BOOL selectimages;//是否收起小桌板
 
 /** imagesArray */
 @property (nonatomic, strong) NSArray *imagesArray;
@@ -77,6 +82,15 @@
     }];
     self.collectionView.hidden = YES;
     
+    [self.whiteBoardView addSubview:self.downArrow];
+    [self.downArrow mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(self.collectionView.mas_centerX);
+        make.bottom.equalTo(self.whiteBoardView.mas_safeAreaLayoutGuideBottom).offset(-90);
+        make.width.mas_equalTo(42);
+        make.height.mas_equalTo(19);
+    }];
+    self.downArrow.hidden = YES;
+    
     if (self.isShowWhiteBoard) {
         [self showWhiteBoard];
     } else {
@@ -134,8 +148,12 @@
         if (self.contentArray.count > 0) {
             self.whiteBoardView.teleprompStr = self.contentArray[0];
         }
+        self.downArrow.hidden = NO;
+//        self.selectimages = YES;
+//        [self downArrowbtn];
     } else {
         self.collectionView.hidden = YES;
+        self.downArrow.hidden = YES;
         if (imagesArray.count == 1) {
         } else {
             [TXTToast toastWithTitle:@"转码失败" type:TXTToastTypeWarn];
@@ -271,6 +289,42 @@
         self.collectionView = collectionView;
     }
     return _collectionView;
+}
+
+-(UIButton *)downArrow {
+    if(!_downArrow) {
+        _downArrow = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_downArrow addTarget:self action:@selector(downArrowbtn) forControlEvents:UIControlEventTouchDown];
+        _downArrow.frame = CGRectMake(0, 0, 42, 19);
+        [_downArrow setImage:imageName(@"show_image") forState:UIControlStateNormal];
+        _downArrow.contentMode = UIViewContentModeScaleAspectFit;
+    }
+    return _downArrow;
+}
+
+-(void)downArrowbtn {
+    self.selectimages = !self.selectimages;
+    
+    NSString *name = !self.selectimages ? @"show_image" : @"hide_image";
+    UIImage *image = imageName(name);
+    [_downArrow setImage:image forState:UIControlStateNormal];
+    
+    CGFloat height = !self.selectimages ? 90 : 0;
+    
+    [self.collectionView mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.whiteBoardView.mas_safeAreaLayoutGuideLeft);
+        make.right.equalTo(self.whiteBoardView.mas_safeAreaLayoutGuideRight);
+        make.height.mas_equalTo(height);
+        make.bottom.equalTo(self.whiteBoardView.mas_safeAreaLayoutGuideBottom).offset(0);
+    }];
+
+    [self.downArrow mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(self.collectionView.mas_centerX);
+        make.bottom.equalTo(self.whiteBoardView.mas_safeAreaLayoutGuideBottom).offset(-height);
+        make.width.mas_equalTo(42);
+        make.height.mas_equalTo(19);
+    }];
+
 }
 
 @end

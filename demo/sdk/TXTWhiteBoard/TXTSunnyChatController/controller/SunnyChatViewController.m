@@ -704,7 +704,7 @@ static NSInteger const kInputToolBarH = 62;
     }];
 }
 
-
+ 
 #pragma mark - bottomButtonsDelegate
 //静音
 - (void)bottomMuteClick{
@@ -721,7 +721,7 @@ static NSInteger const kInputToolBarH = 62;
     shareFileAlertView.fileBlock = ^{
         
         if([TXTCustomConfig sharedInstance].isDebugData) {
-            [self addFile:FileTypeVideo fileModel:[[TXTFileModel alloc] init]];
+            [self addFile:FileTypePics fileModel:[[TXTFileModel alloc] init]];
         } else {
             [[TXTManage sharedInstance] onClickFile];
         }
